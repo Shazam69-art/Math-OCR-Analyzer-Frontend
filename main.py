@@ -16,20 +16,16 @@ from datetime import datetime
 import re
 from fastapi import Request
 import asyncio
-
 # Configure Gemini from environment variable
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 if not GEMINI_API_KEY:
     raise ValueError("GEMINI_API_KEY environment variable is not set")
 genai.configure(api_key=GEMINI_API_KEY)
 model = genai.GenerativeModel("gemini-2.5-flash")
-
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
 app = FastAPI(title="CAS Education Math OCR Analyzer API")
-
 # CORS configuration
 app.add_middleware(
     CORSMiddleware,
@@ -38,16 +34,13 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 # Mount static files
 app.mount("/static", StaticFiles(directory="."), name="static")
-
 def pil_to_base64_png(im: Image.Image) -> str:
     """Convert PIL Image to base64 PNG string."""
     buf = io.BytesIO()
     im.save(buf, format="PNG")
     return base64.b64encode(buf.getvalue()).decode("utf-8")
-
 async def process_uploaded_file(file: UploadFile) -> List[str]:
     """Process uploaded file and return base64 encoded pages."""
     content = await file.read()
@@ -63,7 +56,6 @@ async def process_uploaded_file(file: UploadFile) -> List[str]:
             raise HTTPException(status_code=400, detail=f"Image processing error: {str(e)}")
     else:
         raise HTTPException(status_code=400, detail="Unsupported file type")
-
 async def transcribe_image(file: UploadFile) -> str:
     """Transcribe a single image using Gemini asynchronously."""
     try:
@@ -73,26 +65,22 @@ async def transcribe_image(file: UploadFile) -> str:
             "mime_type": file.content_type or "image/png",
             "data": base64_str
         }
-        prompt = "Transcribe this image exactly as written, converting all mathematical expressions to LaTeX format. Preserve the exact structure, text, and steps verbatim. For handwritten content, transcribe word-for-word and symbol-for-symbol without any interpretation or correction. Ignore strikethrough text completely."
+        prompt = "Transcribe this image EXACTLY as written, converting all mathematical expressions to LaTeX format. Preserve the EXACT structure, text, and steps verbatim without ANY additions, interpretations, or corrections. For handwritten content, transcribe word-for-word and symbol-for-symbol precisely. Ignore strikethrough text completely. Do not add any extra text, explanations, or assumptions. Output only the raw transcription."
         response = await model.generate_content_async([prompt, image_part])
         return response.text.strip()
     except Exception as e:
         logger.error(f"Transcription error for file {file.filename}: {str(e)}")
         return f"Transcription failed for {file.filename}: {str(e)}"
-
 async def transcribe_images(files: List[UploadFile]) -> List[str]:
     """Transcribe multiple images in parallel using asyncio.gather."""
     tasks = [transcribe_image(file) for file in files]
     return await asyncio.gather(*tasks)
-
 @app.get("/")
 async def serve_index():
     return FileResponse("index.html")
-
 @app.get("/style.css")
 async def serve_css():
     return FileResponse("style.css")
-
 @app.post("/analyze-chat")
 async def analyze_chat(
         message: str = Form(""),
@@ -102,33 +90,33 @@ async def analyze_chat(
     """Main analysis endpoint using Gemini with IMPROVED OUTPUT FORMAT."""
     try:
         logger.info(f"Analysis request - Message: {message[:100]}, Files: {len(files)}, Question count: {question_count}")
-
+    
         # Split files into questions and solutions based on question_count
         question_files = files[:question_count]
         solution_files = files[question_count:]
-
+    
         # Transcribe images asynchronously to get text
         question_texts = await transcribe_images(question_files)
         solution_texts = await transcribe_images(solution_files)
-
+    
         # Format transcribed texts
         question_paper = "\n\n".join([f"Question Page {i+1}:\n{text}" for i, text in enumerate(question_texts)])
         solution_paper = "\n\n".join([f"Solution Page {i+1}:\n{text}" for i, text in enumerate(solution_texts)])
-
+    
         # UPDATED & FINAL SYSTEM PROMPT (WITH RULES 9–11 FOR STRICTER ACCURACY)
         system_prompt = r"""You are a **PhD-Level Math Teacher** analyzing student work based on transcribed texts.
 **CRITICAL INSTRUCTIONS FOR OUTPUT (FOLLOW STRICTLY TO AVOID TIMEOUTS - BE CONCISE, NO EXTRA TEXT):**
 1. **ALL MATHEMATICAL EXPRESSIONS MUST BE IN LATEX/MATHJAX FORMAT** - Use $...$ for inline math and $$...$$ for display math. Ensure 100% proper LaTeX for rendering. Keep output short to process quickly.
-2. **STUDENT'S SOLUTION: 100% VERBATIM TRANSCRIPTION ONLY** - Copy EXACTLY from the transcribed solution text. DO NOT add, modify, regenerate, interpret, or invent ANY content. If unclear, copy as-is. Ignore strikethrough completely. NO additions like 'The student wrote...' - just the raw steps.
-3. **ERROR ANALYSIS: FOCUS ON CONCEPTUAL ERRORS** - Identify genuine mathematical mistakes in the student's reasoning or calculations. Be tolerant of minor differences like different constants of integration (C vs C1 vs C2) or different but equivalent forms of the same answer.
+2. **STUDENT'S SOLUTION: 100% VERBATIM TRANSCRIPTION ONLY** - Copy EXACTLY from the transcribed solution text. DO NOT add, modify, regenerate, interpret, or invent ANY content. If unclear, copy as-is. Ignore strikethrough completely. NO additions like 'The student wrote...' - just the raw steps. If the transcription is incomplete or partial, output it exactly as is without any additions.
+3. **ERROR ANALYSIS: EXTREMELY SHORT, MATH-FOCUSED (1-5 WORDS + MATHJAX)** - Use minimal English, focus on math terms. Example: "Step 2: Wrong \(\frac{du}{dx} = 2x\) (should be \(2\))". NO long sentences, explanations, or corrections here. Max 10 words per error. If student's final answer does not match the correct final answer, explicitly flag it as "Final answer mismatch: [student's] vs [correct]". If incomplete, flag "Solution incomplete - missing steps/final answer".
 4. **CORRECT SOLUTION: 100% ACCURATE, STEP-BY-STEP** - Provide precise, error-free steps leading to the correct final answer. Ensure mathematical rigor.
-5. **SEPARATE EACH QUESTION CLEARLY** - Analyze one question at a time based on labels in transcriptions.
-6. **CONCEPTUAL COMPARISON** - Compare the student's solution with the correct solution conceptually, step by step. Only flag as wrong if there's a fundamental mathematical error affecting the answer.
-7. **BE EFFICIENT** - Short responses to avoid timeouts. Focus only on key elements.
-8. **IF NO SOLUTION PROVIDED** - Clearly state "No solution provided" in the student's solution section and mark as incorrect if no answer is given.
-9. **IF PARTIAL ANSWER** - State "Partial answer given" and analyze what's there.
-10. **MATH-FOCUSED ERROR DESCRIPTIONS** - Use specific mathematical terms and equations to describe errors. Example: "Step 2: Incorrect integration of \(x^2\). Should be \(\int x^2 dx = \frac{x^3}{3} + C\) not \(\frac{x^2}{2} + C\)"
-11. **ONLY FLAG SIGNIFICANT ERRORS** - Don't flag minor differences that don't affect the mathematical correctness of the answer.
+5. **SEPARATE EACH QUESTION CLEARLY** - Analyze one question at a time based on labels in transcriptions. Use exact question labels from transcriptions (e.g., "1(a)", "Q2").
+6. **MARK AS CORRECT** if final answer matches, even if steps differ slightly.
+7. **ONLY FLAG ERRORS** for significant mathematical issues affecting the answer. Always check if final answer matches; if not, flag as incorrect.
+8. **BE EFFICIENT** - Short responses to avoid timeouts. Focus only on key elements.
+9. **IF NO SOLUTION PROVIDED** - Clearly state "No solution provided" in the student's solution section and mark as incorrect if no answer is given. Flag in error analysis: "No solution - incorrect".
+10. **IF PARTIAL ANSWER** - State "Partial answer given" and analyze what's there. If final answer missing or doesn't match, mark as incorrect and flag "Incomplete solution - final mismatch".
+11. **IF ANSWER DOESN'T MATCH** - Mark as incorrect regardless of steps. Explicitly compare final answers in error analysis.
 **OUTPUT FORMAT - FOLLOW EXACTLY (NO DEVIATIONS):**
 ## Question [EXACT LABEL]:
 **Full Question:** [Exact transcribed question in MathJax]
@@ -137,7 +125,7 @@ async def analyze_chat(
 **Step 2:** [Exact transcribed line 2 in MathJax - VERBATIM]
 ...
 ### Error Analysis:
-**Step X:** [Math-focused error description with equations, e.g., "Incorrect application of substitution rule. Should use \(u = x^2\), not \(u = x\)"]
+**Step X:** [Short math term error, e.g., "Invalid \(u\)-sub: \(\sqrt{x} \neq x^{1/2}\)" ]
 ...
 ### Corrected Solution:
 **Step 1:** [Correct math step in MathJax]
@@ -176,7 +164,7 @@ async def analyze_chat(
         ]
         if message:
             contents.append(f"User request: {message}")
-
+    
         # Call Gemini asynchronously
         try:
             response = await model.generate_content_async(contents)
@@ -184,11 +172,11 @@ async def analyze_chat(
         except Exception as genai_error:
             logger.error(f"Gemini API error: {str(genai_error)}")
             raise HTTPException(status_code=504, detail="Analysis service is taking longer than expected. Please try again.")
-
+    
         # Parse detailed data for frontend
         detailed_data = parse_detailed_data_improved(ai_response)
         logger.info(f"Analysis completed. Found {len(detailed_data.get('questions', []))} questions")
-
+    
         return JSONResponse({
             "status": "success",
             "response": ai_response,
@@ -200,9 +188,8 @@ async def analyze_chat(
     except Exception as e:
         logger.error(f"Analysis failed: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
-
 def parse_detailed_data_improved(response_text):
-    """UPDATED parsing: Handles conceptual errors, math-focused descriptions, improved regex for quality."""
+    """UPDATED parsing: Handles shorter errors, stricter verbatim steps, improved regex for quality."""
     questions = []
     if not response_text:
         return {"questions": questions}
@@ -216,7 +203,7 @@ def parse_detailed_data_improved(response_text):
             else:
                 alt_match = re.search(r'^(Q?[0-9]+[a-z]?(?:\s*\([a-z]\))?)', section)
                 question_id = alt_match.group(1).strip() if alt_match else f"Q{i}"
-
+       
             question_text = "Question content not extracted"
             if '**Full Question:**' in section:
                 question_part = section.split('**Full Question:**')[1]
@@ -225,7 +212,7 @@ def parse_detailed_data_improved(response_text):
                 else:
                     question_text = question_part.strip()
             question_text = re.sub(r'### Student\'s Solution.*?###', '', question_text, flags=re.DOTALL).strip()
-
+       
             steps = []
             if '### Student\'s Solution' in section:
                 solution_part = section.split('### Student\'s Solution')[1]
@@ -238,7 +225,7 @@ def parse_detailed_data_improved(response_text):
                 steps = [match[1].strip() for match in step_matches if match[1].strip()]
             if not steps:
                 steps = ["No solution provided"]
-
+       
             mistakes = []
             has_errors = False
             if '### Error Analysis' in section:
@@ -258,7 +245,7 @@ def parse_detailed_data_improved(response_text):
                             "status": "Error",
                             "desc": error_desc.strip()
                         })
-
+       
             corrected_steps = []
             if '### Corrected Solution' in section:
                 correct_part = section.split('### Corrected Solution')[1]
@@ -269,7 +256,7 @@ def parse_detailed_data_improved(response_text):
                 step_pattern = r'\*\*Step\s+(\d+):\*\*\s*(.*?)(?=\*\*Step\s+\d+:|\*\*Final Answer|\Z)'
                 step_matches = re.findall(step_pattern, correct_section, re.DOTALL)
                 corrected_steps = [match[1].strip() for match in step_matches if match[1].strip()]
-
+       
             final_answer = ""
             final_match = re.search(r'\\boxed{(.*?)}', section)
             if final_match:
@@ -282,25 +269,7 @@ def parse_detailed_data_improved(response_text):
                 else:
                     final_answer_text = answer_part.split('\n')[0].strip()
                     final_answer = f"$${final_answer_text}$$" if final_answer_text else ""
-
-            # Conceptual comparison of student and correct answers
-            student_answer = steps[-1] if steps else ""
-            correct_answer = final_answer.replace("$$", "") if final_answer else ""
-
-            # Only mark as error if there's a fundamental mathematical difference
-            if has_errors:
-                # Already has specific errors identified in the analysis
-                pass
-            elif student_answer and correct_answer:
-                # Compare answers conceptually
-                if not is_equivalent_answer(student_answer, correct_answer):
-                    has_errors = True
-                    mistakes.append({
-                        "step": len(steps),
-                        "status": "Error",
-                        "desc": f"Final answer doesn't match correct solution. Should be {final_answer}"
-                    })
-
+       
             questions.append({
                 "id": question_id,
                 "questionText": question_text[:500] + "..." if len(question_text) > 500 else question_text,
@@ -310,7 +279,7 @@ def parse_detailed_data_improved(response_text):
                 "correctedSteps": corrected_steps or ["Complete solution will be shown after analysis"],
                 "finalAnswer": final_answer or "Answer will be determined after analysis"
             })
-
+   
         except Exception as e:
             logger.error(f"Error parsing question {i}: {e}")
             questions.append({
@@ -323,33 +292,19 @@ def parse_detailed_data_improved(response_text):
                 "finalAnswer": "Answer pending"
             })
     return {"questions": questions}
-
-def is_equivalent_answer(student_answer, correct_answer):
-    """
-    Compare student answer with correct answer conceptually.
-    Returns True if answers are equivalent (even with minor differences like different constants),
-    False if there's a fundamental mathematical difference.
-    """
-    # Remove constants of integration (C, C1, C2, etc.) for comparison
-    student_clean = re.sub(r'\+?\s*C(\d*)', '', student_answer)
-    correct_clean = re.sub(r'\+?\s*C(\d*)', '', correct_answer)
-
-    # Remove whitespace and compare
-    return student_clean.strip() == correct_clean.strip()
-
 @app.post("/analyze-feedback")
 async def analyze_feedback(request: dict):
     try:
         question = request.get("question", {})
         feedback = request.get("feedback", "")
         original_analysis = request.get("original_analysis", "")
-
+   
         if not question or not feedback:
             return JSONResponse({
                 "success": False,
                 "error": "Missing question or feedback data"
             })
-
+   
         feedback_prompt = f"""
         A user has provided feedback on the analysis of Question {question.get('id', 'Unknown')}:
         Original Question: {question.get('questionText', '')}
@@ -361,12 +316,12 @@ async def analyze_feedback(request: dict):
         3. Ensuring all mathematical expressions are in proper MathJax/LaTeX format
         Provide the updated analysis for this question only.
         """
-
+   
         response = model.generate_content(feedback_prompt)
         updated_analysis = response.text
-
+   
         updated_question = parse_single_question(updated_analysis, question.get('id', f"Q{len(question)}"))
-
+   
         return JSONResponse({
             "success": True,
             "updated_question": updated_question,
@@ -378,7 +333,6 @@ async def analyze_feedback(request: dict):
             "success": False,
             "error": f"Feedback analysis failed: {str(e)}"
         }, status_code=500)
-
 def parse_single_question(analysis_text, question_id):
     return {
         "id": question_id,
@@ -389,42 +343,36 @@ def parse_single_question(analysis_text, question_id):
         "correctedSteps": extract_corrected_steps(analysis_text),
         "finalAnswer": extract_final_answer(analysis_text)
     }
-
 def extract_question_text(text):
     match = re.search(r'Original Question:\s*(.*?)(?=User Feedback|$)', text, re.DOTALL)
     return match.group(1).strip() if match else "Question text not available"
-
 def extract_steps(text):
     return ["Step analysis in progress"]
-
 def extract_mistakes(text):
     return [{"step": 1, "status": "Error", "desc": "Re-analyzed based on user feedback"}]
-
 def extract_corrected_steps(text):
     return ["Corrected solution based on user feedback"]
-
 def extract_final_answer(text):
     match = re.search(r'\\boxed{(.*?)}', text)
     return f"$$\\boxed{{{match.group(1)}}}$$" if match else "Final answer pending"
-
 @app.post("/create-practice-paper")
 async def create_practice_paper(request: dict):
     try:
         detailed_data = request.get("detailed_data", {})
         questions_with_errors = []
-
+   
         for q in detailed_data.get("questions", []):
             if q.get('hasErrors', False) and q.get('mistakes'):
                 questions_with_errors.append(q)
-
+   
         logger.info(f"Found {len(questions_with_errors)} questions with errors for practice paper")
-
+   
         if not questions_with_errors:
             return JSONResponse({
                 "success": False,
                 "error": "No questions with errors found. Your solutions appear to be correct!"
             })
-
+   
         practice_prompt = f"""Create a targeted practice paper with EXACTLY {len(questions_with_errors)} redesigned questions.
 **CRITICAL REQUIREMENTS:**
 1. For EACH original question, create ONE modified practice question - redesign ALL provided.
@@ -453,12 +401,12 @@ Evaluate $\int x^7 dx$
 - NO extra text - just "Based on Question"
 - Each question must be separated by ---
 - Focus on same mathematical concepts with different coefficients/values - redesign EVERY one provided"""
-
+   
         response = model.generate_content(practice_prompt)
         practice_paper = response.text
-
+   
         logger.info(f"Successfully generated practice paper with {len(questions_with_errors)} questions")
-
+   
         return JSONResponse({
             "success": True,
             "practice_paper": practice_paper,
@@ -471,13 +419,11 @@ Evaluate $\int x^7 dx$
             "success": False,
             "error": f"Practice paper creation failed: {str(e)}"
         }, status_code=500)
-
 def format_questions_for_practice_prompt(questions_with_errors):
     formatted = ""
     for q in questions_with_errors:
         formatted += f"\n**Question {q['id']}:** {q['questionText'][:200]}...\n"
         formatted += f"**Errors Found:** {', '.join([m.get('desc', '')[:100] for m in q.get('mistakes', [])])}\n"
     return formatted
-
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000, log_level="info")
