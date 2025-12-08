@@ -531,22 +531,19 @@
                             <!-- Question Text -->
                             <div class="analysis-section">
                                 <h4>📝 Question:</h4>
-                                <div class="section-box">
-                                    <div class="math-expression">${formatMathContent(q.questionText)}</div>
-                                </div>
+                                <div class="math-expression">${formatMathContent(q.questionText)}</div>
                             </div>
                         
                             <!-- Student's Solution - EXACTLY as submitted -->
                             <div class="analysis-section student-work">
                                 <h4>✍️ Student's Solution:</h4>
-                                <div class="section-box">
+                                <div class="step-block">
                                     ${q.steps && q.steps.length > 0 && q.steps[0] !== "No solution provided" ?
                                         q.steps.map((step, index) => `
                                             <div class="step-content">
-                                                <strong>Step ${index + 1}:</strong>
-                                                <div class="math-expression original-solution">${formatMathContent(step)}</div>
+                                                ${formatMathContent(step)}
                                             </div>
-                                        `).join('<br>') :
+                                        `).join('') :
                                         '<div class="step-content">No solution provided</div>'
                                     }
                                 </div>
@@ -555,11 +552,10 @@
                             <!-- Error Analysis - SIMPLE AND PRECISE -->
                             <div class="analysis-section error-analysis">
                                 <h4>🔍 Error Analysis:</h4>
-                                <div class="section-box">
+                                <div class="error-block">
                                     ${hasErrors
                                         ? q.mistakes.map(m => `
-                                            <div class="error-content">
-                                                <div class="error-step">Step ${m.step}:</div>
+                                            <div class="error-item">
                                                 <div class="error-desc">${formatMathContent(m.desc || m.error)}</div>
                                                 ${m.correction ? `
                                                     <div class="correction">
@@ -568,8 +564,8 @@
                                                     </div>
                                                 ` : ''}
                                             </div>
-                                        `).join('<br>')
-                                        : `<div class="correct-content">
+                                        `).join('')
+                                        : `<div class="correct-item">
                                             <strong>✓ No Conceptual Errors Found</strong><br>
                                             <em>All steps appear to be mathematically sound.</em>
                                            </div>`
@@ -580,14 +576,14 @@
                             <!-- Correct Solution -->
                             <div class="analysis-section correct-solution">
                                 <h4>✅ Correct Solution:</h4>
-                                <div class="section-box">
+                                <div class="step-block">
                                     ${(q.correctedSteps || []).map((step, index) => `
                                         <div class="step-content">
-                                            <strong>Step ${index + 1}:</strong>
-                                            <div class="math-expression">${formatMathContent(step)}</div>
+                                            ${formatMathContent(step)}
                                         </div>
-                                    `).join('<br>')}
+                                    `).join('')}
                                 </div>
+                                <div class="final-answer">${q.finalAnswer}</div>
                             </div>
                         </div>
                     `;
