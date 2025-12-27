@@ -448,7 +448,7 @@
             allFiles.forEach(f => formData.append('files', f.file));
 
             try {
-                const res = await fetch('https://math-ocr-analyzer-backend-production.up.railway.app/analyze', {
+                const res = await fetch('math-ocr-analyzer-backend-production.up.railway.app/analyze', {
                     method: 'POST',
                     body: formData
                 });
@@ -546,7 +546,7 @@
             btn.innerHTML = '<div class="loading" style="width: 16px; height: 16px; border-width: 2px;"></div>';
 
             try {
-                const res = await fetch('https://math-ocr-analyzer-backend-production.up.railway.app/reanalyze', {
+                const res = await fetch('math-ocr-analyzer-backend-production.up.railway.app/reanalyze', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({
@@ -607,7 +607,7 @@
             content.innerHTML = '<div class="loading"></div> Generating...';
 
             try {
-                const res = await fetch('https://math-ocr-analyzer-backend-production.up.railway.app/generate_practice', {
+                const res = await fetch('math-ocr-analyzer-backend-production.up.railway.app/generate_practice', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({analysis: analysisResult})
