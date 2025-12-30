@@ -79,11 +79,16 @@
             align-items: center;
             justify-content: center;
             background: linear-gradient(135deg, 
-                #667eea 0%, 
-                #764ba2 25%, 
-                #f093fb 50%, 
-                #f5576c 75%, 
-                #667eea 100%);
+                #667eea 0%,           /* Purple-Blue */
+                #764ba2 12.5%,        /* Purple */
+                #f093fb 25%,          /* Pink */
+                #f5576c 37.5%,        /* Red-Pink */
+                #38bdf8 50%,          /* Sky Blue (NEW) */
+                #fb923c 62.5%,        /* Orange (NEW) */
+                #f093fb 75%,          /* Pink */
+                #764ba2 87.5%,        /* Purple */
+                #667eea 100%          /* Purple-Blue */
+            );
             background-size: 400% 400%;
             animation: gradientShift 15s ease infinite;
             position: relative;
@@ -117,7 +122,12 @@
                 radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
                 radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.15) 0%, transparent 50%),
                 radial-gradient(circle at 40% 40%, rgba(240, 147, 251, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 60% 60%, rgba(245, 87, 108, 0.1) 0%, transparent 50%);
+                radial-gradient(circle at 60% 60%, rgba(245, 87, 108, 0.1) 0%, transparent 50%),
+                /* Add Sky Blue and Orange circles: */
+                radial-gradient(circle at 30% 70%, rgba(56, 189, 248, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 30%, rgba(251, 146, 60, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 10% 90%, rgba(56, 189, 248, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 90% 10%, rgba(251, 146, 60, 0.08) 0%, transparent 50%);
             animation: float 20s infinite linear;
         }
 
