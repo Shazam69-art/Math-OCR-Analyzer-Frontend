@@ -27,30 +27,103 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --background: #fcfcfc;
-            --foreground: #2e2e2e;
+            --background: #f8f9fc;
+            --foreground: #2c2c2c;
             --card: #ffffff;
-            --card-foreground: #2e2e2e;
-            --primary: #4f7cff;
+            --card-foreground: #2c2c2c;
+            --primary: #5a7eff;
             --primary-foreground: #ffffff;
-            --secondary: #f5f5f7;
+            --secondary: #f0f2ff;
             --secondary-foreground: #404040;
-            --muted: #f5f5f7;
-            --muted-foreground: #808080;
-            --accent: #f0f2ff;
+            --muted: #f4f5f9;
+            --muted-foreground: #777777;
+            --accent: #eef1ff;
             --accent-foreground: #404040;
-            --destructive: #ef4444;
-            --destructive-foreground: #ffffff;
-            --border: #e5e5e8;
-            --input: #e5e5e8;
-            --ring: #4f7cff;
-            --sidebar: #fafafa;
+            --border: #e2e5ec;
+            --input: #e2e5ec;
+            --ring: #5a7eff;
+            --sidebar: #f9f9fb;
             --sidebar-foreground: #404040;
-            --sidebar-accent: #f0f2ff;
-            --sidebar-border: #ebebed;
-            --radius: 0.75rem;
+            --sidebar-accent: #eef1ff;
+            --sidebar-border: #e8eaef;
+            --radius: 0.875rem;
         }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif; background-color: var(--background); color: var(--foreground); line-height: 1.6; padding: 0; overflow: hidden; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif; 
+            background-color: var(--background); 
+            color: var(--foreground); 
+            line-height: 1.6; 
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Login Page */
+        #loginPage {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #eef2ff 0%, #d0dbff 100%);
+        }
+        .login-container {
+            width: 380px;
+            max-width: 90%;
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .login-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        .login-card input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border);
+            border-radius: calc(var(--radius) - 0.25rem);
+            background: #fff;
+            font-size: 1rem;
+        }
+        .login-card input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(90, 126, 255, 0.2);
+        }
+        .social-btn {
+            width: 100%;
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+            border-radius: calc(var(--radius) - 0.25rem);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .google-btn {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            color: #444;
+        }
+        .google-btn:hover { background: #f8f9fa; }
+        .apple-btn {
+            background: #000000;
+            color: #ffffff;
+        }
+        .apple-btn:hover { background: #1a1a1a; }
+
+        /* Dashboard */
         .dashboard-container { display: flex; height: 100vh; width: 100%; overflow: hidden; }
         .dashboard-layout { display: flex; height: 100%; width: 100%; }
         .sidebar { width: 16rem; background-color: var(--sidebar); border-right: 1px solid var(--sidebar-border); display: flex; flex-direction: column; height: 100%; }
@@ -66,7 +139,7 @@
         .sidebar-item:hover { background-color: var(--sidebar-accent); }
         .sidebar-item-title { font-weight: 500; font-size: 0.875rem; margin-bottom: 0.125rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .sidebar-item-date { font-size: 0.75rem; color: rgba(64, 64, 64, 0.6); }
-        .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--background); }
         .header { border-bottom: 1px solid var(--border); background-color: var(--card); padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; width: 100%; }
         .header-left { display: flex; align-items: center; gap: 1rem; }
         .header-logo { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
@@ -77,40 +150,38 @@
         .header-right { display: flex; align-items: center; gap: 1rem; }
         .user-info { font-size: 0.875rem; font-weight: 500; }
         .user-name { color: var(--primary); }
-        .btn-logout { background-color: transparent; color: var(--foreground); padding: 0.5rem 1rem; }
+        .btn-logout { background-color: transparent; color: var(--foreground); padding: 0.5rem 1rem; border-radius: calc(var(--radius) - 0.25rem); }
         .btn-logout:hover { background-color: var(--accent); }
-        .content-area { flex: 1; overflow-y: auto; padding: 1.5rem; width: 100%; }
+        .content-area { flex: 1; overflow-y: auto; padding: 2rem; width: 100%; }
         .upload-section { max-width: 80rem; margin: 0 auto; width: 100%; }
-        .section-header { margin-bottom: 2rem; }
+        .section-header { margin-bottom: 2.5rem; text-align: center; }
         .section-header h1 { font-size: 2.25rem; font-weight: 700; margin-bottom: 0.5rem; }
         .section-header p { font-size: 1.125rem; color: var(--muted-foreground); }
-        .upload-grid { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
-        .upload-card { background-color: var(--card); border: 2px dashed var(--border); border-radius: var(--radius); padding: 1.5rem; text-align: center; transition: border-color 0.2s; cursor: pointer; max-width: 20rem; width: 100%; }
-        .upload-card:hover { border-color: rgba(79, 124, 255, 0.5); }
-        .upload-icon { width: 4rem; height: 4rem; background-color: rgba(79, 124, 255, 0.1); border-radius: 1rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; }
-        .upload-icon svg { width: 2rem; height: 2rem; color: var(--primary); }
+        .upload-grid { display: flex; justify-content: center; gap: 2rem; margin-bottom: 3rem; flex-wrap: wrap; }
+        .upload-card { background-color: var(--card); border: 2px dashed var(--border); border-radius: var(--radius); padding: 2rem; text-align: center; transition: all 0.3s; cursor: pointer; max-width: 22rem; width: 100%; }
+        .upload-card:hover { border-color: var(--primary); transform: translateY(-4px); box-shadow: 0 10px 20px rgba(90,126,255,0.1); }
+        .upload-icon { width: 4.5rem; height: 4.5rem; background-color: var(--secondary); border-radius: 1rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem; }
+        .upload-icon svg { width: 2.25rem; height: 2.25rem; color: var(--primary); }
         .upload-card h3 { font-weight: 600; margin-bottom: 0.5rem; }
-        .upload-card p { font-size: 0.875rem; color: var(--muted-foreground); margin-bottom: 1rem; }
+        .upload-card p { font-size: 0.875rem; color: var(--muted-foreground); margin-bottom: 1.25rem; }
         .file-list { text-align: left; margin-top: 1rem; }
-        .file-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--muted-foreground); margin-bottom: 0.25rem; }
-        .file-item svg { width: 0.75rem; height: 0.75rem; }
-        .btn-start { background-color: var(--primary); color: var(--primary-foreground); padding: 0.75rem 3rem; font-size: 1rem; margin: 0 auto; display: flex; }
+        .file-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: var(--muted-foreground); margin-bottom: 0.25rem; }
+        .btn-start { background-color: var(--primary); color: var(--primary-foreground); padding: 0.875rem 3rem; font-size: 1.1rem; border-radius: calc(var(--radius) - 0.25rem); display: flex; align-items: center; gap: 0.75rem; }
         .btn-start:disabled { opacity: 0.5; cursor: not-allowed; }
         .results-section { max-width: 80rem; margin: 0 auto; width: 100%; }
-        .results-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
-        .results-header h1 { font-size: 1.875rem; font-weight: 700; }
-        .results-header p { color: var(--muted-foreground); margin-top: 0.25rem; }
-        .badge-group { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-        .badge { padding: 0.25rem 0.75rem; border-radius: calc(var(--radius) - 0.25rem); font-size: 0.875rem; background-color: var(--secondary); display: inline-flex; align-items: center; gap: 0.5rem; }
-        .badge-dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; }
+        .results-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+        .results-header h1 { font-size: 2rem; font-weight: 700; }
+        .badge-group { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+        .badge { padding: 0.375rem 1rem; border-radius: calc(var(--radius) - 0.25rem); font-size: 0.9rem; background-color: var(--secondary); display: inline-flex; align-items: center; gap: 0.5rem; }
+        .badge-dot { width: 0.6rem; height: 0.6rem; border-radius: 50%; }
         .badge-dot.correct { background-color: #22c55e; }
         .badge-dot.partial { background-color: #eab308; }
         .badge-dot.incorrect { background-color: #ef4444; }
         .accordion { display: flex; flex-direction: column; gap: 1rem; }
-        .accordion-item { background-color: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+        .accordion-item { background-color: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
         .accordion-trigger { width: 100%; padding: 1.5rem; display: flex; align-items: flex-start; gap: 1rem; cursor: pointer; background: none; border: none; text-align: left; transition: background-color 0.2s; }
         .accordion-trigger:hover { background-color: var(--accent); }
-        .question-number { width: 2.5rem; height: 2.5rem; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
+        .question-number { width: 2.75rem; height: 2.75rem; border-radius: 0.875rem; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-size: 1.1rem; }
         .question-number.correct { background-color: rgba(34, 197, 94, 0.1); color: #16a34a; }
         .question-number.partial { background-color: rgba(234, 179, 8, 0.1); color: #ca8a04; }
         .question-number.incorrect { background-color: rgba(239, 68, 68, 0.1); color: #dc2626; }
@@ -121,74 +192,60 @@
         .accordion-content.open { display: block; }
         .analysis-section { margin-bottom: 1.5rem; }
         .analysis-section h3 { font-weight: 600; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
-        .analysis-section h3 svg { width: 1.25rem; height: 1.25rem; }
-        .solution-card { background-color: rgba(245, 245, 247, 0.3); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; }
-        .solution-card.error { background-color: rgba(239, 68, 68, 0.05); border-color: rgba(239, 68, 68, 0.3); }
-        .solution-card.corrected { background-color: rgba(34, 197, 94, 0.05); border-color: rgba(34, 197, 94, 0.3); }
-        .solution-steps { font-family: 'Courier New', monospace; font-size: 0.875rem; }
-        .solution-steps div { margin-bottom: 0.5rem; }
-        .practice-paper-card { background-color: var(--card); border: 2px solid rgba(79, 124, 255, 0.2); border-radius: var(--radius); padding: 1.5rem; margin-top: 1.5rem; }
-        .practice-paper-card h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
-        .practice-paper-card p { color: var(--muted-foreground); margin-bottom: 1rem; }
-        .new-question-list { background-color: var(--background); border-radius: calc(var(--radius) - 0.25rem); padding: 1rem; margin-bottom: 1rem; }
-        .new-question-item { display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.75rem; }
-        .new-question-item:last-child { margin-bottom: 0; }
-        .new-question-number { width: 2rem; height: 2rem; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
-        .reanalysis-card { background-color: rgba(240, 242, 255, 0.5); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; margin-top: 1rem; }
-        .reanalysis-input-group { display: flex; gap: 0.5rem; margin-bottom: 0.75rem; }
-        .reanalysis-input-group input { flex: 1; }
-        .ai-response { background-color: var(--background); border: 1px solid var(--border); border-radius: calc(var(--radius) - 0.25rem); padding: 1rem; display: flex; align-items: flex-start; gap: 0.75rem; }
-        .ai-badge { background-color: var(--primary); color: var(--primary-foreground); padding: 0.125rem 0.5rem; border-radius: calc(var(--radius) - 0.5rem); font-size: 0.75rem; font-weight: 600; flex-shrink: 0; margin-top: 0.125rem; }
-        .ai-response p { font-size: 0.875rem; line-height: 1.6; flex: 1; }
-        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 50; align-items: center; justify-content: center; padding: 1rem; }
+        .solution-card { background-color: var(--muted); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; }
+        .solution-card.error { background-color: rgba(239, 68, 68, 0.07); border-color: rgba(239, 68, 68, 0.3); }
+        .solution-card.corrected { background-color: rgba(34, 197, 94, 0.07); border-color: rgba(34, 197, 94, 0.3); }
+        .practice-paper-card { background-color: var(--card); border: 2px solid rgba(90, 126, 255, 0.25); border-radius: var(--radius); padding: 2rem; margin-top: 2rem; box-shadow: 0 6px 15px rgba(0,0,0,0.04); }
+        .practice-paper-card h3 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.75rem; }
+        .practice-paper { padding: 40px; background: white; max-width: 800px; margin: 0 auto; }
+        .practice-header { margin-bottom: 40px; text-align: center; }
+        .practice-title { font-size: 28px; font-weight: 700; margin-bottom: 10px; }
+        .practice-subtitle { font-size: 18px; color: #666; }
+        .practice-question { margin-bottom: 40px; page-break-inside: avoid; }
+        .practice-question-number { font-size: 20px; font-weight: 700; color: var(--primary); margin-bottom: 12px; }
+        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.6); z-index: 50; align-items: center; justify-content: center; padding: 1rem; }
         .modal.open { display: flex; }
-        .modal-content { background-color: var(--card); border-radius: var(--radius); max-width: 48rem; width: 100%; max-height: 90vh; overflow-y: auto; padding: 1.5rem; }
-        .modal-header { margin-bottom: 1rem; }
-        .modal-header h3 { font-size: 1.25rem; font-weight: 600; }
-        .modal-image { position: relative; aspect-ratio: 3/4; background-color: var(--muted); border-radius: calc(var(--radius) - 0.25rem); overflow: hidden; margin-bottom: 1rem; }
-        .modal-image img { width: 100%; height: 100%; object-fit: cover; }
-        .error-highlight { position: absolute; border: 4px solid #ef4444; border-radius: 0.5rem; animation: pulse 2s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-        .modal-caption { text-align: center; font-size: 0.875rem; color: var(--muted-foreground); }
-        .mobile-menu-btn { display: none; }
-        .mobile-overlay { display: none; }
+        .modal-content { background-color: var(--card); border-radius: var(--radius); max-width: 52rem; width: 100%; max-height: 95vh; overflow-y: auto; padding: 2rem; box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+        .hidden { display: none; }
+        .btn, button { padding: 0.75rem 1.5rem; border-radius: calc(var(--radius) - 0.25rem); font-weight: 500; cursor: pointer; transition: all 0.2s; border: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; }
+        .btn-primary { background-color: var(--primary); color: var(--primary-foreground); }
+        .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-outline { background-color: transparent; border: 1px solid var(--border); color: var(--foreground); }
+        .btn-outline:hover { background-color: var(--accent); }
+        .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid #f0f0f0; border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
         @media (max-width: 1024px) {
             .sidebar { display: none; }
             .mobile-menu-btn { display: flex; background: transparent; border: none; padding: 0.5rem; cursor: pointer; }
-            .mobile-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 40; }
-            .mobile-overlay.open { display: block; }
-            .mobile-sidebar-backdrop { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); }
-            .mobile-sidebar { position: absolute; top: 0; left: 0; bottom: 0; width: 16rem; background-color: var(--sidebar); }
-            .mobile-logout { position: absolute; bottom: 0; left: 0; right: 0; padding: 1rem; border-top: 1px solid var(--sidebar-border); }
-            .mobile-logout button { width: 100%; justify-content: flex-start; background: transparent; color: var(--sidebar-foreground); padding: 0.75rem; }
-            .btn-logout { display: none; }
-            .header-brand { display: none; }
         }
-        @media (max-width: 640px) {
-            .user-info { display: none; }
-            .upload-grid { flex-direction: column; align-items: center; }
-            .results-header { flex-direction: column; align-items: flex-start; }
-        }
-        .hidden { display: none; }
-        .btn, button { padding: 0.625rem 1.5rem; border-radius: calc(var(--radius) - 0.25rem); font-weight: 500; font-size: 0.875rem; cursor: pointer; transition: all 0.2s; border: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; }
-        .btn-primary { background-color: var(--primary); color: var(--primary-foreground); }
-        .btn-primary:hover { opacity: 0.9; }
-        .btn-outline { background-color: transparent; border: 1px solid var(--border); color: var(--foreground); }
-        .btn-outline:hover { background-color: var(--accent); }
-        .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid #f3f4f6; border-top-color: #4f7cff; border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .practice-paper { padding: 30px; background: white; }
-        .practice-header { margin-bottom: 30px; text-align: center; }
-        .practice-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
-        .practice-subtitle { font-size: 16px; color: #666; }
-        .practice-question { margin-bottom: 30px; }
-        .practice-question-number { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 10px; }
     </style>
 </head>
 <body>
-    <div id="dashboardPage" class="dashboard-container">
+    <!-- Login Page -->
+    <div id="loginPage">
+        <div class="login-container">
+            <h1 class="login-header">C-A-S educations</h1>
+            <div class="login-card">
+                <input type="text" id="usernameInput" placeholder="Username or Email" autocomplete="username">
+                <input type="password" id="passwordInput" placeholder="Password" autocomplete="current-password">
+                <button class="btn-primary" style="width:100%; margin-top:1rem;" onclick="handleLogin()">Login</button>
+                <div style="margin: 1.5rem 0; text-align:center; color:#777; font-size:0.875rem;">or continue with</div>
+                <button class="social-btn google-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                    Continue with Google
+                </button>
+                <button class="social-btn apple-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42.4-1.38 1.41m-4.46-16.5c.66-.58 1.11-1.39.98-2.21-.99.07-2.15.66-2.84 1.48-.61.73-1.15 1.9-1 2.9 1.11.08 2.25-.57 2.86-1.67z"/></svg>
+                    Continue with Apple
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div id="dashboardPage" class="dashboard-container hidden">
         <div class="dashboard-layout">
-            <!-- Sidebar (Desktop) -->
+            <!-- Sidebar -->
             <aside class="sidebar">
                 <div class="sidebar-header">
                     <div class="sidebar-logo" onclick="resetToDashboard()">
@@ -205,39 +262,12 @@
                     <div id="historyList"></div>
                 </div>
             </aside>
-            <!-- Mobile Overlay -->
-            <div id="mobileOverlay" class="mobile-overlay">
-                <div class="mobile-sidebar-backdrop" onclick="closeMobileMenu()"></div>
-                <aside class="mobile-sidebar">
-                    <div class="sidebar-header">
-                        <div class="sidebar-logo" onclick="resetToDashboard(); closeMobileMenu();">
-                            <div class="sidebar-logo-icon">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-                                </svg>
-                            </div>
-                            <h1>Math.AI Analyzer</h1>
-                        </div>
-                    </div>
-                    <div class="sidebar-content">
-                        <div class="sidebar-section-title">Analysis History</div>
-                        <div id="mobileHistoryList"></div>
-                    </div>
-                    <div class="mobile-logout">
-                        <button onclick="handleLogout()">
-                            <svg style="width: 1rem; height: 1rem; margin-right: 0.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                            </svg>
-                            Logout
-                        </button>
-                    </div>
-                </aside>
-            </div>
+
             <!-- Main Content -->
             <div class="main-content">
                 <header class="header">
                     <div class="header-left">
-                        <button class="mobile-menu-btn" onclick="openMobileMenu()">
+                        <button class="mobile-menu-btn" style="display:none;" onclick="openMobileMenu()">
                             <svg style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                             </svg>
@@ -253,12 +283,7 @@
                     </div>
                     <div class="header-right">
                         <p class="user-info">Welcome, <span class="user-name" id="userName"></span></p>
-                        <button class="btn-logout" onclick="handleLogout()">
-                            <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                            </svg>
-                            Logout
-                        </button>
+                        <button class="btn-logout" onclick="handleLogout()">Logout</button>
                     </div>
                 </header>
                 <main class="content-area">
@@ -278,12 +303,7 @@
                                 <h3>Question Papers</h3>
                                 <p>Upload the original question papers</p>
                                 <input type="file" id="questionInput" multiple accept="image/*,.pdf" style="display:none;">
-                                <button class="btn-outline">
-                                    <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
-                                    </svg>
-                                    Upload Files
-                                </button>
+                                <button class="btn-outline">Upload Files</button>
                                 <div id="questionFileList" class="file-list"></div>
                             </div>
                             <div class="upload-card" onclick="document.getElementById('answerInput').click()">
@@ -295,24 +315,17 @@
                                 <h3>Student Answer Sheets</h3>
                                 <p>Upload student's handwritten answers</p>
                                 <input type="file" id="answerInput" multiple accept="image/*,.pdf" style="display:none;">
-                                <button class="btn-outline">
-                                    <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
-                                    </svg>
-                                    Upload Files
-                                </button>
+                                <button class="btn-outline">Upload Files</button>
                                 <div id="answerFileList" class="file-list"></div>
                             </div>
                         </div>
                         <div style="display: flex; justify-content: center;">
                             <button id="startAnalysisBtn" class="btn-start" onclick="startAnalysis()" disabled>
-                                <svg style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                                </svg>
                                 Start Analysis
                             </button>
                         </div>
                     </div>
+
                     <!-- Results Section -->
                     <div id="resultsSection" class="results-section hidden">
                         <div class="results-header">
@@ -323,15 +336,11 @@
                             <div class="badge-group" id="badgeGroup"></div>
                         </div>
                         <div class="accordion" id="accordion"></div>
-                        <!-- Practice Paper -->
                         <div class="practice-paper-card" id="practicePaperCard">
                             <h3>Generate Personalized Practice Paper</h3>
                             <p>Create a new question paper with modified questions for incorrect and partial answers</p>
                             <div id="practicePaperContent">
                                 <button class="btn-start" onclick="generatePracticePaper()">
-                                    <svg style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                                    </svg>
                                     Generate New Question Paper
                                 </button>
                             </div>
@@ -341,23 +350,24 @@
             </div>
         </div>
     </div>
+
     <!-- Image Modal -->
     <div id="imageModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h3 id="modalTitle">Answer Sheet - Question</h3>
             </div>
-            <div class="modal-image">
-                <img id="modalImage" src="" alt="Answer sheet">
-                <div id="errorHighlight" class="error-highlight" style="display: none;"></div>
+            <div class="modal-image" style="aspect-ratio: 3/4; background:#f0f0f0; border-radius: var(--radius); overflow:hidden; margin-bottom:1rem;">
+                <img id="modalImage" src="" alt="Answer sheet" style="width:100%; height:100%; object-fit:contain;">
+                <div id="errorHighlight" class="error-highlight" style="display:none; position:absolute; border:4px solid #ef4444; border-radius:0.5rem;"></div>
             </div>
-            <p class="modal-caption" id="modalCaption"></p>
-            <button class="btn-outline" style="width: 100%; margin-top: 1rem;" onclick="closeImageModal()">Close</button>
+            <p class="modal-caption" id="modalCaption" style="text-align:center;"></p>
+            <button class="btn-outline" style="width:100%; margin-top:1rem;" onclick="closeImageModal()">Close</button>
         </div>
     </div>
+
     <script>
-        // State management
-        let currentUser = localStorage.getItem('userEmailPrefix') || '';
+        let currentUser = '';
         let questionFiles = [];
         let answerFiles = [];
         let allFiles = [];
@@ -366,7 +376,44 @@
         let history = [];
         let isAnalyzing = false;
 
-        document.getElementById('userName').textContent = currentUser;
+        function handleLogin() {
+            const username = document.getElementById('usernameInput').value.trim();
+            const password = document.getElementById('passwordInput').value;
+            if (!username) {
+                alert('Please enter a username or email');
+                return;
+            }
+            // Dummy login - accept anything
+            let displayName = username;
+            if (username.includes('@')) {
+                displayName = username.split('@')[0];
+            }
+            displayName = displayName.charAt(0).toUpperCase() + displayName.slice(1);
+            currentUser = displayName;
+            localStorage.setItem('userEmailPrefix', displayName);
+            document.getElementById('userName').textContent = displayName;
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('dashboardPage').classList.remove('hidden');
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('userEmailPrefix');
+            document.getElementById('dashboardPage').classList.add('hidden');
+            document.getElementById('loginPage').classList.remove('hidden');
+            document.getElementById('usernameInput').value = '';
+            document.getElementById('passwordInput').value = '';
+        }
+
+        // Check if already logged in
+        window.onload = () => {
+            const saved = localStorage.getItem('userEmailPrefix');
+            if (saved) {
+                currentUser = saved;
+                document.getElementById('userName').textContent = saved;
+                document.getElementById('loginPage').classList.add('hidden');
+                document.getElementById('dashboardPage').classList.remove('hidden');
+            }
+        };
 
         function renderMath(element) {
             if (window.MathJax) {
@@ -374,32 +421,16 @@
             }
         }
 
-        // Mobile menu functions
-        function openMobileMenu() {
-            document.getElementById('mobileOverlay').classList.add('open');
-        }
-
-        function closeMobileMenu() {
-            document.getElementById('mobileOverlay').classList.remove('open');
-        }
-
-        function handleLogout() {
-            localStorage.removeItem('userEmailPrefix');
-            window.location.href = '/';
-        }
-
         function resetToDashboard() {
             document.getElementById('uploadSection').classList.remove('hidden');
             document.getElementById('resultsSection').classList.add('hidden');
-            closeMobileMenu();
         }
 
-        // File handling
+        // File handling (unchanged)
         document.getElementById('questionInput').addEventListener('change', async e => {
             await handleFileUpload(e.target.files, questionFiles, 'questionFileList');
             checkStartButton();
         });
-
         document.getElementById('answerInput').addEventListener('change', async e => {
             await handleFileUpload(e.target.files, answerFiles, 'answerFileList');
             checkStartButton();
@@ -426,7 +457,6 @@
             const el = document.getElementById(elementId);
             el.innerHTML = files.map(f => `
                 <div class="file-item">
-                    <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
                     ${f.name}
                 </div>
             `).join('');
@@ -448,7 +478,7 @@
             allFiles.forEach(f => formData.append('files', f.file));
 
             try {
-                const res = await fetch('https://navalsheth.pythonanywhere.com/analyze', {   
+                const res = await fetch('https://navalsheth.pythonanywhere.com/analyze', {
                     method: 'POST',
                     body: formData
                 });
@@ -465,22 +495,15 @@
                 alert('Error: ' + e.message);
             } finally {
                 isAnalyzing = false;
-                btn.innerHTML = `<svg style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Start Analysis`;
+                btn.innerHTML = `Start Analysis`;
                 btn.disabled = false;
             }
-        }
-
-        function processSteps(str) {
-            if (!str) return '';
-            const steps = str.split('<br>').filter(step => step.trim() !== '');
-            return steps.map(step => `<p style="margin-bottom: 0.75rem; line-height: 1.8;">${step.trim()}</p>`).join('');
         }
 
         function displayAnalysis(result) {
             const accordion = document.getElementById('accordion');
             accordion.innerHTML = '';
             let counts = {correct: 0, partial: 0, incorrect: 0};
-
             result.questions.forEach((q, i) => {
                 counts[q.status]++;
                 const item = document.createElement('div');
@@ -495,32 +518,20 @@
                     </button>
                     <div id="q${i}" class="accordion-content">
                         <div class="analysis-section">
-                            <h3><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg> Student Solution</h3>
-                            <div class="solution-card"><div class="solution-steps">${processSteps(q.student_original)}</div></div>
+                            <h3>Student Solution</h3>
+                            <div class="solution-card"><div class="solution-steps">${q.student_original || 'No text detected'}</div></div>
                         </div>
                         <div class="analysis-section">
-                            <h3><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Error Analysis</h3>
+                            <h3>Error Analysis</h3>
                             <div class="solution-card error"><p>${q.error}</p></div>
                         </div>
                         <div class="analysis-section">
-                            <h3><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> LLM-Corrected Solution</h3>
-                            <div class="solution-card corrected"><div class="solution-steps">${processSteps(q.correct_solution)}</div></div>
+                            <h3>LLM-Corrected Solution</h3>
+                            <div class="solution-card corrected"><div class="solution-steps">${q.correct_solution}</div></div>
                         </div>
                         <button class="btn-outline" onclick="openImageModal(${i}, '${q.status}', '${q.image_file || ''}', ${JSON.stringify(q.error_bbox || {})})">
-                            <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                             View Answer Image
                         </button>
-                        <div class="reanalysis-card">
-                            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem;">Re-analyze This Question</h3>
-                            <div class="reanalysis-input-group">
-                                <input type="text" id="reanalysisInput${i}" placeholder="Ask AI to re-analyze this question...">
-                                <button class="btn-primary" style="width: auto;" onclick="reanalyzeQuestion(${i})">Send</button>
-                            </div>
-                            <div id="aiResponse${i}" style="display: none;" class="ai-response">
-                                <div class="ai-badge">AI</div>
-                                <p></p>
-                            </div>
-                        </div>
                     </div>`;
                 accordion.appendChild(item);
                 renderMath(item);
@@ -537,42 +548,6 @@
             document.getElementById(id).classList.toggle('open');
         }
 
-        async function reanalyzeQuestion(i) {
-            const query = document.getElementById(`reanalysisInput${i}`).value.trim();
-            if (!query) return;
-
-            const question = analysisResult.questions[i];
-            const btn = event.target;
-            btn.innerHTML = '<div class="loading" style="width: 16px; height: 16px; border-width: 2px;"></div>';
-
-            try {
-                const res = await fetch('https://navalsheth.pythonanywhere.com/reanalyze', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        user_query: query,
-                        question: question.question,
-                        student_original: question.student_original,
-                        error: question.error,
-                        correct_solution: question.correct_solution
-                    })
-                });
-                const data = await res.json();
-                if (data.error) {
-                    alert(data.error);
-                } else {
-                    const responseDiv = document.getElementById(`aiResponse${i}`);
-                    responseDiv.style.display = 'flex';
-                    responseDiv.querySelector('p').innerHTML = data.response;
-                    renderMath(responseDiv);
-                }
-            } catch (e) {
-                alert('Error: ' + e.message);
-            } finally {
-                btn.innerHTML = 'Send';
-            }
-        }
-
         function openImageModal(i, status, imageFile, bbox) {
             const modal = document.getElementById('imageModal');
             const modalImage = document.getElementById('modalImage');
@@ -584,7 +559,7 @@
             modalImage.src = analysisResult.questions[i].dataURL || '';
             modalCaption.textContent = `Status: ${status}`;
 
-            if (bbox && bbox.x && bbox.y && bbox.width && bbox.height) {
+            if (bbox && bbox.x !== undefined) {
                 errorHighlight.style.display = 'block';
                 errorHighlight.style.left = `${bbox.x}px`;
                 errorHighlight.style.top = `${bbox.y}px`;
@@ -593,7 +568,6 @@
             } else {
                 errorHighlight.style.display = 'none';
             }
-
             modal.classList.add('open');
         }
 
@@ -605,7 +579,6 @@
             if (!analysisResult) return;
             const content = document.getElementById('practicePaperContent');
             content.innerHTML = '<div class="loading"></div> Generating...';
-
             try {
                 const res = await fetch('https://navalsheth.pythonanywhere.com/generate_practice', {
                     method: 'POST',
@@ -622,7 +595,7 @@
                     content.innerHTML = `
                         <div class="practice-paper" id="practice-paper">
                             <div class="practice-header">
-                                <div class="practice-title">📝 Practice Paper</div>
+                                <div class="practice-title">Practice Paper</div>
                                 <div class="practice-subtitle">Practice questions based on areas needing improvement</div>
                             </div>
                             <div class="practice-questions">
@@ -634,9 +607,10 @@
                                 `).join('')}
                             </div>
                             <div style="text-align:center; margin-top:40px;">
-                                <button class="btn-outline" onclick="downloadPracticePaper()"> 📥 Download as PDF </button>
+                                <button class="btn-outline" onclick="downloadPracticePaper()">Download as PDF</button>
                             </div>
                         </div>`;
+                    // Critical fix: Wait for MathJax to finish typesetting before PDF generation
                     renderMath(document.getElementById('practice-paper'));
                 }
             } catch (e) {
@@ -647,46 +621,31 @@
         async function downloadPracticePaper() {
             if (!practiceResult) return;
             const practicePaper = document.getElementById('practice-paper');
-            if (!practicePaper) {
-                alert('Practice paper not found!');
-                return;
-            }
+            if (!practicePaper) return;
 
             const loading = document.createElement('div');
             loading.innerHTML = '<div class="loading"></div> Generating PDF...';
-            Object.assign(loading.style, {
-                position: 'fixed',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                background: 'rgba(255,255,255,0.9)',
-                padding: '20px',
-                borderRadius: '10px',
-                zIndex: '9999'
-            });
+            Object.assign(loading.style, {position:'fixed',top:'50%',left:'50%',transform:'translate(-50%,-50%)',background:'rgba(255,255,255,0.95)',padding:'30px',borderRadius:'12px',zIndex:'9999', boxShadow:'0 10px 30px rgba(0,0,0,0.2)'});
             document.body.appendChild(loading);
 
             try {
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                // Wait for MathJax to fully render
+                await MathJax.typesetPromise([practicePaper]);
+
                 const canvas = await html2canvas(practicePaper, {
                     scale: 2,
                     useCORS: true,
                     backgroundColor: '#ffffff',
                     logging: false,
-                    windowWidth: practicePaper.scrollWidth + 60,
-                    windowHeight: practicePaper.scrollHeight + 60,
-                    ignoreElements: function(element) {
-                        return element.classList && (
-                            element.classList.contains('MathJax_Processing') ||
-                            element.classList.contains('MathJax_Processed')
-                        );
-                    }
+                    width: practicePaper.scrollWidth,
+                    height: practicePaper.scrollHeight
                 });
+
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF('p', 'mm', 'a4');
-                const imgData = canvas.toDataURL('image/png');
                 const imgWidth = pdf.internal.pageSize.getWidth();
                 const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                const imgData = canvas.toDataURL('image/png');
                 pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
                 pdf.save(`Math_Practice_Paper_${new Date().toISOString().slice(0,10)}.pdf`);
             } catch (error) {
@@ -711,7 +670,6 @@
                 </div>
             `).join('');
             document.getElementById('historyList').innerHTML = html;
-            document.getElementById('mobileHistoryList').innerHTML = html;
         }
     </script>
 </body>
