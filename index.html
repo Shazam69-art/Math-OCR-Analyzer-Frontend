@@ -141,20 +141,24 @@
 }
 
 .math-term {
-    font-size: 18px; /* Medium size - you can change this later */
-    color: rgba(67, 97, 238, 0.15); /* Light blue color, subtle */
+    font-size: 18px;
+    color: #000000;
     margin: 20px 0;
-    padding: 10px;
+    padding: 12px 15px;
     text-align: center;
-    opacity: 0.7;
+    opacity: 1; /* Full opacity */
     transition: all 0.3s ease;
     font-family: 'Cambria Math', 'Latin Modern Math', STIXGeneral, serif;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.9); /* White background with slight transparency */
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .math-term:hover {
-    opacity: 1;
     transform: scale(1.05);
-    color: rgba(67, 97, 238, 0.25);
+    background: rgba(255, 255, 255, 1); /* Solid white on hover */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* For mobile, hide the math terms */
