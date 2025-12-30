@@ -85,6 +85,81 @@
     position: relative;
     overflow: hidden;
 }
+        /* Dashboard Background Animations */
+        .dashboard-container {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dashboard-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .dashboard-background::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            right: -50%;
+            bottom: -50%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(240, 147, 251, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 60% 60%, rgba(245, 87, 108, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 30% 70%, rgba(56, 189, 248, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 70% 30%, rgba(251, 146, 60, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 10% 90%, rgba(56, 189, 248, 0.02) 0%, transparent 50%),
+                radial-gradient(circle at 90% 10%, rgba(251, 146, 60, 0.02) 0%, transparent 50%);
+            animation: float 30s infinite linear;
+        }
+        
+        /* Ensure content is above background */
+        .dashboard-layout,
+        .header,
+        .sidebar,
+        .content-area,
+        .upload-section,
+        .results-section,
+        .modal {
+            position: relative;
+            z-index: 1;
+            background: transparent;
+        }
+        
+        /* Make sure header and sidebar have solid backgrounds */
+        .header {
+            background-color: var(--card);
+        }
+        
+        .sidebar {
+            background-color: var(--sidebar);
+        }
+        
+        /* Ensure cards and inputs have solid backgrounds */
+        .upload-card,
+        .accordion-item,
+        .practice-paper-card,
+        .reanalysis-card,
+        .ai-response,
+        .solution-card,
+        .badge,
+        .form-input,
+        .modal-content {
+            background-color: var(--card) !important;
+        }
+        
+        .content-area {
+            background: transparent;
+        }
+
+        
         @keyframes gradientShift {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
@@ -1178,21 +1253,32 @@
             </div>
             <div class="login-card">
                 <form id="loginForm" class="login-form">
-                    <div class="form-group">
-                        <label class="form-label">Email or Username</label>
-                        <input type="text" id="loginUsername" class="form-input" placeholder="Enter your email or username" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Password</label>
-                        <input type="password" id="loginPassword" class="form-input" placeholder="Enter your password" required>
-                    </div>
-                    <button type="submit" class="login-btn">
-                        <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
-                        </svg>
-                        Login to Dashboard
-                    </button>
-                </form>
+    <div class="form-group">
+        <label class="form-label">Email or Username</label>
+        <input type="text" id="loginUsername" class="form-input" placeholder="Enter your email or username" required>
+    </div>
+    <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" id="loginPassword" class="form-input" placeholder="Enter your password" required>
+    </div>
+    <button type="submit" class="login-btn">
+        <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+        </svg>
+        Login to Dashboard
+    </button>
+</form>
+
+<!-- Add this register button section AFTER the login form -->
+<div class="register-section" style="margin-top: 16px;">
+    <button id="registerBtn" class="login-btn" style="background: var(--primary);">
+        <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+        </svg>
+        Register to CAS
+    </button>
+</div>
+            
                 <div class="social-login">
                     <div class="social-login-title">Or continue with</div>
                     <div class="social-buttons">
@@ -1217,8 +1303,11 @@
         </div>
     </div>
 
-    <!-- Dashboard (Initially Hidden) -->
+       <!-- Dashboard (Initially Hidden) -->
     <div id="dashboardPage" class="dashboard-container">
+        <!-- ADD BACKGROUND ANIMATIONS -->
+        <div class="dashboard-background"></div>
+        <!-- END BACKGROUND -->
         <div class="dashboard-layout">
             <!-- Sidebar (Desktop) -->
             <aside class="sidebar">
@@ -1419,6 +1508,31 @@
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('dashboardPage').style.display = 'flex';
             document.getElementById('userName').textContent = displayName;
+        });
+
+                // Register Function
+        document.getElementById('registerBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!username || !password) {
+                alert('Please enter both username and password to register.');
+                return;
+            }
+            
+            // Extract name before @ if email is provided
+            let displayName = username;
+            if (username.includes('@')) {
+                displayName = username.split('@')[0];
+            }
+            
+            // Capitalize first letter
+            displayName = displayName.charAt(0).toUpperCase() + displayName.slice(1);
+            
+            // Simulate registration
+            alert(`Registration successful for ${displayName}! You can now login with these credentials.`);
+            // Note: In production, send to backend API
         });
 
         function socialLogin(provider) {
@@ -1728,10 +1842,12 @@
             }
         }
 
-        async function downloadPracticePaper() {
+                async function downloadPracticePaper() {
             if (!practiceResult) return;
-            const practicePaper = document.getElementById('practice-paper');
-            if (!practicePaper) {
+            
+            // Create a clean clone for PDF generation
+            const originalPaper = document.getElementById('practice-paper');
+            if (!originalPaper) {
                 alert('Practice paper not found!');
                 return;
             }
@@ -1751,55 +1867,85 @@
             document.body.appendChild(loading);
             
             try {
-                // Wait for MathJax to complete
-                await new Promise(resolve => setTimeout(resolve, 1500));
+                // Wait for MathJax to complete rendering
+                await new Promise(resolve => setTimeout(resolve, 2000));
                 
-                // Hide MathJax elements that cause duplication
-                const mathjaxElements = practicePaper.querySelectorAll('.MathJax_Processing, .MathJax_Processed');
+                // Create a clean clone
+                const clone = originalPaper.cloneNode(true);
+                
+                // Remove MathJax script elements and processed spans
+                const mathjaxScripts = clone.querySelectorAll('script');
+                mathjaxScripts.forEach(script => script.remove());
+                
+                // Convert MathJax processed elements to plain text/HTML
+                const mathjaxElements = clone.querySelectorAll('.MathJax, .MathJax_Processing, .MathJax_Processed, .MathJax_SVG, .MathJax_SVG_Display');
                 mathjaxElements.forEach(el => {
-                    el.style.display = 'none';
-                    el.style.visibility = 'hidden';
-                    el.style.opacity = '0';
-                    el.style.position = 'absolute';
+                    // Try to extract the actual math content
+                    const altText = el.getAttribute('alt') || '';
+                    const title = el.getAttribute('title') || '';
+                    const ariaLabel = el.getAttribute('aria-label') || '';
+                    
+                    // Use any available text, or remove the element
+                    if (altText || title || ariaLabel) {
+                        const span = document.createElement('span');
+                        span.textContent = altText || title || ariaLabel;
+                        span.style.fontFamily = "'Times New Roman', serif";
+                        span.style.fontSize = '16px';
+                        el.parentNode.replaceChild(span, el);
+                    } else {
+                        el.remove();
+                    }
                 });
                 
-                const canvas = await html2canvas(practicePaper, {
+                // Also look for SVG elements
+                const svgElements = clone.querySelectorAll('svg');
+                svgElements.forEach(svg => {
+                    const parent = svg.parentNode;
+                    if (parent && parent.classList && 
+                        (parent.classList.contains('MathJax_SVG') || 
+                         parent.classList.contains('MathJax_SVG_Display'))) {
+                        parent.remove();
+                    }
+                });
+                
+                // Set up clone for rendering
+                clone.style.position = 'absolute';
+                clone.style.left = '-9999px';
+                clone.style.top = '0';
+                clone.style.width = '800px';
+                clone.style.background = 'white';
+                clone.style.padding = '40px';
+                clone.style.boxSizing = 'border-box';
+                document.body.appendChild(clone);
+                
+                // Generate canvas
+                const canvas = await html2canvas(clone, {
                     scale: 2,
                     useCORS: true,
                     backgroundColor: '#ffffff',
                     logging: false,
-                    windowWidth: practicePaper.scrollWidth + 60,
-                    windowHeight: practicePaper.scrollHeight + 60,
-                    onclone: function(clonedDoc) {
-                        // Remove MathJax elements from the cloned document
-                        const clonedElements = clonedDoc.querySelectorAll('.MathJax_Processing, .MathJax_Processed, .MathJax_SVG');
-                        clonedElements.forEach(el => {
-                            el.style.display = 'none';
-                            el.style.visibility = 'hidden';
-                            el.style.opacity = '0';
-                            el.style.position = 'absolute';
-                        });
-                    }
+                    allowTaint: true,
+                    removeContainer: true
                 });
                 
-                // Restore MathJax elements
-                mathjaxElements.forEach(el => {
-                    el.style.display = '';
-                    el.style.visibility = '';
-                    el.style.opacity = '';
-                    el.style.position = '';
-                });
+                // Clean up clone
+                document.body.removeChild(clone);
                 
+                // Generate PDF
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF('p', 'mm', 'a4');
-                const imgData = canvas.toDataURL('image/png');
-                const imgWidth = pdf.internal.pageSize.getWidth();
+                const imgData = canvas.toDataURL('image/png', 1.0);
+                const imgWidth = pdf.internal.pageSize.getWidth() - 20; // Add margins
                 const imgHeight = (canvas.height * imgWidth) / canvas.width;
-                pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                
+                // Center the image
+                const xPos = (pdf.internal.pageSize.getWidth() - imgWidth) / 2;
+                pdf.addImage(imgData, 'PNG', xPos, 10, imgWidth, imgHeight);
                 pdf.save(`Math_Practice_Paper_${new Date().toISOString().slice(0,10)}.pdf`);
+                
             } catch (error) {
                 console.error('PDF generation failed:', error);
-                alert('Failed to generate PDF. Please try again.');
+                alert('Failed to generate PDF. Please try again. Error: ' + error.message);
             } finally {
                 document.body.removeChild(loading);
             }
