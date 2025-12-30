@@ -150,43 +150,43 @@
         }
 
         .login-brand {
-            font-size: 32px;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 8px;
-            letter-spacing: -0.5px;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        }
+    font-size: 32px;
+    font-weight: 700;
+    color: white;  /* Changed from var(--foreground) */
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);  /* Added */
+}
 
-        .login-subtitle {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 16px;
-            text-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-        }
+.login-subtitle {
+    color: rgba(255, 255, 255, 0.9);  /* Changed from var(--muted-foreground) */
+    font-size: 16px;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);  /* Added */
+}
 
         .login-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border-radius: var(--radius);
-            padding: 40px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            border: 1px solid var(--glass-border);
-            position: relative;
-            overflow: hidden;
-        }
+    background: rgba(255, 255, 255, 0.1);  /* Changed */
+    backdrop-filter: blur(20px);  /* Changed from blur(10px) */
+    border-radius: var(--radius);
+    padding: 40px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);  /* Changed */
+    border: 1px solid rgba(255, 255, 255, 0.2);  /* Changed */
+    position: relative;
+    overflow: hidden;
+}
 
-        .login-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, 
-                rgba(255, 255, 255, 0.1) 0%, 
-                rgba(255, 255, 255, 0.05) 100%);
-            z-index: -1;
-        }
+.login-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.1) 0%, 
+        rgba(255, 255, 255, 0.05) 100%);
+    z-index: -1;
+}
 
         .login-form {
             margin-bottom: 32px;
@@ -197,128 +197,112 @@
         }
 
         .form-label {
-            display: block;
-            font-size: 14px;
-            font-weight: 500;
-            color: white;
-            margin-bottom: 8px;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-        }
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: white;  /* Changed from var(--foreground) */
+    margin-bottom: 8px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);  /* Added */
+}
 
-        .form-input {
-            width: 100%;
-            padding: 12px 16px;
-            font-size: 15px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.15);
-            transition: all 0.3s;
-            color: white;
-            backdrop-filter: blur(10px);
-        }
+.form-input {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 15px;
+    border: 2px solid rgba(255, 255, 255, 0.2);  /* Changed from var(--border) */
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.15);  /* Changed from var(--card) */
+    transition: all 0.3s;  /* Changed from 0.2s */
+    color: white;  /* Added */
+    backdrop-filter: blur(10px);  /* Added */
+}
 
-        .form-input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
+.form-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);  /* Added */
+}
 
-        .form-input:focus {
-            outline: none;
-            border-color: rgba(255, 255, 255, 0.5);
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.2);
-        }
-
+.form-input:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.5);  /* Changed from var(--primary) */
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);  /* Changed from rgba(67, 97, 238, 0.1) */
+    background: rgba(255, 255, 255, 0.2);  /* Added */
+}
         .login-btn {
-            width: 100%;
-            padding: 14px;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            backdrop-filter: blur(10px);
-        }
+    width: 100%;
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.2);  /* Changed from var(--primary) */
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);  /* Added */
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;  /* Changed from 0.2s */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    backdrop-filter: blur(10px);  /* Added */
+}
 
-        .login-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            border-color: rgba(255, 255, 255, 0.5);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
+.login-btn:hover {
+    background: rgba(255, 255, 255, 0.3);  /* Changed from #3a56d4 */
+    border-color: rgba(255, 255, 255, 0.5);  /* Added */
+    transform: translateY(-2px);  /* Changed from -1px */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);  /* Changed from var(--shadow-md) */
+}
 
         .login-btn:active {
             transform: translateY(0);
         }
 
         .social-login {
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-            padding-top: 24px;
-        }
+    border-top: 1px solid rgba(255, 255, 255, 0.2);  /* Changed from var(--border) */
+    padding-top: 24px;
+}
 
-        .social-login-title {
-            text-align: center;
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 20px;
-            position: relative;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-        }
+.social-login-title {
+    text-align: center;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.9);  /* Changed from var(--muted-foreground) */
+    margin-bottom: 20px;
+    position: relative;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);  /* Added */
+}
 
-        .social-login-title::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            width: 30%;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.2);
-        }
+.social-login-title::before,
+.social-login-title::after {
+    background: rgba(255, 255, 255, 0.2);  /* Changed from var(--border) */
+}
 
-        .social-login-title::after {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 50%;
-            width: 30%;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.2);
-        }
+.social-buttons {
+    display: flex;
+    gap: 12px;
+}
 
-        .social-buttons {
-            display: flex;
-            gap: 12px;
-        }
+.social-btn {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.2);  /* Changed from var(--border) */
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.15);  /* Changed from var(--card) */
+    cursor: pointer;
+    transition: all 0.3s;  /* Changed from 0.2s */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: white;  /* Added */
+    backdrop-filter: blur(10px);  /* Added */
+}
 
-        .social-btn {
-            flex: 1;
-            padding: 12px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.15);
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-size: 14px;
-            font-weight: 500;
-            color: white;
-            backdrop-filter: blur(10px);
-        }
-
-        .social-btn:hover {
-            border-color: rgba(255, 255, 255, 0.4);
-            background: rgba(255, 255, 255, 0.25);
-            transform: translateY(-2px);
-        }
+.social-btn:hover {
+    border-color: rgba(255, 255, 255, 0.4);  /* Changed from var(--primary) */
+    background: rgba(255, 255, 255, 0.25);  /* Added */
+    transform: translateY(-2px);  /* Changed from -1px */
+}
 
         .social-btn svg {
             width: 20px;
