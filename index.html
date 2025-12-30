@@ -97,7 +97,15 @@
     left: 0;
     right: 0;
     bottom: 0;
-    backdrop-filter: blur(20px);
+    z-index: 0;
+}
+
+.login-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     z-index: 0;
 }
 
@@ -118,6 +126,7 @@
         radial-gradient(circle at 10% 90%, rgba(56, 189, 248, 0.08) 0%, transparent 50%),
         radial-gradient(circle at 90% 10%, rgba(251, 146, 60, 0.08) 0%, transparent 50%);
     animation: float 20s infinite linear;
+    /* NO backdrop-filter HERE */
 }
 
 @keyframes float {
