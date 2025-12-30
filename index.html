@@ -1,0 +1,1778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math.AI Analyzer - CAS Educations</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\\\(', '\\\\)']],
+                displayMath: [['$$', '$$'], ['\\\\[', '\\\\]']],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+            },
+            startup: {
+                pageReady: () => { return MathJax.startup.defaultPageReady(); }
+            }
+        };
+    </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --background: #f5f7fa;
+            --foreground: #1a1a2e;
+            --card: #ffffff;
+            --card-foreground: #1a1a2e;
+            --primary: #4361ee;
+            --primary-foreground: #ffffff;
+            --secondary: #f8f9fa;
+            --secondary-foreground: #495057;
+            --muted: #e9ecef;
+            --muted-foreground: #6c757d;
+            --accent: #eef2ff;
+            --accent-foreground: #373a40;
+            --destructive: #e63946;
+            --destructive-foreground: #ffffff;
+            --border: #dee2e6;
+            --input: #e9ecef;
+            --ring: #4361ee;
+            --sidebar: #ffffff;
+            --sidebar-foreground: #373a40;
+            --sidebar-accent: #f8f9fa;
+            --sidebar-border: #e9ecef;
+            --radius: 12px;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.07);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.08);
+        }
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Roboto', sans-serif; 
+            background-color: var(--background); 
+            color: var(--foreground); 
+            line-height: 1.6; 
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* Login Page Styles */
+        #loginPage {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(67, 97, 238, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(72, 187, 120, 0.05) 0%, transparent 50%);
+            z-index: 0;
+        }
+
+        .login-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 420px;
+            padding: 0 20px;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .login-brand {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--foreground);
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .login-brand span {
+            color: var(--primary);
+        }
+
+        .login-subtitle {
+            color: var(--muted-foreground);
+            font-size: 16px;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius);
+            padding: 40px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .login-form {
+            margin-bottom: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--foreground);
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 15px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            background: var(--card);
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .login-btn:hover {
+            background: #3a56d4;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .social-login {
+            border-top: 1px solid var(--border);
+            padding-top: 24px;
+        }
+
+        .social-login-title {
+            text-align: center;
+            font-size: 14px;
+            color: var(--muted-foreground);
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .social-login-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 30%;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .social-login-title::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            width: 30%;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .social-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            background: var(--card);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .social-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-1px);
+        }
+
+        .social-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .google-btn { color: #4285F4; }
+        .apple-btn { color: #000000; }
+
+        .dashboard-container { 
+            display: none; 
+            height: 100vh; 
+            width: 100%; 
+            overflow: hidden; 
+        }
+        
+        .dashboard-layout { 
+            display: flex; 
+            height: 100%; 
+            width: 100%; 
+        }
+        
+        .sidebar { 
+            width: 280px; 
+            background-color: var(--sidebar); 
+            border-right: 1px solid var(--sidebar-border); 
+            display: flex; 
+            flex-direction: column; 
+            height: 100%; 
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .sidebar-header { 
+            padding: 24px; 
+            border-bottom: 1px solid var(--sidebar-border); 
+        }
+        
+        .sidebar-logo { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            cursor: pointer; 
+        }
+        
+        .sidebar-logo:hover { 
+            opacity: 0.8; 
+        }
+        
+        .sidebar-logo-icon { 
+            width: 40px; 
+            height: 40px; 
+            background: linear-gradient(135deg, var(--primary) 0%, #3a56d4 100%); 
+            border-radius: 10px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        
+        .sidebar-logo-icon svg { 
+            width: 24px; 
+            height: 24px; 
+            color: var(--primary-foreground); 
+        }
+        
+        .sidebar-logo h1 { 
+            font-size: 20px; 
+            font-weight: 700; 
+            color: var(--foreground);
+        }
+        
+        .sidebar-content { 
+            flex: 1; 
+            overflow-y: auto; 
+            padding: 20px; 
+        }
+        
+        .sidebar-section-title { 
+            font-size: 12px; 
+            font-weight: 600; 
+            color: var(--muted-foreground); 
+            text-transform: uppercase; 
+            letter-spacing: 0.05em; 
+            padding: 0 12px; 
+            margin-bottom: 12px; 
+        }
+        
+        .sidebar-item { 
+            padding: 12px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: all 0.2s; 
+            margin-bottom: 8px; 
+        }
+        
+        .sidebar-item:hover { 
+            background-color: var(--sidebar-accent); 
+        }
+        
+        .sidebar-item-title { 
+            font-weight: 500; 
+            font-size: 14px; 
+            margin-bottom: 4px; 
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+        }
+        
+        .sidebar-item-date { 
+            font-size: 12px; 
+            color: var(--muted-foreground); 
+        }
+        
+        .main-content { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
+        }
+        
+        .header { 
+            border-bottom: 1px solid var(--border); 
+            background-color: var(--card); 
+            padding: 16px 24px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            width: 100%; 
+        }
+        
+        .header-left { 
+            display: flex; 
+            align-items: center; 
+            gap: 16px; 
+        }
+        
+        .header-logo { 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            cursor: pointer; 
+        }
+        
+        .header-logo:hover { 
+            opacity: 0.8; 
+        }
+        
+        .header-logo-icon { 
+            width: 32px; 
+            height: 32px; 
+            background: linear-gradient(135deg, var(--primary) 0%, #3a56d4 100%); 
+            border-radius: 8px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        
+        .header-logo-icon svg { 
+            width: 18px; 
+            height: 18px; 
+            color: var(--primary-foreground); 
+        }
+        
+        .header-brand { 
+            font-weight: 700; 
+            font-size: 18px; 
+            color: var(--foreground);
+        }
+        
+        .header-right { 
+            display: flex; 
+            align-items: center; 
+            gap: 16px; 
+        }
+        
+        .user-info { 
+            font-size: 14px; 
+            font-weight: 500; 
+        }
+        
+        .user-name { 
+            color: var(--primary); 
+            font-weight: 600;
+        }
+        
+        .btn-logout { 
+            background-color: transparent; 
+            color: var(--foreground); 
+            padding: 8px 16px; 
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .btn-logout:hover { 
+            background-color: var(--accent); 
+        }
+        
+        .content-area { 
+            flex: 1; 
+            overflow-y: auto; 
+            padding: 24px; 
+            width: 100%; 
+        }
+        
+        .upload-section { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            width: 100%; 
+        }
+        
+        .section-header { 
+            margin-bottom: 32px; 
+        }
+        
+        .section-header h1 { 
+            font-size: 36px; 
+            font-weight: 700; 
+            margin-bottom: 8px; 
+            color: var(--foreground);
+        }
+        
+        .section-header p { 
+            font-size: 18px; 
+            color: var(--muted-foreground); 
+        }
+        
+        .upload-grid { 
+            display: flex; 
+            justify-content: center; 
+            gap: 24px; 
+            margin-bottom: 32px; 
+            flex-wrap: wrap; 
+        }
+        
+        .upload-card { 
+            background-color: var(--card); 
+            border: 2px dashed var(--border); 
+            border-radius: var(--radius); 
+            padding: 24px; 
+            text-align: center; 
+            transition: all 0.2s; 
+            cursor: pointer; 
+            max-width: 320px; 
+            width: 100%; 
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .upload-card:hover { 
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .upload-icon { 
+            width: 64px; 
+            height: 64px; 
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.1) 0%, rgba(67, 97, 238, 0.05) 100%); 
+            border-radius: 16px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin: 0 auto 16px; 
+        }
+        
+        .upload-icon svg { 
+            width: 32px; 
+            height: 32px; 
+            color: var(--primary); 
+        }
+        
+        .upload-card h3 { 
+            font-weight: 600; 
+            margin-bottom: 8px; 
+            font-size: 18px;
+        }
+        
+        .upload-card p { 
+            font-size: 14px; 
+            color: var(--muted-foreground); 
+            margin-bottom: 16px; 
+        }
+        
+        .file-list { 
+            text-align: left; 
+            margin-top: 16px; 
+        }
+        
+        .file-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            font-size: 12px; 
+            color: var(--muted-foreground); 
+            margin-bottom: 4px; 
+            padding: 6px 8px;
+            background: var(--muted);
+            border-radius: 4px;
+        }
+        
+        .file-item svg { 
+            width: 12px; 
+            height: 12px; 
+        }
+        
+        .btn-start { 
+            background: linear-gradient(135deg, var(--primary) 0%, #3a56d4 100%); 
+            color: var(--primary-foreground); 
+            padding: 12px 48px; 
+            font-size: 16px; 
+            margin: 0 auto; 
+            display: flex; 
+            align-items: center;
+            gap: 8px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+        
+        .btn-start:disabled { 
+            opacity: 0.5; 
+            cursor: not-allowed; 
+        }
+
+        .btn-start:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .results-section { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            width: 100%; 
+        }
+        
+        .results-header { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            margin-bottom: 24px; 
+            flex-wrap: wrap; 
+            gap: 16px; 
+        }
+        
+        .results-header h1 { 
+            font-size: 30px; 
+            font-weight: 700; 
+        }
+        
+        .results-header p { 
+            color: var(--muted-foreground); 
+            margin-top: 4px; 
+        }
+        
+        .badge-group { 
+            display: flex; 
+            gap: 8px; 
+            flex-wrap: wrap; 
+        }
+        
+        .badge { 
+            padding: 6px 12px; 
+            border-radius: 6px; 
+            font-size: 14px; 
+            background-color: var(--secondary); 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 8px; 
+            border: 1px solid var(--border);
+        }
+        
+        .badge-dot { 
+            width: 8px; 
+            height: 8px; 
+            border-radius: 50%; 
+        }
+        
+        .badge-dot.correct { 
+            background-color: #10b981; 
+        }
+        
+        .badge-dot.partial { 
+            background-color: #f59e0b; 
+        }
+        
+        .badge-dot.incorrect { 
+            background-color: var(--destructive); 
+        }
+        
+        .accordion { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 16px; 
+        }
+        
+        .accordion-item { 
+            background-color: var(--card); 
+            border: 1px solid var(--border); 
+            border-radius: var(--radius); 
+            overflow: hidden; 
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .accordion-trigger { 
+            width: 100%; 
+            padding: 20px; 
+            display: flex; 
+            align-items: flex-start; 
+            gap: 16px; 
+            cursor: pointer; 
+            background: none; 
+            border: none; 
+            text-align: left; 
+            transition: background-color 0.2s; 
+        }
+        
+        .accordion-trigger:hover { 
+            background-color: var(--accent); 
+        }
+        
+        .question-number { 
+            width: 40px; 
+            height: 40px; 
+            border-radius: 10px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-weight: 700; 
+            flex-shrink: 0; 
+            font-size: 16px;
+        }
+        
+        .question-number.correct { 
+            background-color: rgba(16, 185, 129, 0.1); 
+            color: #10b981; 
+        }
+        
+        .question-number.partial { 
+            background-color: rgba(245, 158, 11, 0.1); 
+            color: #f59e0b; 
+        }
+        
+        .question-number.incorrect { 
+            background-color: rgba(230, 57, 70, 0.1); 
+            color: var(--destructive); 
+        }
+        
+        .question-info { 
+            flex: 1; 
+            padding-top: 4px; 
+        }
+        
+        .question-info p:first-child { 
+            font-weight: 600; 
+            margin-bottom: 4px; 
+            font-size: 16px;
+        }
+        
+        .question-info p:last-child { 
+            font-size: 14px; 
+            color: var(--muted-foreground); 
+            text-transform: capitalize; 
+        }
+        
+        .accordion-content { 
+            display: none; 
+            padding: 0 20px 20px; 
+        }
+        
+        .accordion-content.open { 
+            display: block; 
+        }
+        
+        .analysis-section { 
+            margin-bottom: 20px; 
+        }
+        
+        .analysis-section h3 { 
+            font-weight: 600; 
+            margin-bottom: 12px; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            font-size: 16px;
+        }
+        
+        .analysis-section h3 svg { 
+            width: 20px; 
+            height: 20px; 
+        }
+        
+        .solution-card { 
+            background-color: var(--secondary); 
+            border: 1px solid var(--border); 
+            border-radius: 8px; 
+            padding: 16px; 
+        }
+        
+        .solution-card.error { 
+            background-color: rgba(230, 57, 70, 0.05); 
+            border-color: rgba(230, 57, 70, 0.2); 
+        }
+        
+        .solution-card.corrected { 
+            background-color: rgba(16, 185, 129, 0.05); 
+            border-color: rgba(16, 185, 129, 0.2); 
+        }
+        
+        .solution-steps { 
+            font-family: 'Courier New', monospace; 
+            font-size: 14px; 
+        }
+        
+        .solution-steps div { 
+            margin-bottom: 8px; 
+        }
+        
+        .practice-paper-card { 
+            background-color: var(--card); 
+            border: 2px solid rgba(67, 97, 238, 0.1); 
+            border-radius: var(--radius); 
+            padding: 24px; 
+            margin-top: 24px; 
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .practice-paper-card h3 { 
+            font-size: 20px; 
+            font-weight: 600; 
+            margin-bottom: 8px; 
+        }
+        
+        .practice-paper-card p { 
+            color: var(--muted-foreground); 
+            margin-bottom: 16px; 
+        }
+        
+        .new-question-list { 
+            background-color: var(--background); 
+            border-radius: 8px; 
+            padding: 16px; 
+            margin-bottom: 16px; 
+        }
+        
+        .new-question-item { 
+            display: flex; 
+            align-items: flex-start; 
+            gap: 12px; 
+            margin-bottom: 12px; 
+        }
+        
+        .new-question-item:last-child { 
+            margin-bottom: 0; 
+        }
+        
+        .new-question-number { 
+            width: 32px; 
+            height: 32px; 
+            border-radius: 8px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-weight: 700; 
+            flex-shrink: 0; 
+        }
+        
+        .reanalysis-card { 
+            background-color: rgba(238, 242, 255, 0.5); 
+            border: 1px solid var(--border); 
+            border-radius: var(--radius); 
+            padding: 16px; 
+            margin-top: 16px; 
+        }
+        
+        .reanalysis-input-group { 
+            display: flex; 
+            gap: 8px; 
+            margin-bottom: 12px; 
+        }
+        
+        .reanalysis-input-group input { 
+            flex: 1; 
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .ai-response { 
+            background-color: var(--background); 
+            border: 1px solid var(--border); 
+            border-radius: 8px; 
+            padding: 16px; 
+            display: flex; 
+            align-items: flex-start; 
+            gap: 12px; 
+        }
+        
+        .ai-badge { 
+            background-color: var(--primary); 
+            color: var(--primary-foreground); 
+            padding: 4px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            font-weight: 600; 
+            flex-shrink: 0; 
+            margin-top: 2px; 
+        }
+        
+        .ai-response p { 
+            font-size: 14px; 
+            line-height: 1.6; 
+            flex: 1; 
+        }
+        
+        .modal { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            bottom: 0; 
+            background-color: rgba(0, 0, 0, 0.5); 
+            z-index: 50; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 16px; 
+        }
+        
+        .modal.open { 
+            display: flex; 
+        }
+        
+        .modal-content { 
+            background-color: var(--card); 
+            border-radius: var(--radius); 
+            max-width: 768px; 
+            width: 100%; 
+            max-height: 90vh; 
+            overflow-y: auto; 
+            padding: 24px; 
+        }
+        
+        .modal-header { 
+            margin-bottom: 16px; 
+        }
+        
+        .modal-header h3 { 
+            font-size: 20px; 
+            font-weight: 600; 
+        }
+        
+        .modal-image { 
+            position: relative; 
+            aspect-ratio: 3/4; 
+            background-color: var(--muted); 
+            border-radius: 8px; 
+            overflow: hidden; 
+            margin-bottom: 16px; 
+        }
+        
+        .modal-image img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+        }
+        
+        .error-highlight { 
+            position: absolute; 
+            border: 3px solid var(--destructive); 
+            border-radius: 6px; 
+            animation: pulse 2s infinite; 
+        }
+        
+        @keyframes pulse { 
+            0%, 100% { opacity: 1; } 
+            50% { opacity: 0.5; } 
+        }
+        
+        .modal-caption { 
+            text-align: center; 
+            font-size: 14px; 
+            color: var(--muted-foreground); 
+        }
+        
+        .mobile-menu-btn { 
+            display: none; 
+        }
+        
+        .mobile-overlay { 
+            display: none; 
+        }
+        
+        @media (max-width: 1024px) {
+            .sidebar { 
+                display: none; 
+            }
+            
+            .mobile-menu-btn { 
+                display: flex; 
+                background: transparent; 
+                border: none; 
+                padding: 8px; 
+                cursor: pointer; 
+            }
+            
+            .mobile-overlay { 
+                display: none; 
+                position: fixed; 
+                top: 0; 
+                left: 0; 
+                right: 0; 
+                bottom: 0; 
+                z-index: 40; 
+            }
+            
+            .mobile-overlay.open { 
+                display: block; 
+            }
+            
+            .mobile-sidebar-backdrop { 
+                position: absolute; 
+                top: 0; 
+                left: 0; 
+                right: 0; 
+                bottom: 0; 
+                background-color: rgba(0, 0, 0, 0.5); 
+            }
+            
+            .mobile-sidebar { 
+                position: absolute; 
+                top: 0; 
+                left: 0; 
+                bottom: 0; 
+                width: 280px; 
+                background-color: var(--sidebar); 
+            }
+            
+            .mobile-logout { 
+                position: absolute; 
+                bottom: 0; 
+                left: 0; 
+                right: 0; 
+                padding: 16px; 
+                border-top: 1px solid var(--sidebar-border); 
+            }
+            
+            .mobile-logout button { 
+                width: 100%; 
+                justify-content: flex-start; 
+                background: transparent; 
+                color: var(--sidebar-foreground); 
+                padding: 12px; 
+            }
+            
+            .btn-logout { 
+                display: none; 
+            }
+            
+            .header-brand { 
+                display: none; 
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .user-info { 
+                display: none; 
+            }
+            
+            .upload-grid { 
+                flex-direction: column; 
+                align-items: center; 
+            }
+            
+            .results-header { 
+                flex-direction: column; 
+                align-items: flex-start; 
+            }
+            
+            .login-card {
+                padding: 24px;
+            }
+            
+            .social-buttons {
+                flex-direction: column;
+            }
+        }
+        
+        .hidden { 
+            display: none; 
+        }
+        
+        .btn, button { 
+            padding: 10px 24px; 
+            border-radius: 8px; 
+            font-weight: 500; 
+            font-size: 14px; 
+            cursor: pointer; 
+            transition: all 0.2s; 
+            border: none; 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+        }
+        
+        .btn-primary { 
+            background-color: var(--primary); 
+            color: var(--primary-foreground); 
+        }
+        
+        .btn-primary:hover { 
+            opacity: 0.9; 
+        }
+        
+        .btn-outline { 
+            background-color: transparent; 
+            border: 1px solid var(--border); 
+            color: var(--foreground); 
+        }
+        
+        .btn-outline:hover { 
+            background-color: var(--accent); 
+        }
+        
+        .loading { 
+            display: inline-block; 
+            width: 20px; 
+            height: 20px; 
+            border: 3px solid #f3f4f6; 
+            border-top-color: var(--primary); 
+            border-radius: 50%; 
+            animation: spin 1s linear infinite; 
+        }
+        
+        @keyframes spin { 
+            to { transform: rotate(360deg); } 
+        }
+        
+        .practice-paper { 
+            padding: 30px; 
+            background: white; 
+        }
+        
+        .practice-header { 
+            margin-bottom: 30px; 
+            text-align: center; 
+        }
+        
+        .practice-title { 
+            font-size: 24px; 
+            font-weight: 700; 
+            margin-bottom: 8px; 
+        }
+        
+        .practice-subtitle { 
+            font-size: 16px; 
+            color: #666; 
+        }
+        
+        .practice-question { 
+            margin-bottom: 30px; 
+        }
+        
+        .practice-question-number { 
+            font-size: 18px; 
+            font-weight: 700; 
+            color: var(--primary); 
+            margin-bottom: 10px; 
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage">
+        <div class="login-background"></div>
+        <div class="login-container">
+            <div class="login-header">
+                <div class="login-brand">CAS <span>Educations</span></div>
+                <p class="login-subtitle">AI-Powered Math Analysis Platform</p>
+            </div>
+            <div class="login-card">
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label class="form-label">Email or Username</label>
+                        <input type="text" id="loginUsername" class="form-input" placeholder="Enter your email or username" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" id="loginPassword" class="form-input" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="login-btn">
+                        <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+                        </svg>
+                        Login to Dashboard
+                    </button>
+                </form>
+                <div class="social-login">
+                    <div class="social-login-title">Or continue with</div>
+                    <div class="social-buttons">
+                        <button class="social-btn google-btn" onclick="socialLogin('google')">
+                            <svg viewBox="0 0 24 24" width="20" height="20">
+                                <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                            </svg>
+                            Google
+                        </button>
+                        <button class="social-btn apple-btn" onclick="socialLogin('apple')">
+                            <svg viewBox="0 0 24 24" width="20" height="20">
+                                <path fill="currentColor" d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.31-2.33 1.05-3.11z"/>
+                            </svg>
+                            Apple
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard (Initially Hidden) -->
+    <div id="dashboardPage" class="dashboard-container">
+        <div class="dashboard-layout">
+            <!-- Sidebar (Desktop) -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-logo" onclick="resetToDashboard()">
+                        <div class="sidebar-logo-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <h1>Math.AI Analyzer</h1>
+                    </div>
+                </div>
+                <div class="sidebar-content">
+                    <div class="sidebar-section-title">Analysis History</div>
+                    <div id="historyList"></div>
+                </div>
+            </aside>
+            
+            <!-- Mobile Overlay -->
+            <div id="mobileOverlay" class="mobile-overlay">
+                <div class="mobile-sidebar-backdrop" onclick="closeMobileMenu()"></div>
+                <aside class="mobile-sidebar">
+                    <div class="sidebar-header">
+                        <div class="sidebar-logo" onclick="resetToDashboard(); closeMobileMenu();">
+                            <div class="sidebar-logo-icon">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                            <h1>Math.AI Analyzer</h1>
+                        </div>
+                    </div>
+                    <div class="sidebar-content">
+                        <div class="sidebar-section-title">Analysis History</div>
+                        <div id="mobileHistoryList"></div>
+                    </div>
+                    <div class="mobile-logout">
+                        <button onclick="handleLogout()">
+                            <svg style="width: 1rem; height: 1rem; margin-right: 0.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                            </svg>
+                            Logout
+                        </button>
+                    </div>
+                </aside>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="main-content">
+                <header class="header">
+                    <div class="header-left">
+                        <button class="mobile-menu-btn" onclick="openMobileMenu()">
+                            <svg style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                            </svg>
+                        </button>
+                        <div class="header-logo" onclick="resetToDashboard()">
+                            <div class="header-logo-icon">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                            <span class="header-brand">CAS Educations</span>
+                        </div>
+                    </div>
+                    <div class="header-right">
+                        <p class="user-info">Welcome, <span class="user-name" id="userName"></span></p>
+                        <button class="btn-logout" onclick="handleLogout()">
+                            <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                            </svg>
+                            Logout
+                        </button>
+                    </div>
+                </header>
+                
+                <main class="content-area">
+                    <!-- Upload Section -->
+                    <div id="uploadSection" class="upload-section">
+                        <div class="section-header">
+                            <h1>Upload Answer Sheets for Analysis</h1>
+                            <p>Upload question papers and student answer sheets to get AI-powered analysis</p>
+                        </div>
+                        <div class="upload-grid">
+                            <div class="upload-card" onclick="document.getElementById('questionInput').click()">
+                                <div class="upload-icon">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                    </svg>
+                                </div>
+                                <h3>Question Papers</h3>
+                                <p>Upload the original question papers</p>
+                                <input type="file" id="questionInput" multiple accept="image/*,.pdf" style="display:none;">
+                                <button class="btn-outline">
+                                    <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                                    </svg>
+                                    Upload Files
+                                </button>
+                                <div id="questionFileList" class="file-list"></div>
+                            </div>
+                            <div class="upload-card" onclick="document.getElementById('answerInput').click()">
+                                <div class="upload-icon">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                    </svg>
+                                </div>
+                                <h3>Student Answer Sheets</h3>
+                                <p>Upload student's handwritten answers</p>
+                                <input type="file" id="answerInput" multiple accept="image/*,.pdf" style="display:none;">
+                                <button class="btn-outline">
+                                    <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                                    </svg>
+                                    Upload Files
+                                </button>
+                                <div id="answerFileList" class="file-list"></div>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: center;">
+                            <button id="startAnalysisBtn" class="btn-start" onclick="startAnalysis()" disabled>
+                                <svg style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                                Start Analysis
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Results Section -->
+                    <div id="resultsSection" class="results-section hidden">
+                        <div class="results-header">
+                            <div>
+                                <h1>Analysis Results</h1>
+                                <p>AI-powered answer sheet analysis</p>
+                            </div>
+                            <div class="badge-group" id="badgeGroup"></div>
+                        </div>
+                        <div class="accordion" id="accordion"></div>
+                        
+                        <!-- Practice Paper -->
+                        <div class="practice-paper-card" id="practicePaperCard">
+                            <h3>Generate Personalized Practice Paper</h3>
+                            <p>Create a new question paper with modified questions for incorrect and partial answers</p>
+                            <div id="practicePaperContent">
+                                <button class="btn-start" onclick="generatePracticePaper()">
+                                    <svg style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                    </svg>
+                                    Generate New Question Paper
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Answer Sheet - Question</h3>
+            </div>
+            <div class="modal-image">
+                <img id="modalImage" src="" alt="Answer sheet">
+                <div id="errorHighlight" class="error-highlight" style="display: none;"></div>
+            </div>
+            <p class="modal-caption" id="modalCaption"></p>
+            <button class="btn-outline" style="width: 100%; margin-top: 1rem;" onclick="closeImageModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // Login Functions
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value.trim();
+            
+            // Dummy login - accept any credentials
+            let displayName = username;
+            
+            // Extract name before @ if email is provided
+            if (username.includes('@')) {
+                displayName = username.split('@')[0];
+            }
+            
+            // Capitalize first letter
+            displayName = displayName.charAt(0).toUpperCase() + displayName.slice(1);
+            
+            // Store user info
+            localStorage.setItem('userEmailPrefix', displayName);
+            currentUser = displayName;
+            
+            // Switch to dashboard
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('dashboardPage').style.display = 'flex';
+            document.getElementById('userName').textContent = displayName;
+        });
+
+        function socialLogin(provider) {
+            // Dummy social login - accept any
+            const displayName = provider === 'google' ? 'Google User' : 'Apple User';
+            
+            // Store user info
+            localStorage.setItem('userEmailPrefix', displayName);
+            currentUser = displayName;
+            
+            // Switch to dashboard
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('dashboardPage').style.display = 'flex';
+            document.getElementById('userName').textContent = displayName;
+        }
+
+        // Check if already logged in
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedUser = localStorage.getItem('userEmailPrefix');
+            if (savedUser) {
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('dashboardPage').style.display = 'flex';
+                document.getElementById('userName').textContent = savedUser;
+                currentUser = savedUser;
+            }
+        });
+
+        // State management
+        let questionFiles = [];
+        let answerFiles = [];
+        let allFiles = [];
+        let analysisResult = null;
+        let practiceResult = null;
+        let history = [];
+        let isAnalyzing = false;
+
+        function renderMath(element) {
+            if (window.MathJax) {
+                MathJax.typesetPromise([element]).catch(err => console.error('MathJax error:', err));
+            }
+        }
+
+        // Mobile menu functions
+        function openMobileMenu() {
+            document.getElementById('mobileOverlay').classList.add('open');
+        }
+
+        function closeMobileMenu() {
+            document.getElementById('mobileOverlay').classList.remove('open');
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('userEmailPrefix');
+            document.getElementById('dashboardPage').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'flex';
+            // Reset form
+            document.getElementById('loginForm').reset();
+        }
+
+        function resetToDashboard() {
+            document.getElementById('uploadSection').classList.remove('hidden');
+            document.getElementById('resultsSection').classList.add('hidden');
+            closeMobileMenu();
+        }
+
+        // File handling
+        document.getElementById('questionInput').addEventListener('change', async e => {
+            await handleFileUpload(e.target.files, questionFiles, 'questionFileList');
+            checkStartButton();
+        });
+
+        document.getElementById('answerInput').addEventListener('change', async e => {
+            await handleFileUpload(e.target.files, answerFiles, 'answerFileList');
+            checkStartButton();
+        });
+
+        async function handleFileUpload(files, targetArray, listId) {
+            for (let file of files) {
+                if (!targetArray.find(f => f.name === file.name)) {
+                    let dataURL = '';
+                    if (file.type.startsWith('image/')) {
+                        dataURL = await new Promise(resolve => {
+                            const reader = new FileReader();
+                            reader.onload = ev => resolve(ev.target.result);
+                            reader.readAsDataURL(file);
+                        });
+                    }
+                    targetArray.push({name: file.name, file: file, dataURL: dataURL});
+                }
+            }
+            displayFiles(listId, targetArray);
+        }
+
+        function displayFiles(elementId, files) {
+            const el = document.getElementById(elementId);
+            el.innerHTML = files.map(f => `
+                <div class="file-item">
+                    <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                    ${f.name}
+                </div>
+            `).join('');
+        }
+
+        function checkStartButton() {
+            document.getElementById('startAnalysisBtn').disabled = questionFiles.length === 0 || answerFiles.length === 0;
+        }
+
+        async function startAnalysis() {
+            if (isAnalyzing) return;
+            isAnalyzing = true;
+            const btn = document.getElementById('startAnalysisBtn');
+            btn.innerHTML = '<div class="loading"></div> Analyzing...';
+            btn.disabled = true;
+            const formData = new FormData();
+            allFiles = [...questionFiles, ...answerFiles];
+            allFiles.forEach(f => formData.append('files', f.file));
+            try {
+                const res = await fetch('https://navalsheth.pythonanywhere.com/analyze', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+                if (data.error) alert(data.error);
+                else {
+                    analysisResult = data;
+                    displayAnalysis(data);
+                    addToHistory();
+                    document.getElementById('uploadSection').classList.add('hidden');
+                    document.getElementById('resultsSection').classList.remove('hidden');
+                }
+            } catch (e) {
+                alert('Error: ' + e.message);
+            } finally {
+                isAnalyzing = false;
+                btn.innerHTML = `<svg style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Start Analysis`;
+                btn.disabled = false;
+            }
+        }
+
+        function processSteps(str) {
+            if (!str) return '';
+            const steps = str.split('<br>').filter(step => step.trim() !== '');
+            return steps.map(step => `<p style="margin-bottom: 0.75rem; line-height: 1.8;">${step.trim()}</p>`).join('');
+        }
+
+        function displayAnalysis(result) {
+            const accordion = document.getElementById('accordion');
+            accordion.innerHTML = '';
+            let counts = {correct: 0, partial: 0, incorrect: 0};
+            result.questions.forEach((q, i) => {
+                counts[q.status]++;
+                const item = document.createElement('div');
+                item.className = 'accordion-item';
+                item.innerHTML = `
+                    <button class="accordion-trigger" onclick="toggleAccordion('q${i}')">
+                        <div class="question-number ${q.status}">${q.number}</div>
+                        <div class="question-info">
+                            <p>${q.question}</p>
+                            <p>Status: ${q.status}</p>
+                        </div>
+                    </button>
+                    <div id="q${i}" class="accordion-content">
+                        <div class="analysis-section">
+                            <h3><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg> Student Solution</h3>
+                            <div class="solution-card"><div class="solution-steps">${processSteps(q.student_original)}</div></div>
+                        </div>
+                        <div class="analysis-section">
+                            <h3><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Error Analysis</h3>
+                            <div class="solution-card error"><p>${q.error}</p></div>
+                        </div>
+                        <div class="analysis-section">
+                            <h3><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> LLM-Corrected Solution</h3>
+                            <div class="solution-card corrected"><div class="solution-steps">${processSteps(q.correct_solution)}</div></div>
+                        </div>
+                        <button class="btn-outline" onclick="openImageModal(${i}, '${q.status}', '${q.image_file || ''}', ${JSON.stringify(q.error_bbox || {})})">
+                            <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                            View Answer Image
+                        </button>
+                        <div class="reanalysis-card">
+                            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem;">Re-analyze This Question</h3>
+                            <div class="reanalysis-input-group">
+                                <input type="text" id="reanalysisInput${i}" placeholder="Ask AI to re-analyze this question...">
+                                <button class="btn-primary" style="width: auto;" onclick="reanalyzeQuestion(${i})">Send</button>
+                            </div>
+                            <div id="aiResponse${i}" style="display: none;" class="ai-response">
+                                <div class="ai-badge">AI</div>
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>`;
+                accordion.appendChild(item);
+                renderMath(item);
+            });
+            document.getElementById('badgeGroup').innerHTML = `
+                <div class="badge"><div class="badge-dot correct"></div>${counts.correct} Correct</div>
+                <div class="badge"><div class="badge-dot partial"></div>${counts.partial} Partial</div>
+                <div class="badge"><div class="badge-dot incorrect"></div>${counts.incorrect} Incorrect</div>
+            `;
+        }
+
+        function toggleAccordion(id) {
+            document.getElementById(id).classList.toggle('open');
+        }
+
+        async function reanalyzeQuestion(i) {
+            const query = document.getElementById(`reanalysisInput${i}`).value.trim();
+            if (!query) return;
+            const question = analysisResult.questions[i];
+            const btn = event.target;
+            btn.innerHTML = '<div class="loading" style="width: 16px; height: 16px; border-width: 2px;"></div>';
+            try {
+                const res = await fetch('https://navalsheth.pythonanywhere.com/reanalyze', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        user_query: query,
+                        question: question.question,
+                        student_original: question.student_original,
+                        error: question.error,
+                        correct_solution: question.correct_solution
+                    })
+                });
+                const data = await res.json();
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    const responseDiv = document.getElementById(`aiResponse${i}`);
+                    responseDiv.style.display = 'flex';
+                    responseDiv.querySelector('p').innerHTML = data.response;
+                    renderMath(responseDiv);
+                }
+            } catch (e) {
+                alert('Error: ' + e.message);
+            } finally {
+                btn.innerHTML = 'Send';
+            }
+        }
+
+        function openImageModal(i, status, imageFile, bbox) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalTitle = document.getElementById('modalTitle');
+            const errorHighlight = document.getElementById('errorHighlight');
+            const modalCaption = document.getElementById('modalCaption');
+            modalTitle.textContent = `Answer Sheet - Question ${analysisResult.questions[i].number}`;
+            modalImage.src = analysisResult.questions[i].dataURL || '';
+            modalCaption.textContent = `Status: ${status}`;
+            if (bbox && bbox.x && bbox.y && bbox.width && bbox.height) {
+                errorHighlight.style.display = 'block';
+                errorHighlight.style.left = `${bbox.x}px`;
+                errorHighlight.style.top = `${bbox.y}px`;
+                errorHighlight.style.width = `${bbox.width}px`;
+                errorHighlight.style.height = `${bbox.height}px`;
+            } else {
+                errorHighlight.style.display = 'none';
+            }
+            modal.classList.add('open');
+        }
+
+        function closeImageModal() {
+            document.getElementById('imageModal').classList.remove('open');
+        }
+
+        async function generatePracticePaper() {
+            if (!analysisResult) return;
+            const content = document.getElementById('practicePaperContent');
+            content.innerHTML = '<div class="loading"></div> Generating...';
+            try {
+                const res = await fetch('https://navalsheth.pythonanywhere.com/generate_practice', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({analysis: analysisResult})
+                });
+                const data = await res.json();
+                if (data.error) {
+                    content.innerHTML = `<p>Error: ${data.error}</p>`;
+                } else if (data.practice_questions.length === 0) {
+                    content.innerHTML = '<p>No mistakes found, no practice needed!</p>';
+                } else {
+                    practiceResult = data;
+                    content.innerHTML = `
+                        <div class="practice-paper" id="practice-paper">
+                            <div class="practice-header">
+                                <div class="practice-title">📝 Practice Paper</div>
+                                <div class="practice-subtitle">Practice questions based on areas needing improvement</div>
+                            </div>
+                            <div class="practice-questions">
+                                ${data.practice_questions.map(pq => `
+                                    <div class="practice-question">
+                                        <div class="practice-question-number">Question ${pq.number}</div>
+                                        <div class="practice-question-text">${pq.question}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div style="text-align:center; margin-top:40px;">
+                                <button class="btn-outline" onclick="downloadPracticePaper()"> 📥 Download as PDF </button>
+                            </div>
+                        </div>`;
+                    
+                    // Wait for MathJax to render, then hide processed elements
+                    setTimeout(() => {
+                        renderMath(document.getElementById('practice-paper'));
+                    }, 500);
+                }
+            } catch (e) {
+                content.innerHTML = `<p>Error: ${e.message}</p>`;
+            }
+        }
+
+        async function downloadPracticePaper() {
+            if (!practiceResult) return;
+            const practicePaper = document.getElementById('practice-paper');
+            if (!practicePaper) {
+                alert('Practice paper not found!');
+                return;
+            }
+            
+            const loading = document.createElement('div');
+            loading.innerHTML = '<div class="loading"></div> Generating PDF...';
+            Object.assign(loading.style, {
+                position: 'fixed',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                background: 'rgba(255,255,255,0.9)',
+                padding: '20px',
+                borderRadius: '10px',
+                zIndex: '9999'
+            });
+            document.body.appendChild(loading);
+            
+            try {
+                // Wait for MathJax to complete
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                // Hide MathJax elements that cause duplication
+                const mathjaxElements = practicePaper.querySelectorAll('.MathJax_Processing, .MathJax_Processed');
+                mathjaxElements.forEach(el => {
+                    el.style.display = 'none';
+                    el.style.visibility = 'hidden';
+                    el.style.opacity = '0';
+                    el.style.position = 'absolute';
+                });
+                
+                const canvas = await html2canvas(practicePaper, {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: '#ffffff',
+                    logging: false,
+                    windowWidth: practicePaper.scrollWidth + 60,
+                    windowHeight: practicePaper.scrollHeight + 60,
+                    onclone: function(clonedDoc) {
+                        // Remove MathJax elements from the cloned document
+                        const clonedElements = clonedDoc.querySelectorAll('.MathJax_Processing, .MathJax_Processed, .MathJax_SVG');
+                        clonedElements.forEach(el => {
+                            el.style.display = 'none';
+                            el.style.visibility = 'hidden';
+                            el.style.opacity = '0';
+                            el.style.position = 'absolute';
+                        });
+                    }
+                });
+                
+                // Restore MathJax elements
+                mathjaxElements.forEach(el => {
+                    el.style.display = '';
+                    el.style.visibility = '';
+                    el.style.opacity = '';
+                    el.style.position = '';
+                });
+                
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgData = canvas.toDataURL('image/png');
+                const imgWidth = pdf.internal.pageSize.getWidth();
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                pdf.save(`Math_Practice_Paper_${new Date().toISOString().slice(0,10)}.pdf`);
+            } catch (error) {
+                console.error('PDF generation failed:', error);
+                alert('Failed to generate PDF. Please try again.');
+            } finally {
+                document.body.removeChild(loading);
+            }
+        }
+
+        function addToHistory() {
+            const title = `Analysis - ${new Date().toLocaleDateString()}`;
+            history.push({title, date: new Date().toLocaleDateString()});
+            updateHistory();
+        }
+
+        function updateHistory() {
+            const html = history.map(h => `
+                <div class="sidebar-item">
+                    <div class="sidebar-item-title">${h.title}</div>
+                    <div class="sidebar-item-date">${h.date}</div>
+                </div>
+            `).join('');
+            document.getElementById('historyList').innerHTML = html;
+            document.getElementById('mobileHistoryList').innerHTML = html;
+        }
+    </script>
+</body>
+</html>
