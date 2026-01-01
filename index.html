@@ -1534,28 +1534,34 @@
 
         // Authentication functions
         async function checkAuth() {
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/check-auth`, {
-                    method: 'GET',
-                    credentials: 'include'
-                });
-                
-                const data = await response.json();
-                
-                if (data.authenticated && data.user) {
-                    currentUser = data.user;
-                    showDashboard(data.user);
-                    return true;
-                } else {
-                    showLoginPage();
-                    return false;
-                }
-            } catch (error) {
-                console.error('Auth check failed:', error);
-                showLoginPage();
-                return false;
+    try {
+        const response = await fetch(`${BACKEND_URL}/api/check-auth`, {
+            method: 'GET',
+            credentials: 'include',  // Ensure cookies are sent
+            headers: {
+                'Cache-Control': 'no-cache, no-store, must-revalidate'
             }
+        });
+        
+        const data = await response.json();
+        console.log('Auth check response:', data);
+        
+        if (data.authenticated && data.user) {
+            currentUser = data.user;
+            localStorage.setItem('user', JSON.stringify(data.user));
+            showDashboard(data.user);
+            return true;
+        } else {
+            showLoginPage();
+            localStorage.removeItem('user');
+            return false;
         }
+    } catch (error) {
+        console.error('Auth check failed:', error);
+        showLoginPage();
+        return false;
+    }
+}
 
         async function loginUser(username, password) {
             try {
@@ -1808,89 +1814,112 @@
 
         // Analysis functions
         async function startAnalysis() {
-            if (isAnalyzing) return;
-            
-            // Check authentication first
-            const isAuthenticated = await checkAuth();
-            if (!isAuthenticated) {
-                alert('Please login to start analysis');
-                return;
-            }
-            
-            if (questionFiles.length === 0 || answerFiles.length === 0) {
-                alert('Please upload both question papers and answer sheets');
-                return;
-            }
-            
-            isAnalyzing = true;
-            const btn = document.getElementById('startAnalysisBtn');
-            
-            // Create and show loading overlay
-            const loadingOverlay = document.createElement('div');
-            loadingOverlay.id = 'loadingOverlay';
-            loadingOverlay.innerHTML = `
-                <div class="loading-content">
-                    <div class="progress-container">
-                        <div class="progress-bar">
-                            <div class="progress-fill"></div>
-                        </div>
-                        <div class="math-statements">
-                            <p class="math-statement">Processing mathematical equations...</p>
-                            <p class="math-statement">Analyzing solution steps...</p>
-                            <p class="math-statement">Checking for calculation errors...</p>
-                            <p class="math-statement">Generating corrections...</p>
-                        </div>
-                    </div>
+    if (isAnalyzing) return;
+    
+    // Check authentication BEFORE file upload
+    const isAuthenticated = await checkAuth();
+    if (!isAuthenticated) {
+        alert('Please login to start analysis');
+        showLoginPage();
+        return;
+    }
+    
+    if (questionFiles.length === 0 || answerFiles.length === 0) {
+        alert('Please upload both question papers and answer sheets');
+        return;
+    }
+    
+    isAnalyzing = true;
+    const btn = document.getElementById('startAnalysisBtn');
+    
+    // Create and show loading overlay
+    const loadingOverlay = document.createElement('div');
+    loadingOverlay.id = 'loadingOverlay';
+    loadingOverlay.innerHTML = `
+        <div class="loading-content">
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
                 </div>
-            `;
-            document.getElementById('uploadSection').appendChild(loadingOverlay);
-            
-            btn.innerHTML = '<div class="loading"></div> Analyzing...';
-            btn.disabled = true;
-            
-            const formData = new FormData();
-            allFiles = [...questionFiles, ...answerFiles];
-            allFiles.forEach(f => formData.append('files', f.file));
-            
-            try {
-                const response = await fetch(`${BACKEND_URL}/analyze`, {
-                    method: 'POST',
-                    body: formData,
-                    credentials: 'include'
-                });
-                
-                if (response.status === 401) {
-                    // Unauthorized - redirect to login
-                    showLoginPage();
-                    alert('Session expired. Please login again.');
-                    return;
-                }
-                
-                const data = await response.json();
-                
-                if (data.error) {
-                    throw new Error(data.error);
-                } else {
-                    analysisResult = data;
-                    displayAnalysis(data);
-                    
-                    // Hide loading overlay and show results
-                    setTimeout(() => {
-                        removeLoadingOverlay();
-                        document.getElementById('uploadSection').classList.add('hidden');
-                        document.getElementById('resultsSection').classList.remove('hidden');
-                    }, 500);
-                }
-            } catch (error) {
-                console.error('Analysis error:', error);
-                alert('Error: ' + error.message);
-                removeLoadingOverlay();
-            } finally {
-                isAnalyzing = false;
-                btn.innerHTML = `<svg style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Start Analysis`;
-                btn.disabled = false;
-            }
+                <div class="math-statements">
+                    <p class="math-statement">Processing mathematical equations...</p>
+                    <p class="math-statement">Analyzing solution steps...</p>
+                    <p class="math-statement">Checking for calculation errors...</p>
+                    <p class="math-statement">Generating corrections...</p>
+                </div>
+            </div>
+        </div>
+    `;
+    document.getElementById('uploadSection').appendChild(loadingOverlay);
+    
+    btn.innerHTML = '<div class="loading"></div> Analyzing...';
+    btn.disabled = true;
+    
+    const formData = new FormData();
+    allFiles = [...questionFiles, ...answerFiles];
+    
+    // Add all files to FormData
+    allFiles.forEach(f => {
+        formData.append('files', f.file, f.name);
+    });
+    
+    try {
+        console.log('Sending analysis request...');
+        
+        // CRITICAL FIX: Add credentials: 'include' to send cookies
+        const response = await fetch(`${BACKEND_URL}/analyze`, {
+            method: 'POST',
+            body: formData,
+            credentials: 'include',  // THIS IS CRITICAL - sends cookies
+            // No Content-Type header for FormData - let browser set it
+        });
+        
+        console.log('Response status:', response.status);
+        
+        if (response.status === 401) {
+            // Unauthorized - clear session and redirect
+            localStorage.removeItem('user');
+            currentUser = null;
+            showLoginPage();
+            alert('Session expired. Please login again.');
+            return;
         }
+        
+        const data = await response.json();
+        
+        if (data.error) {
+            throw new Error(data.error);
+        } else {
+            analysisResult = data;
+            
+            // Add dataURLs to analysis result for image display
+            analysisResult.questions.forEach((q, i) => {
+                // Find the corresponding file
+                const file = allFiles.find(f => f.name === q.image_file);
+                if (file && file.dataURL) {
+                    q.dataURL = file.dataURL;
+                }
+            });
+            
+            displayAnalysis(data);
+            
+            // Hide loading overlay and show results
+            setTimeout(() => {
+                removeLoadingOverlay();
+                document.getElementById('uploadSection').classList.add('hidden');
+                document.getElementById('resultsSection').classList.remove('hidden');
+            }, 500);
+        }
+    } catch (error) {
+        console.error('Analysis error:', error);
+        alert('Error: ' + error.message);
+        removeLoadingOverlay();
+    } finally {
+        isAnalyzing = false;
+        btn.innerHTML = `<svg style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Start Analysis`;
+        btn.disabled = false;
+    }
+}
 
         function removeLoadingOverlay() {
             const overlay = document.getElementById('loadingOverlay');
