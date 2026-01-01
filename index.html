@@ -22,7 +22,6 @@
             }
         };
     </script>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
@@ -1535,16 +1534,16 @@
         // Authentication functions
         async function checkAuth() {
     try {
+        console.log('Checking auth...');
         const response = await fetch(`${BACKEND_URL}/api/check-auth`, {
             method: 'GET',
-            credentials: 'include',  // Ensure cookies are sent
-            headers: {
-                'Cache-Control': 'no-cache, no-store, must-revalidate'
-            }
+            credentials: 'include'
+            // REMOVE the Cache-Control and Pragma headers
         });
         
+        console.log('Auth check status:', response.status);
         const data = await response.json();
-        console.log('Auth check response:', data);
+        console.log('Auth check data:', data);
         
         if (data.authenticated && data.user) {
             currentUser = data.user;
@@ -1562,7 +1561,6 @@
         return false;
     }
 }
-
         async function loginUser(username, password) {
             try {
                 const errorMessage = document.getElementById('loginErrorMessage');
