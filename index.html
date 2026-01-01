@@ -3,124 +3,625 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Auth Test</title>
+    <title>Auth Testing - PythonAnywhere PostgreSQL</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #f0f2f5; display: flex; justify-content: center; padding: 50px; }
-        .card { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); width: 400px; }
-        h2 { text-align: center; color: #4361ee; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; }
-        button { width: 100%; padding: 12px; background: #4361ee; color: white; border: none; border-radius: 6px; cursor: pointer; margin-top: 10px; }
-        button:hover { background: #3650d1; }
-        .msg { padding: 10px; margin-top: 15px; border-radius: 6px; text-align: center; }
-        .success { background: #d4edda; color: #155724; }
-        .error { background: #f8d7da; color: #721c24; }
-        a { color: #4361ee; text-decoration: none; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .form-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .form-section h2 {
+            color: #4361ee;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4361ee;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #495057;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #4361ee;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+        }
+        
+        .btn-logout {
+            background: linear-gradient(135deg, #ef476f 0%, #d90429 100%);
+        }
+        
+        .btn-logout:hover {
+            box-shadow: 0 10px 20px rgba(239, 71, 111, 0.3);
+        }
+        
+        .status-section {
+            padding: 25px;
+            border-radius: 15px;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+        }
+        
+        .status-section h2 {
+            color: #4361ee;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4361ee;
+        }
+        
+        .status-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #4361ee;
+            margin-bottom: 20px;
+        }
+        
+        .user-info {
+            background: #e7f5ff;
+            border-left-color: #4361ee;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .user-info h3 {
+            color: #4361ee;
+            margin-bottom: 10px;
+        }
+        
+        .user-info p {
+            margin: 5px 0;
+            color: #495057;
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            display: none;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border-left: 5px solid #28a745;
+        }
+        
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 5px solid #dc3545;
+        }
+        
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border-left: 5px solid #17a2b8;
+        }
+        
+        .tab-buttons {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 15px;
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: #6c757d;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .tab-btn.active {
+            color: #4361ee;
+            border-bottom: 3px solid #4361ee;
+            margin-bottom: -2px;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+        
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        
+        .log-success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .log-error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .log-info {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .toggle-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #4361ee;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .toggle-link:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h2>Simple Auth Test</h2>
-
-        <div id="registerForm">
-            <h3>Register</h3>
-            <input type="text" id="regUsername" placeholder="Username">
-            <input type="password" id="regPassword" placeholder="Password">
-            <input type="password" id="regConfirm" placeholder="Confirm Password">
-            <button onclick="register()">Register</button>
-            <p style="text-align:center; margin-top:15px;">
-                Already have account? <a href="#" onclick="showLogin()">Login</a>
-            </p>
+    <div class="container">
+        <div class="header">
+            <h1>🔐 Auth Testing Dashboard</h1>
+            <p>PythonAnywhere + PostgreSQL + Flask Authentication</p>
         </div>
-
-        <div id="loginForm" style="display:none;">
-            <h3>Login</h3>
-            <input type="text" id="loginUsername" placeholder="Username">
-            <input type="password" id="loginPassword" placeholder="Password">
-            <button onclick="login()">Login</button>
-            <p style="text-align:center; margin-top:15px;">
-                No account? <a href="#" onclick="showRegister()">Register</a>
-            </p>
+        
+        <div class="content">
+            <!-- Left Column: Forms -->
+            <div class="form-section">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="showTab('register')">Register</button>
+                    <button class="tab-btn" onclick="showTab('login')">Login</button>
+                </div>
+                
+                <!-- Register Form -->
+                <div id="register-tab" class="tab-content active">
+                    <h2>Create New Account</h2>
+                    <div class="form-group">
+                        <label for="reg-username">Username</label>
+                        <input type="text" id="reg-username" placeholder="Enter username (min 3 chars)">
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-password">Password</label>
+                        <input type="password" id="reg-password" placeholder="Enter password (min 6 chars)">
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-confirm">Confirm Password</label>
+                        <input type="password" id="reg-confirm" placeholder="Confirm password">
+                    </div>
+                    <button class="btn" onclick="register()">Create Account</button>
+                </div>
+                
+                <!-- Login Form -->
+                <div id="login-tab" class="tab-content">
+                    <h2>Login to Account</h2>
+                    <div class="form-group">
+                        <label for="login-username">Username</label>
+                        <input type="text" id="login-username" placeholder="Enter username">
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="Enter password">
+                    </div>
+                    <button class="btn" onclick="login()">Login</button>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div style="margin-top: 30px;">
+                    <button class="btn btn-logout" onclick="logout()" style="display: none;" id="logout-btn">Logout</button>
+                    <button class="btn" onclick="checkHealth()" style="background: #17a2b8; margin-top: 10px;">Check Health</button>
+                    <button class="btn" onclick="checkAuth()" style="background: #28a745; margin-top: 10px;">Check Auth Status</button>
+                </div>
+            </div>
+            
+            <!-- Right Column: Status & Info -->
+            <div class="status-section">
+                <h2>Status & Information</h2>
+                
+                <div class="user-info" id="user-info" style="display: none;">
+                    <h3>👤 Current User</h3>
+                    <p><strong>Username:</strong> <span id="current-username"></span></p>
+                    <p><strong>User ID:</strong> <span id="current-userid"></span></p>
+                    <p><strong>Created:</strong> <span id="current-created"></span></p>
+                </div>
+                
+                <div class="status-box">
+                    <h3>🔗 Connection Status</h3>
+                    <p><strong>Backend URL:</strong> <span id="backend-url">https://navalsheth.pythonanywhere.com</span></p>
+                    <p><strong>Database:</strong> <span id="db-status">Checking...</span></p>
+                    <p><strong>Session:</strong> <span id="session-status">Checking...</span></p>
+                </div>
+                
+                <!-- Alerts -->
+                <div id="alert" class="alert"></div>
+                
+                <!-- Log -->
+                <div class="log" id="log">
+                    <div class="log-entry log-info">System initialized. Ready for testing.</div>
+                </div>
+            </div>
         </div>
-
-        <div id="status" class="msg" style="display:none;"></div>
-        <div id="user" style="margin-top:20px; text-align:center;"></div>
+        
+        <div style="padding: 20px; background: #f8f9fa; border-top: 1px solid #e9ecef; text-align: center; color: #6c757d;">
+            <p>Backend: Flask + PostgreSQL on PythonAnywhere | Frontend: HTML/JS | Session-based Authentication</p>
+        </div>
     </div>
 
     <script>
-        const API = 'https://navalsheth.pythonanywhere.com';
-
-        function show(msg, success = true) {
-            const el = document.getElementById('status');
-            el.textContent = msg;
-            el.className = 'msg ' + (success ? 'success' : 'error');
-            el.style.display = 'block';
-        }
-
-        async function register() {
-            const u = document.getElementById('regUsername').value.trim();
-            const p = document.getElementById('regPassword').value;
-            const c = document.getElementById('regConfirm').value;
-
-            if (!u || !p || !c) return show('Fill all fields', false);
-            if (p !== c) return show('Passwords do not match', false);
-
-            try {
-                const res = await fetch(`${API}/api/register`, {
-                    method: 'POST',
-                    credentials: 'include',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({username: u, password: p, confirm: c})
-                });
-                const data = await res.json();
-                show(data.message, data.success);
-                if (data.success) checkAuth();
-            } catch (e) {
-                show('Network error', false);
+        // Configuration
+        const API_BASE = 'https://navalsheth.pythonanywhere.com/api';
+        const logContainer = document.getElementById('log');
+        const alertBox = document.getElementById('alert');
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            logMessage('System initialized. Checking backend connection...', 'info');
+            checkHealth();
+            checkAuth();
+        });
+        
+        // Tab Management
+        function showTab(tabName) {
+            // Update buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Show selected tab
+            if (tabName === 'register') {
+                document.querySelector('.tab-btn:nth-child(1)').classList.add('active');
+                document.getElementById('register-tab').classList.add('active');
+            } else {
+                document.querySelector('.tab-btn:nth-child(2)').classList.add('active');
+                document.getElementById('login-tab').classList.add('active');
             }
         }
-
-        async function login() {
-            const u = document.getElementById('loginUsername').value.trim();
-            const p = document.getElementById('loginPassword').value;
-
-            try {
-                const res = await fetch(`${API}/api/login`, {
-                    method: 'POST',
-                    credentials: 'include',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({username: u, password: p})
-                });
-                const data = await res.json();
-                show(data.message, data.success);
-                if (data.success) checkAuth();
-            } catch (e) {
-                show('Network error', false);
+        
+        // Utility Functions
+        function logMessage(message, type = 'info') {
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logContainer.appendChild(entry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+        
+        function showAlert(message, type = 'info', duration = 5000) {
+            alertBox.textContent = message;
+            alertBox.className = `alert alert-${type}`;
+            alertBox.style.display = 'block';
+            
+            if (duration > 0) {
+                setTimeout(() => {
+                    alertBox.style.display = 'none';
+                }, duration);
             }
         }
-
+        
+        function updateUserInfo(user) {
+            const userInfo = document.getElementById('user-info');
+            const logoutBtn = document.getElementById('logout-btn');
+            
+            if (user) {
+                userInfo.style.display = 'block';
+                logoutBtn.style.display = 'block';
+                document.getElementById('current-username').textContent = user.username;
+                document.getElementById('current-userid').textContent = user.id;
+                document.getElementById('current-created').textContent = new Date(user.created_at).toLocaleString();
+            } else {
+                userInfo.style.display = 'none';
+                logoutBtn.style.display = 'none';
+            }
+        }
+        
+        // API Functions
+        async function checkHealth() {
+            try {
+                logMessage('Checking backend health...', 'info');
+                const response = await fetch(`${API_BASE}/health`, {
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'healthy') {
+                    document.getElementById('db-status').textContent = '✅ Connected';
+                    document.getElementById('db-status').style.color = '#28a745';
+                    showAlert('Backend is healthy!', 'success', 3000);
+                    logMessage(`Health check: Database connected with ${data.users_count} users`, 'success');
+                } else {
+                    document.getElementById('db-status').textContent = '❌ Error';
+                    document.getElementById('db-status').style.color = '#dc3545';
+                    showAlert('Backend health check failed', 'error');
+                    logMessage(`Health check failed: ${data.error}`, 'error');
+                }
+            } catch (error) {
+                document.getElementById('db-status').textContent = '❌ Connection failed';
+                document.getElementById('db-status').style.color = '#dc3545';
+                showAlert('Cannot connect to backend', 'error');
+                logMessage(`Connection error: ${error.message}`, 'error');
+            }
+        }
+        
         async function checkAuth() {
             try {
-                const res = await fetch(`${API}/api/check_auth`, { credentials: 'include' });
-                const data = await res.json();
+                logMessage('Checking authentication status...', 'info');
+                const response = await fetch(`${API_BASE}/check_auth`, {
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
                 if (data.authenticated) {
-                    document.getElementById('user').innerHTML = `<strong>Logged in as: ${data.username}</strong>`;
+                    document.getElementById('session-status').textContent = '✅ Authenticated';
+                    document.getElementById('session-status').style.color = '#28a745';
+                    updateUserInfo(data.user);
+                    logMessage(`Authenticated as: ${data.user.username}`, 'success');
                 } else {
-                    document.getElementById('user').innerHTML = '';
+                    document.getElementById('session-status').textContent = '❌ Not authenticated';
+                    document.getElementById('session-status').style.color = '#6c757d';
+                    updateUserInfo(null);
+                    logMessage('Not authenticated', 'info');
                 }
-            } catch (e) {}
+            } catch (error) {
+                document.getElementById('session-status').textContent = '❌ Error checking auth';
+                document.getElementById('session-status').style.color = '#dc3545';
+                logMessage(`Auth check error: ${error.message}`, 'error');
+            }
         }
-
-        function showLogin() {
-            document.getElementById('registerForm').style.display = 'none';
-            document.getElementById('loginForm').style.display = 'block';
+        
+        async function register() {
+            const username = document.getElementById('reg-username').value.trim();
+            const password = document.getElementById('reg-password').value;
+            const confirm = document.getElementById('reg-confirm').value;
+            
+            // Validation
+            if (!username || username.length < 3) {
+                showAlert('Username must be at least 3 characters', 'error');
+                return;
+            }
+            
+            if (!password || password.length < 6) {
+                showAlert('Password must be at least 6 characters', 'error');
+                return;
+            }
+            
+            if (password !== confirm) {
+                showAlert('Passwords do not match', 'error');
+                return;
+            }
+            
+            try {
+                logMessage(`Attempting to register user: ${username}`, 'info');
+                
+                const response = await fetch(`${API_BASE}/register`, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password,
+                        confirm: confirm
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showAlert(data.message, 'success');
+                    logMessage(`Registration successful: ${username}`, 'success');
+                    
+                    // Clear form
+                    document.getElementById('reg-username').value = '';
+                    document.getElementById('reg-password').value = '';
+                    document.getElementById('reg-confirm').value = '';
+                    
+                    // Update UI
+                    checkAuth();
+                    showTab('login');
+                } else {
+                    showAlert(data.message, 'error');
+                    logMessage(`Registration failed: ${data.message}`, 'error');
+                }
+            } catch (error) {
+                showAlert('Registration failed. Check console for details.', 'error');
+                logMessage(`Registration error: ${error.message}`, 'error');
+                console.error('Registration error:', error);
+            }
         }
-
-        function showRegister() {
-            document.getElementById('loginForm').style.display = 'none';
-            document.getElementById('registerForm').style.display = 'block';
+        
+        async function login() {
+            const username = document.getElementById('login-username').value.trim();
+            const password = document.getElementById('login-password').value;
+            
+            if (!username || !password) {
+                showAlert('Please enter username and password', 'error');
+                return;
+            }
+            
+            try {
+                logMessage(`Attempting login for: ${username}`, 'info');
+                
+                const response = await fetch(`${API_BASE}/login`, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password,
+                        remember: true
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showAlert(data.message, 'success');
+                    logMessage(`Login successful: ${username}`, 'success');
+                    
+                    // Clear form
+                    document.getElementById('login-username').value = '';
+                    document.getElementById('login-password').value = '';
+                    
+                    // Update UI
+                    updateUserInfo(data.user);
+                    checkAuth();
+                } else {
+                    showAlert(data.message, 'error');
+                    logMessage(`Login failed: ${data.message}`, 'error');
+                }
+            } catch (error) {
+                showAlert('Login failed. Check console for details.', 'error');
+                logMessage(`Login error: ${error.message}`, 'error');
+                console.error('Login error:', error);
+            }
         }
-
-        checkAuth(); // on load
+        
+        async function logout() {
+            try {
+                logMessage('Attempting logout...', 'info');
+                
+                const response = await fetch(`${API_BASE}/logout`, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showAlert(data.message, 'success');
+                    logMessage('Logout successful', 'success');
+                    
+                    // Update UI
+                    updateUserInfo(null);
+                    checkAuth();
+                } else {
+                    showAlert(data.message, 'error');
+                    logMessage(`Logout failed: ${data.message}`, 'error');
+                }
+            } catch (error) {
+                showAlert('Logout failed', 'error');
+                logMessage(`Logout error: ${error.message}`, 'error');
+                console.error('Logout error:', error);
+            }
+        }
     </script>
 </body>
 </html>
