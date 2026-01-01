@@ -53,16 +53,15 @@
             --shadow-md: 0 4px 6px rgba(0,0,0,0.07);
             --shadow-lg: 0 10px 15px rgba(0,0,0,0.08);
         }
-        
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Roboto', sans-serif; 
-            background-color: var(--background); 
-            color: var(--foreground); 
-            line-height: 1.6; 
+       
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+            background-color: var(--background);
+            color: var(--foreground);
+            line-height: 1.6;
             overflow: hidden;
             height: 100vh;
         }
-
         /* Login Page Styles */
         #loginPage {
     height: 100vh;
@@ -78,7 +77,6 @@
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
-
         .login-background {
     position: absolute;
     top: 0;
@@ -87,7 +85,6 @@
     bottom: 0;
     z-index: 0;
 }
-
 .login-background {
     position: absolute;
     top: 0;
@@ -96,7 +93,6 @@
     bottom: 0;
     z-index: 0;
 }
-
 .login-background::before {
     content: '';
     position: absolute;
@@ -108,8 +104,6 @@
     /* REMOVE ALL the radial-gradient lines completely */
     /* NO animation either */
 }
-
-
         .login-container {
             position: relative;
             z-index: 2; /* Add this to ensure login content stays above math terms */
@@ -131,15 +125,12 @@
     z-index: 1;
     pointer-events: none; /* So they don't interfere with clicks */
 }
-
 .math-terms-left {
     left: 40px;
 }
-
 .math-terms-right {
     right: 40px;
 }
-
 .math-term {
     font-size: 18px;
     color: #000000;
@@ -154,13 +145,11 @@
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
-
 .math-term:hover {
     transform: scale(1.05);
     background: rgba(255, 255, 255, 1); /* Solid white on hover */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
-
 /* For mobile, hide the math terms */
 @media (max-width: 1024px) {
     .math-terms-left,
@@ -168,12 +157,10 @@
         display: none;
     }
 }
-
         .login-header {
             text-align: center;
             margin-bottom: 40px;
         }
-
         .ai-mastery-text {
             color: #4361ee; /* Full blue using your --primary variable color */
             font-size: 42px; /* Medium to large size */
@@ -181,8 +168,7 @@
             margin-bottom: 20px;
             text-align: center;
             letter-spacing: -0.5px;
-        } 
-
+        }
         .login-brand {
             font-size: 32px;
             font-weight: 700;
@@ -190,16 +176,13 @@
             margin-bottom: 8px;
             letter-spacing: -0.5px;
         }
-
         .login-brand span {
             color: var(--primary);
         }
-
         .login-subtitle {
             color: var(--muted-foreground);
             font-size: 16px;
         }
-
         .login-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -208,15 +191,12 @@
             box-shadow: var(--shadow-lg);
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
-
         .login-form {
             margin-bottom: 32px;
         }
-
         .form-group {
             margin-bottom: 24px;
         }
-
         .form-label {
             display: block;
             font-size: 14px;
@@ -224,7 +204,6 @@
             color: var(--foreground);
             margin-bottom: 8px;
         }
-
         .form-input {
             width: 100%;
             padding: 12px 16px;
@@ -234,13 +213,11 @@
             background: var(--card);
             transition: all 0.2s;
         }
-
         .form-input:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
         }
-
         .login-btn {
             width: 100%;
             padding: 14px;
@@ -257,22 +234,18 @@
             justify-content: center;
             gap: 8px;
         }
-
         .login-btn:hover {
             background: #3a56d4;
             transform: translateY(-1px);
             box-shadow: var(--shadow-md);
         }
-
         .login-btn:active {
             transform: translateY(0);
         }
-
         .social-login {
             border-top: 1px solid var(--border);
             padding-top: 24px;
         }
-
         .social-login-title {
             text-align: center;
             font-size: 14px;
@@ -280,7 +253,6 @@
             margin-bottom: 20px;
             position: relative;
         }
-
         .social-login-title::before {
             content: '';
             position: absolute;
@@ -290,7 +262,6 @@
             height: 1px;
             background: var(--border);
         }
-
         .social-login-title::after {
             content: '';
             position: absolute;
@@ -300,12 +271,10 @@
             height: 1px;
             background: var(--border);
         }
-
         .social-buttons {
             display: flex;
             gap: 12px;
         }
-
         .social-btn {
             flex: 1;
             padding: 12px;
@@ -321,199 +290,195 @@
             font-size: 14px;
             font-weight: 500;
         }
-
         .social-btn:hover {
             border-color: var(--primary);
             transform: translateY(-1px);
         }
-
         .social-btn svg {
             width: 20px;
             height: 20px;
         }
-
         .google-btn { color: #4285F4; }
         .apple-btn { color: #000000; }
-
-        .dashboard-container { 
-            display: none; 
-            height: 100vh; 
-            width: 100%; 
-            overflow: hidden; 
+        .dashboard-container {
+            display: none;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
         }
-        
-        .dashboard-layout { 
-            display: flex; 
-            height: 100%; 
-            width: 100%; 
+       
+        .dashboard-layout {
+            display: flex;
+            height: 100%;
+            width: 100%;
         }
-        
-        .sidebar { 
-            width: 280px; 
-            background-color: var(--sidebar); 
-            border-right: 1px solid var(--sidebar-border); 
-            display: flex; 
-            flex-direction: column; 
-            height: 100%; 
+       
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar);
+            border-right: 1px solid var(--sidebar-border);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
             box-shadow: var(--shadow-sm);
         }
-        
-        .sidebar-header { 
-            padding: 24px; 
-            border-bottom: 1px solid var(--sidebar-border); 
+       
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--sidebar-border);
         }
-        
-        .sidebar-logo { 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-            cursor: pointer; 
+       
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
         }
-        
-        .sidebar-logo:hover { 
-            opacity: 0.8; 
+       
+        .sidebar-logo:hover {
+            opacity: 0.8;
         }
-        
-        .sidebar-logo-icon { 
-            width: 40px; 
-            height: 40px; 
-            background: linear-gradient(135deg, var(--primary) 0%, #3a56d4 100%); 
-            border-radius: 10px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
+       
+        .sidebar-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary) 0%, #3a56d4 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        
-        .sidebar-logo-icon svg { 
-            width: 24px; 
-            height: 24px; 
-            color: var(--primary-foreground); 
+       
+        .sidebar-logo-icon svg {
+            width: 24px;
+            height: 24px;
+            color: var(--primary-foreground);
         }
-        
-        .sidebar-logo h1 { 
-            font-size: 20px; 
-            font-weight: 700; 
+       
+        .sidebar-logo h1 {
+            font-size: 20px;
+            font-weight: 700;
             color: var(--foreground);
         }
-        
-        .sidebar-content { 
-            flex: 1; 
-            overflow-y: auto; 
-            padding: 20px; 
+       
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
         }
-        
-        .sidebar-section-title { 
-            font-size: 12px; 
-            font-weight: 600; 
-            color: var(--muted-foreground); 
-            text-transform: uppercase; 
-            letter-spacing: 0.05em; 
-            padding: 0 12px; 
-            margin-bottom: 12px; 
+       
+        .sidebar-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--muted-foreground);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0 12px;
+            margin-bottom: 12px;
         }
-        
-        .sidebar-item { 
-            padding: 12px; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            transition: all 0.2s; 
-            margin-bottom: 8px; 
+       
+        .sidebar-item {
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 8px;
         }
-        
-        .sidebar-item:hover { 
-            background-color: var(--sidebar-accent); 
+       
+        .sidebar-item:hover {
+            background-color: var(--sidebar-accent);
         }
-        
-        .sidebar-item-title { 
-            font-weight: 500; 
-            font-size: 14px; 
-            margin-bottom: 4px; 
-            white-space: nowrap; 
-            overflow: hidden; 
-            text-overflow: ellipsis; 
+       
+        .sidebar-item-title {
+            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-        
-        .sidebar-item-date { 
-            font-size: 12px; 
-            color: var(--muted-foreground); 
+       
+        .sidebar-item-date {
+            font-size: 12px;
+            color: var(--muted-foreground);
         }
-        
-        .main-content { 
-            flex: 1; 
-            display: flex; 
-            flex-direction: column; 
-            overflow: hidden; 
+       
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
-        
-        .header { 
-            border-bottom: 1px solid var(--border); 
-            background-color: var(--card); 
-            padding: 16px 24px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            width: 100%; 
+       
+        .header {
+            border-bottom: 1px solid var(--border);
+            background-color: var(--card);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
         }
-        
-        .header-left { 
-            display: flex; 
-            align-items: center; 
-            gap: 16px; 
+       
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
-        
-        .header-logo { 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
-            cursor: pointer; 
+       
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
         }
-        
-        .header-logo:hover { 
-            opacity: 0.8; 
+       
+        .header-logo:hover {
+            opacity: 0.8;
         }
-        
-        .header-logo-icon { 
-            width: 32px; 
-            height: 32px; 
-            background: linear-gradient(135deg, var(--primary) 0%, #3a56d4 100%); 
-            border-radius: 8px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
+       
+        .header-logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary) 0%, #3a56d4 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        
-        .header-logo-icon svg { 
-            width: 18px; 
-            height: 18px; 
-            color: var(--primary-foreground); 
+       
+        .header-logo-icon svg {
+            width: 18px;
+            height: 18px;
+            color: var(--primary-foreground);
         }
-        
-        .header-brand { 
-            font-weight: 700; 
-            font-size: 18px; 
+       
+        .header-brand {
+            font-weight: 700;
+            font-size: 18px;
             color: var(--foreground);
         }
-        
-        .header-right { 
-            display: flex; 
-            align-items: center; 
-            gap: 16px; 
+       
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
-        
-        .user-info { 
-            font-size: 14px; 
-            font-weight: 500; 
+       
+        .user-info {
+            font-size: 14px;
+            font-weight: 500;
         }
-        
-        .user-name { 
-            color: var(--primary); 
+       
+        .user-name {
+            color: var(--primary);
             font-weight: 600;
         }
-        
-        .btn-logout { 
-            background-color: transparent; 
-            color: var(--foreground); 
-            padding: 8px 16px; 
+       
+        .btn-logout {
+            background-color: transparent;
+            color: var(--foreground);
+            padding: 8px 16px;
             border-radius: 6px;
             border: 1px solid var(--border);
             cursor: pointer;
@@ -522,125 +487,125 @@
             align-items: center;
             gap: 6px;
         }
-        
-        .btn-logout:hover { 
-            background-color: var(--accent); 
+       
+        .btn-logout:hover {
+            background-color: var(--accent);
         }
-        
-        .content-area { 
-            flex: 1; 
-            overflow-y: auto; 
-            padding: 24px; 
-            width: 100%; 
+       
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            width: 100%;
         }
-        
-        .upload-section { 
-            max-width: 1200px; 
-            margin: 0 auto; 
-            width: 100%; 
+       
+        .upload-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
         }
-        
-        .section-header { 
-            margin-bottom: 32px; 
+       
+        .section-header {
+            margin-bottom: 32px;
         }
-        
-        .section-header h1 { 
-            font-size: 36px; 
-            font-weight: 700; 
-            margin-bottom: 8px; 
+       
+        .section-header h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 8px;
             color: var(--foreground);
         }
-        
-        .section-header p { 
-            font-size: 18px; 
-            color: var(--muted-foreground); 
+       
+        .section-header p {
+            font-size: 18px;
+            color: var(--muted-foreground);
         }
-        
-        .upload-grid { 
-            display: flex; 
-            justify-content: center; 
-            gap: 24px; 
-            margin-bottom: 32px; 
-            flex-wrap: wrap; 
+       
+        .upload-grid {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
         }
-        
-        .upload-card { 
-            background-color: var(--card); 
-            border: 2px dashed var(--border); 
-            border-radius: var(--radius); 
-            padding: 24px; 
-            text-align: center; 
-            transition: all 0.2s; 
-            cursor: pointer; 
-            max-width: 320px; 
-            width: 100%; 
+       
+        .upload-card {
+            background-color: var(--card);
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            text-align: center;
+            transition: all 0.2s;
+            cursor: pointer;
+            max-width: 320px;
+            width: 100%;
             box-shadow: var(--shadow-sm);
         }
-        
-        .upload-card:hover { 
+       
+        .upload-card:hover {
             border-color: var(--primary);
             transform: translateY(-2px);
             box-shadow: var(--shadow-md);
         }
-        
-        .upload-icon { 
-            width: 64px; 
-            height: 64px; 
-            background: linear-gradient(135deg, rgba(67, 97, 238, 0.1) 0%, rgba(67, 97, 238, 0.05) 100%); 
-            border-radius: 16px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            margin: 0 auto 16px; 
+       
+        .upload-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.1) 0%, rgba(67, 97, 238, 0.05) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
         }
-        
-        .upload-icon svg { 
-            width: 32px; 
-            height: 32px; 
-            color: var(--primary); 
+       
+        .upload-icon svg {
+            width: 32px;
+            height: 32px;
+            color: var(--primary);
         }
-        
-        .upload-card h3 { 
-            font-weight: 600; 
-            margin-bottom: 8px; 
+       
+        .upload-card h3 {
+            font-weight: 600;
+            margin-bottom: 8px;
             font-size: 18px;
         }
-        
-        .upload-card p { 
-            font-size: 14px; 
-            color: var(--muted-foreground); 
-            margin-bottom: 16px; 
+       
+        .upload-card p {
+            font-size: 14px;
+            color: var(--muted-foreground);
+            margin-bottom: 16px;
         }
-        
-        .file-list { 
-            text-align: left; 
-            margin-top: 16px; 
+       
+        .file-list {
+            text-align: left;
+            margin-top: 16px;
         }
-        
-        .file-item { 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
-            font-size: 12px; 
-            color: var(--muted-foreground); 
-            margin-bottom: 4px; 
+       
+        .file-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--muted-foreground);
+            margin-bottom: 4px;
             padding: 6px 8px;
             background: var(--muted);
             border-radius: 4px;
         }
-        
-        .file-item svg { 
-            width: 12px; 
-            height: 12px; 
+       
+        .file-item svg {
+            width: 12px;
+            height: 12px;
         }
-        
-        .btn-start { 
-            background: linear-gradient(135deg, var(--primary) 0%, #3a56d4 100%); 
-            color: var(--primary-foreground); 
-            padding: 12px 48px; 
-            font-size: 16px; 
-            margin: 0 auto; 
-            display: flex; 
+       
+        .btn-start {
+            background: linear-gradient(135deg, var(--primary) 0%, #3a56d4 100%);
+            color: var(--primary-foreground);
+            padding: 12px 48px;
+            font-size: 16px;
+            margin: 0 auto;
+            display: flex;
             align-items: center;
             gap: 8px;
             border: none;
@@ -649,557 +614,556 @@
             transition: all 0.2s;
             font-weight: 600;
         }
-        
-        .btn-start:disabled { 
-            opacity: 0.5; 
-            cursor: not-allowed; 
+       
+        .btn-start:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
-
         .btn-start:hover:not(:disabled) {
             transform: translateY(-1px);
             box-shadow: var(--shadow-md);
         }
-        
-        .results-section { 
-            max-width: 1200px; 
-            margin: 0 auto; 
-            width: 100%; 
+       
+        .results-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
         }
-        
-        .results-header { 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            margin-bottom: 24px; 
-            flex-wrap: wrap; 
-            gap: 16px; 
+       
+        .results-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
         }
-        
-        .results-header h1 { 
-            font-size: 30px; 
-            font-weight: 700; 
+       
+        .results-header h1 {
+            font-size: 30px;
+            font-weight: 700;
         }
-        
-        .results-header p { 
-            color: var(--muted-foreground); 
-            margin-top: 4px; 
+       
+        .results-header p {
+            color: var(--muted-foreground);
+            margin-top: 4px;
         }
-        
-        .badge-group { 
-            display: flex; 
-            gap: 8px; 
-            flex-wrap: wrap; 
+       
+        .badge-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
         }
-        
-        .badge { 
-            padding: 6px 12px; 
-            border-radius: 6px; 
-            font-size: 14px; 
-            background-color: var(--secondary); 
-            display: inline-flex; 
-            align-items: center; 
-            gap: 8px; 
+       
+        .badge {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            background-color: var(--secondary);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             border: 1px solid var(--border);
         }
-        
-        .badge-dot { 
-            width: 8px; 
-            height: 8px; 
-            border-radius: 50%; 
+       
+        .badge-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
         }
-        
-        .badge-dot.correct { 
-            background-color: #10b981; 
+       
+        .badge-dot.correct {
+            background-color: #10b981;
         }
-        
-        .badge-dot.partial { 
-            background-color: #f59e0b; 
+       
+        .badge-dot.partial {
+            background-color: #f59e0b;
         }
-        
-        .badge-dot.incorrect { 
-            background-color: var(--destructive); 
+       
+        .badge-dot.incorrect {
+            background-color: var(--destructive);
         }
-        
-        .accordion { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 16px; 
+       
+        .accordion {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
         }
-        
-        .accordion-item { 
-            background-color: var(--card); 
-            border: 1px solid var(--border); 
-            border-radius: var(--radius); 
-            overflow: hidden; 
+       
+        .accordion-item {
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
             box-shadow: var(--shadow-sm);
         }
-        
-        .accordion-trigger { 
-            width: 100%; 
-            padding: 20px; 
-            display: flex; 
-            align-items: flex-start; 
-            gap: 16px; 
-            cursor: pointer; 
-            background: none; 
-            border: none; 
-            text-align: left; 
-            transition: background-color 0.2s; 
+       
+        .accordion-trigger {
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            text-align: left;
+            transition: background-color 0.2s;
         }
-        
-        .accordion-trigger:hover { 
-            background-color: var(--accent); 
+       
+        .accordion-trigger:hover {
+            background-color: var(--accent);
         }
-        
-        .question-number { 
-            width: 40px; 
-            height: 40px; 
-            border-radius: 10px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-weight: 700; 
-            flex-shrink: 0; 
+       
+        .question-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
             font-size: 16px;
         }
-        
-        .question-number.correct { 
-            background-color: rgba(16, 185, 129, 0.1); 
-            color: #10b981; 
+       
+        .question-number.correct {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10b981;
         }
-        
-        .question-number.partial { 
-            background-color: rgba(245, 158, 11, 0.1); 
-            color: #f59e0b; 
+       
+        .question-number.partial {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
         }
-        
-        .question-number.incorrect { 
-            background-color: rgba(230, 57, 70, 0.1); 
-            color: var(--destructive); 
+       
+        .question-number.incorrect {
+            background-color: rgba(230, 57, 70, 0.1);
+            color: var(--destructive);
         }
-        
-        .question-info { 
-            flex: 1; 
-            padding-top: 4px; 
+       
+        .question-info {
+            flex: 1;
+            padding-top: 4px;
         }
-        
-        .question-info p:first-child { 
-            font-weight: 600; 
-            margin-bottom: 4px; 
+       
+        .question-info p:first-child {
+            font-weight: 600;
+            margin-bottom: 4px;
             font-size: 16px;
         }
-        
-        .question-info p:last-child { 
-            font-size: 14px; 
-            color: var(--muted-foreground); 
-            text-transform: capitalize; 
+       
+        .question-info p:last-child {
+            font-size: 14px;
+            color: var(--muted-foreground);
+            text-transform: capitalize;
         }
-        
-        .accordion-content { 
-            display: none; 
-            padding: 0 20px 20px; 
+       
+        .accordion-content {
+            display: none;
+            padding: 0 20px 20px;
         }
-        
-        .accordion-content.open { 
-            display: block; 
+       
+        .accordion-content.open {
+            display: block;
         }
-        
-        .analysis-section { 
-            margin-bottom: 20px; 
+       
+        .analysis-section {
+            margin-bottom: 20px;
         }
-        
-        .analysis-section h3 { 
-            font-weight: 600; 
-            margin-bottom: 12px; 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
+       
+        .analysis-section h3 {
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
             font-size: 16px;
         }
-        
-        .analysis-section h3 svg { 
-            width: 20px; 
-            height: 20px; 
+       
+        .analysis-section h3 svg {
+            width: 20px;
+            height: 20px;
         }
-        
-        .solution-card { 
-            background-color: var(--secondary); 
-            border: 1px solid var(--border); 
-            border-radius: 8px; 
-            padding: 16px; 
+       
+        .solution-card {
+            background-color: var(--secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
         }
-        
-        .solution-card.error { 
-            background-color: rgba(230, 57, 70, 0.05); 
-            border-color: rgba(230, 57, 70, 0.2); 
+       
+        .solution-card.error {
+            background-color: rgba(230, 57, 70, 0.05);
+            border-color: rgba(230, 57, 70, 0.2);
         }
-        
-        .solution-card.corrected { 
-            background-color: rgba(16, 185, 129, 0.05); 
-            border-color: rgba(16, 185, 129, 0.2); 
+       
+        .solution-card.corrected {
+            background-color: rgba(16, 185, 129, 0.05);
+            border-color: rgba(16, 185, 129, 0.2);
         }
-        
-        .solution-steps { 
-            font-family: 'Courier New', monospace; 
-            font-size: 14px; 
+       
+        .solution-steps {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
         }
-        
-        .solution-steps div { 
-            margin-bottom: 8px; 
+       
+        .solution-steps div {
+            margin-bottom: 8px;
         }
-        
-        .practice-paper-card { 
-            background-color: var(--card); 
-            border: 2px solid rgba(67, 97, 238, 0.1); 
-            border-radius: var(--radius); 
-            padding: 24px; 
-            margin-top: 24px; 
+       
+        .practice-paper-card {
+            background-color: var(--card);
+            border: 2px solid rgba(67, 97, 238, 0.1);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-top: 24px;
             box-shadow: var(--shadow-sm);
         }
-        
-        .practice-paper-card h3 { 
-            font-size: 20px; 
-            font-weight: 600; 
-            margin-bottom: 8px; 
+       
+        .practice-paper-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
         }
-        
-        .practice-paper-card p { 
-            color: var(--muted-foreground); 
-            margin-bottom: 16px; 
+       
+        .practice-paper-card p {
+            color: var(--muted-foreground);
+            margin-bottom: 16px;
         }
-        
-        .new-question-list { 
-            background-color: var(--background); 
-            border-radius: 8px; 
-            padding: 16px; 
-            margin-bottom: 16px; 
+       
+        .new-question-list {
+            background-color: var(--background);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
         }
-        
-        .new-question-item { 
-            display: flex; 
-            align-items: flex-start; 
-            gap: 12px; 
-            margin-bottom: 12px; 
+       
+        .new-question-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
         }
-        
-        .new-question-item:last-child { 
-            margin-bottom: 0; 
+       
+        .new-question-item:last-child {
+            margin-bottom: 0;
         }
-        
-        .new-question-number { 
-            width: 32px; 
-            height: 32px; 
-            border-radius: 8px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-weight: 700; 
-            flex-shrink: 0; 
+       
+        .new-question-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
         }
-        
-        .reanalysis-card { 
-            background-color: rgba(238, 242, 255, 0.5); 
-            border: 1px solid var(--border); 
-            border-radius: var(--radius); 
-            padding: 16px; 
-            margin-top: 16px; 
+       
+        .reanalysis-card {
+            background-color: rgba(238, 242, 255, 0.5);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            margin-top: 16px;
         }
-        
-        .reanalysis-input-group { 
-            display: flex; 
-            gap: 8px; 
-            margin-bottom: 12px; 
+       
+        .reanalysis-input-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
         }
-        
-        .reanalysis-input-group input { 
-            flex: 1; 
+       
+        .reanalysis-input-group input {
+            flex: 1;
             padding: 10px 12px;
             border: 1px solid var(--border);
             border-radius: 6px;
             font-size: 14px;
         }
-        
-        .ai-response { 
-            background-color: var(--background); 
-            border: 1px solid var(--border); 
-            border-radius: 8px; 
-            padding: 16px; 
-            display: flex; 
-            align-items: flex-start; 
-            gap: 12px; 
+       
+        .ai-response {
+            background-color: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
         }
-        
-        .ai-badge { 
-            background-color: var(--primary); 
-            color: var(--primary-foreground); 
-            padding: 4px 8px; 
-            border-radius: 4px; 
-            font-size: 12px; 
-            font-weight: 600; 
-            flex-shrink: 0; 
-            margin-top: 2px; 
+       
+        .ai-badge {
+            background-color: var(--primary);
+            color: var(--primary-foreground);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            flex-shrink: 0;
+            margin-top: 2px;
         }
-        
-        .ai-response p { 
-            font-size: 14px; 
-            line-height: 1.6; 
-            flex: 1; 
+       
+        .ai-response p {
+            font-size: 14px;
+            line-height: 1.6;
+            flex: 1;
         }
-        
-        .modal { 
-            display: none; 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            right: 0; 
-            bottom: 0; 
-            background-color: rgba(0, 0, 0, 0.5); 
-            z-index: 50; 
-            align-items: center; 
-            justify-content: center; 
-            padding: 16px; 
+       
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 50;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
         }
-        
-        .modal.open { 
-            display: flex; 
+       
+        .modal.open {
+            display: flex;
         }
-        
-        .modal-content { 
-            background-color: var(--card); 
-            border-radius: var(--radius); 
-            max-width: 768px; 
-            width: 100%; 
-            max-height: 90vh; 
-            overflow-y: auto; 
-            padding: 24px; 
+       
+        .modal-content {
+            background-color: var(--card);
+            border-radius: var(--radius);
+            max-width: 768px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 24px;
         }
-        
-        .modal-header { 
-            margin-bottom: 16px; 
+       
+        .modal-header {
+            margin-bottom: 16px;
         }
-        
-        .modal-header h3 { 
-            font-size: 20px; 
-            font-weight: 600; 
+       
+        .modal-header h3 {
+            font-size: 20px;
+            font-weight: 600;
         }
-        
-        .modal-image { 
-            position: relative; 
-            aspect-ratio: 3/4; 
-            background-color: var(--muted); 
-            border-radius: 8px; 
-            overflow: hidden; 
-            margin-bottom: 16px; 
+       
+        .modal-image {
+            position: relative;
+            aspect-ratio: 3/4;
+            background-color: var(--muted);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 16px;
         }
-        
-        .modal-image img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
+       
+        .modal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
-        
-        .error-highlight { 
-            position: absolute; 
-            border: 3px solid var(--destructive); 
-            border-radius: 6px; 
-            animation: pulse 2s infinite; 
+       
+        .error-highlight {
+            position: absolute;
+            border: 3px solid var(--destructive);
+            border-radius: 6px;
+            animation: pulse 2s infinite;
         }
-        
-        @keyframes pulse { 
-            0%, 100% { opacity: 1; } 
-            50% { opacity: 0.5; } 
+       
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
-        
-        .modal-caption { 
-            text-align: center; 
-            font-size: 14px; 
-            color: var(--muted-foreground); 
+       
+        .modal-caption {
+            text-align: center;
+            font-size: 14px;
+            color: var(--muted-foreground);
         }
-        
-        .mobile-menu-btn { 
-            display: none; 
+       
+        .mobile-menu-btn {
+            display: none;
         }
-        
-        .mobile-overlay { 
-            display: none; 
+       
+        .mobile-overlay {
+            display: none;
         }
-        
+       
         @media (max-width: 1024px) {
-            .sidebar { 
-                display: none; 
+            .sidebar {
+                display: none;
             }
-            
-            .mobile-menu-btn { 
-                display: flex; 
-                background: transparent; 
-                border: none; 
-                padding: 8px; 
-                cursor: pointer; 
+           
+            .mobile-menu-btn {
+                display: flex;
+                background: transparent;
+                border: none;
+                padding: 8px;
+                cursor: pointer;
             }
-            
-            .mobile-overlay { 
-                display: none; 
-                position: fixed; 
-                top: 0; 
-                left: 0; 
-                right: 0; 
-                bottom: 0; 
-                z-index: 40; 
+           
+            .mobile-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 40;
             }
-            
-            .mobile-overlay.open { 
-                display: block; 
+           
+            .mobile-overlay.open {
+                display: block;
             }
-            
-            .mobile-sidebar-backdrop { 
-                position: absolute; 
-                top: 0; 
-                left: 0; 
-                right: 0; 
-                bottom: 0; 
-                background-color: rgba(0, 0, 0, 0.5); 
+           
+            .mobile-sidebar-backdrop {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.5);
             }
-            
-            .mobile-sidebar { 
-                position: absolute; 
-                top: 0; 
-                left: 0; 
-                bottom: 0; 
-                width: 280px; 
-                background-color: var(--sidebar); 
+           
+            .mobile-sidebar {
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: 280px;
+                background-color: var(--sidebar);
             }
-            
-            .mobile-logout { 
-                position: absolute; 
-                bottom: 0; 
-                left: 0; 
-                right: 0; 
-                padding: 16px; 
-                border-top: 1px solid var(--sidebar-border); 
+           
+            .mobile-logout {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                padding: 16px;
+                border-top: 1px solid var(--sidebar-border);
             }
-            
-            .mobile-logout button { 
-                width: 100%; 
-                justify-content: flex-start; 
-                background: transparent; 
-                color: var(--sidebar-foreground); 
-                padding: 12px; 
+           
+            .mobile-logout button {
+                width: 100%;
+                justify-content: flex-start;
+                background: transparent;
+                color: var(--sidebar-foreground);
+                padding: 12px;
             }
-            
-            .btn-logout { 
-                display: none; 
+           
+            .btn-logout {
+                display: none;
             }
-            
-            .header-brand { 
-                display: none; 
+           
+            .header-brand {
+                display: none;
             }
         }
-        
+       
         @media (max-width: 640px) {
-            .user-info { 
-                display: none; 
+            .user-info {
+                display: none;
             }
-            
-            .upload-grid { 
-                flex-direction: column; 
-                align-items: center; 
+           
+            .upload-grid {
+                flex-direction: column;
+                align-items: center;
             }
-            
-            .results-header { 
-                flex-direction: column; 
-                align-items: flex-start; 
+           
+            .results-header {
+                flex-direction: column;
+                align-items: flex-start;
             }
-            
+           
             .login-card {
                 padding: 24px;
             }
-            
+           
             .social-buttons {
                 flex-direction: column;
             }
         }
-        
-        .hidden { 
-            display: none; 
+       
+        .hidden {
+            display: none;
         }
-        
-        .btn, button { 
-            padding: 10px 24px; 
-            border-radius: 8px; 
-            font-weight: 500; 
-            font-size: 14px; 
-            cursor: pointer; 
-            transition: all 0.2s; 
-            border: none; 
-            display: inline-flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 8px; 
+       
+        .btn, button {
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
-        
-        .btn-primary { 
-            background-color: var(--primary); 
-            color: var(--primary-foreground); 
+       
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--primary-foreground);
         }
-        
-        .btn-primary:hover { 
-            opacity: 0.9; 
+       
+        .btn-primary:hover {
+            opacity: 0.9;
         }
-        
-        .btn-outline { 
-            background-color: transparent; 
-            border: 1px solid var(--border); 
-            color: var(--foreground); 
+       
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--border);
+            color: var(--foreground);
         }
-        
-        .btn-outline:hover { 
-            background-color: var(--accent); 
+       
+        .btn-outline:hover {
+            background-color: var(--accent);
         }
-        
-        .loading { 
-            display: inline-block; 
-            width: 20px; 
-            height: 20px; 
-            border: 3px solid #f3f4f6; 
-            border-top-color: var(--primary); 
-            border-radius: 50%; 
-            animation: spin 1s linear infinite; 
+       
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f4f6;
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
-        
-        @keyframes spin { 
-            to { transform: rotate(360deg); } 
+       
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
-        
-        .practice-paper { 
-            padding: 30px; 
-            background: white; 
+       
+        .practice-paper {
+            padding: 30px;
+            background: white;
         }
-        
-        .practice-header { 
-            margin-bottom: 30px; 
-            text-align: center; 
+       
+        .practice-header {
+            margin-bottom: 30px;
+            text-align: center;
         }
-        
-        .practice-title { 
-            font-size: 24px; 
-            font-weight: 700; 
-            margin-bottom: 8px; 
+       
+        .practice-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
         }
-        
-        .practice-subtitle { 
-            font-size: 16px; 
-            color: #666; 
+       
+        .practice-subtitle {
+            font-size: 16px;
+            color: #666;
         }
-        
-        .practice-question { 
-            margin-bottom: 30px; 
+       
+        .practice-question {
+            margin-bottom: 30px;
         }
-        
-        .practice-question-number { 
-            font-size: 18px; 
-            font-weight: 700; 
-            color: var(--primary); 
-            margin-bottom: 10px; 
+       
+        .practice-question-number {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
         }
         /* Loading Overlay Styles */
 #loadingOverlay {
@@ -1215,7 +1179,6 @@
     align-items: center;
     justify-content: center;
 }
-
 .loading-content {
     background: var(--card);
     border-radius: var(--radius);
@@ -1225,11 +1188,9 @@
     width: 90%;
     text-align: center;
 }
-
 .progress-container {
     margin-bottom: 30px;
 }
-
 .progress-bar {
     width: 100%;
     height: 12px;
@@ -1238,7 +1199,6 @@
     overflow: hidden;
     margin-bottom: 20px;
 }
-
 .progress-fill {
     height: 100%;
     width: 0%;
@@ -1246,7 +1206,6 @@
     border-radius: 6px;
     animation: progressAnimation 3s ease-in-out infinite;
 }
-
 @keyframes progressAnimation {
     0% {
         width: 0%;
@@ -1269,11 +1228,9 @@
         background: #4361ee;
     }
 }
-
 .math-statements {
     margin-top: 20px;
 }
-
 .math-statement {
     font-size: 16px;
     color: var(--muted-foreground);
@@ -1281,18 +1238,15 @@
     opacity: 0;
     animation: fadeInOut 1.5s ease-in-out infinite;
 }
-
 .math-statement:nth-child(1) { animation-delay: 0s; }
 .math-statement:nth-child(2) { animation-delay: 0.5s; }
 .math-statement:nth-child(3) { animation-delay: 1s; }
 .math-statement:nth-child(4) { animation-delay: 1.5s; }
-
 @keyframes fadeInOut {
     0%, 100% { opacity: 0; }
     50% { opacity: 1; }
 }
-
-        
+       
     </style>
 </head>
 <body>
@@ -1305,7 +1259,7 @@
         <div class="math-term">$\frac{d}{dx}e^x = e^x$</div>
         <div class="math-term">$F = G\frac{m_1 m_2}{r^2}$</div>
     </div>
-    
+   
     <div class="math-terms-right">
         <div class="math-term">$a^2 + b^2 = c^2$</div>
         <div class="math-term">$\sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}$</div>
@@ -1320,7 +1274,7 @@
                 <div class="login-brand">CAS <span>Educations</span></div>
                 <p class="login-subtitle">AI-Powered Math Analysis Platform</p>
             </div>
-            
+           
             <div class="login-card">
                 <form id="loginForm" class="login-form">
                     <div class="form-group">
@@ -1348,7 +1302,7 @@
                 <div class="social-login">
                     <div class="social-login-title">Or continue with</div>
                     <div class="social-buttons">
-                        <button class="social-btn google-btn" onclick="socialLogin('google')">
+                        <button class="social-btn google-btn" onclick="window.location.href = 'https://navalsheth.pythonanywhere.com/api/auth/google';">
                             <svg viewBox="0 0 24 24" width="20" height="20">
                                 <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                                 <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -1357,18 +1311,11 @@
                             </svg>
                             Google
                         </button>
-                        <button class="social-btn apple-btn" onclick="socialLogin('apple')">
-                            <svg viewBox="0 0 24 24" width="20" height="20">
-                                <path fill="currentColor" d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.31-2.33 1.05-3.11z"/>
-                            </svg>
-                            Apple
-                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     <!-- Dashboard (Initially Hidden) -->
     <div id="dashboardPage" class="dashboard-container">
         <div class="dashboard-layout">
@@ -1389,7 +1336,7 @@
                     <div id="historyList"></div>
                 </div>
             </aside>
-            
+           
             <!-- Mobile Overlay -->
             <div id="mobileOverlay" class="mobile-overlay">
                 <div class="mobile-sidebar-backdrop" onclick="closeMobileMenu()"></div>
@@ -1418,7 +1365,7 @@
                     </div>
                 </aside>
             </div>
-            
+           
             <!-- Main Content -->
             <div class="main-content">
                 <header class="header">
@@ -1447,7 +1394,7 @@
                         </button>
                     </div>
                 </header>
-                
+               
                 <main class="content-area">
                     <!-- Upload Section -->
                     <div id="uploadSection" class="upload-section">
@@ -1500,7 +1447,7 @@
                             </button>
                         </div>
                     </div>
-                    
+                   
                     <!-- Results Section -->
                     <div id="resultsSection" class="results-section hidden">
                         <div class="results-header">
@@ -1511,7 +1458,7 @@
                             <div class="badge-group" id="badgeGroup"></div>
                         </div>
                         <div class="accordion" id="accordion"></div>
-                        
+                       
                         <!-- Practice Paper -->
                         <div class="practice-paper-card" id="practicePaperCard">
                             <h3>Generate Personalized Practice Paper</h3>
@@ -1530,7 +1477,7 @@
             </div>
         </div>
     </div>
-    
+   
     <!-- Image Modal -->
     <div id="imageModal" class="modal">
         <div class="modal-content">
@@ -1585,117 +1532,212 @@
         <button class="btn-outline" style="width: 100%; margin-top: 1rem;" onclick="closeRegisterModal()">Cancel</button>
     </div>
 </div>
-
-    
+    <!-- Verification Modal -->
+    <div id="verificationModal" class="modal">
+        <div class="modal-content">
+            <h3>Verify Phone Number</h3>
+            <p>Enter the 4-digit code sent to <span id="verificationPhone"></span></p>
+            <input type="text" id="verificationCode" maxlength="4" placeholder="0000">
+            <button onclick="verifyRegistration()">Verify & Complete</button>
+            <button onclick="resendVerificationCode()">Resend Code</button>
+        </div>
+    </div>
+   
     <script>
-        // Login Functions
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('loginUsername').value.trim();
-            
-            // Dummy login - accept any credentials
-            let displayName = username;
-            
-            // Extract name before @ if email is provided
-            if (username.includes('@')) {
-                displayName = username.split('@')[0];
-            }
-            
-            // Capitalize first letter
-            displayName = displayName.charAt(0).toUpperCase() + displayName.slice(1);
-            
-            // Store user info
-            localStorage.setItem('userEmailPrefix', displayName);
-            currentUser = displayName;
-            
-            // Switch to dashboard
-            document.getElementById('loginPage').style.display = 'none';
-            document.getElementById('dashboardPage').style.display = 'flex';
-            document.getElementById('userName').textContent = displayName;
-        });
-        
-        
+        const BASE_URL = 'https://navalsheth.pythonanywhere.com';
 
-        function socialLogin(provider) {
-            // Dummy social login - accept any
-            const displayName = provider === 'google' ? 'Google User' : 'Apple User';
-            
-            // Store user info
-            localStorage.setItem('userEmailPrefix', displayName);
-            currentUser = displayName;
-            
-            // Switch to dashboard
-            document.getElementById('loginPage').style.display = 'none';
-            document.getElementById('dashboardPage').style.display = 'flex';
-            document.getElementById('userName').textContent = displayName;
+        // 1. Authentication Functions
+        async function checkAuth() {
+            try {
+                const response = await fetch(`${BASE_URL}/api/check_auth`, {
+                    credentials: 'include'  // Important for cookies
+                });
+                const data = await response.json();
+                return data.authenticated ? data.user : null;
+            } catch (error) {
+                return null;
+            }
         }
 
-        // Check if already logged in
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedUser = localStorage.getItem('userEmailPrefix');
-            if (savedUser) {
-                document.getElementById('loginPage').style.display = 'none';
-                document.getElementById('dashboardPage').style.display = 'flex';
-                document.getElementById('userName').textContent = savedUser;
-                currentUser = savedUser;
+        async function login(username, password) {
+            const response = await fetch(`${BASE_URL}/api/login`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({username, password}),
+                credentials: 'include'
+            });
+            return await response.json();
+        }
+
+        async function logout() {
+            await fetch(`${BASE_URL}/api/logout`, {
+                method: 'POST',
+                credentials: 'include'
+            });
+            // Redirect to login page
+        }
+
+        // 2. Registration Functions
+        async function initiateRegistration(username, phone) {
+            const response = await fetch(`${BASE_URL}/api/register/initiate`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({username, phone})
+            });
+            return await response.json();
+        }
+
+        async function completeRegistration(username, phone, code, password) {
+            const response = await fetch(`${BASE_URL}/api/register/verify`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({username, phone, code, password}),
+                credentials: 'include'
+            });
+            return await response.json();
+        }
+
+        // 3. Analysis History Functions
+        async function loadUserAnalyses() {
+            const response = await fetch(`${BASE_URL}/api/analyses`, {
+                credentials: 'include'
+            });
+            const data = await response.json();
+            return data.analyses || [];
+        }
+
+        async function saveAnalysis(analysisData) {
+            const response = await fetch(`${BASE_URL}/api/analyses`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(analysisData),
+                credentials: 'include'
+            });
+            return await response.json();
+        }
+
+        // 4. Practice Paper Functions
+        async function savePracticePaper(paperData) {
+            const response = await fetch(`${BASE_URL}/api/practice_papers`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(paperData),
+                credentials: 'include'
+            });
+            return await response.json();
+        }
+
+        // Additional functions
+        async function resendVerificationCode() {
+            const phone = window.tempReg.phone;
+            try {
+                const response = await fetch(`${BASE_URL}/api/verify/resend`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({phone})
+                });
+                const data = await response.json();
+                if (data.success) {
+                    alert('New code sent!');
+                } else {
+                    alert(data.message);
+                }
+            } catch (e) {
+                alert('Error resending code');
+            }
+        }
+
+        async function verifyRegistration() {
+            const code = document.getElementById('verificationCode').value.trim();
+            if (!code) {
+                alert('Enter the code');
+                return;
+            }
+            const {username, phone, password} = window.tempReg;
+            const res = await completeRegistration(username, phone, code, password);
+            if (res.success) {
+                alert('Registration complete! Please login.');
+                document.getElementById('verificationModal').classList.remove('open');
+                // Auto-fill login
+                document.getElementById('loginUsername').value = username;
+            } else {
+                alert(res.message);
+            }
+        }
+
+        // Login form
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const res = await login(username, password);
+            if (res.success) {
+                init();
+            } else {
+                alert(res.message);
             }
         });
-        // Registration functions
-function showRegisterModal() {
-    document.getElementById('registerModal').classList.add('open');
-    // Reset form
-    document.getElementById('registerForm').reset();
-    document.getElementById('registerSuccessMessage').style.display = 'none';
-}
 
-function closeRegisterModal() {
-    document.getElementById('registerModal').classList.remove('open');
-}
+        // Register functions
+        function showRegisterModal() {
+            document.getElementById('registerModal').classList.add('open');
+            // Reset form
+            document.getElementById('registerForm').reset();
+            document.getElementById('registerSuccessMessage').style.display = 'none';
+        }
+        function closeRegisterModal() {
+            document.getElementById('registerModal').classList.remove('open');
+        }
+        // Handle registration form submission
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+           
+            const username = document.getElementById('registerUsername').value.trim();
+            const phone = document.getElementById('registerPhone').value.trim();
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+           
+            // Basic validation
+            if (!username || !phone || !password) {
+                alert('Please fill in all fields');
+                return;
+            }
+           
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return;
+            }
+           
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters');
+                return;
+            }
 
-// Handle registration form submission
-document.getElementById('registerForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const username = document.getElementById('registerUsername').value.trim();
-    const phone = document.getElementById('registerPhone').value.trim();
-    const password = document.getElementById('registerPassword').value;
-    const confirmPassword = document.getElementById('registerConfirmPassword').value;
-    
-    // Basic validation
-    if (!username || !phone || !password) {
-        alert('Please fill in all fields');
-        return;
-    }
-    
-    if (password !== confirmPassword) {
-        alert('Passwords do not match');
-        return;
-    }
-    
-    if (password.length < 6) {
-        alert('Password must be at least 6 characters');
-        return;
-    }
-    
-    // In a real app, you would send this to your backend
-    // For demo purposes, we'll just store in localStorage
-    const userData = {
-        username: username,
-        phone: phone,
-        password: password, // Note: In real app, NEVER store passwords in plain text
-        registeredAt: new Date().toISOString()
-    };
-    
-    // Store in localStorage (for demo only)
-    localStorage.setItem('registeredUser_' + username, JSON.stringify(userData));
-    
-    // Show success message
-    document.getElementById('registerSuccessMessage').style.display = 'block';
-    document.getElementById('registerForm').style.display = 'none';
-    
-    // Auto-fill login form
-    document.getElementById('loginUsername').value = username;
-});
+            window.tempReg = {username, phone, password};
+            const res = await initiateRegistration(username, phone);
+            if (res.success) {
+                document.getElementById('verificationPhone').textContent = phone;
+                closeRegisterModal();
+                document.getElementById('verificationModal').classList.add('open');
+            } else {
+                alert(res.message);
+            }
+        });
+
+        async function init() {
+            const user = await checkAuth();
+            if (user) {
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('dashboardPage').style.display = 'flex';
+                document.getElementById('userName').textContent = user.username;
+                await loadHistory();
+            } else {
+                document.getElementById('loginPage').style.display = 'flex';
+                document.getElementById('dashboardPage').style.display = 'none';
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', init);
 
         // State management
         let questionFiles = [];
@@ -1705,47 +1747,36 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
         let practiceResult = null;
         let history = [];
         let isAnalyzing = false;
-
         function renderMath(element) {
             if (window.MathJax) {
                 MathJax.typesetPromise([element]).catch(err => console.error('MathJax error:', err));
             }
         }
-
         // Mobile menu functions
         function openMobileMenu() {
             document.getElementById('mobileOverlay').classList.add('open');
         }
-
         function closeMobileMenu() {
             document.getElementById('mobileOverlay').classList.remove('open');
         }
-
-        function handleLogout() {
-            localStorage.removeItem('userEmailPrefix');
-            document.getElementById('dashboardPage').style.display = 'none';
-            document.getElementById('loginPage').style.display = 'flex';
-            // Reset form
-            document.getElementById('loginForm').reset();
+        async function handleLogout() {
+            await logout();
+            init();
         }
-
         function resetToDashboard() {
             document.getElementById('uploadSection').classList.remove('hidden');
             document.getElementById('resultsSection').classList.add('hidden');
             closeMobileMenu();
         }
-
         // File handling
         document.getElementById('questionInput').addEventListener('change', async e => {
             await handleFileUpload(e.target.files, questionFiles, 'questionFileList');
             checkStartButton();
         });
-
         document.getElementById('answerInput').addEventListener('change', async e => {
             await handleFileUpload(e.target.files, answerFiles, 'answerFileList');
             checkStartButton();
         });
-
         async function handleFileUpload(files, targetArray, listId) {
             for (let file of files) {
                 if (!targetArray.find(f => f.name === file.name)) {
@@ -1762,7 +1793,6 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
             }
             displayFiles(listId, targetArray);
         }
-
         function displayFiles(elementId, files) {
             const el = document.getElementById(elementId);
             el.innerHTML = files.map(f => `
@@ -1772,16 +1802,19 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
                 </div>
             `).join('');
         }
-
         function checkStartButton() {
             document.getElementById('startAnalysisBtn').disabled = questionFiles.length === 0 || answerFiles.length === 0;
         }
-
         async function startAnalysis() {
     if (isAnalyzing) return;
+    const user = await checkAuth();
+    if (!user) {
+        alert('Please login first');
+        return;
+    }
     isAnalyzing = true;
     const btn = document.getElementById('startAnalysisBtn');
-    
+   
     // Create and show loading overlay
     const loadingOverlay = document.createElement('div');
     loadingOverlay.id = 'loadingOverlay';
@@ -1801,33 +1834,34 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
         </div>
     `;
     document.getElementById('uploadSection').appendChild(loadingOverlay);
-    
+   
     btn.innerHTML = '<div class="loading"></div> Analyzing...';
     btn.disabled = true;
-    
+   
     const formData = new FormData();
     allFiles = [...questionFiles, ...answerFiles];
     allFiles.forEach(f => formData.append('files', f.file));
-    
+   
     try {
-        const res = await fetch('https://navalsheth.pythonanywhere.com/analyze', {
+        const res = await fetch(`${BASE_URL}/analyze`, {
             method: 'POST',
-            body: formData
+            body: formData,
+            credentials: 'include'
         });
         const data = await res.json();
         if (data.error) {
             alert(data.error);
             removeLoadingOverlay();
         } else {
-            analysisResult = data;
-            displayAnalysis(data);
-            addToHistory();
-            
+            analysisResult = {questions: data.questions, id: data.analysis_id};
+            displayAnalysis(analysisResult);
+           
             // Hide loading overlay and show results
             setTimeout(() => {
                 removeLoadingOverlay();
                 document.getElementById('uploadSection').classList.add('hidden');
                 document.getElementById('resultsSection').classList.remove('hidden');
+                loadHistory();
             }, 500);
         }
     } catch (e) {
@@ -1839,7 +1873,6 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
         btn.disabled = false;
     }
 }
-
 function removeLoadingOverlay() {
     const overlay = document.getElementById('loadingOverlay');
     if (overlay) {
@@ -1851,7 +1884,6 @@ function removeLoadingOverlay() {
             const steps = str.split('<br>').filter(step => step.trim() !== '');
             return steps.map(step => `<p style="margin-bottom: 0.75rem; line-height: 1.8;">${step.trim()}</p>`).join('');
         }
-
         function displayAnalysis(result) {
             const accordion = document.getElementById('accordion');
             accordion.innerHTML = '';
@@ -1906,11 +1938,9 @@ function removeLoadingOverlay() {
                 <div class="badge"><div class="badge-dot incorrect"></div>${counts.incorrect} Incorrect</div>
             `;
         }
-
         function toggleAccordion(id) {
             document.getElementById(id).classList.toggle('open');
         }
-
         async function reanalyzeQuestion(i) {
             const query = document.getElementById(`reanalysisInput${i}`).value.trim();
             if (!query) return;
@@ -1918,7 +1948,7 @@ function removeLoadingOverlay() {
             const btn = event.target;
             btn.innerHTML = '<div class="loading" style="width: 16px; height: 16px; border-width: 2px;"></div>';
             try {
-                const res = await fetch('https://navalsheth.pythonanywhere.com/reanalyze', {
+                const res = await fetch(`${BASE_URL}/reanalyze`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({
@@ -1927,7 +1957,8 @@ function removeLoadingOverlay() {
                         student_original: question.student_original,
                         error: question.error,
                         correct_solution: question.correct_solution
-                    })
+                    }),
+                    credentials: 'include'
                 });
                 const data = await res.json();
                 if (data.error) {
@@ -1944,7 +1975,6 @@ function removeLoadingOverlay() {
                 btn.innerHTML = 'Send';
             }
         }
-
         function openImageModal(i, status, imageFile, bbox) {
             const modal = document.getElementById('imageModal');
             const modalImage = document.getElementById('modalImage');
@@ -1965,20 +1995,19 @@ function removeLoadingOverlay() {
             }
             modal.classList.add('open');
         }
-
         function closeImageModal() {
             document.getElementById('imageModal').classList.remove('open');
         }
-
         async function generatePracticePaper() {
             if (!analysisResult) return;
             const content = document.getElementById('practicePaperContent');
             content.innerHTML = '<div class="loading"></div> Generating...';
             try {
-                const res = await fetch('https://navalsheth.pythonanywhere.com/generate_practice', {
+                const res = await fetch(`${BASE_URL}/generate_practice`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({analysis: analysisResult})
+                    body: JSON.stringify({analysis: {questions: analysisResult.questions}}),
+                    credentials: 'include'
                 });
                 const data = await res.json();
                 if (data.error) {
@@ -2005,7 +2034,11 @@ function removeLoadingOverlay() {
                                 <button class="btn-outline" onclick="downloadPracticePaper()"> 📥 Download as PDF </button>
                             </div>
                         </div>`;
-                    
+                    await savePracticePaper({
+                        analysis_id: analysisResult.id,
+                        questions_data: data.practice_questions
+                    });
+                   
                     // Wait for MathJax to render, then hide processed elements
                     setTimeout(() => {
                         renderMath(document.getElementById('practice-paper'));
@@ -2015,7 +2048,6 @@ function removeLoadingOverlay() {
                 content.innerHTML = `<p>Error: ${e.message}</p>`;
             }
         }
-
         async function downloadPracticePaper() {
     if (!practiceResult) return;
     const practicePaper = document.getElementById('practice-paper');
@@ -2023,7 +2055,7 @@ function removeLoadingOverlay() {
         alert('Practice paper not found!');
         return;
     }
-    
+   
     const loading = document.createElement('div');
     loading.innerHTML = '<div class="loading"></div> Generating PDF...';
     Object.assign(loading.style, {
@@ -2037,30 +2069,30 @@ function removeLoadingOverlay() {
         zIndex: '9999'
     });
     document.body.appendChild(loading);
-    
+   
     try {
         // Force MathJax to complete rendering
         if (window.MathJax) {
             await MathJax.typesetPromise([practicePaper]);
         }
-        
+       
         // Wait for rendering to stabilize
         await new Promise(resolve => setTimeout(resolve, 1500));
-        
+       
         // Create a clean clone for PDF generation
         const clone = practicePaper.cloneNode(true);
-        
+       
         // CRITICAL: Remove ALL sources of duplication
         // 1. Remove original LaTeX script tags
         clone.querySelectorAll('script[type*="math"]').forEach(el => el.remove());
-        
+       
         // 2. Remove MathJax preview/processing elements
         clone.querySelectorAll('.MathJax_Preview, .MathJax_Processing, .MathJax_Display').forEach(el => el.remove());
-        
+       
         // 3. Keep ONLY the final rendered output (mjx-container)
         // Remove any nested duplicates within mjx-containers
         clone.querySelectorAll('mjx-container mjx-container').forEach(el => el.remove());
-        
+       
         // 4. If you're seeing raw LaTeX text, remove it
         const textNodes = [];
         const walker = document.createTreeWalker(clone, NodeFilter.SHOW_TEXT);
@@ -2078,7 +2110,7 @@ function removeLoadingOverlay() {
                 node.remove();
             }
         });
-        
+       
         // Temporarily add clone to document (required for html2canvas)
         clone.style.position = 'absolute';
         clone.style.left = '-9999px';
@@ -2086,7 +2118,7 @@ function removeLoadingOverlay() {
         clone.style.width = '1200px';
         clone.style.background = '#ffffff';
         document.body.appendChild(clone);
-        
+       
         // Generate canvas from clean clone
         const canvas = await html2canvas(clone, {
             scale: 2,
@@ -2102,10 +2134,10 @@ function removeLoadingOverlay() {
                        element.classList.contains('MathJax_Processing');
             }
         });
-        
+       
         // Remove clone
         document.body.removeChild(clone);
-        
+       
         // Create PDF
         const { jsPDF } = window.jspdf;
         const pdf = new jsPDF('p', 'mm', 'a4');
@@ -2114,22 +2146,22 @@ function removeLoadingOverlay() {
         const pdfHeight = pdf.internal.pageSize.getHeight();
         const imgWidth = pdfWidth - 20;
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
-        
+       
         let heightLeft = imgHeight;
         let position = 10;
-        
+       
         pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
         heightLeft -= (pdfHeight - 20);
-        
+       
         while (heightLeft > 0) {
             position = heightLeft - imgHeight + 10;
             pdf.addPage();
             pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
             heightLeft -= (pdfHeight - 20);
         }
-        
+       
         pdf.save(`Math_Practice_Paper_${new Date().toISOString().slice(0,10)}.pdf`);
-        
+       
     } catch (error) {
         console.error('PDF generation failed:', error);
         alert('Failed to generate PDF: ' + error.message);
@@ -2137,22 +2169,37 @@ function removeLoadingOverlay() {
         document.body.removeChild(loading);
     }
 }
-
-        function addToHistory() {
-            const title = `Analysis - ${new Date().toLocaleDateString()}`;
-            history.push({title, date: new Date().toLocaleDateString()});
+        async function loadHistory() {
+            history = await loadUserAnalyses();
             updateHistory();
         }
-
         function updateHistory() {
             const html = history.map(h => `
-                <div class="sidebar-item">
+                <div class="sidebar-item" onclick="loadSpecificAnalysis('${h.id}')">
                     <div class="sidebar-item-title">${h.title}</div>
-                    <div class="sidebar-item-date">${h.date}</div>
+                    <div class="sidebar-item-date">${h.created_at}</div>
                 </div>
             `).join('');
             document.getElementById('historyList').innerHTML = html;
             document.getElementById('mobileHistoryList').innerHTML = html;
+        }
+        async function loadSpecificAnalysis(id) {
+            try {
+                const response = await fetch(`${BASE_URL}/api/analyses/${id}`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                if (data.analysis) {
+                    analysisResult = {questions: data.analysis.questions, id: data.analysis.id};
+                    displayAnalysis(analysisResult);
+                    document.getElementById('uploadSection').classList.add('hidden');
+                    document.getElementById('resultsSection').classList.remove('hidden');
+                } else {
+                    alert(data.message);
+                }
+            } catch (e) {
+                alert('Error loading analysis');
+            }
         }
     </script>
 </body>
