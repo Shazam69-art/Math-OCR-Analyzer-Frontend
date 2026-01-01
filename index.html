@@ -3,24 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math.AI Analyzer - Auth Test</title>
+    <title>Math.AI - Google Login Test</title>
     <style>
-        :root {
-            --primary: #4361ee;
-            --primary-foreground: #ffffff;
-            --background: #f5f7fa;
-            --foreground: #1a1a2e;
-            --card: #ffffff;
-            --border: #dee2e6;
-            --radius: 12px;
-            --shadow-lg: 0 10px 15px rgba(0,0,0,0.08);
-            --success: #10b981;
-            --error: #e63946;
-        }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--background);
-            color: var(--foreground);
+            background: #f5f7fa;
+            color: #1a1a2e;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -28,319 +16,105 @@
             margin: 0;
         }
         .container {
-            background: var(--card);
-            border-radius: var(--radius);
+            background: white;
             padding: 40px;
-            width: 100%;
-            max-width: 440px;
-            box-shadow: var(--shadow-lg);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             text-align: center;
+            max-width: 400px;
+            width: 100%;
         }
         .logo {
             font-size: 32px;
             font-weight: 700;
             margin-bottom: 8px;
         }
-        .logo span {
-            color: var(--primary);
-        }
-        .subtitle {
-            color: #6c757d;
-            margin-bottom: 32px;
-            font-size: 16px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-        input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            font-size: 15px;
-        }
-        input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
+        .logo span { color: #4361ee; }
+        .subtitle { color: #6c757d; margin-bottom: 32px; }
         button {
             width: 100%;
             padding: 14px;
-            background: var(--primary);
-            color: var(--primary-foreground);
-            border: none;
+            background: white;
+            border: 2px solid #dee2e6;
+            color: #4285F4;
             border-radius: 8px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 12px;
         }
-        button:hover {
-            opacity: 0.9;
-        }
-        .google-btn {
-            background: #ffffff;
-            border: 2px solid var(--border);
-            color: #4285F4;
-        }
+        button:hover { opacity: 0.9; }
         .message {
             margin-top: 20px;
             padding: 12px;
             border-radius: 8px;
             font-weight: 500;
         }
-        .success {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-        }
-        .error {
-            background: rgba(230, 57, 70, 0.1);
-            color: var(--error);
-        }
-        .loading {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid #f3f3f3;
-            border-top: 2px solid var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        a {
-            color: var(--primary);
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
+        .success { background: rgba(16,185,129,0.1); color: #10b981; }
+        .error { background: rgba(230,57,70,0.1); color: #e63946; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="logo">CAS <span>Educations</span></div>
-        <p class="subtitle">AI-Powered Math Analysis Platform - Auth Test</p>
+        <p class="subtitle">AI-Powered Math Analysis Platform</p>
+        <p>Google Login Test - Only Google authentication</p>
 
-        <!-- Login Section -->
-        <div id="loginSection">
-            <h2 style="margin-bottom: 24px;">Login</h2>
-            <div class="form-group">
-                <label>Username</label>
-                <input type="text" id="loginUsername" placeholder="Enter username">
-            </div>
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" id="loginPassword" placeholder="Enter password">
-            </div>
-            <button id="loginBtn" onclick="handleLogin()">Login</button>
+        <button onclick="handleGoogleLogin()">
+            <svg width="20" height="20" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+            </svg>
+            Continue with Google
+        </button>
 
-            <button class="google-btn" onclick="handleGoogleLogin()">
-                <svg width="20" height="20" viewBox="0 0 24 24">
-                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                </svg>
-                Continue with Google
-            </button>
-
-            <p style="margin-top: 24px;">Don't have an account? <a href="#" onclick="showRegister()">Register</a></p>
-        </div>
-
-        <!-- Register Section -->
-        <div id="registerSection" style="display:none;">
-            <h2 style="margin-bottom: 24px;">Register</h2>
-            <div class="form-group">
-                <label>Username</label>
-                <input type="text" id="regUsername" placeholder="Choose a username">
-            </div>
-            <div class="form-group">
-                <label>Phone Number</label>
-                <input type="tel" id="regPhone" placeholder="e.g. +1234567890">
-            </div>
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" id="regPassword" placeholder="Create password">
-            </div>
-            <div class="form-group">
-                <label>Confirm Password</label>
-                <input type="password" id="regConfirm" placeholder="Confirm password">
-            </div>
-            <button id="regBtn" onclick="handleRegister()">Register</button>
-
-            <p style="margin-top: 24px;">Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
-        </div>
-
-        <!-- Message Area -->
         <div id="message" class="message" style="display:none;"></div>
-    </div>
-
-    <!-- Verification Modal -->
-    <div id="verificationModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
-        <div style="background:white; padding:32px; border-radius:12px; width:90%; max-width:400px; text-align:center;">
-            <h3>Verify Phone Number</h3>
-            <p>Enter the 4-digit code sent to <span id="vPhone"></span></p>
-            <input type="text" id="vCode" maxlength="4" placeholder="0000" style="padding:12px; width:100%; margin:16px 0; text-align:center; font-size:18px; letter-spacing:8px;">
-            <button onclick="completeRegistration()">Verify & Complete</button>
-            <button onclick="resendCode()" style="margin-top:12px; background:#6c757d;">Resend Code</button>
-            <button onclick="closeVerification()" style="margin-top:12px; background:transparent; border:1px solid var(--border); color:var(--foreground);">Cancel</button>
-        </div>
+        <div id="userInfo" style="margin-top:20px;"></div>
     </div>
 
     <script>
         const BASE_URL = 'https://navalsheth.pythonanywhere.com';
-
-        let tempRegData = null;
 
         function showMessage(text, isError = false) {
             const msg = document.getElementById('message');
             msg.textContent = text;
             msg.className = 'message ' + (isError ? 'error' : 'success');
             msg.style.display = 'block';
-            setTimeout(() => msg.style.display = 'none', 6000);
-        }
-
-        function setLoading(btnId, loading, text) {
-            const btn = document.getElementById(btnId);
-            if (loading) {
-                btn.disabled = true;
-                btn.innerHTML = '<span class="loading"></span>' + text;
-            } else {
-                btn.disabled = false;
-                btn.innerHTML = btnId === 'loginBtn' ? 'Login' : 'Register';
-            }
-        }
-
-        function showLogin() {
-            document.getElementById('registerSection').style.display = 'none';
-            document.getElementById('loginSection').style.display = 'block';
-        }
-
-        function showRegister() {
-            document.getElementById('loginSection').style.display = 'none';
-            document.getElementById('registerSection').style.display = 'block';
-        }
-
-        async function handleLogin() {
-            const username = document.getElementById('loginUsername').value.trim();
-            const password = document.getElementById('loginPassword').value;
-            if (!username || !password) return showMessage('Fill all fields', true);
-
-            setLoading('loginBtn', true, 'Logging in...');
-            try {
-                const res = await fetch(`${BASE_URL}/api/login`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    credentials: 'include',
-                    body: JSON.stringify({username, password})
-                });
-                const data = await res.json();
-                if (data.success) {
-                    showMessage('Login successful! 🎉');
-                    setTimeout(() => alert('You are now logged in! In the full app, dashboard would load here.'), 1000);
-                } else {
-                    showMessage(data.message || 'Login failed', true);
-                }
-            } catch (e) {
-                showMessage('Network error', true);
-            } finally {
-                setLoading('loginBtn', false);
-            }
         }
 
         function handleGoogleLogin() {
             window.location.href = `${BASE_URL}/api/auth/google`;
         }
 
-        async function handleRegister() {
-            const username = document.getElementById('regUsername').value.trim();
-            const phone = document.getElementById('regPhone').value.trim();
-            const password = document.getElementById('regPassword').value;
-            const confirm = document.getElementById('regConfirm').value;
+        // Check if redirected back with success/error
+        const params = new URLSearchParams(window.location.search);
+        if (params.has('google_auth')) {
+            if (params.get('google_auth') === 'success') {
+                showMessage('Google login successful! 🎉');
+                document.getElementById('userInfo').innerHTML = '<p>You are logged in. In the full app, dashboard would load here.</p>';
+            } else {
+                showMessage('Google login failed: ' + params.get('message'), true);
+            }
+        }
 
-            if (!username || !phone || !password) return showMessage('Fill all fields', true);
-            if (password !== confirm) return showMessage('Passwords do not match', true);
-            if (password.length < 6) return showMessage('Password too short (min 6)', true);
-
-            setLoading('regBtn', true, 'Sending code...');
+        // Optional: Check auth status on load
+        async function checkAuth() {
             try {
-                const res = await fetch(`${BASE_URL}/api/register/initiate`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({username, phone})
-                });
+                const res = await fetch(`${BASE_URL}/api/check_auth`, { credentials: 'include' });
                 const data = await res.json();
-                if (data.success) {
-                    tempRegData = {username, phone, password};
-                    document.getElementById('vPhone').textContent = phone;
-                    document.getElementById('verificationModal').style.display = 'flex';
-                    showMessage('Code sent! Check your server log for the code (mock SMS).');
-                } else {
-                    showMessage(data.message || 'Registration failed', true);
+                if (data.authenticated) {
+                    showMessage('You are already logged in as ' + data.user.username);
                 }
             } catch (e) {
-                showMessage('Network error', true);
-            } finally {
-                setLoading('regBtn', false);
+                console.log('Not logged in');
             }
         }
-
-        async function completeRegistration() {
-            if (!tempRegData) return;
-            const code = document.getElementById('vCode').value.trim();
-            if (!code || code.length !== 4) return showMessage('Enter 4-digit code', true);
-
-            try {
-                const res = await fetch(`${BASE_URL}/api/register/verify`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    credentials: 'include',
-                    body: JSON.stringify({...tempRegData, code})
-                });
-                const data = await res.json();
-                if (data.success) {
-                    closeVerification();
-                    showMessage('Registration complete! You are now logged in. 🎉');
-                    alert('Success! In the full app, dashboard would load now.');
-                } else {
-                    showMessage(data.message || 'Verification failed', true);
-                }
-            } catch (e) {
-                showMessage('Network error', true);
-            }
-        }
-
-        async function resendCode() {
-            if (!tempRegData) return;
-            try {
-                const res = await fetch(`${BASE_URL}/api/verify/resend`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({phone: tempRegData.phone})
-                });
-                const data = await res.json();
-                showMessage(data.success ? 'New code sent!' : data.message, !data.success);
-            } catch (e) {
-                showMessage('Error resending', true);
-            }
-        }
-
-        function closeVerification() {
-            document.getElementById('verificationModal').style.display = 'none';
-            document.getElementById('vCode').value = '';
-        }
+        checkAuth();
     </script>
 </body>
 </html>
