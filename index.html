@@ -23,7 +23,7 @@
         
         .container {
             width: 100%;
-            max-width: 900px;
+            max-width: 1000px;
             background: white;
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
@@ -33,25 +33,38 @@
         .header {
             background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
             color: white;
-            padding: 30px;
+            padding: 25px;
             text-align: center;
         }
         
         .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-size: 2.2rem;
+            margin-bottom: 8px;
         }
         
         .header p {
             opacity: 0.9;
-            font-size: 1.1rem;
+            font-size: 1rem;
+        }
+        
+        .header .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+            background: #ff6b6b;
+        }
+        
+        .header .status-indicator.connected {
+            background: #51cf66;
         }
         
         .content {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            padding: 40px;
+            gap: 25px;
+            padding: 30px;
         }
         
         @media (max-width: 768px) {
@@ -62,35 +75,37 @@
         
         .form-section {
             background: #f8f9fa;
-            padding: 25px;
+            padding: 22px;
             border-radius: 15px;
             border: 1px solid #e9ecef;
         }
         
         .form-section h2 {
             color: #4361ee;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             padding-bottom: 10px;
             border-bottom: 2px solid #4361ee;
+            font-size: 1.4rem;
         }
         
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
         
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             color: #495057;
             font-weight: 500;
+            font-size: 0.95rem;
         }
         
         .form-group input {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             border: 2px solid #dee2e6;
-            border-radius: 10px;
-            font-size: 16px;
+            border-radius: 8px;
+            font-size: 15px;
             transition: border-color 0.3s;
         }
         
@@ -104,19 +119,19 @@
             background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
             color: white;
             border: none;
-            padding: 16px;
-            border-radius: 10px;
-            font-size: 16px;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
             width: 100%;
-            margin-top: 10px;
+            margin-top: 8px;
         }
         
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+            box-shadow: 0 8px 15px rgba(67, 97, 238, 0.3);
         }
         
         .btn-logout {
@@ -124,11 +139,16 @@
         }
         
         .btn-logout:hover {
-            box-shadow: 0 10px 20px rgba(239, 71, 111, 0.3);
+            box-shadow: 0 8px 15px rgba(239, 71, 111, 0.3);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            margin-top: 8px;
         }
         
         .status-section {
-            padding: 25px;
+            padding: 22px;
             border-radius: 15px;
             background: #f8f9fa;
             border: 1px solid #e9ecef;
@@ -136,42 +156,81 @@
         
         .status-section h2 {
             color: #4361ee;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             padding-bottom: 10px;
             border-bottom: 2px solid #4361ee;
+            font-size: 1.4rem;
         }
         
         .status-box {
             background: white;
-            padding: 20px;
+            padding: 18px;
             border-radius: 10px;
             border-left: 5px solid #4361ee;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
+        }
+        
+        .status-item {
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .status-icon {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: white;
+        }
+        
+        .status-icon.success {
+            background: #51cf66;
+        }
+        
+        .status-icon.error {
+            background: #ff6b6b;
+        }
+        
+        .status-icon.info {
+            background: #4dabf7;
         }
         
         .user-info {
             background: #e7f5ff;
-            border-left-color: #4361ee;
-            padding: 20px;
+            border-left: 5px solid #4361ee;
+            padding: 18px;
             border-radius: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
         
         .user-info h3 {
             color: #4361ee;
             margin-bottom: 10px;
+            font-size: 1.2rem;
         }
         
         .user-info p {
-            margin: 5px 0;
+            margin: 6px 0;
             color: #495057;
+            font-size: 0.95rem;
         }
         
         .alert {
-            padding: 15px;
-            border-radius: 10px;
-            margin: 10px 0;
+            padding: 14px;
+            border-radius: 8px;
+            margin: 12px 0;
             display: none;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .alert-success {
@@ -194,16 +253,16 @@
         
         .tab-buttons {
             display: flex;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             border-bottom: 2px solid #e9ecef;
         }
         
         .tab-btn {
             flex: 1;
-            padding: 15px;
+            padding: 12px;
             background: none;
             border: none;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             color: #6c757d;
             cursor: pointer;
@@ -227,46 +286,86 @@
         .log {
             background: #f8f9fa;
             border: 1px solid #e9ecef;
-            border-radius: 10px;
-            padding: 15px;
-            max-height: 200px;
+            border-radius: 8px;
+            padding: 14px;
+            max-height: 220px;
             overflow-y: auto;
-            font-family: monospace;
-            font-size: 14px;
-            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            margin-top: 18px;
+            line-height: 1.4;
         }
         
         .log-entry {
-            margin: 5px 0;
-            padding: 5px;
+            margin: 6px 0;
+            padding: 6px;
             border-radius: 5px;
+            border-left: 3px solid #4dabf7;
         }
         
         .log-success {
-            background: #d4edda;
-            color: #155724;
+            border-left-color: #51cf66;
+            background: rgba(81, 207, 102, 0.1);
         }
         
         .log-error {
-            background: #f8d7da;
-            color: #721c24;
+            border-left-color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.1);
         }
         
         .log-info {
-            background: #d1ecf1;
-            color: #0c5460;
+            border-left-color: #4dabf7;
+            background: rgba(77, 171, 247, 0.1);
+        }
+        
+        .log-time {
+            color: #6c757d;
+            font-size: 11px;
+            margin-right: 8px;
         }
         
         .toggle-link {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 16px;
             color: #4361ee;
             cursor: pointer;
             font-weight: 500;
+            font-size: 0.95rem;
         }
         
         .toggle-link:hover {
             text-decoration: underline;
+        }
+        
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .debug-section {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .debug-section h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .debug-btn {
+            background: #ffc107;
+            color: #856404;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 8px;
         }
     </style>
 </head>
@@ -275,6 +374,10 @@
         <div class="header">
             <h1>🔐 Auth Testing Dashboard</h1>
             <p>PythonAnywhere + PostgreSQL + Flask Authentication</p>
+            <div style="margin-top: 10px;">
+                <span class="status-indicator" id="global-status"></span>
+                <span id="global-status-text">Connecting...</span>
+            </div>
         </div>
         
         <div class="content">
@@ -318,10 +421,21 @@
                 </div>
                 
                 <!-- Action Buttons -->
-                <div style="margin-top: 30px;">
-                    <button class="btn btn-logout" onclick="logout()" style="display: none;" id="logout-btn">Logout</button>
-                    <button class="btn" onclick="checkHealth()" style="background: #17a2b8; margin-top: 10px;">Check Health</button>
-                    <button class="btn" onclick="checkAuth()" style="background: #28a745; margin-top: 10px;">Check Auth Status</button>
+                <div style="margin-top: 20px;">
+                    <div class="action-buttons">
+                        <button class="btn" onclick="checkHealth()">Check Health</button>
+                        <button class="btn" onclick="checkAuth()">Check Auth Status</button>
+                    </div>
+                    <button class="btn btn-logout" onclick="logout()" style="display: none; margin-top: 10px;" id="logout-btn">Logout</button>
+                </div>
+                
+                <!-- Debug Section -->
+                <div class="debug-section">
+                    <h4>🔧 Debug Tools</h4>
+                    <button class="debug-btn" onclick="debugSession()">Debug Session</button>
+                    <button class="debug-btn" onclick="clearLog()">Clear Log</button>
+                    <button class="debug-btn" onclick="clearCookies()">Clear Cookies</button>
+                    <button class="debug-btn" onclick="testConnection()">Test Connection</button>
                 </div>
             </div>
             
@@ -331,16 +445,42 @@
                 
                 <div class="user-info" id="user-info" style="display: none;">
                     <h3>👤 Current User</h3>
-                    <p><strong>Username:</strong> <span id="current-username"></span></p>
-                    <p><strong>User ID:</strong> <span id="current-userid"></span></p>
-                    <p><strong>Created:</strong> <span id="current-created"></span></p>
+                    <div class="status-item">
+                        <div class="status-icon success">✓</div>
+                        <div>
+                            <strong>Username:</strong> <span id="current-username"></span><br>
+                            <small>ID: <span id="current-userid"></span></small>
+                        </div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-icon info">i</div>
+                        <div>
+                            <strong>Created:</strong> <span id="current-created"></span>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="status-box">
                     <h3>🔗 Connection Status</h3>
-                    <p><strong>Backend URL:</strong> <span id="backend-url">https://navalsheth.pythonanywhere.com</span></p>
-                    <p><strong>Database:</strong> <span id="db-status">Checking...</span></p>
-                    <p><strong>Session:</strong> <span id="session-status">Checking...</span></p>
+                    <div class="status-item">
+                        <div class="status-icon" id="backend-status-icon">?</div>
+                        <div>
+                            <strong>Backend:</strong> <span id="backend-url">navalsheth.pythonanywhere.com</span><br>
+                            <small id="backend-status-text">Checking...</small>
+                        </div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-icon" id="db-status-icon">?</div>
+                        <div>
+                            <strong>Database:</strong> <span id="db-status">Checking...</span>
+                        </div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-icon" id="session-status-icon">?</div>
+                        <div>
+                            <strong>Session:</strong> <span id="session-status">Checking...</span>
+                        </div>
+                    </div>
                 </div>
                 
                 <!-- Alerts -->
@@ -348,28 +488,143 @@
                 
                 <!-- Log -->
                 <div class="log" id="log">
-                    <div class="log-entry log-info">System initialized. Ready for testing.</div>
+                    <div class="log-entry log-info">
+                        <span class="log-time" id="log-time"></span>
+                        System initialized. Ready for testing.
+                    </div>
                 </div>
             </div>
         </div>
         
-        <div style="padding: 20px; background: #f8f9fa; border-top: 1px solid #e9ecef; text-align: center; color: #6c757d;">
+        <div style="padding: 15px; background: #f8f9fa; border-top: 1px solid #e9ecef; text-align: center; color: #6c757d; font-size: 0.9rem;">
             <p>Backend: Flask + PostgreSQL on PythonAnywhere | Frontend: HTML/JS | Session-based Authentication</p>
+            <p>Database: <span id="total-users">0</span> users registered | API: <span id="api-version">v1.0</span></p>
         </div>
     </div>
 
     <script>
         // Configuration
         const API_BASE = 'https://navalsheth.pythonanywhere.com/api';
+        let currentUser = null;
+        
+        // DOM Elements
         const logContainer = document.getElementById('log');
         const alertBox = document.getElementById('alert');
+        const logTimeElement = document.getElementById('log-time');
         
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
+            // Set initial log time
+            updateLogTime();
+            setInterval(updateLogTime, 1000);
+            
             logMessage('System initialized. Checking backend connection...', 'info');
-            checkHealth();
-            checkAuth();
+            
+            // Initialize status indicators
+            updateStatusIcon('backend-status-icon', 'info', '?');
+            updateStatusIcon('db-status-icon', 'info', '?');
+            updateStatusIcon('session-status-icon', 'info', '?');
+            updateStatusIcon('global-status', 'info', '?');
+            
+            document.getElementById('global-status-text').textContent = 'Connecting...';
+            
+            // Test connection on load
+            setTimeout(() => {
+                testConnection();
+                checkAuth();
+            }, 500);
         });
+        
+        // Utility Functions
+        function updateLogTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+            logTimeElement.textContent = `[${timeString}]`;
+        }
+        
+        function logMessage(message, type = 'info') {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+            
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            entry.innerHTML = `<span class="log-time">[${timeString}]</span> ${message}`;
+            logContainer.appendChild(entry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+        
+        function updateStatusIcon(elementId, type, symbol = '') {
+            const element = document.getElementById(elementId);
+            element.className = `status-icon ${type}`;
+            element.textContent = symbol;
+        }
+        
+        function showAlert(message, type = 'info', duration = 5000) {
+            alertBox.textContent = message;
+            alertBox.className = `alert alert-${type}`;
+            alertBox.style.display = 'block';
+            
+            // Log the alert
+            logMessage(`Alert: ${message}`, type);
+            
+            if (duration > 0) {
+                setTimeout(() => {
+                    alertBox.style.display = 'none';
+                }, duration);
+            }
+        }
+        
+        function updateUserInfo(user) {
+            const userInfo = document.getElementById('user-info');
+            const logoutBtn = document.getElementById('logout-btn');
+            
+            if (user && user.authenticated) {
+                userInfo.style.display = 'block';
+                logoutBtn.style.display = 'block';
+                document.getElementById('current-username').textContent = user.user.username;
+                document.getElementById('current-userid').textContent = user.user.id;
+                
+                if (user.user.created_at) {
+                    const createdDate = new Date(user.user.created_at);
+                    document.getElementById('current-created').textContent = createdDate.toLocaleString();
+                }
+                
+                updateStatusIcon('session-status-icon', 'success', '✓');
+                document.getElementById('session-status').textContent = `Authenticated as ${user.user.username}`;
+                document.getElementById('session-status').style.color = '#28a745';
+                
+                // Update global status
+                updateStatusIcon('global-status', 'success');
+                document.getElementById('global-status-text').textContent = 'Connected';
+                
+            } else {
+                userInfo.style.display = 'none';
+                logoutBtn.style.display = 'none';
+                updateStatusIcon('session-status-icon', 'error', '✗');
+                document.getElementById('session-status').textContent = 'Not authenticated';
+                document.getElementById('session-status').style.color = '#dc3545';
+            }
+        }
+        
+        function updateConnectionStatus(connected, message = '') {
+            if (connected) {
+                updateStatusIcon('backend-status-icon', 'success', '✓');
+                document.getElementById('backend-status-text').textContent = 'Connected';
+            } else {
+                updateStatusIcon('backend-status-icon', 'error', '✗');
+                document.getElementById('backend-status-text').textContent = message || 'Disconnected';
+            }
+        }
+        
+        function updateDatabaseStatus(connected, message = '') {
+            if (connected) {
+                updateStatusIcon('db-status-icon', 'success', '✓');
+                document.getElementById('db-status').textContent = message || 'Connected';
+            } else {
+                updateStatusIcon('db-status-icon', 'error', '✗');
+                document.getElementById('db-status').textContent = message || 'Error';
+            }
+        }
         
         // Tab Management
         function showTab(tabName) {
@@ -387,96 +642,85 @@
             }
         }
         
-        // Utility Functions
-        function logMessage(message, type = 'info') {
-            const entry = document.createElement('div');
-            entry.className = `log-entry log-${type}`;
-            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
-            logContainer.appendChild(entry);
-            logContainer.scrollTop = logContainer.scrollHeight;
-        }
-        
-        function showAlert(message, type = 'info', duration = 5000) {
-            alertBox.textContent = message;
-            alertBox.className = `alert alert-${type}`;
-            alertBox.style.display = 'block';
-            
-            if (duration > 0) {
-                setTimeout(() => {
-                    alertBox.style.display = 'none';
-                }, duration);
-            }
-        }
-        
-        function updateUserInfo(user) {
-            const userInfo = document.getElementById('user-info');
-            const logoutBtn = document.getElementById('logout-btn');
-            
-            if (user) {
-                userInfo.style.display = 'block';
-                logoutBtn.style.display = 'block';
-                document.getElementById('current-username').textContent = user.username;
-                document.getElementById('current-userid').textContent = user.id;
-                document.getElementById('current-created').textContent = new Date(user.created_at).toLocaleString();
-            } else {
-                userInfo.style.display = 'none';
-                logoutBtn.style.display = 'none';
-            }
-        }
-        
         // API Functions
-        async function checkHealth() {
+        async function testConnection() {
             try {
-                logMessage('Checking backend health...', 'info');
+                logMessage('Testing connection to backend...', 'info');
+                updateConnectionStatus(false, 'Testing...');
+                
                 const response = await fetch(`${API_BASE}/health`, {
-                    credentials: 'include'
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
                 });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
                 
                 const data = await response.json();
                 
                 if (data.status === 'healthy') {
-                    document.getElementById('db-status').textContent = '✅ Connected';
-                    document.getElementById('db-status').style.color = '#28a745';
-                    showAlert('Backend is healthy!', 'success', 3000);
+                    updateConnectionStatus(true);
+                    updateDatabaseStatus(true, `Connected (${data.users_count} users)`);
+                    document.getElementById('total-users').textContent = data.users_count;
+                    
+                    showAlert('Backend connection successful!', 'success', 3000);
                     logMessage(`Health check: Database connected with ${data.users_count} users`, 'success');
+                    return true;
                 } else {
-                    document.getElementById('db-status').textContent = '❌ Error';
-                    document.getElementById('db-status').style.color = '#dc3545';
-                    showAlert('Backend health check failed', 'error');
+                    updateConnectionStatus(false, 'Unhealthy');
+                    updateDatabaseStatus(false, 'Error');
+                    showAlert('Backend unhealthy', 'error');
                     logMessage(`Health check failed: ${data.error}`, 'error');
+                    return false;
                 }
             } catch (error) {
-                document.getElementById('db-status').textContent = '❌ Connection failed';
-                document.getElementById('db-status').style.color = '#dc3545';
+                updateConnectionStatus(false, 'Connection failed');
+                updateDatabaseStatus(false, 'Error');
                 showAlert('Cannot connect to backend', 'error');
                 logMessage(`Connection error: ${error.message}`, 'error');
+                return false;
             }
+        }
+        
+        async function checkHealth() {
+            await testConnection();
         }
         
         async function checkAuth() {
             try {
                 logMessage('Checking authentication status...', 'info');
+                
                 const response = await fetch(`${API_BASE}/check_auth`, {
-                    credentials: 'include'
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
                 });
                 
                 const data = await response.json();
                 
                 if (data.authenticated) {
-                    document.getElementById('session-status').textContent = '✅ Authenticated';
-                    document.getElementById('session-status').style.color = '#28a745';
-                    updateUserInfo(data.user);
-                    logMessage(`Authenticated as: ${data.user.username}`, 'success');
+                    currentUser = data;
+                    updateUserInfo(data);
+                    logMessage(`Authenticated as: ${data.user.username} (ID: ${data.user.id})`, 'success');
                 } else {
-                    document.getElementById('session-status').textContent = '❌ Not authenticated';
-                    document.getElementById('session-status').style.color = '#6c757d';
+                    currentUser = null;
                     updateUserInfo(null);
                     logMessage('Not authenticated', 'info');
+                    
+                    // Show debug info if available
+                    if (data.debug) {
+                        logMessage(`Debug: cookies_received=${data.debug.cookies_received}`, 'info');
+                    }
                 }
             } catch (error) {
-                document.getElementById('session-status').textContent = '❌ Error checking auth';
-                document.getElementById('session-status').style.color = '#dc3545';
                 logMessage(`Auth check error: ${error.message}`, 'error');
+                console.error('Auth check error:', error);
             }
         }
         
@@ -508,7 +752,8 @@
                     method: 'POST',
                     credentials: 'include',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
                     },
                     body: JSON.stringify({
                         username: username,
@@ -520,8 +765,8 @@
                 const data = await response.json();
                 
                 if (data.success) {
-                    showAlert(data.message, 'success');
-                    logMessage(`Registration successful: ${username}`, 'success');
+                    showAlert(`Registration successful! Welcome ${username}!`, 'success');
+                    logMessage(`Registration successful: ${username} (ID: ${data.user.id})`, 'success');
                     
                     // Clear form
                     document.getElementById('reg-username').value = '';
@@ -529,8 +774,14 @@
                     document.getElementById('reg-confirm').value = '';
                     
                     // Update UI
-                    checkAuth();
+                    currentUser = {authenticated: true, user: data.user};
+                    updateUserInfo(currentUser);
+                    
+                    // Show login tab
                     showTab('login');
+                    
+                    // Update user count
+                    setTimeout(() => checkHealth(), 1000);
                 } else {
                     showAlert(data.message, 'error');
                     logMessage(`Registration failed: ${data.message}`, 'error');
@@ -558,7 +809,8 @@
                     method: 'POST',
                     credentials: 'include',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
                     },
                     body: JSON.stringify({
                         username: username,
@@ -570,7 +822,7 @@
                 const data = await response.json();
                 
                 if (data.success) {
-                    showAlert(data.message, 'success');
+                    showAlert(`Login successful! Welcome back ${username}!`, 'success');
                     logMessage(`Login successful: ${username}`, 'success');
                     
                     // Clear form
@@ -578,8 +830,8 @@
                     document.getElementById('login-password').value = '';
                     
                     // Update UI
-                    updateUserInfo(data.user);
-                    checkAuth();
+                    currentUser = {authenticated: true, user: data.user};
+                    updateUserInfo(currentUser);
                 } else {
                     showAlert(data.message, 'error');
                     logMessage(`Login failed: ${data.message}`, 'error');
@@ -599,7 +851,8 @@
                     method: 'POST',
                     credentials: 'include',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
                     }
                 });
                 
@@ -610,8 +863,8 @@
                     logMessage('Logout successful', 'success');
                     
                     // Update UI
+                    currentUser = null;
                     updateUserInfo(null);
-                    checkAuth();
                 } else {
                     showAlert(data.message, 'error');
                     logMessage(`Logout failed: ${data.message}`, 'error');
@@ -622,6 +875,57 @@
                 console.error('Logout error:', error);
             }
         }
+        
+        // Debug Functions
+        async function debugSession() {
+            try {
+                logMessage('Fetching session debug info...', 'info');
+                
+                const response = await fetch(`${API_BASE}/debug_session`, {
+                    credentials: 'include',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                console.log("Session Debug Info:", data);
+                
+                logMessage('Session debug info received (check console)', 'info');
+                showAlert('Session debug info logged to console', 'info', 3000);
+                
+                // Display some key info in log
+                logMessage(`Debug: authenticated=${data.authenticated}, cookies=${Object.keys(data.cookies_received).length}`, 'info');
+                
+            } catch (error) {
+                logMessage(`Debug error: ${error.message}`, 'error');
+                console.error("Debug error:", error);
+            }
+        }
+        
+        function clearLog() {
+            logContainer.innerHTML = '<div class="log-entry log-info"><span class="log-time" id="log-time"></span> Log cleared</div>';
+            updateLogTime();
+            logMessage('Log cleared', 'info');
+        }
+        
+        function clearCookies() {
+            // Note: This only works for cookies set with path=/
+            document.cookie.split(";").forEach(function(c) {
+                document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+            });
+            
+            logMessage('Cookies cleared (manual browser refresh may be needed)', 'info');
+            showAlert('Cookies cleared. Refresh page for changes to take effect.', 'info', 3000);
+            
+            // Update UI
+            currentUser = null;
+            updateUserInfo(null);
+        }
+        
+        // Auto-check auth every 30 seconds
+        setInterval(checkAuth, 30000);
+        
     </script>
 </body>
 </html>
