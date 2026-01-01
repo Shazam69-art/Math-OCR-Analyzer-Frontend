@@ -3,636 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auth Testing - PythonAnywhere PostgreSQL</title>
+    <title>Auth Test - Minimal</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
             padding: 20px;
+            background: #f5f5f5;
         }
-        
         .container {
-            width: 100%;
-            max-width: 1000px;
             background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
-        }
-        
-        .header {
-            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
-            color: white;
-            padding: 25px;
-            text-align: center;
-        }
-        
-        .header h1 {
-            font-size: 2.2rem;
-            margin-bottom: 8px;
-        }
-        
-        .header p {
-            opacity: 0.9;
-            font-size: 1rem;
-        }
-        
-        .header .status-indicator {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 8px;
-            background: #ff6b6b;
-        }
-        
-        .header .status-indicator.connected {
-            background: #51cf66;
-        }
-        
-        .content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
             padding: 30px;
-        }
-        
-        @media (max-width: 768px) {
-            .content {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        .form-section {
-            background: #f8f9fa;
-            padding: 22px;
-            border-radius: 15px;
-            border: 1px solid #e9ecef;
-        }
-        
-        .form-section h2 {
-            color: #4361ee;
-            margin-bottom: 18px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #4361ee;
-            font-size: 1.4rem;
-        }
-        
-        .form-group {
-            margin-bottom: 18px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 6px;
-            color: #495057;
-            font-weight: 500;
-            font-size: 0.95rem;
-        }
-        
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #dee2e6;
-            border-radius: 8px;
-            font-size: 15px;
-            transition: border-color 0.3s;
-        }
-        
-        .form-group input:focus {
-            outline: none;
-            border-color: #4361ee;
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
-        }
-        
-        .btn {
-            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            width: 100%;
-            margin-top: 8px;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 15px rgba(67, 97, 238, 0.3);
-        }
-        
-        .btn-logout {
-            background: linear-gradient(135deg, #ef476f 0%, #d90429 100%);
-        }
-        
-        .btn-logout:hover {
-            box-shadow: 0 8px 15px rgba(239, 71, 111, 0.3);
-        }
-        
-        .btn-secondary {
-            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
-            margin-top: 8px;
-        }
-        
-        .status-section {
-            padding: 22px;
-            border-radius: 15px;
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-        }
-        
-        .status-section h2 {
-            color: #4361ee;
-            margin-bottom: 18px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #4361ee;
-            font-size: 1.4rem;
-        }
-        
-        .status-box {
-            background: white;
-            padding: 18px;
             border-radius: 10px;
-            border-left: 5px solid #4361ee;
-            margin-bottom: 18px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        
-        .status-item {
-            margin: 10px 0;
+        h1, h2 {
+            color: #333;
+            margin-top: 0;
+        }
+        .tabs {
             display: flex;
-            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
         }
-        
-        .status-icon {
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            margin-right: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            color: white;
-        }
-        
-        .status-icon.success {
-            background: #51cf66;
-        }
-        
-        .status-icon.error {
-            background: #ff6b6b;
-        }
-        
-        .status-icon.info {
-            background: #4dabf7;
-        }
-        
-        .user-info {
-            background: #e7f5ff;
-            border-left: 5px solid #4361ee;
-            padding: 18px;
-            border-radius: 10px;
-            margin-bottom: 18px;
-        }
-        
-        .user-info h3 {
-            color: #4361ee;
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-        }
-        
-        .user-info p {
-            margin: 6px 0;
-            color: #495057;
-            font-size: 0.95rem;
-        }
-        
-        .alert {
-            padding: 14px;
-            border-radius: 8px;
-            margin: 12px 0;
-            display: none;
-            animation: slideIn 0.3s ease;
-        }
-        
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .alert-success {
-            background: #d4edda;
-            color: #155724;
-            border-left: 5px solid #28a745;
-        }
-        
-        .alert-error {
-            background: #f8d7da;
-            color: #721c24;
-            border-left: 5px solid #dc3545;
-        }
-        
-        .alert-info {
-            background: #d1ecf1;
-            color: #0c5460;
-            border-left: 5px solid #17a2b8;
-        }
-        
-        .tab-buttons {
-            display: flex;
-            margin-bottom: 18px;
-            border-bottom: 2px solid #e9ecef;
-        }
-        
         .tab-btn {
-            flex: 1;
-            padding: 12px;
+            padding: 10px 20px;
             background: none;
             border: none;
-            font-size: 15px;
-            font-weight: 600;
-            color: #6c757d;
             cursor: pointer;
-            transition: all 0.3s;
+            font-size: 16px;
+            color: #666;
         }
-        
         .tab-btn.active {
             color: #4361ee;
             border-bottom: 3px solid #4361ee;
             margin-bottom: -2px;
         }
-        
         .tab-content {
             display: none;
+            padding: 20px 0;
         }
-        
         .tab-content.active {
             display: block;
         }
-        
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            background: #4361ee;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+            width: 100%;
+        }
+        button:hover {
+            background: #3a56d4;
+        }
+        .btn-logout {
+            background: #ef476f;
+        }
+        .status {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid #4361ee;
+        }
         .log {
             background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
-            padding: 14px;
-            max-height: 220px;
-            overflow-y: auto;
-            font-family: 'Courier New', monospace;
-            font-size: 13px;
-            margin-top: 18px;
-            line-height: 1.4;
-        }
-        
-        .log-entry {
-            margin: 6px 0;
-            padding: 6px;
-            border-radius: 5px;
-            border-left: 3px solid #4dabf7;
-        }
-        
-        .log-success {
-            border-left-color: #51cf66;
-            background: rgba(81, 207, 102, 0.1);
-        }
-        
-        .log-error {
-            border-left-color: #ff6b6b;
-            background: rgba(255, 107, 107, 0.1);
-        }
-        
-        .log-info {
-            border-left-color: #4dabf7;
-            background: rgba(77, 171, 247, 0.1);
-        }
-        
-        .log-time {
-            color: #6c757d;
-            font-size: 11px;
-            margin-right: 8px;
-        }
-        
-        .toggle-link {
-            text-align: center;
-            margin-top: 16px;
-            color: #4361ee;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 0.95rem;
-        }
-        
-        .toggle-link:hover {
-            text-decoration: underline;
-        }
-        
-        .action-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        
-        .debug-section {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            border-radius: 8px;
             padding: 15px;
-            margin-top: 15px;
-        }
-        
-        .debug-section h4 {
-            color: #856404;
-            margin-bottom: 10px;
-        }
-        
-        .debug-btn {
-            background: #ffc107;
-            color: #856404;
-            border: none;
-            padding: 8px 15px;
             border-radius: 5px;
-            cursor: pointer;
+            margin-top: 20px;
+            font-family: monospace;
             font-size: 14px;
-            margin-right: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+        }
+        .success {
+            color: #28a745;
+        }
+        .error {
+            color: #dc3545;
+        }
+        .info {
+            color: #17a2b8;
+        }
+        .user-info {
+            background: #e7f5ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #4361ee;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>🔐 Auth Testing Dashboard</h1>
-            <p>PythonAnywhere + PostgreSQL + Flask Authentication</p>
-            <div style="margin-top: 10px;">
-                <span class="status-indicator" id="global-status"></span>
-                <span id="global-status-text">Connecting...</span>
-            </div>
+        <h1>🔐 Minimal Auth Test</h1>
+        <p>Testing PythonAnywhere + PostgreSQL Authentication</p>
+        
+        <div class="status">
+            <strong>Backend:</strong> <span id="backend-status">Checking...</span><br>
+            <strong>Database:</strong> <span id="db-status">Checking...</span><br>
+            <strong>Session:</strong> <span id="session-status">Checking...</span>
         </div>
         
-        <div class="content">
-            <!-- Left Column: Forms -->
-            <div class="form-section">
-                <div class="tab-buttons">
-                    <button class="tab-btn active" onclick="showTab('register')">Register</button>
-                    <button class="tab-btn" onclick="showTab('login')">Login</button>
-                </div>
-                
-                <!-- Register Form -->
-                <div id="register-tab" class="tab-content active">
-                    <h2>Create New Account</h2>
-                    <div class="form-group">
-                        <label for="reg-username">Username</label>
-                        <input type="text" id="reg-username" placeholder="Enter username (min 3 chars)">
-                    </div>
-                    <div class="form-group">
-                        <label for="reg-password">Password</label>
-                        <input type="password" id="reg-password" placeholder="Enter password (min 6 chars)">
-                    </div>
-                    <div class="form-group">
-                        <label for="reg-confirm">Confirm Password</label>
-                        <input type="password" id="reg-confirm" placeholder="Confirm password">
-                    </div>
-                    <button class="btn" onclick="register()">Create Account</button>
-                </div>
-                
-                <!-- Login Form -->
-                <div id="login-tab" class="tab-content">
-                    <h2>Login to Account</h2>
-                    <div class="form-group">
-                        <label for="login-username">Username</label>
-                        <input type="text" id="login-username" placeholder="Enter username">
-                    </div>
-                    <div class="form-group">
-                        <label for="login-password">Password</label>
-                        <input type="password" id="login-password" placeholder="Enter password">
-                    </div>
-                    <button class="btn" onclick="login()">Login</button>
-                </div>
-                
-                <!-- Action Buttons -->
-                <div style="margin-top: 20px;">
-                    <div class="action-buttons">
-                        <button class="btn" onclick="checkHealth()">Check Health</button>
-                        <button class="btn" onclick="checkAuth()">Check Auth Status</button>
-                    </div>
-                    <button class="btn btn-logout" onclick="logout()" style="display: none; margin-top: 10px;" id="logout-btn">Logout</button>
-                </div>
-                
-                <!-- Debug Section -->
-                <div class="debug-section">
-                    <h4>🔧 Debug Tools</h4>
-                    <button class="debug-btn" onclick="debugSession()">Debug Session</button>
-                    <button class="debug-btn" onclick="clearLog()">Clear Log</button>
-                    <button class="debug-btn" onclick="clearCookies()">Clear Cookies</button>
-                    <button class="debug-btn" onclick="testConnection()">Test Connection</button>
-                </div>
-            </div>
-            
-            <!-- Right Column: Status & Info -->
-            <div class="status-section">
-                <h2>Status & Information</h2>
-                
-                <div class="user-info" id="user-info" style="display: none;">
-                    <h3>👤 Current User</h3>
-                    <div class="status-item">
-                        <div class="status-icon success">✓</div>
-                        <div>
-                            <strong>Username:</strong> <span id="current-username"></span><br>
-                            <small>ID: <span id="current-userid"></span></small>
-                        </div>
-                    </div>
-                    <div class="status-item">
-                        <div class="status-icon info">i</div>
-                        <div>
-                            <strong>Created:</strong> <span id="current-created"></span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="status-box">
-                    <h3>🔗 Connection Status</h3>
-                    <div class="status-item">
-                        <div class="status-icon" id="backend-status-icon">?</div>
-                        <div>
-                            <strong>Backend:</strong> <span id="backend-url">navalsheth.pythonanywhere.com</span><br>
-                            <small id="backend-status-text">Checking...</small>
-                        </div>
-                    </div>
-                    <div class="status-item">
-                        <div class="status-icon" id="db-status-icon">?</div>
-                        <div>
-                            <strong>Database:</strong> <span id="db-status">Checking...</span>
-                        </div>
-                    </div>
-                    <div class="status-item">
-                        <div class="status-icon" id="session-status-icon">?</div>
-                        <div>
-                            <strong>Session:</strong> <span id="session-status">Checking...</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Alerts -->
-                <div id="alert" class="alert"></div>
-                
-                <!-- Log -->
-                <div class="log" id="log">
-                    <div class="log-entry log-info">
-                        <span class="log-time" id="log-time"></span>
-                        System initialized. Ready for testing.
-                    </div>
-                </div>
-            </div>
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('register')">Register</button>
+            <button class="tab-btn" onclick="showTab('login')">Login</button>
         </div>
         
-        <div style="padding: 15px; background: #f8f9fa; border-top: 1px solid #e9ecef; text-align: center; color: #6c757d; font-size: 0.9rem;">
-            <p>Backend: Flask + PostgreSQL on PythonAnywhere | Frontend: HTML/JS | Session-based Authentication</p>
-            <p>Database: <span id="total-users">0</span> users registered | API: <span id="api-version">v1.0</span></p>
+        <div id="register-tab" class="tab-content active">
+            <h2>Register New User</h2>
+            <input type="text" id="reg-username" placeholder="Username (min 3 chars)">
+            <input type="password" id="reg-password" placeholder="Password (min 6 chars)">
+            <input type="password" id="reg-confirm" placeholder="Confirm Password">
+            <button onclick="register()">Register</button>
+        </div>
+        
+        <div id="login-tab" class="tab-content">
+            <h2>Login</h2>
+            <input type="text" id="login-username" placeholder="Username">
+            <input type="password" id="login-password" placeholder="Password">
+            <button onclick="login()">Login</button>
+        </div>
+        
+        <div id="user-info" class="user-info" style="display: none;">
+            <h3>👤 Logged In</h3>
+            <p><strong>Username:</strong> <span id="current-username"></span></p>
+            <p><strong>User ID:</strong> <span id="current-userid"></span></p>
+            <button class="btn-logout" onclick="logout()">Logout</button>
+        </div>
+        
+        <div style="margin: 20px 0; text-align: center;">
+            <button onclick="checkHealth()" style="background: #17a2b8; width: auto;">Check Health</button>
+            <button onclick="checkAuth()" style="background: #28a745; width: auto;">Check Auth</button>
+            <button onclick="clearCookies()" style="background: #6c757d; width: auto;">Clear Cookies</button>
+        </div>
+        
+        <div class="log" id="log">
+            <div class="info">[System Ready]</div>
         </div>
     </div>
 
     <script>
-        // Configuration
+        // ===== FETCH OVERRIDE - CRITICAL =====
+        const originalFetch = window.fetch;
+        window.fetch = function(url, options = {}) {
+            // Auto-add credentials for our API
+            if (typeof url === 'string' && url.includes('navalsheth.pythonanywhere.com')) {
+                options.credentials = 'include';
+                options.headers = {
+                    ...options.headers,
+                    'Accept': 'application/json'
+                };
+            }
+            return originalFetch.call(this, url, options);
+        };
+        // ===== END FETCH OVERRIDE =====
+        
         const API_BASE = 'https://navalsheth.pythonanywhere.com/api';
-        let currentUser = null;
         
-        // DOM Elements
-        const logContainer = document.getElementById('log');
-        const alertBox = document.getElementById('alert');
-        const logTimeElement = document.getElementById('log-time');
-        
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set initial log time
-            updateLogTime();
-            setInterval(updateLogTime, 1000);
-            
-            logMessage('System initialized. Checking backend connection...', 'info');
-            
-            // Initialize status indicators
-            updateStatusIcon('backend-status-icon', 'info', '?');
-            updateStatusIcon('db-status-icon', 'info', '?');
-            updateStatusIcon('session-status-icon', 'info', '?');
-            updateStatusIcon('global-status', 'info', '?');
-            
-            document.getElementById('global-status-text').textContent = 'Connecting...';
-            
-            // Test connection on load
-            setTimeout(() => {
-                testConnection();
-                checkAuth();
-            }, 500);
-        });
-        
-        // Utility Functions
-        function updateLogTime() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
-            logTimeElement.textContent = `[${timeString}]`;
-        }
-        
-        function logMessage(message, type = 'info') {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
-            
+        // Logging
+        function log(msg, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const time = new Date().toLocaleTimeString();
             const entry = document.createElement('div');
-            entry.className = `log-entry log-${type}`;
-            entry.innerHTML = `<span class="log-time">[${timeString}]</span> ${message}`;
-            logContainer.appendChild(entry);
-            logContainer.scrollTop = logContainer.scrollHeight;
+            entry.className = type;
+            entry.textContent = `[${time}] ${msg}`;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
         }
         
-        function updateStatusIcon(elementId, type, symbol = '') {
-            const element = document.getElementById(elementId);
-            element.className = `status-icon ${type}`;
-            element.textContent = symbol;
-        }
-        
-        function showAlert(message, type = 'info', duration = 5000) {
-            alertBox.textContent = message;
-            alertBox.className = `alert alert-${type}`;
-            alertBox.style.display = 'block';
-            
-            // Log the alert
-            logMessage(`Alert: ${message}`, type);
-            
-            if (duration > 0) {
-                setTimeout(() => {
-                    alertBox.style.display = 'none';
-                }, duration);
-            }
-        }
-        
-        function updateUserInfo(user) {
-            const userInfo = document.getElementById('user-info');
-            const logoutBtn = document.getElementById('logout-btn');
-            
-            if (user && user.authenticated) {
-                userInfo.style.display = 'block';
-                logoutBtn.style.display = 'block';
-                document.getElementById('current-username').textContent = user.user.username;
-                document.getElementById('current-userid').textContent = user.user.id;
-                
-                if (user.user.created_at) {
-                    const createdDate = new Date(user.user.created_at);
-                    document.getElementById('current-created').textContent = createdDate.toLocaleString();
-                }
-                
-                updateStatusIcon('session-status-icon', 'success', '✓');
-                document.getElementById('session-status').textContent = `Authenticated as ${user.user.username}`;
-                document.getElementById('session-status').style.color = '#28a745';
-                
-                // Update global status
-                updateStatusIcon('global-status', 'success');
-                document.getElementById('global-status-text').textContent = 'Connected';
-                
-            } else {
-                userInfo.style.display = 'none';
-                logoutBtn.style.display = 'none';
-                updateStatusIcon('session-status-icon', 'error', '✗');
-                document.getElementById('session-status').textContent = 'Not authenticated';
-                document.getElementById('session-status').style.color = '#dc3545';
-            }
-        }
-        
-        function updateConnectionStatus(connected, message = '') {
-            if (connected) {
-                updateStatusIcon('backend-status-icon', 'success', '✓');
-                document.getElementById('backend-status-text').textContent = 'Connected';
-            } else {
-                updateStatusIcon('backend-status-icon', 'error', '✗');
-                document.getElementById('backend-status-text').textContent = message || 'Disconnected';
-            }
-        }
-        
-        function updateDatabaseStatus(connected, message = '') {
-            if (connected) {
-                updateStatusIcon('db-status-icon', 'success', '✓');
-                document.getElementById('db-status').textContent = message || 'Connected';
-            } else {
-                updateStatusIcon('db-status-icon', 'error', '✗');
-                document.getElementById('db-status').textContent = message || 'Error';
-            }
-        }
-        
-        // Tab Management
+        // Tab management
         function showTab(tabName) {
-            // Update buttons
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
             
-            // Show selected tab
             if (tabName === 'register') {
                 document.querySelector('.tab-btn:nth-child(1)').classList.add('active');
                 document.getElementById('register-tab').classList.add('active');
@@ -642,85 +201,64 @@
             }
         }
         
+        // Update user info
+        function updateUserInfo(user) {
+            const userInfo = document.getElementById('user-info');
+            if (user && user.authenticated) {
+                userInfo.style.display = 'block';
+                document.getElementById('current-username').textContent = user.user.username;
+                document.getElementById('current-userid').textContent = user.user.id;
+                document.getElementById('session-status').textContent = `Logged in as ${user.user.username}`;
+                document.getElementById('session-status').className = 'success';
+            } else {
+                userInfo.style.display = 'none';
+                document.getElementById('session-status').textContent = 'Not logged in';
+                document.getElementById('session-status').className = 'error';
+            }
+        }
+        
         // API Functions
-        async function testConnection() {
+        async function checkHealth() {
             try {
-                logMessage('Testing connection to backend...', 'info');
-                updateConnectionStatus(false, 'Testing...');
+                log('Checking backend health...', 'info');
+                document.getElementById('backend-status').textContent = 'Checking...';
                 
-                const response = await fetch(`${API_BASE}/health`, {
-                    method: 'GET',
-                    credentials: 'include',
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
-                }
-                
+                const response = await fetch(`${API_BASE}/health`);
                 const data = await response.json();
                 
                 if (data.status === 'healthy') {
-                    updateConnectionStatus(true);
-                    updateDatabaseStatus(true, `Connected (${data.users_count} users)`);
-                    document.getElementById('total-users').textContent = data.users_count;
-                    
-                    showAlert('Backend connection successful!', 'success', 3000);
-                    logMessage(`Health check: Database connected with ${data.users_count} users`, 'success');
+                    document.getElementById('backend-status').textContent = '✅ Connected';
+                    document.getElementById('db-status').textContent = `✅ ${data.users_count} users`;
+                    log(`Health: Connected, ${data.users_count} users`, 'success');
                     return true;
                 } else {
-                    updateConnectionStatus(false, 'Unhealthy');
-                    updateDatabaseStatus(false, 'Error');
-                    showAlert('Backend unhealthy', 'error');
-                    logMessage(`Health check failed: ${data.error}`, 'error');
+                    document.getElementById('backend-status').textContent = '❌ Error';
+                    document.getElementById('db-status').textContent = '❌ Error';
+                    log(`Health error: ${data.error}`, 'error');
                     return false;
                 }
             } catch (error) {
-                updateConnectionStatus(false, 'Connection failed');
-                updateDatabaseStatus(false, 'Error');
-                showAlert('Cannot connect to backend', 'error');
-                logMessage(`Connection error: ${error.message}`, 'error');
+                document.getElementById('backend-status').textContent = '❌ Connection failed';
+                log(`Connection error: ${error.message}`, 'error');
                 return false;
             }
         }
         
-        async function checkHealth() {
-            await testConnection();
-        }
-        
         async function checkAuth() {
             try {
-                logMessage('Checking authentication status...', 'info');
-                
-                const response = await fetch(`${API_BASE}/check_auth`, {
-                    method: 'GET',
-                    credentials: 'include',
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-                
+                log('Checking authentication...', 'info');
+                const response = await fetch(`${API_BASE}/check_auth`);
                 const data = await response.json();
                 
                 if (data.authenticated) {
-                    currentUser = data;
+                    log(`✅ Authenticated as: ${data.user.username}`, 'success');
                     updateUserInfo(data);
-                    logMessage(`Authenticated as: ${data.user.username} (ID: ${data.user.id})`, 'success');
                 } else {
-                    currentUser = null;
+                    log('Not authenticated', 'info');
                     updateUserInfo(null);
-                    logMessage('Not authenticated', 'info');
-                    
-                    // Show debug info if available
-                    if (data.debug) {
-                        logMessage(`Debug: cookies_received=${data.debug.cookies_received}`, 'info');
-                    }
                 }
             } catch (error) {
-                logMessage(`Auth check error: ${error.message}`, 'error');
-                console.error('Auth check error:', error);
+                log(`Auth check error: ${error.message}`, 'error');
             }
         }
         
@@ -729,31 +267,28 @@
             const password = document.getElementById('reg-password').value;
             const confirm = document.getElementById('reg-confirm').value;
             
-            // Validation
             if (!username || username.length < 3) {
-                showAlert('Username must be at least 3 characters', 'error');
+                alert('Username must be at least 3 characters');
                 return;
             }
             
             if (!password || password.length < 6) {
-                showAlert('Password must be at least 6 characters', 'error');
+                alert('Password must be at least 6 characters');
                 return;
             }
             
             if (password !== confirm) {
-                showAlert('Passwords do not match', 'error');
+                alert('Passwords do not match');
                 return;
             }
             
             try {
-                logMessage(`Attempting to register user: ${username}`, 'info');
+                log(`Registering user: ${username}`, 'info');
                 
                 const response = await fetch(`${API_BASE}/register`, {
                     method: 'POST',
-                    credentials: 'include',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
                         username: username,
@@ -765,31 +300,27 @@
                 const data = await response.json();
                 
                 if (data.success) {
-                    showAlert(`Registration successful! Welcome ${username}!`, 'success');
-                    logMessage(`Registration successful: ${username} (ID: ${data.user.id})`, 'success');
+                    log(`✅ Registration successful: ${username}`, 'success');
+                    alert(`Registered! Welcome ${username}`);
                     
                     // Clear form
                     document.getElementById('reg-username').value = '';
                     document.getElementById('reg-password').value = '';
                     document.getElementById('reg-confirm').value = '';
                     
-                    // Update UI
-                    currentUser = {authenticated: true, user: data.user};
-                    updateUserInfo(currentUser);
+                    // Check auth status
+                    checkAuth();
+                    checkHealth();
                     
-                    // Show login tab
+                    // Switch to login tab
                     showTab('login');
-                    
-                    // Update user count
-                    setTimeout(() => checkHealth(), 1000);
                 } else {
-                    showAlert(data.message, 'error');
-                    logMessage(`Registration failed: ${data.message}`, 'error');
+                    log(`Registration failed: ${data.message}`, 'error');
+                    alert(`Registration failed: ${data.message}`);
                 }
             } catch (error) {
-                showAlert('Registration failed. Check console for details.', 'error');
-                logMessage(`Registration error: ${error.message}`, 'error');
-                console.error('Registration error:', error);
+                log(`Registration error: ${error.message}`, 'error');
+                alert('Registration failed. Check console.');
             }
         }
         
@@ -798,134 +329,87 @@
             const password = document.getElementById('login-password').value;
             
             if (!username || !password) {
-                showAlert('Please enter username and password', 'error');
+                alert('Please enter username and password');
                 return;
             }
             
             try {
-                logMessage(`Attempting login for: ${username}`, 'info');
+                log(`Logging in: ${username}`, 'info');
                 
                 const response = await fetch(`${API_BASE}/login`, {
                     method: 'POST',
-                    credentials: 'include',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
                         username: username,
-                        password: password,
-                        remember: true
+                        password: password
                     })
                 });
                 
                 const data = await response.json();
                 
                 if (data.success) {
-                    showAlert(`Login successful! Welcome back ${username}!`, 'success');
-                    logMessage(`Login successful: ${username}`, 'success');
+                    log(`✅ Login successful: ${username}`, 'success');
+                    alert(`Welcome back ${username}!`);
                     
                     // Clear form
                     document.getElementById('login-username').value = '';
                     document.getElementById('login-password').value = '';
                     
                     // Update UI
-                    currentUser = {authenticated: true, user: data.user};
-                    updateUserInfo(currentUser);
+                    checkAuth();
                 } else {
-                    showAlert(data.message, 'error');
-                    logMessage(`Login failed: ${data.message}`, 'error');
+                    log(`Login failed: ${data.message}`, 'error');
+                    alert(`Login failed: ${data.message}`);
                 }
             } catch (error) {
-                showAlert('Login failed. Check console for details.', 'error');
-                logMessage(`Login error: ${error.message}`, 'error');
-                console.error('Login error:', error);
+                log(`Login error: ${error.message}`, 'error');
+                alert('Login failed. Check console.');
             }
         }
         
         async function logout() {
             try {
-                logMessage('Attempting logout...', 'info');
+                log('Logging out...', 'info');
                 
                 const response = await fetch(`${API_BASE}/logout`, {
                     method: 'POST',
-                    credentials: 'include',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
+                        'Content-Type': 'application/json'
                     }
                 });
                 
                 const data = await response.json();
                 
                 if (data.success) {
-                    showAlert(data.message, 'success');
-                    logMessage('Logout successful', 'success');
-                    
-                    // Update UI
-                    currentUser = null;
+                    log('✅ Logged out', 'success');
+                    alert('Logged out successfully');
                     updateUserInfo(null);
                 } else {
-                    showAlert(data.message, 'error');
-                    logMessage(`Logout failed: ${data.message}`, 'error');
+                    log(`Logout failed: ${data.message}`, 'error');
                 }
             } catch (error) {
-                showAlert('Logout failed', 'error');
-                logMessage(`Logout error: ${error.message}`, 'error');
-                console.error('Logout error:', error);
+                log(`Logout error: ${error.message}`, 'error');
             }
-        }
-        
-        // Debug Functions
-        async function debugSession() {
-            try {
-                logMessage('Fetching session debug info...', 'info');
-                
-                const response = await fetch(`${API_BASE}/debug_session`, {
-                    credentials: 'include',
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-                
-                const data = await response.json();
-                console.log("Session Debug Info:", data);
-                
-                logMessage('Session debug info received (check console)', 'info');
-                showAlert('Session debug info logged to console', 'info', 3000);
-                
-                // Display some key info in log
-                logMessage(`Debug: authenticated=${data.authenticated}, cookies=${Object.keys(data.cookies_received).length}`, 'info');
-                
-            } catch (error) {
-                logMessage(`Debug error: ${error.message}`, 'error');
-                console.error("Debug error:", error);
-            }
-        }
-        
-        function clearLog() {
-            logContainer.innerHTML = '<div class="log-entry log-info"><span class="log-time" id="log-time"></span> Log cleared</div>';
-            updateLogTime();
-            logMessage('Log cleared', 'info');
         }
         
         function clearCookies() {
-            // Note: This only works for cookies set with path=/
             document.cookie.split(";").forEach(function(c) {
                 document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
             });
-            
-            logMessage('Cookies cleared (manual browser refresh may be needed)', 'info');
-            showAlert('Cookies cleared. Refresh page for changes to take effect.', 'info', 3000);
-            
-            // Update UI
-            currentUser = null;
+            log('Cookies cleared. Refresh page.', 'info');
             updateUserInfo(null);
+            alert('Cookies cleared. Page will refresh.');
+            setTimeout(() => location.reload(), 1000);
         }
         
-        // Auto-check auth every 30 seconds
-        setInterval(checkAuth, 30000);
-        
+        // Initialize
+        window.onload = function() {
+            log('System initialized', 'info');
+            checkHealth();
+            setTimeout(checkAuth, 1000);
+        };
     </script>
 </body>
 </html>
