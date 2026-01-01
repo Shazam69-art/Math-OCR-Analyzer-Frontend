@@ -53,7 +53,7 @@
             --shadow-md: 0 4px 6px rgba(0,0,0,0.07);
             --shadow-lg: 0 10px 15px rgba(0,0,0,0.08);
         }
-       
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Roboto', sans-serif;
             background-color: var(--background);
@@ -64,106 +64,95 @@
         }
         /* Login Page Styles */
         #loginPage {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #ffffff; /* Pure white background */
-    position: relative;
-    overflow: hidden;
-}
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            position: relative;
+            overflow: hidden;
+        }
         @keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
         .login-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 0;
-}
-.login-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 0;
-}
-.login-background::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    right: -50%;
-    bottom: -50%;
-    background: #ffffff; /* Pure white background - NO transparency */
-    /* REMOVE ALL the radial-gradient lines completely */
-    /* NO animation either */
-}
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+        }
+        .login-background::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            right: -50%;
+            bottom: -50%;
+            background: #ffffff;
+        }
         .login-container {
             position: relative;
-            z-index: 2; /* Add this to ensure login content stays above math terms */
+            z-index: 2;
             width: 100%;
             max-width: 420px;
             padding: 0 20px;
         }
         /* Mathematical Terms Styles */
-.math-terms-left,
-.math-terms-right {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 200px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 1;
-    pointer-events: none; /* So they don't interfere with clicks */
-}
-.math-terms-left {
-    left: 40px;
-}
-.math-terms-right {
-    right: 40px;
-}
-.math-term {
-    font-size: 18px;
-    color: #000000;
-    margin: 20px 0;
-    padding: 12px 15px;
-    text-align: center;
-    opacity: 1; /* Full opacity */
-    transition: all 0.3s ease;
-    font-family: 'Cambria Math', 'Latin Modern Math', STIXGeneral, serif;
-    font-weight: 500;
-    background: rgba(255, 255, 255, 0.9); /* White background with slight transparency */
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-.math-term:hover {
-    transform: scale(1.05);
-    background: rgba(255, 255, 255, 1); /* Solid white on hover */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-/* For mobile, hide the math terms */
-@media (max-width: 1024px) {
-    .math-terms-left,
-    .math-terms-right {
-        display: none;
-    }
-}
+        .math-terms-left,
+        .math-terms-right {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .math-terms-left {
+            left: 40px;
+        }
+        .math-terms-right {
+            right: 40px;
+        }
+        .math-term {
+            font-size: 18px;
+            color: #000000;
+            margin: 20px 0;
+            padding: 12px 15px;
+            text-align: center;
+            opacity: 1;
+            transition: all 0.3s ease;
+            font-family: 'Cambria Math', 'Latin Modern Math', STIXGeneral, serif;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .math-term:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        @media (max-width: 1024px) {
+            .math-terms-left,
+            .math-terms-right {
+                display: none;
+            }
+        }
         .login-header {
             text-align: center;
             margin-bottom: 40px;
         }
         .ai-mastery-text {
-            color: #4361ee; /* Full blue using your --primary variable color */
-            font-size: 42px; /* Medium to large size */
+            color: #4361ee;
+            font-size: 42px;
             font-weight: 700;
             margin-bottom: 20px;
             text-align: center;
@@ -306,13 +295,11 @@
             width: 100%;
             overflow: hidden;
         }
-       
         .dashboard-layout {
             display: flex;
             height: 100%;
             width: 100%;
         }
-       
         .sidebar {
             width: 280px;
             background-color: var(--sidebar);
@@ -322,23 +309,19 @@
             height: 100%;
             box-shadow: var(--shadow-sm);
         }
-       
         .sidebar-header {
             padding: 24px;
             border-bottom: 1px solid var(--sidebar-border);
         }
-       
         .sidebar-logo {
             display: flex;
             align-items: center;
             gap: 12px;
             cursor: pointer;
         }
-       
         .sidebar-logo:hover {
             opacity: 0.8;
         }
-       
         .sidebar-logo-icon {
             width: 40px;
             height: 40px;
@@ -348,25 +331,21 @@
             align-items: center;
             justify-content: center;
         }
-       
         .sidebar-logo-icon svg {
             width: 24px;
             height: 24px;
             color: var(--primary-foreground);
         }
-       
         .sidebar-logo h1 {
             font-size: 20px;
             font-weight: 700;
             color: var(--foreground);
         }
-       
         .sidebar-content {
             flex: 1;
             overflow-y: auto;
             padding: 20px;
         }
-       
         .sidebar-section-title {
             font-size: 12px;
             font-weight: 600;
@@ -376,7 +355,6 @@
             padding: 0 12px;
             margin-bottom: 12px;
         }
-       
         .sidebar-item {
             padding: 12px;
             border-radius: 8px;
@@ -384,11 +362,9 @@
             transition: all 0.2s;
             margin-bottom: 8px;
         }
-       
         .sidebar-item:hover {
             background-color: var(--sidebar-accent);
         }
-       
         .sidebar-item-title {
             font-weight: 500;
             font-size: 14px;
@@ -397,19 +373,16 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-       
         .sidebar-item-date {
             font-size: 12px;
             color: var(--muted-foreground);
         }
-       
         .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
             overflow: hidden;
         }
-       
         .header {
             border-bottom: 1px solid var(--border);
             background-color: var(--card);
@@ -419,24 +392,20 @@
             justify-content: space-between;
             width: 100%;
         }
-       
         .header-left {
             display: flex;
             align-items: center;
             gap: 16px;
         }
-       
         .header-logo {
             display: flex;
             align-items: center;
             gap: 8px;
             cursor: pointer;
         }
-       
         .header-logo:hover {
             opacity: 0.8;
         }
-       
         .header-logo-icon {
             width: 32px;
             height: 32px;
@@ -446,35 +415,29 @@
             align-items: center;
             justify-content: center;
         }
-       
         .header-logo-icon svg {
             width: 18px;
             height: 18px;
             color: var(--primary-foreground);
         }
-       
         .header-brand {
             font-weight: 700;
             font-size: 18px;
             color: var(--foreground);
         }
-       
         .header-right {
             display: flex;
             align-items: center;
             gap: 16px;
         }
-       
         .user-info {
             font-size: 14px;
             font-weight: 500;
         }
-       
         .user-name {
             color: var(--primary);
             font-weight: 600;
         }
-       
         .btn-logout {
             background-color: transparent;
             color: var(--foreground);
@@ -487,40 +450,33 @@
             align-items: center;
             gap: 6px;
         }
-       
         .btn-logout:hover {
             background-color: var(--accent);
         }
-       
         .content-area {
             flex: 1;
             overflow-y: auto;
             padding: 24px;
             width: 100%;
         }
-       
         .upload-section {
             max-width: 1200px;
             margin: 0 auto;
             width: 100%;
         }
-       
         .section-header {
             margin-bottom: 32px;
         }
-       
         .section-header h1 {
             font-size: 36px;
             font-weight: 700;
             margin-bottom: 8px;
             color: var(--foreground);
         }
-       
         .section-header p {
             font-size: 18px;
             color: var(--muted-foreground);
         }
-       
         .upload-grid {
             display: flex;
             justify-content: center;
@@ -528,7 +484,6 @@
             margin-bottom: 32px;
             flex-wrap: wrap;
         }
-       
         .upload-card {
             background-color: var(--card);
             border: 2px dashed var(--border);
@@ -541,13 +496,11 @@
             width: 100%;
             box-shadow: var(--shadow-sm);
         }
-       
         .upload-card:hover {
             border-color: var(--primary);
             transform: translateY(-2px);
             box-shadow: var(--shadow-md);
         }
-       
         .upload-icon {
             width: 64px;
             height: 64px;
@@ -558,30 +511,25 @@
             justify-content: center;
             margin: 0 auto 16px;
         }
-       
         .upload-icon svg {
             width: 32px;
             height: 32px;
             color: var(--primary);
         }
-       
         .upload-card h3 {
             font-weight: 600;
             margin-bottom: 8px;
             font-size: 18px;
         }
-       
         .upload-card p {
             font-size: 14px;
             color: var(--muted-foreground);
             margin-bottom: 16px;
         }
-       
         .file-list {
             text-align: left;
             margin-top: 16px;
         }
-       
         .file-item {
             display: flex;
             align-items: center;
@@ -593,12 +541,10 @@
             background: var(--muted);
             border-radius: 4px;
         }
-       
         .file-item svg {
             width: 12px;
             height: 12px;
         }
-       
         .btn-start {
             background: linear-gradient(135deg, var(--primary) 0%, #3a56d4 100%);
             color: var(--primary-foreground);
@@ -614,7 +560,6 @@
             transition: all 0.2s;
             font-weight: 600;
         }
-       
         .btn-start:disabled {
             opacity: 0.5;
             cursor: not-allowed;
@@ -623,13 +568,11 @@
             transform: translateY(-1px);
             box-shadow: var(--shadow-md);
         }
-       
         .results-section {
             max-width: 1200px;
             margin: 0 auto;
             width: 100%;
         }
-       
         .results-header {
             display: flex;
             align-items: center;
@@ -638,23 +581,19 @@
             flex-wrap: wrap;
             gap: 16px;
         }
-       
         .results-header h1 {
             font-size: 30px;
             font-weight: 700;
         }
-       
         .results-header p {
             color: var(--muted-foreground);
             margin-top: 4px;
         }
-       
         .badge-group {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
         }
-       
         .badge {
             padding: 6px 12px;
             border-radius: 6px;
@@ -665,31 +604,25 @@
             gap: 8px;
             border: 1px solid var(--border);
         }
-       
         .badge-dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
         }
-       
         .badge-dot.correct {
             background-color: #10b981;
         }
-       
         .badge-dot.partial {
             background-color: #f59e0b;
         }
-       
         .badge-dot.incorrect {
             background-color: var(--destructive);
         }
-       
         .accordion {
             display: flex;
             flex-direction: column;
             gap: 16px;
         }
-       
         .accordion-item {
             background-color: var(--card);
             border: 1px solid var(--border);
@@ -697,7 +630,6 @@
             overflow: hidden;
             box-shadow: var(--shadow-sm);
         }
-       
         .accordion-trigger {
             width: 100%;
             padding: 20px;
@@ -710,11 +642,9 @@
             text-align: left;
             transition: background-color 0.2s;
         }
-       
         .accordion-trigger:hover {
             background-color: var(--accent);
         }
-       
         .question-number {
             width: 40px;
             height: 40px;
@@ -726,52 +656,42 @@
             flex-shrink: 0;
             font-size: 16px;
         }
-       
         .question-number.correct {
             background-color: rgba(16, 185, 129, 0.1);
             color: #10b981;
         }
-       
         .question-number.partial {
             background-color: rgba(245, 158, 11, 0.1);
             color: #f59e0b;
         }
-       
         .question-number.incorrect {
             background-color: rgba(230, 57, 70, 0.1);
             color: var(--destructive);
         }
-       
         .question-info {
             flex: 1;
             padding-top: 4px;
         }
-       
         .question-info p:first-child {
             font-weight: 600;
             margin-bottom: 4px;
             font-size: 16px;
         }
-       
         .question-info p:last-child {
             font-size: 14px;
             color: var(--muted-foreground);
             text-transform: capitalize;
         }
-       
         .accordion-content {
             display: none;
             padding: 0 20px 20px;
         }
-       
         .accordion-content.open {
             display: block;
         }
-       
         .analysis-section {
             margin-bottom: 20px;
         }
-       
         .analysis-section h3 {
             font-weight: 600;
             margin-bottom: 12px;
@@ -780,38 +700,31 @@
             gap: 8px;
             font-size: 16px;
         }
-       
         .analysis-section h3 svg {
             width: 20px;
             height: 20px;
         }
-       
         .solution-card {
             background-color: var(--secondary);
             border: 1px solid var(--border);
             border-radius: 8px;
             padding: 16px;
         }
-       
         .solution-card.error {
             background-color: rgba(230, 57, 70, 0.05);
             border-color: rgba(230, 57, 70, 0.2);
         }
-       
         .solution-card.corrected {
             background-color: rgba(16, 185, 129, 0.05);
             border-color: rgba(16, 185, 129, 0.2);
         }
-       
         .solution-steps {
             font-family: 'Courier New', monospace;
             font-size: 14px;
         }
-       
         .solution-steps div {
             margin-bottom: 8px;
         }
-       
         .practice-paper-card {
             background-color: var(--card);
             border: 2px solid rgba(67, 97, 238, 0.1);
@@ -820,36 +733,30 @@
             margin-top: 24px;
             box-shadow: var(--shadow-sm);
         }
-       
         .practice-paper-card h3 {
             font-size: 20px;
             font-weight: 600;
             margin-bottom: 8px;
         }
-       
         .practice-paper-card p {
             color: var(--muted-foreground);
             margin-bottom: 16px;
         }
-       
         .new-question-list {
             background-color: var(--background);
             border-radius: 8px;
             padding: 16px;
             margin-bottom: 16px;
         }
-       
         .new-question-item {
             display: flex;
             align-items: flex-start;
             gap: 12px;
             margin-bottom: 12px;
         }
-       
         .new-question-item:last-child {
             margin-bottom: 0;
         }
-       
         .new-question-number {
             width: 32px;
             height: 32px;
@@ -860,7 +767,6 @@
             font-weight: 700;
             flex-shrink: 0;
         }
-       
         .reanalysis-card {
             background-color: rgba(238, 242, 255, 0.5);
             border: 1px solid var(--border);
@@ -868,13 +774,11 @@
             padding: 16px;
             margin-top: 16px;
         }
-       
         .reanalysis-input-group {
             display: flex;
             gap: 8px;
             margin-bottom: 12px;
         }
-       
         .reanalysis-input-group input {
             flex: 1;
             padding: 10px 12px;
@@ -882,7 +786,6 @@
             border-radius: 6px;
             font-size: 14px;
         }
-       
         .ai-response {
             background-color: var(--background);
             border: 1px solid var(--border);
@@ -892,7 +795,6 @@
             align-items: flex-start;
             gap: 12px;
         }
-       
         .ai-badge {
             background-color: var(--primary);
             color: var(--primary-foreground);
@@ -903,13 +805,11 @@
             flex-shrink: 0;
             margin-top: 2px;
         }
-       
         .ai-response p {
             font-size: 14px;
             line-height: 1.6;
             flex: 1;
         }
-       
         .modal {
             display: none;
             position: fixed;
@@ -923,11 +823,9 @@
             justify-content: center;
             padding: 16px;
         }
-       
         .modal.open {
             display: flex;
         }
-       
         .modal-content {
             background-color: var(--card);
             border-radius: var(--radius);
@@ -937,16 +835,13 @@
             overflow-y: auto;
             padding: 24px;
         }
-       
         .modal-header {
             margin-bottom: 16px;
         }
-       
         .modal-header h3 {
             font-size: 20px;
             font-weight: 600;
         }
-       
         .modal-image {
             position: relative;
             aspect-ratio: 3/4;
@@ -955,44 +850,36 @@
             overflow: hidden;
             margin-bottom: 16px;
         }
-       
         .modal-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-       
         .error-highlight {
             position: absolute;
             border: 3px solid var(--destructive);
             border-radius: 6px;
             animation: pulse 2s infinite;
         }
-       
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
         }
-       
         .modal-caption {
             text-align: center;
             font-size: 14px;
             color: var(--muted-foreground);
         }
-       
         .mobile-menu-btn {
             display: none;
         }
-       
         .mobile-overlay {
             display: none;
         }
-       
         @media (max-width: 1024px) {
             .sidebar {
                 display: none;
             }
-           
             .mobile-menu-btn {
                 display: flex;
                 background: transparent;
@@ -1000,7 +887,6 @@
                 padding: 8px;
                 cursor: pointer;
             }
-           
             .mobile-overlay {
                 display: none;
                 position: fixed;
@@ -1010,11 +896,9 @@
                 bottom: 0;
                 z-index: 40;
             }
-           
             .mobile-overlay.open {
                 display: block;
             }
-           
             .mobile-sidebar-backdrop {
                 position: absolute;
                 top: 0;
@@ -1023,7 +907,6 @@
                 bottom: 0;
                 background-color: rgba(0, 0, 0, 0.5);
             }
-           
             .mobile-sidebar {
                 position: absolute;
                 top: 0;
@@ -1032,7 +915,6 @@
                 width: 280px;
                 background-color: var(--sidebar);
             }
-           
             .mobile-logout {
                 position: absolute;
                 bottom: 0;
@@ -1041,7 +923,6 @@
                 padding: 16px;
                 border-top: 1px solid var(--sidebar-border);
             }
-           
             .mobile-logout button {
                 width: 100%;
                 justify-content: flex-start;
@@ -1049,44 +930,35 @@
                 color: var(--sidebar-foreground);
                 padding: 12px;
             }
-           
             .btn-logout {
                 display: none;
             }
-           
             .header-brand {
                 display: none;
             }
         }
-       
         @media (max-width: 640px) {
             .user-info {
                 display: none;
             }
-           
             .upload-grid {
                 flex-direction: column;
                 align-items: center;
             }
-           
             .results-header {
                 flex-direction: column;
                 align-items: flex-start;
             }
-           
             .login-card {
                 padding: 24px;
             }
-           
             .social-buttons {
                 flex-direction: column;
             }
         }
-       
         .hidden {
             display: none;
         }
-       
         .btn, button {
             padding: 10px 24px;
             border-radius: 8px;
@@ -1100,26 +972,21 @@
             justify-content: center;
             gap: 8px;
         }
-       
         .btn-primary {
             background-color: var(--primary);
             color: var(--primary-foreground);
         }
-       
         .btn-primary:hover {
             opacity: 0.9;
         }
-       
         .btn-outline {
             background-color: transparent;
             border: 1px solid var(--border);
             color: var(--foreground);
         }
-       
         .btn-outline:hover {
             background-color: var(--accent);
         }
-       
         .loading {
             display: inline-block;
             width: 20px;
@@ -1129,36 +996,29 @@
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
-       
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-       
         .practice-paper {
             padding: 30px;
             background: white;
         }
-       
         .practice-header {
             margin-bottom: 30px;
             text-align: center;
         }
-       
         .practice-title {
             font-size: 24px;
             font-weight: 700;
             margin-bottom: 8px;
         }
-       
         .practice-subtitle {
             font-size: 16px;
             color: #666;
         }
-       
         .practice-question {
             margin-bottom: 30px;
         }
-       
         .practice-question-number {
             font-size: 18px;
             font-weight: 700;
@@ -1166,107 +1026,196 @@
             margin-bottom: 10px;
         }
         /* Loading Overlay Styles */
-#loadingOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(5px);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.loading-content {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 40px;
-    box-shadow: var(--shadow-lg);
-    max-width: 500px;
-    width: 90%;
-    text-align: center;
-}
-.progress-container {
-    margin-bottom: 30px;
-}
-.progress-bar {
-    width: 100%;
-    height: 12px;
-    background: var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-    margin-bottom: 20px;
-}
-.progress-fill {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, #4361ee, #3a56d4, #38bdf8, #fb923c);
-    border-radius: 6px;
-    animation: progressAnimation 3s ease-in-out infinite;
-}
-@keyframes progressAnimation {
-    0% {
-        width: 0%;
-        background: #4361ee;
-    }
-    25% {
-        width: 25%;
-        background: #3a56d4;
-    }
-    50% {
-        width: 50%;
-        background: #38bdf8;
-    }
-    75% {
-        width: 75%;
-        background: #fb923c;
-    }
-    100% {
-        width: 100%;
-        background: #4361ee;
-    }
-}
-.math-statements {
-    margin-top: 20px;
-}
-.math-statement {
-    font-size: 16px;
-    color: var(--muted-foreground);
-    margin: 10px 0;
-    opacity: 0;
-    animation: fadeInOut 1.5s ease-in-out infinite;
-}
-.math-statement:nth-child(1) { animation-delay: 0s; }
-.math-statement:nth-child(2) { animation-delay: 0.5s; }
-.math-statement:nth-child(3) { animation-delay: 1s; }
-.math-statement:nth-child(4) { animation-delay: 1.5s; }
-@keyframes fadeInOut {
-    0%, 100% { opacity: 0; }
-    50% { opacity: 1; }
-}
-       
+        #loadingOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .loading-content {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 40px;
+            box-shadow: var(--shadow-lg);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+        .progress-container {
+            margin-bottom: 30px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #4361ee, #3a56d4, #38bdf8, #fb923c);
+            border-radius: 6px;
+            animation: progressAnimation 3s ease-in-out infinite;
+        }
+        @keyframes progressAnimation {
+            0% {
+                width: 0%;
+                background: #4361ee;
+            }
+            25% {
+                width: 25%;
+                background: #3a56d4;
+            }
+            50% {
+                width: 50%;
+                background: #38bdf8;
+            }
+            75% {
+                width: 75%;
+                background: #fb923c;
+            }
+            100% {
+                width: 100%;
+                background: #4361ee;
+            }
+        }
+        .math-statements {
+            margin-top: 20px;
+        }
+        .math-statement {
+            font-size: 16px;
+            color: var(--muted-foreground);
+            margin: 10px 0;
+            opacity: 0;
+            animation: fadeInOut 1.5s ease-in-out infinite;
+        }
+        .math-statement:nth-child(1) { animation-delay: 0s; }
+        .math-statement:nth-child(2) { animation-delay: 0.5s; }
+        .math-statement:nth-child(3) { animation-delay: 1s; }
+        .math-statement:nth-child(4) { animation-delay: 1.5s; }
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+        /* Verification Modal */
+        #verificationModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 50;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        #verificationModal.open {
+            display: flex;
+        }
+        #verificationModal .modal-content {
+            background-color: var(--card);
+            border-radius: var(--radius);
+            max-width: 400px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 24px;
+            text-align: center;
+        }
+        #verificationModal h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        #verificationModal p {
+            margin-bottom: 20px;
+            color: var(--muted-foreground);
+        }
+        #verificationCode {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 18px;
+            letter-spacing: 8px;
+            text-align: center;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            background: var(--card);
+            margin-bottom: 20px;
+        }
+        #verificationCode:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            background: var(--primary);
+            color: white;
+            font-size: 14px;
+            z-index: 100;
+            box-shadow: var(--shadow-md);
+            display: none;
+        }
+        .toast.show {
+            display: block;
+            animation: fadeIn 0.3s, fadeOut 0.3s 2.7s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-20px); }
+        }
     </style>
 </head>
 <body>
+    <!-- Verification Modal -->
+    <div id="verificationModal" class="modal">
+        <div class="modal-content">
+            <h3>Verify Phone Number</h3>
+            <p>Enter the 4-digit code sent to <span id="verificationPhone"></span></p>
+            <input type="text" id="verificationCode" maxlength="4" placeholder="0000">
+            <button class="btn-primary" onclick="verifyRegistration()">Verify & Complete</button>
+            <button class="btn-outline" onclick="resendVerificationCode()">Resend Code</button>
+        </div>
+    </div>
+
+    <!-- Toast Message -->
+    <div id="toast" class="toast"></div>
+
     <!-- Login Page -->
     <div id="loginPage">
         <div class="math-terms-left">
-        <div class="math-term">$e^{i\pi} + 1 = 0$</div>
-        <div class="math-term">$\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}$</div>
-        <div class="math-term">$\nabla \cdot \mathbf{E} = \frac{\rho}{\varepsilon_0}$</div>
-        <div class="math-term">$\frac{d}{dx}e^x = e^x$</div>
-        <div class="math-term">$F = G\frac{m_1 m_2}{r^2}$</div>
-    </div>
-   
-    <div class="math-terms-right">
-        <div class="math-term">$a^2 + b^2 = c^2$</div>
-        <div class="math-term">$\sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}$</div>
-        <div class="math-term">$\nabla \times \mathbf{B} = \mu_0\mathbf{J}$</div>
-        <div class="math-term">$\frac{\partial u}{\partial t} = \alpha \nabla^2 u$</div>
-        <div class="math-term">$\hbar \frac{\partial}{\partial t} \Psi = \hat{H} \Psi$</div>
-    </div>
+            <div class="math-term">$e^{i\pi} + 1 = 0$</div>
+            <div class="math-term">$\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}$</div>
+            <div class="math-term">$\nabla \cdot \mathbf{E} = \frac{\rho}{\varepsilon_0}$</div>
+            <div class="math-term">$\frac{d}{dx}e^x = e^x$</div>
+            <div class="math-term">$F = G\frac{m_1 m_2}{r^2}$</div>
+        </div>
+        <div class="math-terms-right">
+            <div class="math-term">$a^2 + b^2 = c^2$</div>
+            <div class="math-term">$\sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}$</div>
+            <div class="math-term">$\nabla \times \mathbf{B} = \mu_0\mathbf{J}$</div>
+            <div class="math-term">$\frac{\partial u}{\partial t} = \alpha \nabla^2 u$</div>
+            <div class="math-term">$\hbar \frac{\partial}{\partial t} \Psi = \hat{H} \Psi$</div>
+        </div>
         <div class="login-background"></div>
         <div class="login-container">
             <div class="login-header">
@@ -1274,7 +1223,6 @@
                 <div class="login-brand">CAS <span>Educations</span></div>
                 <p class="login-subtitle">AI-Powered Math Analysis Platform</p>
             </div>
-           
             <div class="login-card">
                 <form id="loginForm" class="login-form">
                     <div class="form-group">
@@ -1291,7 +1239,6 @@
                         </svg>
                         Login to Dashboard
                     </button>
-                    <!-- ADD THIS BUTTON RIGHT AFTER THE LOGIN BUTTON -->
                     <button type="button" class="login-btn" onclick="showRegisterModal()" style="margin-top: 16px; background: var(--primary);">
                         <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
@@ -1302,7 +1249,7 @@
                 <div class="social-login">
                     <div class="social-login-title">Or continue with</div>
                     <div class="social-buttons">
-                        <button class="social-btn google-btn" onclick="window.location.href = 'https://navalsheth.pythonanywhere.com/api/auth/google';">
+                        <button class="social-btn google-btn" onclick="socialLogin('google')">
                             <svg viewBox="0 0 24 24" width="20" height="20">
                                 <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                                 <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -1311,11 +1258,18 @@
                             </svg>
                             Google
                         </button>
+                        <button class="social-btn apple-btn" onclick="socialLogin('apple')">
+                            <svg viewBox="0 0 24 24" width="20" height="20">
+                                <path fill="currentColor" d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.31-2.33 1.05-3.11z"/>
+                            </svg>
+                            Apple
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <!-- Dashboard (Initially Hidden) -->
     <div id="dashboardPage" class="dashboard-container">
         <div class="dashboard-layout">
@@ -1336,7 +1290,7 @@
                     <div id="historyList"></div>
                 </div>
             </aside>
-           
+
             <!-- Mobile Overlay -->
             <div id="mobileOverlay" class="mobile-overlay">
                 <div class="mobile-sidebar-backdrop" onclick="closeMobileMenu()"></div>
@@ -1365,7 +1319,7 @@
                     </div>
                 </aside>
             </div>
-           
+
             <!-- Main Content -->
             <div class="main-content">
                 <header class="header">
@@ -1394,7 +1348,7 @@
                         </button>
                     </div>
                 </header>
-               
+
                 <main class="content-area">
                     <!-- Upload Section -->
                     <div id="uploadSection" class="upload-section">
@@ -1447,7 +1401,7 @@
                             </button>
                         </div>
                     </div>
-                   
+
                     <!-- Results Section -->
                     <div id="resultsSection" class="results-section hidden">
                         <div class="results-header">
@@ -1458,7 +1412,7 @@
                             <div class="badge-group" id="badgeGroup"></div>
                         </div>
                         <div class="accordion" id="accordion"></div>
-                       
+
                         <!-- Practice Paper -->
                         <div class="practice-paper-card" id="practicePaperCard">
                             <h3>Generate Personalized Practice Paper</h3>
@@ -1477,7 +1431,7 @@
             </div>
         </div>
     </div>
-   
+
     <!-- Image Modal -->
     <div id="imageModal" class="modal">
         <div class="modal-content">
@@ -1492,254 +1446,50 @@
             <button class="btn-outline" style="width: 100%; margin-top: 1rem;" onclick="closeImageModal()">Close</button>
         </div>
     </div>
+
     <!-- Register Modal -->
-<div id="registerModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3>Create New Account</h3>
-        </div>
-        <form id="registerForm">
-            <div class="form-group">
-                <label class="form-label">Username</label>
-                <input type="text" id="registerUsername" class="form-input" placeholder="Choose a username" required>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Phone Number</label>
-                <input type="tel" id="registerPhone" class="form-input" placeholder="Enter your phone number" required>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Password</label>
-                <input type="password" id="registerPassword" class="form-input" placeholder="Create a password" required>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Confirm Password</label>
-                <input type="password" id="registerConfirmPassword" class="form-input" placeholder="Confirm your password" required>
-            </div>
-            <div class="form-group" style="text-align: center;">
-                <button type="submit" class="login-btn" style="width: 100%;">
-                    <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                    </svg>
-                    Proceed to Register
-                </button>
-            </div>
-        </form>
-        <div id="registerSuccessMessage" style="display: none; text-align: center; padding: 20px; background: rgba(16, 185, 129, 0.1); border-radius: 8px; margin-top: 20px;">
-            <h4 style="color: #10b981;">✓ User Registered Successfully!</h4>
-            <p>You can now close this window and login with your credentials.</p>
-            <button class="btn-outline" style="margin-top: 16px;" onclick="closeRegisterModal()">Close</button>
-        </div>
-        <button class="btn-outline" style="width: 100%; margin-top: 1rem;" onclick="closeRegisterModal()">Cancel</button>
-    </div>
-</div>
-    <!-- Verification Modal -->
-    <div id="verificationModal" class="modal">
+    <div id="registerModal" class="modal">
         <div class="modal-content">
-            <h3>Verify Phone Number</h3>
-            <p>Enter the 4-digit code sent to <span id="verificationPhone"></span></p>
-            <input type="text" id="verificationCode" maxlength="4" placeholder="0000">
-            <button onclick="verifyRegistration()">Verify & Complete</button>
-            <button onclick="resendVerificationCode()">Resend Code</button>
+            <div class="modal-header">
+                <h3>Create New Account</h3>
+            </div>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" id="registerUsername" class="form-input" placeholder="Choose a username" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input type="tel" id="registerPhone" class="form-input" placeholder="Enter your phone number" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="registerPassword" class="form-input" placeholder="Create a password" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Confirm Password</label>
+                    <input type="password" id="registerConfirmPassword" class="form-input" placeholder="Confirm your password" required>
+                </div>
+                <div class="form-group" style="text-align: center;">
+                    <button type="submit" class="login-btn" style="width: 100%;">
+                        <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        Proceed to Register
+                    </button>
+                </div>
+            </form>
+            <div id="registerSuccessMessage" style="display: none; text-align: center; padding: 20px; background: rgba(16, 185, 129, 0.1); border-radius: 8px; margin-top: 20px;">
+                <h4 style="color: #10b981;">✓ User Registered Successfully!</h4>
+                <p>You can now close this window and login with your credentials.</p>
+                <button class="btn-outline" style="margin-top: 16px;" onclick="closeRegisterModal()">Close</button>
+            </div>
+            <button class="btn-outline" style="width: 100%; margin-top: 1rem;" onclick="closeRegisterModal()">Cancel</button>
         </div>
     </div>
-   
+
     <script>
-        const BASE_URL = 'https://navalsheth.pythonanywhere.com';
-
-        // 1. Authentication Functions
-        async function checkAuth() {
-            try {
-                const response = await fetch(`${BASE_URL}/api/check_auth`, {
-                    credentials: 'include'  // Important for cookies
-                });
-                const data = await response.json();
-                return data.authenticated ? data.user : null;
-            } catch (error) {
-                return null;
-            }
-        }
-
-        async function login(username, password) {
-            const response = await fetch(`${BASE_URL}/api/login`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({username, password}),
-                credentials: 'include'
-            });
-            return await response.json();
-        }
-
-        async function logout() {
-            await fetch(`${BASE_URL}/api/logout`, {
-                method: 'POST',
-                credentials: 'include'
-            });
-            // Redirect to login page
-        }
-
-        // 2. Registration Functions
-        async function initiateRegistration(username, phone) {
-            const response = await fetch(`${BASE_URL}/api/register/initiate`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({username, phone})
-            });
-            return await response.json();
-        }
-
-        async function completeRegistration(username, phone, code, password) {
-            const response = await fetch(`${BASE_URL}/api/register/verify`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({username, phone, code, password}),
-                credentials: 'include'
-            });
-            return await response.json();
-        }
-
-        // 3. Analysis History Functions
-        async function loadUserAnalyses() {
-            const response = await fetch(`${BASE_URL}/api/analyses`, {
-                credentials: 'include'
-            });
-            const data = await response.json();
-            return data.analyses || [];
-        }
-
-        async function saveAnalysis(analysisData) {
-            const response = await fetch(`${BASE_URL}/api/analyses`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(analysisData),
-                credentials: 'include'
-            });
-            return await response.json();
-        }
-
-        // 4. Practice Paper Functions
-        async function savePracticePaper(paperData) {
-            const response = await fetch(`${BASE_URL}/api/practice_papers`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(paperData),
-                credentials: 'include'
-            });
-            return await response.json();
-        }
-
-        // Additional functions
-        async function resendVerificationCode() {
-            const phone = window.tempReg.phone;
-            try {
-                const response = await fetch(`${BASE_URL}/api/verify/resend`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({phone})
-                });
-                const data = await response.json();
-                if (data.success) {
-                    alert('New code sent!');
-                } else {
-                    alert(data.message);
-                }
-            } catch (e) {
-                alert('Error resending code');
-            }
-        }
-
-        async function verifyRegistration() {
-            const code = document.getElementById('verificationCode').value.trim();
-            if (!code) {
-                alert('Enter the code');
-                return;
-            }
-            const {username, phone, password} = window.tempReg;
-            const res = await completeRegistration(username, phone, code, password);
-            if (res.success) {
-                alert('Registration complete! Please login.');
-                document.getElementById('verificationModal').classList.remove('open');
-                // Auto-fill login
-                document.getElementById('loginUsername').value = username;
-            } else {
-                alert(res.message);
-            }
-        }
-
-        // Login form
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const username = document.getElementById('loginUsername').value.trim();
-            const password = document.getElementById('loginPassword').value;
-            const res = await login(username, password);
-            if (res.success) {
-                init();
-            } else {
-                alert(res.message);
-            }
-        });
-
-        // Register functions
-        function showRegisterModal() {
-            document.getElementById('registerModal').classList.add('open');
-            // Reset form
-            document.getElementById('registerForm').reset();
-            document.getElementById('registerSuccessMessage').style.display = 'none';
-        }
-        function closeRegisterModal() {
-            document.getElementById('registerModal').classList.remove('open');
-        }
-        // Handle registration form submission
-        document.getElementById('registerForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-           
-            const username = document.getElementById('registerUsername').value.trim();
-            const phone = document.getElementById('registerPhone').value.trim();
-            const password = document.getElementById('registerPassword').value;
-            const confirmPassword = document.getElementById('registerConfirmPassword').value;
-           
-            // Basic validation
-            if (!username || !phone || !password) {
-                alert('Please fill in all fields');
-                return;
-            }
-           
-            if (password !== confirmPassword) {
-                alert('Passwords do not match');
-                return;
-            }
-           
-            if (password.length < 6) {
-                alert('Password must be at least 6 characters');
-                return;
-            }
-
-            window.tempReg = {username, phone, password};
-            const res = await initiateRegistration(username, phone);
-            if (res.success) {
-                document.getElementById('verificationPhone').textContent = phone;
-                closeRegisterModal();
-                document.getElementById('verificationModal').classList.add('open');
-            } else {
-                alert(res.message);
-            }
-        });
-
-        async function init() {
-            const user = await checkAuth();
-            if (user) {
-                document.getElementById('loginPage').style.display = 'none';
-                document.getElementById('dashboardPage').style.display = 'flex';
-                document.getElementById('userName').textContent = user.username;
-                await loadHistory();
-            } else {
-                document.getElementById('loginPage').style.display = 'flex';
-                document.getElementById('dashboardPage').style.display = 'none';
-            }
-        }
-
-        window.addEventListener('DOMContentLoaded', init);
-
-        // State management
+        // Global state
         let questionFiles = [];
         let answerFiles = [];
         let allFiles = [];
@@ -1747,36 +1497,241 @@
         let practiceResult = null;
         let history = [];
         let isAnalyzing = false;
-        function renderMath(element) {
-            if (window.MathJax) {
-                MathJax.typesetPromise([element]).catch(err => console.error('MathJax error:', err));
+        let currentUser = null;
+
+        // DOM Ready
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = await checkAuth();
+            if (user) {
+                currentUser = user;
+                showDashboard(user);
+            }
+        });
+
+        // ============ AUTHENTICATION FUNCTIONS ============
+        async function checkAuth() {
+            try {
+                const response = await fetch('https://navalsheth.pythonanywhere.com/api/check_auth', {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                return data.authenticated ? data.user : null;
+            } catch (error) {
+                showToast('Error checking authentication', 'error');
+                return null;
             }
         }
-        // Mobile menu functions
-        function openMobileMenu() {
-            document.getElementById('mobileOverlay').classList.add('open');
+
+        async function login(username, password) {
+            try {
+                const response = await fetch('https://navalsheth.pythonanywhere.com/api/login', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({username, password}),
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                if (data.success) {
+                    return data.user;
+                } else {
+                    showToast(data.message || 'Login failed', 'error');
+                    return null;
+                }
+            } catch (error) {
+                showToast('Network error: ' + error.message, 'error');
+                return null;
+            }
         }
-        function closeMobileMenu() {
-            document.getElementById('mobileOverlay').classList.remove('open');
+
+        async function logout() {
+            try {
+                await fetch('https://navalsheth.pythonanywhere.com/api/logout', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                currentUser = null;
+                showLoginPage();
+            } catch (error) {
+                showToast('Error logging out', 'error');
+            }
         }
-        async function handleLogout() {
-            await logout();
-            init();
+
+        function showLoginPage() {
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('dashboardPage').style.display = 'none';
         }
-        function resetToDashboard() {
-            document.getElementById('uploadSection').classList.remove('hidden');
-            document.getElementById('resultsSection').classList.add('hidden');
-            closeMobileMenu();
+
+        function showDashboard(user) {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('dashboardPage').style.display = 'flex';
+            document.getElementById('userName').textContent = user.username || user.email;
+            loadUserAnalyses();
         }
-        // File handling
+
+        // ============ REGISTRATION FUNCTIONS ============
+        function showRegisterModal() {
+            document.getElementById('registerModal').classList.add('open');
+            document.getElementById('registerForm').reset();
+            document.getElementById('registerSuccessMessage').style.display = 'none';
+        }
+
+        function closeRegisterModal() {
+            document.getElementById('registerModal').classList.remove('open');
+        }
+
+        async function initiateRegistration(username, phone) {
+            try {
+                const response = await fetch('https://navalsheth.pythonanywhere.com/api/register/initiate', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({username, phone})
+                });
+                const data = await response.json();
+                if (data.success) {
+                    document.getElementById('verificationPhone').textContent = phone;
+                    document.getElementById('registerModal').classList.remove('open');
+                    document.getElementById('verificationModal').classList.add('open');
+                    return true;
+                } else {
+                    showToast(data.message || 'Registration failed', 'error');
+                    return false;
+                }
+            } catch (error) {
+                showToast('Network error: ' + error.message, 'error');
+                return false;
+            }
+        }
+
+        async function verifyRegistration() {
+            const code = document.getElementById('verificationCode').value.trim();
+            const username = document.getElementById('registerUsername').value.trim();
+            const phone = document.getElementById('registerPhone').value.trim();
+            const password = document.getElementById('registerPassword').value.trim();
+
+            if (!code || code.length !== 4) {
+                showToast('Please enter a valid 4-digit code', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('https://navalsheth.pythonanywhere.com/api/register/verify', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({username, phone, code, password}),
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                if (data.success) {
+                    showToast('Registration successful! You are now logged in.', 'success');
+                    document.getElementById('verificationModal').classList.remove('open');
+                    currentUser = data.user;
+                    showDashboard(data.user);
+                } else {
+                    showToast(data.message || 'Verification failed', 'error');
+                }
+            } catch (error) {
+                showToast('Network error: ' + error.message, 'error');
+            }
+        }
+
+        async function resendVerificationCode() {
+            const phone = document.getElementById('registerPhone').value.trim();
+            try {
+                const response = await fetch('https://navalsheth.pythonanywhere.com/api/verify/resend', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({phone})
+                });
+                const data = await response.json();
+                if (data.success) {
+                    showToast('New verification code sent!', 'success');
+                } else {
+                    showToast(data.message || 'Failed to resend code', 'error');
+                }
+            } catch (error) {
+                showToast('Network error: ' + error.message, 'error');
+            }
+        }
+
+        // ============ SOCIAL LOGIN ============
+        function socialLogin(provider) {
+            if (provider === 'google') {
+                window.location.href = 'https://navalsheth.pythonanywhere.com/api/auth/google';
+            } else {
+                showToast('Apple login not implemented yet', 'info');
+            }
+        }
+
+        // ============ ANALYSIS HISTORY FUNCTIONS ============
+        async function loadUserAnalyses() {
+            try {
+                const response = await fetch('https://navalsheth.pythonanywhere.com/api/analyses', {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                if (data.success) {
+                    history = data.analyses;
+                    updateHistory();
+                }
+            } catch (error) {
+                showToast('Error loading history: ' + error.message, 'error');
+            }
+        }
+
+        async function saveAnalysis(analysisData) {
+            try {
+                const response = await fetch('https://navalsheth.pythonanywhere.com/api/analyses', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(analysisData),
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                if (data.success) {
+                    return data.analysis_id;
+                } else {
+                    showToast(data.message || 'Failed to save analysis', 'error');
+                    return null;
+                }
+            } catch (error) {
+                showToast('Error saving analysis: ' + error.message, 'error');
+                return null;
+            }
+        }
+
+        // ============ PRACTICE PAPER FUNCTIONS ============
+        async function savePracticePaper(paperData) {
+            try {
+                const response = await fetch('https://navalsheth.pythonanywhere.com/api/practice_papers', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(paperData),
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                if (data.success) {
+                    return data.practice_paper_id;
+                } else {
+                    showToast(data.message || 'Failed to save practice paper', 'error');
+                    return null;
+                }
+            } catch (error) {
+                showToast('Error saving practice paper: ' + error.message, 'error');
+                return null;
+            }
+        }
+
+        // ============ FILE HANDLING ============
         document.getElementById('questionInput').addEventListener('change', async e => {
             await handleFileUpload(e.target.files, questionFiles, 'questionFileList');
             checkStartButton();
         });
+
         document.getElementById('answerInput').addEventListener('change', async e => {
             await handleFileUpload(e.target.files, answerFiles, 'answerFileList');
             checkStartButton();
         });
+
         async function handleFileUpload(files, targetArray, listId) {
             for (let file of files) {
                 if (!targetArray.find(f => f.name === file.name)) {
@@ -1793,6 +1748,7 @@
             }
             displayFiles(listId, targetArray);
         }
+
         function displayFiles(elementId, files) {
             const el = document.getElementById(elementId);
             el.innerHTML = files.map(f => `
@@ -1802,88 +1758,89 @@
                 </div>
             `).join('');
         }
+
         function checkStartButton() {
             document.getElementById('startAnalysisBtn').disabled = questionFiles.length === 0 || answerFiles.length === 0;
         }
+
+        // ============ ANALYSIS FLOW ============
         async function startAnalysis() {
-    if (isAnalyzing) return;
-    const user = await checkAuth();
-    if (!user) {
-        alert('Please login first');
-        return;
-    }
-    isAnalyzing = true;
-    const btn = document.getElementById('startAnalysisBtn');
-   
-    // Create and show loading overlay
-    const loadingOverlay = document.createElement('div');
-    loadingOverlay.id = 'loadingOverlay';
-    loadingOverlay.innerHTML = `
-        <div class="loading-content">
-            <div class="progress-container">
-                <div class="progress-bar">
-                    <div class="progress-fill"></div>
+            if (isAnalyzing) return;
+            isAnalyzing = true;
+            const btn = document.getElementById('startAnalysisBtn');
+
+            // Create and show loading overlay
+            const loadingOverlay = document.createElement('div');
+            loadingOverlay.id = 'loadingOverlay';
+            loadingOverlay.innerHTML = `
+                <div class="loading-content">
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <div class="math-statements">
+                            <p class="math-statement">Processing mathematical equations...</p>
+                            <p class="math-statement">Analyzing solution steps...</p>
+                            <p class="math-statement">Checking for calculation errors...</p>
+                            <p class="math-statement">Generating corrections...</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="math-statements">
-                    <p class="math-statement">Processing mathematical equations...</p>
-                    <p class="math-statement">Analyzing solution steps...</p>
-                    <p class="math-statement">Checking for calculation errors...</p>
-                    <p class="math-statement">Generating corrections...</p>
-                </div>
-            </div>
-        </div>
-    `;
-    document.getElementById('uploadSection').appendChild(loadingOverlay);
-   
-    btn.innerHTML = '<div class="loading"></div> Analyzing...';
-    btn.disabled = true;
-   
-    const formData = new FormData();
-    allFiles = [...questionFiles, ...answerFiles];
-    allFiles.forEach(f => formData.append('files', f.file));
-   
-    try {
-        const res = await fetch(`${BASE_URL}/analyze`, {
-            method: 'POST',
-            body: formData,
-            credentials: 'include'
-        });
-        const data = await res.json();
-        if (data.error) {
-            alert(data.error);
-            removeLoadingOverlay();
-        } else {
-            analysisResult = {questions: data.questions, id: data.analysis_id};
-            displayAnalysis(analysisResult);
-           
-            // Hide loading overlay and show results
-            setTimeout(() => {
+            `;
+            document.getElementById('uploadSection').appendChild(loadingOverlay);
+
+            btn.innerHTML = '<div class="loading"></div> Analyzing...';
+            btn.disabled = true;
+
+            const formData = new FormData();
+            allFiles = [...questionFiles, ...answerFiles];
+            allFiles.forEach(f => formData.append('files', f.file));
+
+            try {
+                const res = await fetch('https://navalsheth.pythonanywhere.com/analyze', {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'include'
+                });
+                const data = await res.json();
+                if (data.error) {
+                    showToast(data.error, 'error');
+                    removeLoadingOverlay();
+                } else {
+                    analysisResult = data;
+                    displayAnalysis(data);
+                    addToHistory();
+
+                    // Hide loading overlay and show results
+                    setTimeout(() => {
+                        removeLoadingOverlay();
+                        document.getElementById('uploadSection').classList.add('hidden');
+                        document.getElementById('resultsSection').classList.remove('hidden');
+                    }, 500);
+                }
+            } catch (e) {
+                showToast('Error: ' + e.message, 'error');
                 removeLoadingOverlay();
-                document.getElementById('uploadSection').classList.add('hidden');
-                document.getElementById('resultsSection').classList.remove('hidden');
-                loadHistory();
-            }, 500);
+            } finally {
+                isAnalyzing = false;
+                btn.innerHTML = `<svg style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Start Analysis`;
+                btn.disabled = false;
+            }
         }
-    } catch (e) {
-        alert('Error: ' + e.message);
-        removeLoadingOverlay();
-    } finally {
-        isAnalyzing = false;
-        btn.innerHTML = `<svg style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Start Analysis`;
-        btn.disabled = false;
-    }
-}
-function removeLoadingOverlay() {
-    const overlay = document.getElementById('loadingOverlay');
-    if (overlay) {
-        overlay.remove();
-    }
-}
+
+        function removeLoadingOverlay() {
+            const overlay = document.getElementById('loadingOverlay');
+            if (overlay) {
+                overlay.remove();
+            }
+        }
+
         function processSteps(str) {
             if (!str) return '';
             const steps = str.split('<br>').filter(step => step.trim() !== '');
             return steps.map(step => `<p style="margin-bottom: 0.75rem; line-height: 1.8;">${step.trim()}</p>`).join('');
         }
+
         function displayAnalysis(result) {
             const accordion = document.getElementById('accordion');
             accordion.innerHTML = '';
@@ -1938,9 +1895,11 @@ function removeLoadingOverlay() {
                 <div class="badge"><div class="badge-dot incorrect"></div>${counts.incorrect} Incorrect</div>
             `;
         }
+
         function toggleAccordion(id) {
             document.getElementById(id).classList.toggle('open');
         }
+
         async function reanalyzeQuestion(i) {
             const query = document.getElementById(`reanalysisInput${i}`).value.trim();
             if (!query) return;
@@ -1948,7 +1907,7 @@ function removeLoadingOverlay() {
             const btn = event.target;
             btn.innerHTML = '<div class="loading" style="width: 16px; height: 16px; border-width: 2px;"></div>';
             try {
-                const res = await fetch(`${BASE_URL}/reanalyze`, {
+                const res = await fetch('https://navalsheth.pythonanywhere.com/reanalyze', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({
@@ -1962,7 +1921,7 @@ function removeLoadingOverlay() {
                 });
                 const data = await res.json();
                 if (data.error) {
-                    alert(data.error);
+                    showToast(data.error, 'error');
                 } else {
                     const responseDiv = document.getElementById(`aiResponse${i}`);
                     responseDiv.style.display = 'flex';
@@ -1970,11 +1929,12 @@ function removeLoadingOverlay() {
                     renderMath(responseDiv);
                 }
             } catch (e) {
-                alert('Error: ' + e.message);
+                showToast('Error: ' + e.message, 'error');
             } finally {
                 btn.innerHTML = 'Send';
             }
         }
+
         function openImageModal(i, status, imageFile, bbox) {
             const modal = document.getElementById('imageModal');
             const modalImage = document.getElementById('modalImage');
@@ -1995,18 +1955,20 @@ function removeLoadingOverlay() {
             }
             modal.classList.add('open');
         }
+
         function closeImageModal() {
             document.getElementById('imageModal').classList.remove('open');
         }
+
         async function generatePracticePaper() {
             if (!analysisResult) return;
             const content = document.getElementById('practicePaperContent');
             content.innerHTML = '<div class="loading"></div> Generating...';
             try {
-                const res = await fetch(`${BASE_URL}/generate_practice`, {
+                const res = await fetch('https://navalsheth.pythonanywhere.com/generate_practice', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({analysis: {questions: analysisResult.questions}}),
+                    body: JSON.stringify({analysis: analysisResult}),
                     credentials: 'include'
                 });
                 const data = await res.json();
@@ -2034,11 +1996,7 @@ function removeLoadingOverlay() {
                                 <button class="btn-outline" onclick="downloadPracticePaper()"> 📥 Download as PDF </button>
                             </div>
                         </div>`;
-                    await savePracticePaper({
-                        analysis_id: analysisResult.id,
-                        questions_data: data.practice_questions
-                    });
-                   
+
                     // Wait for MathJax to render, then hide processed elements
                     setTimeout(() => {
                         renderMath(document.getElementById('practice-paper'));
@@ -2048,159 +2006,236 @@ function removeLoadingOverlay() {
                 content.innerHTML = `<p>Error: ${e.message}</p>`;
             }
         }
+
         async function downloadPracticePaper() {
-    if (!practiceResult) return;
-    const practicePaper = document.getElementById('practice-paper');
-    if (!practicePaper) {
-        alert('Practice paper not found!');
-        return;
-    }
-   
-    const loading = document.createElement('div');
-    loading.innerHTML = '<div class="loading"></div> Generating PDF...';
-    Object.assign(loading.style, {
-        position: 'fixed',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        background: 'rgba(255,255,255,0.9)',
-        padding: '20px',
-        borderRadius: '10px',
-        zIndex: '9999'
-    });
-    document.body.appendChild(loading);
-   
-    try {
-        // Force MathJax to complete rendering
-        if (window.MathJax) {
-            await MathJax.typesetPromise([practicePaper]);
-        }
-       
-        // Wait for rendering to stabilize
-        await new Promise(resolve => setTimeout(resolve, 1500));
-       
-        // Create a clean clone for PDF generation
-        const clone = practicePaper.cloneNode(true);
-       
-        // CRITICAL: Remove ALL sources of duplication
-        // 1. Remove original LaTeX script tags
-        clone.querySelectorAll('script[type*="math"]').forEach(el => el.remove());
-       
-        // 2. Remove MathJax preview/processing elements
-        clone.querySelectorAll('.MathJax_Preview, .MathJax_Processing, .MathJax_Display').forEach(el => el.remove());
-       
-        // 3. Keep ONLY the final rendered output (mjx-container)
-        // Remove any nested duplicates within mjx-containers
-        clone.querySelectorAll('mjx-container mjx-container').forEach(el => el.remove());
-       
-        // 4. If you're seeing raw LaTeX text, remove it
-        const textNodes = [];
-        const walker = document.createTreeWalker(clone, NodeFilter.SHOW_TEXT);
-        let node;
-        while (node = walker.nextNode()) {
-            // Remove text nodes that contain raw LaTeX (starting with $ or $$)
-            if (node.textContent.trim().match(/^\$+/)) {
-                textNodes.push(node);
+            if (!practiceResult) return;
+            const practicePaper = document.getElementById('practice-paper');
+            if (!practicePaper) {
+                showToast('Practice paper not found!', 'error');
+                return;
+            }
+
+            const loading = document.createElement('div');
+            loading.innerHTML = '<div class="loading"></div> Generating PDF...';
+            Object.assign(loading.style, {
+                position: 'fixed',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                background: 'rgba(255,255,255,0.9)',
+                padding: '20px',
+                borderRadius: '10px',
+                zIndex: '9999'
+            });
+            document.body.appendChild(loading);
+
+            try {
+                // Force MathJax to complete rendering
+                if (window.MathJax) {
+                    await MathJax.typesetPromise([practicePaper]);
+                }
+
+                // Wait for rendering to stabilize
+                await new Promise(resolve => setTimeout(resolve, 1500));
+
+                // Create a clean clone for PDF generation
+                const clone = practicePaper.cloneNode(true);
+
+                // CRITICAL: Remove ALL sources of duplication
+                clone.querySelectorAll('script[type*="math"]').forEach(el => el.remove());
+                clone.querySelectorAll('.MathJax_Preview, .MathJax_Processing, .MathJax_Display').forEach(el => el.remove());
+                clone.querySelectorAll('mjx-container mjx-container').forEach(el => el.remove());
+
+                const textNodes = [];
+                const walker = document.createTreeWalker(clone, NodeFilter.SHOW_TEXT);
+                let node;
+                while (node = walker.nextNode()) {
+                    if (node.textContent.trim().match(/^\$+/)) {
+                        textNodes.push(node);
+                    }
+                }
+                textNodes.forEach(node => {
+                    const parent = node.parentElement;
+                    if (parent && parent.querySelector('mjx-container')) {
+                        node.remove();
+                    }
+                });
+
+                clone.style.position = 'absolute';
+                clone.style.left = '-9999px';
+                clone.style.top = '0';
+                clone.style.width = '1200px';
+                clone.style.background = '#ffffff';
+                document.body.appendChild(clone);
+
+                const canvas = await html2canvas(clone, {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: '#ffffff',
+                    logging: false,
+                    width: 1200,
+                    height: clone.scrollHeight,
+                    ignoreElements: (element) => {
+                        return element.tagName === 'SCRIPT' ||
+                               element.classList.contains('MathJax_Preview') ||
+                               element.classList.contains('MathJax_Processing');
+                    }
+                });
+
+                document.body.removeChild(clone);
+
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgData = canvas.toDataURL('image/png');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
+                const imgWidth = pdfWidth - 20;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+                let heightLeft = imgHeight;
+                let position = 10;
+
+                pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                heightLeft -= (pdfHeight - 20);
+
+                while (heightLeft > 0) {
+                    position = heightLeft - imgHeight + 10;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                    heightLeft -= (pdfHeight - 20);
+                }
+
+                pdf.save(`Math_Practice_Paper_${new Date().toISOString().slice(0,10)}.pdf`);
+            } catch (error) {
+                console.error('PDF generation failed:', error);
+                showToast('Failed to generate PDF: ' + error.message, 'error');
+            } finally {
+                document.body.removeChild(loading);
             }
         }
-        textNodes.forEach(node => {
-            // Only remove if there's a rendered version nearby
-            const parent = node.parentElement;
-            if (parent && parent.querySelector('mjx-container')) {
-                node.remove();
-            }
-        });
-       
-        // Temporarily add clone to document (required for html2canvas)
-        clone.style.position = 'absolute';
-        clone.style.left = '-9999px';
-        clone.style.top = '0';
-        clone.style.width = '1200px';
-        clone.style.background = '#ffffff';
-        document.body.appendChild(clone);
-       
-        // Generate canvas from clean clone
-        const canvas = await html2canvas(clone, {
-            scale: 2,
-            useCORS: true,
-            backgroundColor: '#ffffff',
-            logging: false,
-            width: 1200,
-            height: clone.scrollHeight,
-            ignoreElements: (element) => {
-                // Double-check: ignore any remaining script or preview elements
-                return element.tagName === 'SCRIPT' ||
-                       element.classList.contains('MathJax_Preview') ||
-                       element.classList.contains('MathJax_Processing');
-            }
-        });
-       
-        // Remove clone
-        document.body.removeChild(clone);
-       
-        // Create PDF
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        const imgData = canvas.toDataURL('image/png');
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = pdf.internal.pageSize.getHeight();
-        const imgWidth = pdfWidth - 20;
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
-       
-        let heightLeft = imgHeight;
-        let position = 10;
-       
-        pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-        heightLeft -= (pdfHeight - 20);
-       
-        while (heightLeft > 0) {
-            position = heightLeft - imgHeight + 10;
-            pdf.addPage();
-            pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-            heightLeft -= (pdfHeight - 20);
-        }
-       
-        pdf.save(`Math_Practice_Paper_${new Date().toISOString().slice(0,10)}.pdf`);
-       
-    } catch (error) {
-        console.error('PDF generation failed:', error);
-        alert('Failed to generate PDF: ' + error.message);
-    } finally {
-        document.body.removeChild(loading);
-    }
-}
-        async function loadHistory() {
-            history = await loadUserAnalyses();
+
+        // ============ HISTORY MANAGEMENT ============
+        function addToHistory() {
+            const title = `Analysis - ${new Date().toLocaleDateString()}`;
+            history.unshift({
+                title,
+                date: new Date().toLocaleDateString(),
+                id: analysisResult.analysis_id
+            });
             updateHistory();
         }
+
         function updateHistory() {
             const html = history.map(h => `
-                <div class="sidebar-item" onclick="loadSpecificAnalysis('${h.id}')">
+                <div class="sidebar-item" onclick="loadAnalysis('${h.id}')">
                     <div class="sidebar-item-title">${h.title}</div>
-                    <div class="sidebar-item-date">${h.created_at}</div>
+                    <div class="sidebar-item-date">${h.date}</div>
                 </div>
             `).join('');
             document.getElementById('historyList').innerHTML = html;
             document.getElementById('mobileHistoryList').innerHTML = html;
         }
-        async function loadSpecificAnalysis(id) {
+
+        async function loadAnalysis(analysisId) {
             try {
-                const response = await fetch(`${BASE_URL}/api/analyses/${id}`, {
+                const response = await fetch(`https://navalsheth.pythonanywhere.com/api/analyses/${analysisId}`, {
                     credentials: 'include'
                 });
                 const data = await response.json();
-                if (data.analysis) {
-                    analysisResult = {questions: data.analysis.questions, id: data.analysis.id};
-                    displayAnalysis(analysisResult);
+                if (data.success) {
+                    analysisResult = data.analysis;
+                    displayAnalysis(data.analysis);
                     document.getElementById('uploadSection').classList.add('hidden');
                     document.getElementById('resultsSection').classList.remove('hidden');
                 } else {
-                    alert(data.message);
+                    showToast(data.message || 'Failed to load analysis', 'error');
                 }
-            } catch (e) {
-                alert('Error loading analysis');
+            } catch (error) {
+                showToast('Error loading analysis: ' + error.message, 'error');
             }
         }
+
+        // ============ UI HELPERS ============
+        function renderMath(element) {
+            if (window.MathJax) {
+                MathJax.typesetPromise([element]).catch(err => console.error('MathJax error:', err));
+            }
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast';
+            if (type === 'error') {
+                toast.style.background = 'var(--destructive)';
+            } else if (type === 'success') {
+                toast.style.background = '#10b981';
+            }
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ============ MOBILE MENU ============
+        function openMobileMenu() {
+            document.getElementById('mobileOverlay').classList.add('open');
+        }
+
+        function closeMobileMenu() {
+            document.getElementById('mobileOverlay').classList.remove('open');
+        }
+
+        function resetToDashboard() {
+            document.getElementById('uploadSection').classList.remove('hidden');
+            document.getElementById('resultsSection').classList.add('hidden');
+            closeMobileMenu();
+        }
+
+        function handleLogout() {
+            logout();
+        }
+
+        // ============ FORM HANDLERS ============
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+
+            const user = await login(username, password);
+            if (user) {
+                currentUser = user;
+                showDashboard(user);
+            }
+        });
+
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const username = document.getElementById('registerUsername').value.trim();
+            const phone = document.getElementById('registerPhone').value.trim();
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+
+            if (!username || !phone || !password) {
+                showToast('Please fill in all fields', 'error');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showToast('Passwords do not match', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showToast('Password must be at least 6 characters', 'error');
+                return;
+            }
+
+            const success = await initiateRegistration(username, phone);
+            if (success) {
+                document.getElementById('registerPassword').value = password;
+            }
+        });
     </script>
 </body>
 </html>
