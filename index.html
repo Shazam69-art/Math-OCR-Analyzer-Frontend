@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Math.AI Analyzer - CAS Educations</title>
+    <!-- Add this line in the head section for session cookies -->
+    <script>document.cookie = "same-site-cookie=foo; SameSite=Lax";</script>
     <script>
         window.MathJax = {
             tex: {
@@ -65,109 +67,92 @@
 
         /* Login Page Styles */
         #loginPage {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #ffffff; /* Pure white background */
-    position: relative;
-    overflow: hidden;
-}
-        @keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            position: relative;
+            overflow: hidden;
+        }
 
         .login-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 0;
-}
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+        }
 
-.login-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 0;
-}
-
-.login-background::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    right: -50%;
-    bottom: -50%;
-    background: #ffffff; /* Pure white background - NO transparency */
-    /* REMOVE ALL the radial-gradient lines completely */
-    /* NO animation either */
-}
-
+        .login-background::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            right: -50%;
+            bottom: -50%;
+            background: #ffffff;
+        }
 
         .login-container {
             position: relative;
-            z-index: 2; /* Add this to ensure login content stays above math terms */
+            z-index: 2;
             width: 100%;
             max-width: 420px;
             padding: 0 20px;
         }
+
         /* Mathematical Terms Styles */
-.math-terms-left,
-.math-terms-right {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 200px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 1;
-    pointer-events: none; /* So they don't interfere with clicks */
-}
+        .math-terms-left,
+        .math-terms-right {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+            pointer-events: none;
+        }
 
-.math-terms-left {
-    left: 40px;
-}
+        .math-terms-left {
+            left: 40px;
+        }
 
-.math-terms-right {
-    right: 40px;
-}
+        .math-terms-right {
+            right: 40px;
+        }
 
-.math-term {
-    font-size: 18px;
-    color: #000000;
-    margin: 20px 0;
-    padding: 12px 15px;
-    text-align: center;
-    opacity: 1; /* Full opacity */
-    transition: all 0.3s ease;
-    font-family: 'Cambria Math', 'Latin Modern Math', STIXGeneral, serif;
-    font-weight: 500;
-    background: rgba(255, 255, 255, 0.9); /* White background with slight transparency */
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
+        .math-term {
+            font-size: 18px;
+            color: #000000;
+            margin: 20px 0;
+            padding: 12px 15px;
+            text-align: center;
+            opacity: 1;
+            transition: all 0.3s ease;
+            font-family: 'Cambria Math', 'Latin Modern Math', STIXGeneral, serif;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
 
-.math-term:hover {
-    transform: scale(1.05);
-    background: rgba(255, 255, 255, 1); /* Solid white on hover */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
+        .math-term:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
 
-/* For mobile, hide the math terms */
-@media (max-width: 1024px) {
-    .math-terms-left,
-    .math-terms-right {
-        display: none;
-    }
-}
+        @media (max-width: 1024px) {
+            .math-terms-left,
+            .math-terms-right {
+                display: none;
+            }
+        }
 
         .login-header {
             text-align: center;
@@ -175,8 +160,8 @@
         }
 
         .ai-mastery-text {
-            color: #4361ee; /* Full blue using your --primary variable color */
-            font-size: 42px; /* Medium to large size */
+            color: #4361ee;
+            font-size: 42px;
             font-weight: 700;
             margin-bottom: 20px;
             text-align: center;
@@ -268,72 +253,38 @@
             transform: translateY(0);
         }
 
-        .social-login {
-            border-top: 1px solid var(--border);
-            padding-top: 24px;
+        .login-btn.secondary {
+            background: #6c757d;
+            margin-top: 10px;
         }
 
-        .social-login-title {
+        .login-btn.secondary:hover {
+            background: #5a6268;
+        }
+
+        .error-message {
+            color: var(--destructive);
+            font-size: 14px;
+            margin-top: 8px;
             text-align: center;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .success-message {
+            color: #10b981;
             font-size: 14px;
-            color: var(--muted-foreground);
-            margin-bottom: 20px;
-            position: relative;
+            margin-top: 8px;
+            text-align: center;
+            display: none;
         }
 
-        .social-login-title::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            width: 30%;
-            height: 1px;
-            background: var(--border);
+        .success-message.show {
+            display: block;
         }
-
-        .social-login-title::after {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 50%;
-            width: 30%;
-            height: 1px;
-            background: var(--border);
-        }
-
-        .social-buttons {
-            display: flex;
-            gap: 12px;
-        }
-
-        .social-btn {
-            flex: 1;
-            padding: 12px;
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            background: var(--card);
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .social-btn:hover {
-            border-color: var(--primary);
-            transform: translateY(-1px);
-        }
-
-        .social-btn svg {
-            width: 20px;
-            height: 20px;
-        }
-
-        .google-btn { color: #4285F4; }
-        .apple-btn { color: #000000; }
 
         .dashboard-container { 
             display: none; 
@@ -1113,10 +1064,6 @@
             .login-card {
                 padding: 24px;
             }
-            
-            .social-buttons {
-                flex-direction: column;
-            }
         }
         
         .hidden { 
@@ -1201,118 +1148,118 @@
             color: var(--primary); 
             margin-bottom: 10px; 
         }
-        /* Loading Overlay Styles */
-#loadingOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(5px);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.loading-content {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 40px;
-    box-shadow: var(--shadow-lg);
-    max-width: 500px;
-    width: 90%;
-    text-align: center;
-}
-
-.progress-container {
-    margin-bottom: 30px;
-}
-
-.progress-bar {
-    width: 100%;
-    height: 12px;
-    background: var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-    margin-bottom: 20px;
-}
-
-.progress-fill {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, #4361ee, #3a56d4, #38bdf8, #fb923c);
-    border-radius: 6px;
-    animation: progressAnimation 3s ease-in-out infinite;
-}
-
-@keyframes progressAnimation {
-    0% {
-        width: 0%;
-        background: #4361ee;
-    }
-    25% {
-        width: 25%;
-        background: #3a56d4;
-    }
-    50% {
-        width: 50%;
-        background: #38bdf8;
-    }
-    75% {
-        width: 75%;
-        background: #fb923c;
-    }
-    100% {
-        width: 100%;
-        background: #4361ee;
-    }
-}
-
-.math-statements {
-    margin-top: 20px;
-}
-
-.math-statement {
-    font-size: 16px;
-    color: var(--muted-foreground);
-    margin: 10px 0;
-    opacity: 0;
-    animation: fadeInOut 1.5s ease-in-out infinite;
-}
-
-.math-statement:nth-child(1) { animation-delay: 0s; }
-.math-statement:nth-child(2) { animation-delay: 0.5s; }
-.math-statement:nth-child(3) { animation-delay: 1s; }
-.math-statement:nth-child(4) { animation-delay: 1.5s; }
-
-@keyframes fadeInOut {
-    0%, 100% { opacity: 0; }
-    50% { opacity: 1; }
-}
-
         
+        /* Loading Overlay Styles */
+        #loadingOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-content {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 40px;
+            box-shadow: var(--shadow-lg);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .progress-container {
+            margin-bottom: 30px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #4361ee, #3a56d4, #38bdf8, #fb923c);
+            border-radius: 6px;
+            animation: progressAnimation 3s ease-in-out infinite;
+        }
+
+        @keyframes progressAnimation {
+            0% {
+                width: 0%;
+                background: #4361ee;
+            }
+            25% {
+                width: 25%;
+                background: #3a56d4;
+            }
+            50% {
+                width: 50%;
+                background: #38bdf8;
+            }
+            75% {
+                width: 75%;
+                background: #fb923c;
+            }
+            100% {
+                width: 100%;
+                background: #4361ee;
+            }
+        }
+
+        .math-statements {
+            margin-top: 20px;
+        }
+
+        .math-statement {
+            font-size: 16px;
+            color: var(--muted-foreground);
+            margin: 10px 0;
+            opacity: 0;
+            animation: fadeInOut 1.5s ease-in-out infinite;
+        }
+
+        .math-statement:nth-child(1) { animation-delay: 0s; }
+        .math-statement:nth-child(2) { animation-delay: 0.5s; }
+        .math-statement:nth-child(3) { animation-delay: 1s; }
+        .math-statement:nth-child(4) { animation-delay: 1.5s; }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
     </style>
 </head>
 <body>
     <!-- Login Page -->
     <div id="loginPage">
         <div class="math-terms-left">
-        <div class="math-term">$e^{i\pi} + 1 = 0$</div>
-        <div class="math-term">$\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}$</div>
-        <div class="math-term">$\nabla \cdot \mathbf{E} = \frac{\rho}{\varepsilon_0}$</div>
-        <div class="math-term">$\frac{d}{dx}e^x = e^x$</div>
-        <div class="math-term">$F = G\frac{m_1 m_2}{r^2}$</div>
-    </div>
-    
-    <div class="math-terms-right">
-        <div class="math-term">$a^2 + b^2 = c^2$</div>
-        <div class="math-term">$\sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}$</div>
-        <div class="math-term">$\nabla \times \mathbf{B} = \mu_0\mathbf{J}$</div>
-        <div class="math-term">$\frac{\partial u}{\partial t} = \alpha \nabla^2 u$</div>
-        <div class="math-term">$\hbar \frac{\partial}{\partial t} \Psi = \hat{H} \Psi$</div>
-    </div>
+            <div class="math-term">$e^{i\pi} + 1 = 0$</div>
+            <div class="math-term">$\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}$</div>
+            <div class="math-term">$\nabla \cdot \mathbf{E} = \frac{\rho}{\varepsilon_0}$</div>
+            <div class="math-term">$\frac{d}{dx}e^x = e^x$</div>
+            <div class="math-term">$F = G\frac{m_1 m_2}{r^2}$</div>
+        </div>
+        
+        <div class="math-terms-right">
+            <div class="math-term">$a^2 + b^2 = c^2$</div>
+            <div class="math-term">$\sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}$</div>
+            <div class="math-term">$\nabla \times \mathbf{B} = \mu_0\mathbf{J}$</div>
+            <div class="math-term">$\frac{\partial u}{\partial t} = \alpha \nabla^2 u$</div>
+            <div class="math-term">$\hbar \frac{\partial}{\partial t} \Psi = \hat{H} \Psi$</div>
+        </div>
+        
         <div class="login-background"></div>
         <div class="login-container">
             <div class="login-header">
@@ -1324,47 +1271,28 @@
             <div class="login-card">
                 <form id="loginForm" class="login-form">
                     <div class="form-group">
-                        <label class="form-label">Email or Username</label>
-                        <input type="text" id="loginUsername" class="form-input" placeholder="Enter your email or username" required>
+                        <label class="form-label">Username</label>
+                        <input type="text" id="loginUsername" class="form-input" placeholder="Enter your username" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Password</label>
                         <input type="password" id="loginPassword" class="form-input" placeholder="Enter your password" required>
                     </div>
+                    <div id="loginErrorMessage" class="error-message"></div>
+                    <div id="loginSuccessMessage" class="success-message"></div>
                     <button type="submit" class="login-btn">
                         <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
                         </svg>
                         Login to Dashboard
                     </button>
-                    <!-- ADD THIS BUTTON RIGHT AFTER THE LOGIN BUTTON -->
-                    <button type="button" class="login-btn" onclick="showRegisterModal()" style="margin-top: 16px; background: var(--primary);">
+                    <button type="button" class="login-btn secondary" onclick="showRegisterModal()">
                         <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
                         </svg>
                         Register New Account
                     </button>
                 </form>
-                <div class="social-login">
-                    <div class="social-login-title">Or continue with</div>
-                    <div class="social-buttons">
-                        <button class="social-btn google-btn" onclick="socialLogin('google')">
-                            <svg viewBox="0 0 24 24" width="20" height="20">
-                                <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                                <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                                <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                                <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                            </svg>
-                            Google
-                        </button>
-                        <button class="social-btn apple-btn" onclick="socialLogin('apple')">
-                            <svg viewBox="0 0 24 24" width="20" height="20">
-                                <path fill="currentColor" d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.31-2.33 1.05-3.11z"/>
-                            </svg>
-                            Apple
-                        </button>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -1545,171 +1473,221 @@
             <button class="btn-outline" style="width: 100%; margin-top: 1rem;" onclick="closeImageModal()">Close</button>
         </div>
     </div>
+    
     <!-- Register Modal -->
-<div id="registerModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3>Create New Account</h3>
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Account</h3>
+            </div>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" id="registerUsername" class="form-input" placeholder="Choose a username (min 3 chars)" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input type="tel" id="registerPhone" class="form-input" placeholder="Enter your phone number" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="registerPassword" class="form-input" placeholder="Create a password (min 6 chars)" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Confirm Password</label>
+                    <input type="password" id="registerConfirmPassword" class="form-input" placeholder="Confirm your password" required>
+                </div>
+                <div id="registerErrorMessage" class="error-message"></div>
+                <div id="registerSuccessMessage" class="success-message"></div>
+                <div class="form-group" style="text-align: center;">
+                    <button type="submit" class="login-btn">
+                        <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        Register Account
+                    </button>
+                </div>
+            </form>
+            <button class="btn-outline" style="width: 100%; margin-top: 1rem;" onclick="closeRegisterModal()">Cancel</button>
         </div>
-        <form id="registerForm">
-            <div class="form-group">
-                <label class="form-label">Username</label>
-                <input type="text" id="registerUsername" class="form-input" placeholder="Choose a username" required>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Phone Number</label>
-                <input type="tel" id="registerPhone" class="form-input" placeholder="Enter your phone number" required>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Password</label>
-                <input type="password" id="registerPassword" class="form-input" placeholder="Create a password" required>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Confirm Password</label>
-                <input type="password" id="registerConfirmPassword" class="form-input" placeholder="Confirm your password" required>
-            </div>
-            <div class="form-group" style="text-align: center;">
-                <button type="submit" class="login-btn" style="width: 100%;">
-                    <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                    </svg>
-                    Proceed to Register
-                </button>
-            </div>
-        </form>
-        <div id="registerSuccessMessage" style="display: none; text-align: center; padding: 20px; background: rgba(16, 185, 129, 0.1); border-radius: 8px; margin-top: 20px;">
-            <h4 style="color: #10b981;">✓ User Registered Successfully!</h4>
-            <p>You can now close this window and login with your credentials.</p>
-            <button class="btn-outline" style="margin-top: 16px;" onclick="closeRegisterModal()">Close</button>
-        </div>
-        <button class="btn-outline" style="width: 100%; margin-top: 1rem;" onclick="closeRegisterModal()">Cancel</button>
     </div>
-</div>
 
-    
     <script>
-        // Login Functions
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('loginUsername').value.trim();
-            
-            // Dummy login - accept any credentials
-            let displayName = username;
-            
-            // Extract name before @ if email is provided
-            if (username.includes('@')) {
-                displayName = username.split('@')[0];
-            }
-            
-            // Capitalize first letter
-            displayName = displayName.charAt(0).toUpperCase() + displayName.slice(1);
-            
-            // Store user info
-            localStorage.setItem('userEmailPrefix', displayName);
-            currentUser = displayName;
-            
-            // Switch to dashboard
-            document.getElementById('loginPage').style.display = 'none';
-            document.getElementById('dashboardPage').style.display = 'flex';
-            document.getElementById('userName').textContent = displayName;
-        });
+        // Backend configuration - CHANGE THIS TO YOUR BACKEND URL
+        const BACKEND_URL = 'https://navalsheth.pythonanywhere.com'; // Change to your backend URL in production
         
-        
-
-        function socialLogin(provider) {
-            // Dummy social login - accept any
-            const displayName = provider === 'google' ? 'Google User' : 'Apple User';
-            
-            // Store user info
-            localStorage.setItem('userEmailPrefix', displayName);
-            currentUser = displayName;
-            
-            // Switch to dashboard
-            document.getElementById('loginPage').style.display = 'none';
-            document.getElementById('dashboardPage').style.display = 'flex';
-            document.getElementById('userName').textContent = displayName;
-        }
-
-        // Check if already logged in
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedUser = localStorage.getItem('userEmailPrefix');
-            if (savedUser) {
-                document.getElementById('loginPage').style.display = 'none';
-                document.getElementById('dashboardPage').style.display = 'flex';
-                document.getElementById('userName').textContent = savedUser;
-                currentUser = savedUser;
-            }
-        });
-        // Registration functions
-function showRegisterModal() {
-    document.getElementById('registerModal').classList.add('open');
-    // Reset form
-    document.getElementById('registerForm').reset();
-    document.getElementById('registerSuccessMessage').style.display = 'none';
-}
-
-function closeRegisterModal() {
-    document.getElementById('registerModal').classList.remove('open');
-}
-
-// Handle registration form submission
-document.getElementById('registerForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const username = document.getElementById('registerUsername').value.trim();
-    const phone = document.getElementById('registerPhone').value.trim();
-    const password = document.getElementById('registerPassword').value;
-    const confirmPassword = document.getElementById('registerConfirmPassword').value;
-    
-    // Basic validation
-    if (!username || !phone || !password) {
-        alert('Please fill in all fields');
-        return;
-    }
-    
-    if (password !== confirmPassword) {
-        alert('Passwords do not match');
-        return;
-    }
-    
-    if (password.length < 6) {
-        alert('Password must be at least 6 characters');
-        return;
-    }
-    
-    // In a real app, you would send this to your backend
-    // For demo purposes, we'll just store in localStorage
-    const userData = {
-        username: username,
-        phone: phone,
-        password: password, // Note: In real app, NEVER store passwords in plain text
-        registeredAt: new Date().toISOString()
-    };
-    
-    // Store in localStorage (for demo only)
-    localStorage.setItem('registeredUser_' + username, JSON.stringify(userData));
-    
-    // Show success message
-    document.getElementById('registerSuccessMessage').style.display = 'block';
-    document.getElementById('registerForm').style.display = 'none';
-    
-    // Auto-fill login form
-    document.getElementById('loginUsername').value = username;
-});
-
         // State management
         let questionFiles = [];
         let answerFiles = [];
         let allFiles = [];
         let analysisResult = null;
         let practiceResult = null;
-        let history = [];
+        let currentUser = null;
         let isAnalyzing = false;
 
+        // Initialize MathJax
         function renderMath(element) {
             if (window.MathJax) {
                 MathJax.typesetPromise([element]).catch(err => console.error('MathJax error:', err));
             }
+        }
+
+        // Authentication functions
+        async function checkAuth() {
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/check-auth`, {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                if (data.authenticated && data.user) {
+                    currentUser = data.user;
+                    showDashboard(data.user);
+                    return true;
+                } else {
+                    showLoginPage();
+                    return false;
+                }
+            } catch (error) {
+                console.error('Auth check failed:', error);
+                showLoginPage();
+                return false;
+            }
+        }
+
+        async function loginUser(username, password) {
+            try {
+                const errorMessage = document.getElementById('loginErrorMessage');
+                const successMessage = document.getElementById('loginSuccessMessage');
+                
+                errorMessage.classList.remove('show');
+                successMessage.classList.remove('show');
+                
+                const response = await fetch(`${BACKEND_URL}/api/login`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({username, password}),
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    successMessage.textContent = data.message;
+                    successMessage.classList.add('show');
+                    
+                    // Store user info
+                    currentUser = data.user;
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    // Show dashboard after brief delay
+                    setTimeout(() => {
+                        showDashboard(data.user);
+                        successMessage.classList.remove('show');
+                    }, 1000);
+                } else {
+                    errorMessage.textContent = data.message;
+                    errorMessage.classList.add('show');
+                }
+            } catch (error) {
+                const errorMessage = document.getElementById('loginErrorMessage');
+                errorMessage.textContent = 'Connection error. Please try again.';
+                errorMessage.classList.add('show');
+            }
+        }
+
+        async function registerUser(username, phone, password) {
+            try {
+                const errorMessage = document.getElementById('registerErrorMessage');
+                const successMessage = document.getElementById('registerSuccessMessage');
+                
+                errorMessage.classList.remove('show');
+                successMessage.classList.remove('show');
+                
+                const response = await fetch(`${BACKEND_URL}/api/register`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({username, phone, password}),
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    successMessage.textContent = 'Registration successful! Please login with your credentials.';
+                    successMessage.classList.add('show');
+                    
+                    // Clear form
+                    document.getElementById('registerForm').reset();
+                    
+                    // Close modal after delay
+                    setTimeout(() => {
+                        closeRegisterModal();
+                        successMessage.classList.remove('show');
+                    }, 2000);
+                } else {
+                    errorMessage.textContent = data.message;
+                    errorMessage.classList.add('show');
+                }
+            } catch (error) {
+                const errorMessage = document.getElementById('registerErrorMessage');
+                errorMessage.textContent = 'Connection error. Please try again.';
+                errorMessage.classList.add('show');
+            }
+        }
+
+        async function logoutUser() {
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/logout`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                // Clear local storage
+                localStorage.removeItem('user');
+                currentUser = null;
+                
+                // Show login page
+                showLoginPage();
+            } catch (error) {
+                console.error('Logout error:', error);
+                // Still show login page even if logout fails
+                showLoginPage();
+            }
+        }
+
+        // Page navigation functions
+        function showDashboard(user) {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('dashboardPage').style.display = 'flex';
+            document.getElementById('userName').textContent = user.username;
+            
+            // Load user history
+            loadHistory();
+        }
+
+        function showLoginPage() {
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('dashboardPage').style.display = 'none';
+            document.getElementById('loginForm').reset();
+            document.getElementById('loginErrorMessage').classList.remove('show');
+            document.getElementById('loginSuccessMessage').classList.remove('show');
+        }
+
+        // Modal functions
+        function showRegisterModal() {
+            document.getElementById('registerModal').classList.add('open');
+            document.getElementById('registerForm').reset();
+            document.getElementById('registerErrorMessage').classList.remove('show');
+            document.getElementById('registerSuccessMessage').classList.remove('show');
+        }
+
+        function closeRegisterModal() {
+            document.getElementById('registerModal').classList.remove('open');
         }
 
         // Mobile menu functions
@@ -1722,11 +1700,7 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
         }
 
         function handleLogout() {
-            localStorage.removeItem('userEmailPrefix');
-            document.getElementById('dashboardPage').style.display = 'none';
-            document.getElementById('loginPage').style.display = 'flex';
-            // Reset form
-            document.getElementById('loginForm').reset();
+            logoutUser();
         }
 
         function resetToDashboard() {
@@ -1734,6 +1708,61 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
             document.getElementById('resultsSection').classList.add('hidden');
             closeMobileMenu();
         }
+
+        // Event listeners
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!username || !password) {
+                const errorMessage = document.getElementById('loginErrorMessage');
+                errorMessage.textContent = 'Please enter both username and password';
+                errorMessage.classList.add('show');
+                return;
+            }
+            
+            await loginUser(username, password);
+        });
+
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const username = document.getElementById('registerUsername').value.trim();
+            const phone = document.getElementById('registerPhone').value.trim();
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            
+            // Validation
+            if (!username || !phone || !password || !confirmPassword) {
+                const errorMessage = document.getElementById('registerErrorMessage');
+                errorMessage.textContent = 'All fields are required';
+                errorMessage.classList.add('show');
+                return;
+            }
+            
+            if (username.length < 3) {
+                const errorMessage = document.getElementById('registerErrorMessage');
+                errorMessage.textContent = 'Username must be at least 3 characters';
+                errorMessage.classList.add('show');
+                return;
+            }
+            
+            if (password.length < 6) {
+                const errorMessage = document.getElementById('registerErrorMessage');
+                errorMessage.textContent = 'Password must be at least 6 characters';
+                errorMessage.classList.add('show');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                const errorMessage = document.getElementById('registerErrorMessage');
+                errorMessage.textContent = 'Passwords do not match';
+                errorMessage.classList.add('show');
+                return;
+            }
+            
+            await registerUser(username, phone, password);
+        });
 
         // File handling
         document.getElementById('questionInput').addEventListener('change', async e => {
@@ -1777,75 +1806,99 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
             document.getElementById('startAnalysisBtn').disabled = questionFiles.length === 0 || answerFiles.length === 0;
         }
 
+        // Analysis functions
         async function startAnalysis() {
-    if (isAnalyzing) return;
-    isAnalyzing = true;
-    const btn = document.getElementById('startAnalysisBtn');
-    
-    // Create and show loading overlay
-    const loadingOverlay = document.createElement('div');
-    loadingOverlay.id = 'loadingOverlay';
-    loadingOverlay.innerHTML = `
-        <div class="loading-content">
-            <div class="progress-container">
-                <div class="progress-bar">
-                    <div class="progress-fill"></div>
-                </div>
-                <div class="math-statements">
-                    <p class="math-statement">Processing mathematical equations...</p>
-                    <p class="math-statement">Analyzing solution steps...</p>
-                    <p class="math-statement">Checking for calculation errors...</p>
-                    <p class="math-statement">Generating corrections...</p>
-                </div>
-            </div>
-        </div>
-    `;
-    document.getElementById('uploadSection').appendChild(loadingOverlay);
-    
-    btn.innerHTML = '<div class="loading"></div> Analyzing...';
-    btn.disabled = true;
-    
-    const formData = new FormData();
-    allFiles = [...questionFiles, ...answerFiles];
-    allFiles.forEach(f => formData.append('files', f.file));
-    
-    try {
-        const res = await fetch('https://navalsheth.pythonanywhere.com/analyze', {
-            method: 'POST',
-            body: formData
-        });
-        const data = await res.json();
-        if (data.error) {
-            alert(data.error);
-            removeLoadingOverlay();
-        } else {
-            analysisResult = data;
-            displayAnalysis(data);
-            addToHistory();
+            if (isAnalyzing) return;
             
-            // Hide loading overlay and show results
-            setTimeout(() => {
+            // Check authentication first
+            const isAuthenticated = await checkAuth();
+            if (!isAuthenticated) {
+                alert('Please login to start analysis');
+                return;
+            }
+            
+            if (questionFiles.length === 0 || answerFiles.length === 0) {
+                alert('Please upload both question papers and answer sheets');
+                return;
+            }
+            
+            isAnalyzing = true;
+            const btn = document.getElementById('startAnalysisBtn');
+            
+            // Create and show loading overlay
+            const loadingOverlay = document.createElement('div');
+            loadingOverlay.id = 'loadingOverlay';
+            loadingOverlay.innerHTML = `
+                <div class="loading-content">
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <div class="math-statements">
+                            <p class="math-statement">Processing mathematical equations...</p>
+                            <p class="math-statement">Analyzing solution steps...</p>
+                            <p class="math-statement">Checking for calculation errors...</p>
+                            <p class="math-statement">Generating corrections...</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('uploadSection').appendChild(loadingOverlay);
+            
+            btn.innerHTML = '<div class="loading"></div> Analyzing...';
+            btn.disabled = true;
+            
+            const formData = new FormData();
+            allFiles = [...questionFiles, ...answerFiles];
+            allFiles.forEach(f => formData.append('files', f.file));
+            
+            try {
+                const response = await fetch(`${BACKEND_URL}/analyze`, {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'include'
+                });
+                
+                if (response.status === 401) {
+                    // Unauthorized - redirect to login
+                    showLoginPage();
+                    alert('Session expired. Please login again.');
+                    return;
+                }
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                } else {
+                    analysisResult = data;
+                    displayAnalysis(data);
+                    
+                    // Hide loading overlay and show results
+                    setTimeout(() => {
+                        removeLoadingOverlay();
+                        document.getElementById('uploadSection').classList.add('hidden');
+                        document.getElementById('resultsSection').classList.remove('hidden');
+                    }, 500);
+                }
+            } catch (error) {
+                console.error('Analysis error:', error);
+                alert('Error: ' + error.message);
                 removeLoadingOverlay();
-                document.getElementById('uploadSection').classList.add('hidden');
-                document.getElementById('resultsSection').classList.remove('hidden');
-            }, 500);
+            } finally {
+                isAnalyzing = false;
+                btn.innerHTML = `<svg style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Start Analysis`;
+                btn.disabled = false;
+            }
         }
-    } catch (e) {
-        alert('Error: ' + e.message);
-        removeLoadingOverlay();
-    } finally {
-        isAnalyzing = false;
-        btn.innerHTML = `<svg style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Start Analysis`;
-        btn.disabled = false;
-    }
-}
 
-function removeLoadingOverlay() {
-    const overlay = document.getElementById('loadingOverlay');
-    if (overlay) {
-        overlay.remove();
-    }
-}
+        function removeLoadingOverlay() {
+            const overlay = document.getElementById('loadingOverlay');
+            if (overlay) {
+                overlay.remove();
+            }
+        }
+
         function processSteps(str) {
             if (!str) return '';
             const steps = str.split('<br>').filter(step => step.trim() !== '');
@@ -1856,6 +1909,7 @@ function removeLoadingOverlay() {
             const accordion = document.getElementById('accordion');
             accordion.innerHTML = '';
             let counts = {correct: 0, partial: 0, incorrect: 0};
+            
             result.questions.forEach((q, i) => {
                 counts[q.status]++;
                 const item = document.createElement('div');
@@ -1900,6 +1954,7 @@ function removeLoadingOverlay() {
                 accordion.appendChild(item);
                 renderMath(item);
             });
+            
             document.getElementById('badgeGroup').innerHTML = `
                 <div class="badge"><div class="badge-dot correct"></div>${counts.correct} Correct</div>
                 <div class="badge"><div class="badge-dot partial"></div>${counts.partial} Partial</div>
@@ -1914,11 +1969,13 @@ function removeLoadingOverlay() {
         async function reanalyzeQuestion(i) {
             const query = document.getElementById(`reanalysisInput${i}`).value.trim();
             if (!query) return;
+            
             const question = analysisResult.questions[i];
             const btn = event.target;
             btn.innerHTML = '<div class="loading" style="width: 16px; height: 16px; border-width: 2px;"></div>';
+            
             try {
-                const res = await fetch('https://navalsheth.pythonanywhere.com/reanalyze', {
+                const response = await fetch(`${BACKEND_URL}/reanalyze`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({
@@ -1927,9 +1984,18 @@ function removeLoadingOverlay() {
                         student_original: question.student_original,
                         error: question.error,
                         correct_solution: question.correct_solution
-                    })
+                    }),
+                    credentials: 'include'
                 });
-                const data = await res.json();
+                
+                if (response.status === 401) {
+                    showLoginPage();
+                    alert('Session expired. Please login again.');
+                    return;
+                }
+                
+                const data = await response.json();
+                
                 if (data.error) {
                     alert(data.error);
                 } else {
@@ -1938,8 +2004,8 @@ function removeLoadingOverlay() {
                     responseDiv.querySelector('p').innerHTML = data.response;
                     renderMath(responseDiv);
                 }
-            } catch (e) {
-                alert('Error: ' + e.message);
+            } catch (error) {
+                alert('Error: ' + error.message);
             } finally {
                 btn.innerHTML = 'Send';
             }
@@ -1951,9 +2017,11 @@ function removeLoadingOverlay() {
             const modalTitle = document.getElementById('modalTitle');
             const errorHighlight = document.getElementById('errorHighlight');
             const modalCaption = document.getElementById('modalCaption');
+            
             modalTitle.textContent = `Answer Sheet - Question ${analysisResult.questions[i].number}`;
             modalImage.src = analysisResult.questions[i].dataURL || '';
             modalCaption.textContent = `Status: ${status}`;
+            
             if (bbox && bbox.x && bbox.y && bbox.width && bbox.height) {
                 errorHighlight.style.display = 'block';
                 errorHighlight.style.left = `${bbox.x}px`;
@@ -1963,6 +2031,7 @@ function removeLoadingOverlay() {
             } else {
                 errorHighlight.style.display = 'none';
             }
+            
             modal.classList.add('open');
         }
 
@@ -1972,15 +2041,26 @@ function removeLoadingOverlay() {
 
         async function generatePracticePaper() {
             if (!analysisResult) return;
+            
             const content = document.getElementById('practicePaperContent');
             content.innerHTML = '<div class="loading"></div> Generating...';
+            
             try {
-                const res = await fetch('https://navalsheth.pythonanywhere.com/generate_practice', {
+                const response = await fetch(`${BACKEND_URL}/generate_practice`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({analysis: analysisResult})
+                    body: JSON.stringify({analysis: analysisResult}),
+                    credentials: 'include'
                 });
-                const data = await res.json();
+                
+                if (response.status === 401) {
+                    showLoginPage();
+                    alert('Session expired. Please login again.');
+                    return;
+                }
+                
+                const data = await response.json();
+                
                 if (data.error) {
                     content.innerHTML = `<p>Error: ${data.error}</p>`;
                 } else if (data.practice_questions.length === 0) {
@@ -2006,154 +2086,170 @@ function removeLoadingOverlay() {
                             </div>
                         </div>`;
                     
-                    // Wait for MathJax to render, then hide processed elements
                     setTimeout(() => {
                         renderMath(document.getElementById('practice-paper'));
                     }, 500);
                 }
-            } catch (e) {
-                content.innerHTML = `<p>Error: ${e.message}</p>`;
+            } catch (error) {
+                content.innerHTML = `<p>Error: ${error.message}</p>`;
             }
         }
 
         async function downloadPracticePaper() {
-    if (!practiceResult) return;
-    const practicePaper = document.getElementById('practice-paper');
-    if (!practicePaper) {
-        alert('Practice paper not found!');
-        return;
-    }
-    
-    const loading = document.createElement('div');
-    loading.innerHTML = '<div class="loading"></div> Generating PDF...';
-    Object.assign(loading.style, {
-        position: 'fixed',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        background: 'rgba(255,255,255,0.9)',
-        padding: '20px',
-        borderRadius: '10px',
-        zIndex: '9999'
-    });
-    document.body.appendChild(loading);
-    
-    try {
-        // Force MathJax to complete rendering
-        if (window.MathJax) {
-            await MathJax.typesetPromise([practicePaper]);
-        }
-        
-        // Wait for rendering to stabilize
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        
-        // Create a clean clone for PDF generation
-        const clone = practicePaper.cloneNode(true);
-        
-        // CRITICAL: Remove ALL sources of duplication
-        // 1. Remove original LaTeX script tags
-        clone.querySelectorAll('script[type*="math"]').forEach(el => el.remove());
-        
-        // 2. Remove MathJax preview/processing elements
-        clone.querySelectorAll('.MathJax_Preview, .MathJax_Processing, .MathJax_Display').forEach(el => el.remove());
-        
-        // 3. Keep ONLY the final rendered output (mjx-container)
-        // Remove any nested duplicates within mjx-containers
-        clone.querySelectorAll('mjx-container mjx-container').forEach(el => el.remove());
-        
-        // 4. If you're seeing raw LaTeX text, remove it
-        const textNodes = [];
-        const walker = document.createTreeWalker(clone, NodeFilter.SHOW_TEXT);
-        let node;
-        while (node = walker.nextNode()) {
-            // Remove text nodes that contain raw LaTeX (starting with $ or $$)
-            if (node.textContent.trim().match(/^\$+/)) {
-                textNodes.push(node);
+            if (!practiceResult) return;
+            const practicePaper = document.getElementById('practice-paper');
+            
+            if (!practicePaper) {
+                alert('Practice paper not found!');
+                return;
             }
-        }
-        textNodes.forEach(node => {
-            // Only remove if there's a rendered version nearby
-            const parent = node.parentElement;
-            if (parent && parent.querySelector('mjx-container')) {
-                node.remove();
+            
+            const loading = document.createElement('div');
+            loading.innerHTML = '<div class="loading"></div> Generating PDF...';
+            Object.assign(loading.style, {
+                position: 'fixed',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                background: 'rgba(255,255,255,0.9)',
+                padding: '20px',
+                borderRadius: '10px',
+                zIndex: '9999'
+            });
+            document.body.appendChild(loading);
+            
+            try {
+                if (window.MathJax) {
+                    await MathJax.typesetPromise([practicePaper]);
+                }
+                
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                const clone = practicePaper.cloneNode(true);
+                clone.querySelectorAll('script[type*="math"]').forEach(el => el.remove());
+                clone.querySelectorAll('.MathJax_Preview, .MathJax_Processing, .MathJax_Display').forEach(el => el.remove());
+                clone.querySelectorAll('mjx-container mjx-container').forEach(el => el.remove());
+                
+                const textNodes = [];
+                const walker = document.createTreeWalker(clone, NodeFilter.SHOW_TEXT);
+                let node;
+                while (node = walker.nextNode()) {
+                    if (node.textContent.trim().match(/^\$+/)) {
+                        textNodes.push(node);
+                    }
+                }
+                textNodes.forEach(node => {
+                    const parent = node.parentElement;
+                    if (parent && parent.querySelector('mjx-container')) {
+                        node.remove();
+                    }
+                });
+                
+                clone.style.position = 'absolute';
+                clone.style.left = '-9999px';
+                clone.style.top = '0';
+                clone.style.width = '1200px';
+                clone.style.background = '#ffffff';
+                document.body.appendChild(clone);
+                
+                const canvas = await html2canvas(clone, {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: '#ffffff',
+                    logging: false,
+                    width: 1200,
+                    height: clone.scrollHeight,
+                    ignoreElements: (element) => {
+                        return element.tagName === 'SCRIPT' ||
+                               element.classList.contains('MathJax_Preview') ||
+                               element.classList.contains('MathJax_Processing');
+                    }
+                });
+                
+                document.body.removeChild(clone);
+                
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgData = canvas.toDataURL('image/png');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
+                const imgWidth = pdfWidth - 20;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                
+                let heightLeft = imgHeight;
+                let position = 10;
+                
+                pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                heightLeft -= (pdfHeight - 20);
+                
+                while (heightLeft > 0) {
+                    position = heightLeft - imgHeight + 10;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                    heightLeft -= (pdfHeight - 20);
+                }
+                
+                pdf.save(`Math_Practice_Paper_${new Date().toISOString().slice(0,10)}.pdf`);
+                
+            } catch (error) {
+                console.error('PDF generation failed:', error);
+                alert('Failed to generate PDF: ' + error.message);
+            } finally {
+                document.body.removeChild(loading);
             }
-        });
-        
-        // Temporarily add clone to document (required for html2canvas)
-        clone.style.position = 'absolute';
-        clone.style.left = '-9999px';
-        clone.style.top = '0';
-        clone.style.width = '1200px';
-        clone.style.background = '#ffffff';
-        document.body.appendChild(clone);
-        
-        // Generate canvas from clean clone
-        const canvas = await html2canvas(clone, {
-            scale: 2,
-            useCORS: true,
-            backgroundColor: '#ffffff',
-            logging: false,
-            width: 1200,
-            height: clone.scrollHeight,
-            ignoreElements: (element) => {
-                // Double-check: ignore any remaining script or preview elements
-                return element.tagName === 'SCRIPT' ||
-                       element.classList.contains('MathJax_Preview') ||
-                       element.classList.contains('MathJax_Processing');
-            }
-        });
-        
-        // Remove clone
-        document.body.removeChild(clone);
-        
-        // Create PDF
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        const imgData = canvas.toDataURL('image/png');
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = pdf.internal.pageSize.getHeight();
-        const imgWidth = pdfWidth - 20;
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
-        
-        let heightLeft = imgHeight;
-        let position = 10;
-        
-        pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-        heightLeft -= (pdfHeight - 20);
-        
-        while (heightLeft > 0) {
-            position = heightLeft - imgHeight + 10;
-            pdf.addPage();
-            pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-            heightLeft -= (pdfHeight - 20);
-        }
-        
-        pdf.save(`Math_Practice_Paper_${new Date().toISOString().slice(0,10)}.pdf`);
-        
-    } catch (error) {
-        console.error('PDF generation failed:', error);
-        alert('Failed to generate PDF: ' + error.message);
-    } finally {
-        document.body.removeChild(loading);
-    }
-}
-
-        function addToHistory() {
-            const title = `Analysis - ${new Date().toLocaleDateString()}`;
-            history.push({title, date: new Date().toLocaleDateString()});
-            updateHistory();
         }
 
-        function updateHistory() {
-            const html = history.map(h => `
+        // History functions
+        async function loadHistory() {
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/history`, {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+                
+                if (response.status === 401) {
+                    return; // Not authenticated
+                }
+                
+                const data = await response.json();
+                
+                if (data.history) {
+                    updateHistory(data.history);
+                }
+            } catch (error) {
+                console.error('Failed to load history:', error);
+            }
+        }
+
+        function updateHistory(historyList) {
+            const html = historyList.map(item => `
                 <div class="sidebar-item">
-                    <div class="sidebar-item-title">${h.title}</div>
-                    <div class="sidebar-item-date">${h.date}</div>
+                    <div class="sidebar-item-title">${item.title}</div>
+                    <div class="sidebar-item-date">${new Date(item.date).toLocaleDateString()}</div>
                 </div>
             `).join('');
+            
             document.getElementById('historyList').innerHTML = html;
             document.getElementById('mobileHistoryList').innerHTML = html;
         }
+
+        // Initialize app on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            // Check authentication
+            checkAuth();
+            
+            // Check if we have a saved user
+            const savedUser = localStorage.getItem('user');
+            if (savedUser) {
+                try {
+                    currentUser = JSON.parse(savedUser);
+                    // Still need to verify with backend
+                    checkAuth();
+                } catch (e) {
+                    localStorage.removeItem('user');
+                }
+            }
+        });
     </script>
 </body>
 </html>
