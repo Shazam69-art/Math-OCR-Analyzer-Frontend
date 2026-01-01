@@ -2017,81 +2017,106 @@ function removeLoadingOverlay() {
         }
 
         async function downloadPracticePaper() {
-            if (!practiceResult) return;
-            const practicePaper = document.getElementById('practice-paper');
-            if (!practicePaper) {
-                alert('Practice paper not found!');
-                return;
-            }
-            
-            const loading = document.createElement('div');
-            loading.innerHTML = '<div class="loading"></div> Generating PDF...';
-            Object.assign(loading.style, {
-                position: 'fixed',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                background: 'rgba(255,255,255,0.9)',
-                padding: '20px',
-                borderRadius: '10px',
-                zIndex: '9999'
-            });
-            document.body.appendChild(loading);
-            
-            try {
-                // Wait for MathJax to complete
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                
-                // Hide MathJax elements that cause duplication
-                const mathjaxElements = practicePaper.querySelectorAll('.MathJax_Processing, .MathJax_Processed');
-                mathjaxElements.forEach(el => {
-                    el.style.display = 'none';
-                    el.style.visibility = 'hidden';
-                    el.style.opacity = '0';
-                    el.style.position = 'absolute';
-                });
-                
-                const canvas = await html2canvas(practicePaper, {
-                    scale: 2,
-                    useCORS: true,
-                    backgroundColor: '#ffffff',
-                    logging: false,
-                    windowWidth: practicePaper.scrollWidth + 60,
-                    windowHeight: practicePaper.scrollHeight + 60,
-                    onclone: function(clonedDoc) {
-                        // Remove MathJax elements from the cloned document
-                        const clonedElements = clonedDoc.querySelectorAll('.MathJax_Processing, .MathJax_Processed, .MathJax_SVG');
-                        clonedElements.forEach(el => {
-                            el.style.display = 'none';
-                            el.style.visibility = 'hidden';
-                            el.style.opacity = '0';
-                            el.style.position = 'absolute';
-                        });
-                    }
-                });
-                
-                // Restore MathJax elements
-                mathjaxElements.forEach(el => {
-                    el.style.display = '';
-                    el.style.visibility = '';
-                    el.style.opacity = '';
-                    el.style.position = '';
-                });
-                
-                const { jsPDF } = window.jspdf;
-                const pdf = new jsPDF('p', 'mm', 'a4');
-                const imgData = canvas.toDataURL('image/png');
-                const imgWidth = pdf.internal.pageSize.getWidth();
-                const imgHeight = (canvas.height * imgWidth) / canvas.width;
-                pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-                pdf.save(`Math_Practice_Paper_${new Date().toISOString().slice(0,10)}.pdf`);
-            } catch (error) {
-                console.error('PDF generation failed:', error);
-                alert('Failed to generate PDF. Please try again.');
-            } finally {
-                document.body.removeChild(loading);
-            }
+    if (!practiceResult) return;
+    const practicePaper = document.getElementById('practice-paper');
+    if (!practicePaper) {
+        alert('Practice paper not found!');
+        return;
+    }
+    
+    const loading = document.createElement('div');
+    loading.innerHTML = '<div class="loading"></div> Generating PDF...';
+    Object.assign(loading.style, {
+        position: 'fixed',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        background: 'rgba(255,255,255,0.9)',
+        padding: '20px',
+        borderRadius: '10px',
+        zIndex: '9999'
+    });
+    document.body.appendChild(loading);
+    
+    try {
+        // Force MathJax to complete rendering
+        if (window.MathJax) {
+            await MathJax.typesetPromise([practicePaper]);
         }
+        
+        // Additional wait to ensure rendering is complete
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Remove ALL MathJax script tags that cause double rendering
+        const mjxScripts = practicePaper.querySelectorAll('script[type*="math"]');
+        const originalScripts = [];
+        mjxScripts.forEach(script => {
+            originalScripts.push({
+                element: script,
+                parent: script.parentNode,
+                nextSibling: script.nextSibling
+            });
+            script.remove();
+        });
+        
+        // Generate canvas with only the rendered MathJax output
+        const canvas = await html2canvas(practicePaper, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: '#ffffff',
+            logging: false,
+            windowWidth: 1200,
+            windowHeight: practicePaper.scrollHeight + 100,
+            ignoreElements: (element) => {
+                // Ignore specific MathJax processing elements
+                return element.classList.contains('MathJax_Processing') ||
+                       element.classList.contains('MathJax_Preview') ||
+                       element.tagName === 'SCRIPT';
+            }
+        });
+        
+        // Restore the original scripts
+        originalScripts.forEach(({element, parent, nextSibling}) => {
+            if (nextSibling) {
+                parent.insertBefore(element, nextSibling);
+            } else {
+                parent.appendChild(element);
+            }
+        });
+        
+        // Create PDF
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const imgData = canvas.toDataURL('image/png');
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+        const imgWidth = pdfWidth - 20; // 10mm margins on each side
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        
+        let heightLeft = imgHeight;
+        let position = 10; // Top margin
+        
+        // Add first page
+        pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+        heightLeft -= (pdfHeight - 20);
+        
+        // Add additional pages if content is longer than one page
+        while (heightLeft > 0) {
+            position = heightLeft - imgHeight + 10;
+            pdf.addPage();
+            pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+            heightLeft -= (pdfHeight - 20);
+        }
+        
+        pdf.save(`Math_Practice_Paper_${new Date().toISOString().slice(0,10)}.pdf`);
+        
+    } catch (error) {
+        console.error('PDF generation failed:', error);
+        alert('Failed to generate PDF: ' + error.message);
+    } finally {
+        document.body.removeChild(loading);
+    }
+}
 
         function addToHistory() {
             const title = `Analysis - ${new Date().toLocaleDateString()}`;
