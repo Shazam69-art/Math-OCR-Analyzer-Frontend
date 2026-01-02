@@ -1537,27 +1537,32 @@
         console.log('Checking auth...');
         const response = await fetch(`${BACKEND_URL}/api/check-auth`, {
             method: 'GET',
-            credentials: 'include'
-            // REMOVE the Cache-Control and Pragma headers
+            credentials: 'include',
+            cache: 'no-cache'
         });
         
         console.log('Auth check status:', response.status);
+        
+        if (!response.ok) {
+            throw new Error('Auth check failed');
+        }
+        
         const data = await response.json();
         console.log('Auth check data:', data);
         
         if (data.authenticated && data.user) {
             currentUser = data.user;
             localStorage.setItem('user', JSON.stringify(data.user));
-            showDashboard(data.user);
             return true;
         } else {
-            showLoginPage();
             localStorage.removeItem('user');
+            currentUser = null;
             return false;
         }
     } catch (error) {
         console.error('Auth check failed:', error);
-        showLoginPage();
+        localStorage.removeItem('user');
+        currentUser = null;
         return false;
     }
 }
@@ -2261,20 +2266,18 @@
         }
 
         // Initialize app on page load
-        window.addEventListener('DOMContentLoaded', () => {
-            // Check authentication
-            checkAuth();
+        // Initialize app on page load
+        // Initialize app on page load
+        window.addEventListener('DOMContentLoaded', async () => {
+            console.log('Page loaded, checking authentication...');
             
-            // Check if we have a saved user
-            const savedUser = localStorage.getItem('user');
-            if (savedUser) {
-                try {
-                    currentUser = JSON.parse(savedUser);
-                    // Still need to verify with backend
-                    checkAuth();
-                } catch (e) {
-                    localStorage.removeItem('user');
-                }
+            // Check authentication once
+            const isAuthenticated = await checkAuth();
+            
+            if (isAuthenticated && currentUser) {
+                showDashboard(currentUser);
+            } else {
+                showLoginPage();
             }
         });
     </script>
