@@ -54,7 +54,7 @@
             --shadow-md: 0 4px 6px rgba(0,0,0,0.07);
             --shadow-lg: 0 10px 15px rgba(0,0,0,0.08);
         }
-       
+     
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Roboto', sans-serif;
             background-color: var(--background);
@@ -260,13 +260,13 @@
             width: 100%;
             overflow: hidden;
         }
-       
+     
         .dashboard-layout {
             display: flex;
             height: 100%;
             width: 100%;
         }
-       
+     
         .sidebar {
             width: 280px;
             background-color: var(--sidebar);
@@ -276,23 +276,23 @@
             height: 100%;
             box-shadow: var(--shadow-sm);
         }
-       
+     
         .sidebar-header {
             padding: 24px;
             border-bottom: 1px solid var(--sidebar-border);
         }
-       
+     
         .sidebar-logo {
             display: flex;
             align-items: center;
             gap: 12px;
             cursor: pointer;
         }
-       
+     
         .sidebar-logo:hover {
             opacity: 0.8;
         }
-       
+     
         .sidebar-logo-icon {
             width: 40px;
             height: 40px;
@@ -302,25 +302,25 @@
             align-items: center;
             justify-content: center;
         }
-       
+     
         .sidebar-logo-icon svg {
             width: 24px;
             height: 24px;
             color: var(--primary-foreground);
         }
-       
+     
         .sidebar-logo h1 {
             font-size: 20px;
             font-weight: 700;
             color: var(--foreground);
         }
-       
+     
         .sidebar-content {
             flex: 1;
             overflow-y: auto;
             padding: 20px;
         }
-       
+     
         .sidebar-section-title {
             font-size: 12px;
             font-weight: 600;
@@ -330,7 +330,7 @@
             padding: 0 12px;
             margin-bottom: 12px;
         }
-       
+     
         .sidebar-item {
             padding: 12px;
             border-radius: 8px;
@@ -338,16 +338,16 @@
             transition: all 0.2s;
             margin-bottom: 8px;
         }
-       
+     
         .sidebar-item:hover {
             background-color: var(--sidebar-accent);
         }
-       
+     
         .sidebar-item.active {
             background-color: var(--primary);
             color: var(--primary-foreground);
         }
-       
+     
         .sidebar-item-title {
             font-weight: 500;
             font-size: 14px;
@@ -356,38 +356,38 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-       
+     
         .sidebar-item-date {
             font-size: 12px;
             color: var(--muted-foreground);
         }
-       
+     
         .sidebar-item-preview {
             font-size: 12px;
             color: var(--muted-foreground);
             margin-top: 4px;
         }
-       
+     
         .sidebar-actions {
             display: flex;
             gap: 8px;
             margin-top: 8px;
         }
-       
+     
         .sidebar-actions button {
             padding: 4px 8px;
             font-size: 12px;
             border-radius: 4px;
             cursor: pointer;
         }
-       
+     
         .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
             overflow: hidden;
         }
-       
+     
         .header {
             border-bottom: 1px solid var(--border);
             background-color: var(--card);
@@ -397,24 +397,24 @@
             justify-content: space-between;
             width: 100%;
         }
-       
+     
         .header-left {
             display: flex;
             align-items: center;
             gap: 16px;
         }
-       
+     
         .header-logo {
             display: flex;
             align-items: center;
             gap: 8px;
             cursor: pointer;
         }
-       
+     
         .header-logo:hover {
             opacity: 0.8;
         }
-       
+     
         .header-logo-icon {
             width: 32px;
             height: 32px;
@@ -424,35 +424,35 @@
             align-items: center;
             justify-content: center;
         }
-       
+     
         .header-logo-icon svg {
             width: 18px;
             height: 18px;
             color: var(--primary-foreground);
         }
-       
+     
         .header-brand {
             font-weight: 700;
             font-size: 18px;
             color: var(--foreground);
         }
-       
+     
         .header-right {
             display: flex;
             align-items: center;
             gap: 16px;
         }
-       
+     
         .user-info {
             font-size: 14px;
             font-weight: 500;
         }
-       
+     
         .user-name {
             color: var(--primary);
             font-weight: 600;
         }
-       
+     
         .btn-logout {
             background-color: transparent;
             color: var(--foreground);
@@ -465,40 +465,40 @@
             align-items: center;
             gap: 6px;
         }
-       
+     
         .btn-logout:hover {
             background-color: var(--accent);
         }
-       
+     
         .content-area {
             flex: 1;
             overflow-y: auto;
             padding: 24px;
             width: 100%;
         }
-       
+     
         .upload-section {
             max-width: 1200px;
             margin: 0 auto;
             width: 100%;
         }
-       
+     
         .section-header {
             margin-bottom: 32px;
         }
-       
+     
         .section-header h1 {
             font-size: 36px;
             font-weight: 700;
             margin-bottom: 8px;
             color: var(--foreground);
         }
-       
+     
         .section-header p {
             font-size: 18px;
             color: var(--muted-foreground);
         }
-       
+     
         .upload-grid {
             display: flex;
             justify-content: center;
@@ -506,7 +506,7 @@
             margin-bottom: 32px;
             flex-wrap: wrap;
         }
-       
+     
         .upload-card {
             background-color: var(--card);
             border: 2px dashed var(--border);
@@ -519,13 +519,13 @@
             width: 100%;
             box-shadow: var(--shadow-sm);
         }
-       
+     
         .upload-card:hover {
             border-color: var(--primary);
             transform: translateY(-2px);
             box-shadow: var(--shadow-md);
         }
-       
+     
         .upload-icon {
             width: 64px;
             height: 64px;
@@ -536,30 +536,30 @@
             justify-content: center;
             margin: 0 auto 16px;
         }
-       
+     
         .upload-icon svg {
             width: 32px;
             height: 32px;
             color: var(--primary);
         }
-       
+     
         .upload-card h3 {
             font-weight: 600;
             margin-bottom: 8px;
             font-size: 18px;
         }
-       
+     
         .upload-card p {
             font-size: 14px;
             color: var(--muted-foreground);
             margin-bottom: 16px;
         }
-       
+     
         .file-list {
             text-align: left;
             margin-top: 16px;
         }
-       
+     
         .file-item {
             display: flex;
             align-items: center;
@@ -571,12 +571,12 @@
             background: var(--muted);
             border-radius: 4px;
         }
-       
+     
         .file-item svg {
             width: 12px;
             height: 12px;
         }
-       
+     
         .btn-start {
             background: linear-gradient(135deg, var(--primary) 0%, #3a56d4 100%);
             color: var(--primary-foreground);
@@ -592,7 +592,7 @@
             transition: all 0.2s;
             font-weight: 600;
         }
-       
+     
         .btn-start:disabled {
             opacity: 0.5;
             cursor: not-allowed;
@@ -601,13 +601,13 @@
             transform: translateY(-1px);
             box-shadow: var(--shadow-md);
         }
-       
+     
         .results-section {
             max-width: 1200px;
             margin: 0 auto;
             width: 100%;
         }
-       
+     
         .results-header {
             display: flex;
             align-items: center;
@@ -616,23 +616,23 @@
             flex-wrap: wrap;
             gap: 16px;
         }
-       
+     
         .results-header h1 {
             font-size: 30px;
             font-weight: 700;
         }
-       
+     
         .results-header p {
             color: var(--muted-foreground);
             margin-top: 4px;
         }
-       
+     
         .badge-group {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
         }
-       
+     
         .badge {
             padding: 6px 12px;
             border-radius: 6px;
@@ -643,31 +643,31 @@
             gap: 8px;
             border: 1px solid var(--border);
         }
-       
+     
         .badge-dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
         }
-       
+     
         .badge-dot.correct {
             background-color: #10b981;
         }
-       
+     
         .badge-dot.partial {
             background-color: #f59e0b;
         }
-       
+     
         .badge-dot.incorrect {
             background-color: var(--destructive);
         }
-       
+     
         .accordion {
             display: flex;
             flex-direction: column;
             gap: 16px;
         }
-       
+     
         .accordion-item {
             background-color: var(--card);
             border: 1px solid var(--border);
@@ -675,7 +675,7 @@
             overflow: hidden;
             box-shadow: var(--shadow-sm);
         }
-       
+     
         .accordion-trigger {
             width: 100%;
             padding: 20px;
@@ -688,11 +688,11 @@
             text-align: left;
             transition: background-color 0.2s;
         }
-       
+     
         .accordion-trigger:hover {
             background-color: var(--accent);
         }
-       
+     
         .question-number {
             width: 40px;
             height: 40px;
@@ -704,52 +704,52 @@
             flex-shrink: 0;
             font-size: 16px;
         }
-       
+     
         .question-number.correct {
             background-color: rgba(16, 185, 129, 0.1);
             color: #10b981;
         }
-       
+     
         .question-number.partial {
             background-color: rgba(245, 158, 11, 0.1);
             color: #f59e0b;
         }
-       
+     
         .question-number.incorrect {
             background-color: rgba(230, 57, 70, 0.1);
             color: var(--destructive);
         }
-       
+     
         .question-info {
             flex: 1;
             padding-top: 4px;
         }
-       
+     
         .question-info p:first-child {
             font-weight: 600;
             margin-bottom: 4px;
             font-size: 16px;
         }
-       
+     
         .question-info p:last-child {
             font-size: 14px;
             color: var(--muted-foreground);
             text-transform: capitalize;
         }
-       
+     
         .accordion-content {
             display: none;
             padding: 0 20px 20px;
         }
-       
+     
         .accordion-content.open {
             display: block;
         }
-       
+     
         .analysis-section {
             margin-bottom: 20px;
         }
-       
+     
         .analysis-section h3 {
             font-weight: 600;
             margin-bottom: 12px;
@@ -758,38 +758,38 @@
             gap: 8px;
             font-size: 16px;
         }
-       
+     
         .analysis-section h3 svg {
             width: 20px;
             height: 20px;
         }
-       
+     
         .solution-card {
             background-color: var(--secondary);
             border: 1px solid var(--border);
             border-radius: 8px;
             padding: 16px;
         }
-       
+     
         .solution-card.error {
             background-color: rgba(230, 57, 70, 0.05);
             border-color: rgba(230, 57, 70, 0.2);
         }
-       
+     
         .solution-card.corrected {
             background-color: rgba(16, 185, 129, 0.05);
             border-color: rgba(16, 185, 129, 0.2);
         }
-       
+     
         .solution-steps {
             font-family: 'Courier New', monospace;
             font-size: 14px;
         }
-       
+     
         .solution-steps div {
             margin-bottom: 8px;
         }
-       
+     
         .practice-paper-card {
             background-color: var(--card);
             border: 2px solid rgba(67, 97, 238, 0.1);
@@ -798,36 +798,36 @@
             margin-top: 24px;
             box-shadow: var(--shadow-sm);
         }
-       
+     
         .practice-paper-card h3 {
             font-size: 20px;
             font-weight: 600;
             margin-bottom: 8px;
         }
-       
+     
         .practice-paper-card p {
             color: var(--muted-foreground);
             margin-bottom: 16px;
         }
-       
+     
         .new-question-list {
             background-color: var(--background);
             border-radius: 8px;
             padding: 16px;
             margin-bottom: 16px;
         }
-       
+     
         .new-question-item {
             display: flex;
             align-items: flex-start;
             gap: 12px;
             margin-bottom: 12px;
         }
-       
+     
         .new-question-item:last-child {
             margin-bottom: 0;
         }
-       
+     
         .new-question-number {
             width: 32px;
             height: 32px;
@@ -838,7 +838,7 @@
             font-weight: 700;
             flex-shrink: 0;
         }
-       
+     
         .reanalysis-card {
             background-color: rgba(238, 242, 255, 0.5);
             border: 1px solid var(--border);
@@ -846,13 +846,13 @@
             padding: 16px;
             margin-top: 16px;
         }
-       
+     
         .reanalysis-input-group {
             display: flex;
             gap: 8px;
             margin-bottom: 12px;
         }
-       
+     
         .reanalysis-input-group input {
             flex: 1;
             padding: 10px 12px;
@@ -860,7 +860,7 @@
             border-radius: 6px;
             font-size: 14px;
         }
-       
+     
         .ai-response {
             background-color: var(--background);
             border: 1px solid var(--border);
@@ -870,7 +870,7 @@
             align-items: flex-start;
             gap: 12px;
         }
-       
+     
         .ai-badge {
             background-color: var(--primary);
             color: var(--primary-foreground);
@@ -881,13 +881,13 @@
             flex-shrink: 0;
             margin-top: 2px;
         }
-       
+     
         .ai-response p {
             font-size: 14px;
             line-height: 1.6;
             flex: 1;
         }
-       
+     
         .modal {
             display: none;
             position: fixed;
@@ -901,11 +901,11 @@
             justify-content: center;
             padding: 16px;
         }
-       
+     
         .modal.open {
             display: flex;
         }
-       
+     
         .modal-content {
             background-color: var(--card);
             border-radius: var(--radius);
@@ -915,16 +915,16 @@
             overflow-y: auto;
             padding: 24px;
         }
-       
+     
         .modal-header {
             margin-bottom: 16px;
         }
-       
+     
         .modal-header h3 {
             font-size: 20px;
             font-weight: 600;
         }
-       
+     
         .modal-image {
             position: relative;
             aspect-ratio: 3/4;
@@ -933,44 +933,56 @@
             overflow: hidden;
             margin-bottom: 16px;
         }
-       
+     
         .modal-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-       
+     
         .error-highlight {
             position: absolute;
             border: 3px solid var(--destructive);
+            opacity: 0.7;
             border-radius: 6px;
             animation: pulse 2s infinite;
+            pointer-events: none;
         }
-       
+     
+        .error-label {
+            position: absolute;
+            background: var(--destructive);
+            color: #fff;
+            padding: 2px 6px;
+            font-size: 12px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+     
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 0.4; }
         }
-       
+     
         .modal-caption {
             text-align: center;
             font-size: 14px;
             color: var(--muted-foreground);
         }
-       
+     
         .mobile-menu-btn {
             display: none;
         }
-       
+     
         .mobile-overlay {
             display: none;
         }
-       
+     
         @media (max-width: 1024px) {
             .sidebar {
                 display: none;
             }
-           
+         
             .mobile-menu-btn {
                 display: flex;
                 background: transparent;
@@ -978,7 +990,7 @@
                 padding: 8px;
                 cursor: pointer;
             }
-           
+         
             .mobile-overlay {
                 display: none;
                 position: fixed;
@@ -988,11 +1000,11 @@
                 bottom: 0;
                 z-index: 40;
             }
-           
+         
             .mobile-overlay.open {
                 display: block;
             }
-           
+         
             .mobile-sidebar-backdrop {
                 position: absolute;
                 top: 0;
@@ -1001,7 +1013,7 @@
                 bottom: 0;
                 background-color: rgba(0, 0, 0, 0.5);
             }
-           
+         
             .mobile-sidebar {
                 position: absolute;
                 top: 0;
@@ -1010,7 +1022,7 @@
                 width: 280px;
                 background-color: var(--sidebar);
             }
-           
+         
             .mobile-logout {
                 position: absolute;
                 bottom: 0;
@@ -1019,7 +1031,7 @@
                 padding: 16px;
                 border-top: 1px solid var(--sidebar-border);
             }
-           
+         
             .mobile-logout button {
                 width: 100%;
                 justify-content: flex-start;
@@ -1027,40 +1039,40 @@
                 color: var(--sidebar-foreground);
                 padding: 12px;
             }
-           
+         
             .btn-logout {
                 display: none;
             }
-           
+         
             .header-brand {
                 display: none;
             }
         }
-       
+     
         @media (max-width: 640px) {
             .user-info {
                 display: none;
             }
-           
+         
             .upload-grid {
                 flex-direction: column;
                 align-items: center;
             }
-           
+         
             .results-header {
                 flex-direction: column;
                 align-items: flex-start;
             }
-           
+         
             .login-card {
                 padding: 24px;
             }
         }
-       
+     
         .hidden {
             display: none;
         }
-       
+     
         .btn, button {
             padding: 10px 24px;
             border-radius: 8px;
@@ -1074,26 +1086,26 @@
             justify-content: center;
             gap: 8px;
         }
-       
+     
         .btn-primary {
             background-color: var(--primary);
             color: var(--primary-foreground);
         }
-       
+     
         .btn-primary:hover {
             opacity: 0.9;
         }
-       
+     
         .btn-outline {
             background-color: transparent;
             border: 1px solid var(--border);
             color: var(--foreground);
         }
-       
+     
         .btn-outline:hover {
             background-color: var(--accent);
         }
-       
+     
         .loading {
             display: inline-block;
             width: 20px;
@@ -1103,43 +1115,43 @@
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
-       
+     
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-       
+     
         .practice-paper {
             padding: 30px;
             background: white;
         }
-       
+     
         .practice-header {
             margin-bottom: 30px;
             text-align: center;
         }
-       
+     
         .practice-title {
             font-size: 24px;
             font-weight: 700;
             margin-bottom: 8px;
         }
-       
+     
         .practice-subtitle {
             font-size: 16px;
             color: #666;
         }
-       
+     
         .practice-question {
             margin-bottom: 30px;
         }
-       
+     
         .practice-question-number {
             font-size: 18px;
             font-weight: 700;
             color: var(--primary);
             margin-bottom: 10px;
         }
-       
+     
         /* Loading Overlay Styles */
         #loadingOverlay {
             position: fixed;
@@ -1221,6 +1233,81 @@
             0%, 100% { opacity: 0; }
             50% { opacity: 1; }
         }
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .status-badge.correct {
+            background-color: #10b981;
+            color: #ffffff;
+        }
+        .status-badge.partial {
+            background-color: #f59e0b;
+            color: #ffffff;
+        }
+        .status-badge.incorrect {
+            background-color: var(--destructive);
+            color: #ffffff;
+        }
+        .question-analysis {
+            margin-bottom: 16px;
+        }
+        .question-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .question-content p {
+            margin-bottom: 8px;
+        }
+        .bounding-box-info {
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--muted-foreground);
+        }
+        .btn-view-corrected {
+            background-color: var(--destructive);
+            color: var(--destructive-foreground);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+        }
+        .btn-view-corrected:hover {
+            opacity: 0.9;
+        }
+        .corrected-modal-image {
+            margin-bottom: 24px;
+            position: relative;
+        }
+        .corrected-modal-image img {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: var(--shadow-md);
+        }
+        .corrected-modal-image p {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--muted-foreground);
+            text-align: center;
+        }
+        .analysis-message {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            text-align: center;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
@@ -1233,7 +1320,7 @@
             <div class="math-term">$\frac{d}{dx}e^x = e^x$</div>
             <div class="math-term">$F = G\frac{m_1 m_2}{r^2}$</div>
         </div>
-       
+     
         <div class="math-terms-right">
             <div class="math-term">$a^2 + b^2 = c^2$</div>
             <div class="math-term">$\sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}$</div>
@@ -1241,7 +1328,7 @@
             <div class="math-term">$\frac{\partial u}{\partial t} = \alpha \nabla^2 u$</div>
             <div class="math-term">$\hbar \frac{\partial}{\partial t} \Psi = \hat{H} \Psi$</div>
         </div>
-       
+     
         <div class="login-background"></div>
         <div class="login-container">
             <div class="login-header">
@@ -1249,7 +1336,7 @@
                 <div class="login-brand">CAS <span>Educations</span></div>
                 <p class="login-subtitle">AI-Powered Math Analysis Platform</p>
             </div>
-           
+         
             <div class="login-card">
                 <form id="loginForm" class="login-form">
                     <div class="form-group">
@@ -1298,7 +1385,7 @@
                     <div id="historyList"></div>
                 </div>
             </aside>
-           
+         
             <!-- Mobile Overlay -->
             <div id="mobileOverlay" class="mobile-overlay">
                 <div class="mobile-sidebar-backdrop" onclick="closeMobileMenu()"></div>
@@ -1327,7 +1414,7 @@
                     </div>
                 </aside>
             </div>
-           
+         
             <!-- Main Content -->
             <div class="main-content">
                 <header class="header">
@@ -1348,6 +1435,9 @@
                     </div>
                     <div class="header-right">
                         <p class="user-info">Welcome, <span class="user-name" id="userName"></span></p>
+                        <button id="viewCorrectedButton" class="btn-view-corrected" style="display: none;" onclick="openCorrectedModal()">
+                            📄 View Corrected Paper
+                        </button>
                         <button class="btn-logout" onclick="handleLogout()">
                             <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
@@ -1356,7 +1446,7 @@
                         </button>
                     </div>
                 </header>
-               
+             
                 <main class="content-area">
                     <!-- Upload Section -->
                     <div id="uploadSection" class="upload-section">
@@ -1409,9 +1499,10 @@
                             </button>
                         </div>
                     </div>
-                   
+                 
                     <!-- Results Section -->
                     <div id="resultsSection" class="results-section hidden">
+                        <div id="analysisMessage" class="analysis-message" style="display: none;"></div>
                         <div class="results-header">
                             <div>
                                 <h1>Analysis Results</h1>
@@ -1420,7 +1511,7 @@
                             <div class="badge-group" id="badgeGroup"></div>
                         </div>
                         <div class="accordion" id="accordion"></div>
-                       
+                     
                         <!-- Practice Paper -->
                         <div class="practice-paper-card" id="practicePaperCard">
                             <h3>Generate Personalized Practice Paper</h3>
@@ -1440,7 +1531,7 @@
                             </div>
                         </div>
                         <div style="margin-top: 24px; display: flex; justify-content: center;">
-                            <button id="saveAnalysisBtn" class="btn-primary" style="display: none;" onclick="showSaveModal()">
+                            <button id="saveAnalysisBtn" class="btn-primary" style="display: none;" onclick="promptForAnalysisName()">
                                 Save Analysis
                             </button>
                         </div>
@@ -1449,22 +1540,35 @@
             </div>
         </div>
     </div>
-   
-    <!-- Image Modal -->
+ 
+    <!-- Image Modal for individual questions -->
     <div id="imageModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h3 id="modalTitle">Answer Sheet - Question</h3>
             </div>
-            <div class="modal-image">
+            <div class="modal-image" id="modalImageContainer">
                 <img id="modalImage" src="" alt="Answer sheet">
                 <div id="errorHighlight" class="error-highlight" style="display: none;"></div>
+                <div id="errorLabel" class="error-label" style="display: none;"></div>
             </div>
             <p class="modal-caption" id="modalCaption"></p>
             <button class="btn-outline" style="width: 100%; margin-top: 1rem;" onclick="closeImageModal()">Close</button>
         </div>
     </div>
-   
+
+    <!-- Corrected Paper Modal -->
+    <div id="correctedModal" class="modal">
+        <div class="modal-content" style="max-width: 900px;">
+            <div class="modal-header">
+                <h3>Corrected Paper with Error Bounding Boxes</h3>
+            </div>
+            <div id="correctedImagesContainer"></div>
+            <button class="btn-primary" style="width: 100%; margin-top: 1rem;" onclick="downloadCorrectedPDF()">Download as PDF</button>
+            <button class="btn-outline" style="width: 100%; margin-top: 1rem;" onclick="closeCorrectedModal()">Close</button>
+        </div>
+    </div>
+ 
     <!-- Register Modal -->
     <div id="registerModal" class="modal">
         <div class="modal-content">
@@ -1502,7 +1606,6 @@
             <button class="btn-outline" style="width: 100%; margin-top: 1rem;" onclick="closeRegisterModal()">Cancel</button>
         </div>
     </div>
-
     <!-- Save Analysis Modal -->
     <div id="saveModal" class="modal">
         <div class="modal-content">
@@ -1527,7 +1630,7 @@
     <script>
         // Backend configuration - CHANGE THIS TO YOUR BACKEND URL
         const BACKEND_URL = 'https://navalsheth.pythonanywhere.com'; // Change to your backend URL in production
-       
+     
         // State management
         let questionFiles = [];
         let answerFiles = [];
@@ -1538,6 +1641,9 @@
         let isAnalyzing = false;
         let currentAnalysisId = null;
         let analyses = [];
+        let hasCorrectedPaper = false;
+        let correctedPaperData = null;
+        let analysisMessage = '';
         // Initialize MathJax
         function renderMath(element) {
             if (window.MathJax) {
@@ -1556,10 +1662,10 @@
                 'Cache-Control': 'no-cache'
             }
         });
-       
+     
         console.log('Auth check status:', response.status);
         console.log('Auth headers:', response.headers.get('Access-Control-Allow-Origin'));
-       
+     
         if (!response.ok) {
             // Don't throw error for 401 - just return false
             if (response.status === 401) {
@@ -1567,10 +1673,10 @@
             }
             throw new Error(`Auth check failed with status: ${response.status}`);
         }
-       
+     
         const data = await response.json();
         console.log('Auth check data:', data);
-       
+     
         if (data.authenticated && data.user) {
             currentUser = data.user;
             localStorage.setItem('user', JSON.stringify(data.user));
@@ -1591,27 +1697,27 @@
             try {
                 const errorMessage = document.getElementById('loginErrorMessage');
                 const successMessage = document.getElementById('loginSuccessMessage');
-               
+             
                 errorMessage.classList.remove('show');
                 successMessage.classList.remove('show');
-               
+             
                 const response = await fetch(`${BACKEND_URL}/api/login`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({username, password}),
                     credentials: 'include'
                 });
-               
+             
                 const data = await response.json();
-               
+             
                 if (data.success) {
                     successMessage.textContent = data.message;
                     successMessage.classList.add('show');
-                   
+                 
                     // Store user info
                     currentUser = data.user;
                     localStorage.setItem('user', JSON.stringify(data.user));
-                   
+                 
                     // Show dashboard after brief delay
                     setTimeout(() => {
                         showDashboard(data.user);
@@ -1631,26 +1737,26 @@
             try {
                 const errorMessage = document.getElementById('registerErrorMessage');
                 const successMessage = document.getElementById('registerSuccessMessage');
-               
+             
                 errorMessage.classList.remove('show');
                 successMessage.classList.remove('show');
-               
+             
                 const response = await fetch(`${BACKEND_URL}/api/register`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({username, phone, password}),
                     credentials: 'include'
                 });
-               
+             
                 const data = await response.json();
-               
+             
                 if (data.success) {
                     successMessage.textContent = 'Registration successful! Please login with your credentials.';
                     successMessage.classList.add('show');
-                   
+                 
                     // Clear form
                     document.getElementById('registerForm').reset();
-                   
+                 
                     // Close modal after delay
                     setTimeout(() => {
                         closeRegisterModal();
@@ -1672,13 +1778,13 @@
                     method: 'POST',
                     credentials: 'include'
                 });
-               
+             
                 const data = await response.json();
-               
+             
                 // Clear local storage
                 localStorage.removeItem('user');
                 currentUser = null;
-               
+             
                 // Show login page
                 showLoginPage();
             } catch (error) {
@@ -1692,7 +1798,7 @@
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('dashboardPage').style.display = 'flex';
             document.getElementById('userName').textContent = user.username;
-           
+         
             // Load user analyses
             loadAnalyses();
         }
@@ -1754,6 +1860,42 @@
                 document.getElementById('saveErrorMessage').classList.add('show');
             }
         }
+        function openCorrectedModal() {
+            const container = document.getElementById('correctedImagesContainer');
+            container.innerHTML = '';
+            if (correctedPaperData && correctedPaperData.images) {
+                correctedPaperData.images.forEach((img, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'corrected-modal-image';
+                    div.innerHTML = `
+                        <img src="data:image/jpeg;base64,${img.base64}" alt="Corrected ${img.original_filename}">
+                        <p>Corrected Image ${index + 1}: ${img.original_filename} (Questions: ${img.questions.join(', ')})</p>
+                    `;
+                    container.appendChild(div);
+                });
+            }
+            document.getElementById('correctedModal').classList.add('open');
+        }
+        function closeCorrectedModal() {
+            document.getElementById('correctedModal').classList.remove('open');
+        }
+        async function downloadCorrectedPDF() {
+            if (!correctedPaperData || !correctedPaperData.images) return;
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const pdfWidth = pdf.internal.pageSize.getWidth() - 20;
+            for (let i = 0; i < correctedPaperData.images.length; i++) {
+                const img = correctedPaperData.images[i];
+                const image = new Image();
+                image.src = `data:image/jpeg;base64,${img.base64}`;
+                await new Promise(resolve => { image.onload = resolve; });
+                const imgHeight = (image.height * pdfWidth) / image.width;
+                if (i > 0) pdf.addPage();
+                pdf.addImage(image, 'JPEG', 10, 10, pdfWidth, imgHeight);
+                pdf.text(`Corrected Image ${i + 1}: ${img.original_filename} (Questions: ${img.questions.join(', ')})`, 10, imgHeight + 15);
+            }
+            pdf.save(`corrected_paper_${currentAnalysisId || 'new'}.pdf`);
+        }
         // Mobile menu functions
         function openMobileMenu() {
             document.getElementById('mobileOverlay').classList.add('open');
@@ -1768,6 +1910,12 @@
             document.getElementById('uploadSection').classList.remove('hidden');
             document.getElementById('resultsSection').classList.add('hidden');
             document.getElementById('saveAnalysisBtn').style.display = 'none';
+            document.getElementById('viewCorrectedButton').style.display = 'none';
+            document.getElementById('analysisMessage').style.display = 'none';
+            hasCorrectedPaper = false;
+            correctedPaperData = null;
+            analysisMessage = '';
+            currentAnalysisId = null;
             closeMobileMenu();
             // Remove active
             document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
@@ -1778,14 +1926,14 @@
             e.preventDefault();
             const username = document.getElementById('loginUsername').value.trim();
             const password = document.getElementById('loginPassword').value;
-           
+         
             if (!username || !password) {
                 const errorMessage = document.getElementById('loginErrorMessage');
                 errorMessage.textContent = 'Please enter both username and password';
                 errorMessage.classList.add('show');
                 return;
             }
-           
+         
             await loginUser(username, password);
         });
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
@@ -1794,7 +1942,7 @@
             const phone = document.getElementById('registerPhone').value.trim();
             const password = document.getElementById('registerPassword').value;
             const confirmPassword = document.getElementById('registerConfirmPassword').value;
-           
+         
             // Validation
             if (!username || !phone || !password || !confirmPassword) {
                 const errorMessage = document.getElementById('registerErrorMessage');
@@ -1802,28 +1950,28 @@
                 errorMessage.classList.add('show');
                 return;
             }
-           
+         
             if (username.length < 3) {
                 const errorMessage = document.getElementById('registerErrorMessage');
                 errorMessage.textContent = 'Username must be at least 3 characters';
                 errorMessage.classList.add('show');
                 return;
             }
-           
+         
             if (password.length < 6) {
                 const errorMessage = document.getElementById('registerErrorMessage');
                 errorMessage.textContent = 'Password must be at least 6 characters';
                 errorMessage.classList.add('show');
                 return;
             }
-           
+         
             if (password !== confirmPassword) {
                 const errorMessage = document.getElementById('registerErrorMessage');
                 errorMessage.textContent = 'Passwords do not match';
                 errorMessage.classList.add('show');
                 return;
             }
-           
+         
             await registerUser(username, phone, password);
         });
         // File handling
@@ -1866,7 +2014,7 @@
         // Analysis functions
         async function startAnalysis() {
     if (isAnalyzing) return;
-   
+ 
     // Check authentication BEFORE file upload
     const isAuthenticated = await checkAuth();
     if (!isAuthenticated) {
@@ -1874,15 +2022,15 @@
         showLoginPage();
         return;
     }
-   
+ 
     if (questionFiles.length === 0 || answerFiles.length === 0) {
         alert('Please upload both question papers and answer sheets');
         return;
     }
-   
+ 
     isAnalyzing = true;
     const btn = document.getElementById('startAnalysisBtn');
-   
+ 
     // Create and show loading overlay
     const loadingOverlay = document.createElement('div');
     loadingOverlay.id = 'loadingOverlay';
@@ -1902,21 +2050,21 @@
         </div>
     `;
     document.getElementById('uploadSection').appendChild(loadingOverlay);
-   
+ 
     btn.innerHTML = '<div class="loading"></div> Analyzing...';
     btn.disabled = true;
-   
+ 
     const formData = new FormData();
     allFiles = [...questionFiles, ...answerFiles];
-   
+ 
     // Add all files to FormData
     allFiles.forEach(f => {
         formData.append('files', f.file, f.name);
     });
-   
+ 
     try {
         console.log('Sending analysis request...');
-       
+     
         // CRITICAL FIX: Add credentials: 'include' to send cookies
         const response = await fetch(`${BACKEND_URL}/analyze`, {
             method: 'POST',
@@ -1924,9 +2072,9 @@
             credentials: 'include', // THIS IS CRITICAL - sends cookies
             // No Content-Type header for FormData - let browser set it
         });
-       
+     
         console.log('Response status:', response.status);
-       
+     
         if (response.status === 401) {
             // Unauthorized - clear session and redirect
             localStorage.removeItem('user');
@@ -1935,14 +2083,14 @@
             alert('Session expired. Please login again.');
             return;
         }
-       
+     
         const data = await response.json();
-       
+     
         if (data.error) {
             throw new Error(data.error);
         } else {
             analysisResult = data;
-           
+         
             // Add dataURLs to analysis result for image display
             analysisResult.questions.forEach((q, i) => {
                 // Find the corresponding file
@@ -1951,15 +2099,24 @@
                     q.dataURL = file.dataURL;
                 }
             });
-           
-            displayAnalysis(data);
-           
+         
+            displayAnalysis(data, false);
+         
+            // Set corrected data
+            hasCorrectedPaper = data.has_corrected_paper;
+            correctedPaperData = data.corrected_paper_data;
+            analysisMessage = data.message || '';
+         
             // Hide loading overlay and show results
             setTimeout(() => {
                 removeLoadingOverlay();
                 document.getElementById('uploadSection').classList.add('hidden');
                 document.getElementById('resultsSection').classList.remove('hidden');
                 document.getElementById('saveAnalysisBtn').style.display = 'flex';
+                document.getElementById('viewCorrectedButton').style.display = hasCorrectedPaper ? 'flex' : 'none';
+                const messageEl = document.getElementById('analysisMessage');
+                messageEl.textContent = analysisMessage;
+                messageEl.style.display = analysisMessage ? 'block' : 'none';
                 // Prompt for name after display
                 promptForAnalysisName();
             }, 500);
@@ -1999,77 +2156,68 @@
             const steps = str.split('<br>').filter(step => step.trim() !== '');
             return steps.map(step => `<p style="margin-bottom: 0.75rem; line-height: 1.8;">${step.trim()}</p>`).join('');
         }
+        function generateQuestionHTML(q, i) {
+            const statusClass = q.status;
+            const statusText = q.status.toUpperCase();
+            return `
+            <div class="question-analysis">
+                <div class="question-header">
+                    <h4>Question ${q.number}</h4>
+                    <span class="status-badge ${statusClass}">${statusText}</span>
+                </div>
+                <div class="question-content">
+                    <p><strong>Question:</strong> ${q.question}</p>
+                    <p><strong>Student's Answer:</strong> ${q.student_original}</p>
+                    <p><strong>Feedback:</strong> ${q.error}</p>
+                    <p><strong>Correct Solution:</strong> ${q.correct_solution}</p>
+                </div>
+                ${q.error_bbox ? '<div class="bounding-box-info"><small>Error location marked in red on corrected paper</small></div>' : ''}
+                ${q.dataURL ? `<button class="btn-outline" onclick="openImageModal(${i}, '${q.status}', '${q.image_file || ''}', ${JSON.stringify(q.error_bbox || {})})">
+                    <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    View Answer Image
+                </button>` : ''}
+                <div class="reanalysis-card">
+                    <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem;">Re-analyze This Question</h3>
+                    <div class="reanalysis-input-group">
+                        <input type="text" id="reanalysisInput${i}" placeholder="Ask AI to re-analyze this question...">
+                        <button class="btn-primary" style="width: auto;" onclick="reanalyzeQuestion(${i})">Send</button>
+                    </div>
+                    <div id="aiResponse${i}" style="display: none;" class="ai-response">
+                        <div class="ai-badge">AI</div>
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+            `;
+        }
         function displayAnalysis(result, isLoaded = false, analysis = null) {
             const accordion = document.getElementById('accordion');
             accordion.innerHTML = '';
-            let questions = result.questions;
-            if (isLoaded && analysis.analysis_structure && analysis.analysis_structure.dropdowns) {
-                accordion.innerHTML = analysis.analysis_structure.dropdowns.map((d, i) => `
-                    <div class="accordion-item">
-                        <button class="accordion-trigger" onclick="toggleAccordion('loaded${i}')">
-                            <div class="question-info">
-                                <p>${d.title}</p>
-                            </div>
-                        </button>
-                        <div id="loaded${i}" class="accordion-content">
-                            ${d.content}
+            let questions = result.questions || [];
+            let counts = {correct: 0, partial: 0, incorrect: 0};
+            questions.forEach(q => counts[q.status]++);
+            questions.forEach((q, i) => {
+                const item = document.createElement('div');
+                item.className = 'accordion-item';
+                item.innerHTML = `
+                    <button class="accordion-trigger" onclick="toggleAccordion('q${i}')">
+                        <div class="question-number ${q.status}">${q.number}</div>
+                        <div class="question-info">
+                            <p>${q.question}</p>
+                            <p>Status: ${q.status}</p>
                         </div>
-                    </div>
-                `).join('');
-                renderMath(accordion);
-            } else {
-                let counts = {correct: 0, partial: 0, incorrect: 0};
-                questions.forEach(q => counts[q.status]++);
-                questions.forEach((q, i) => {
-                    const item = document.createElement('div');
-                    item.className = 'accordion-item';
-                    item.innerHTML = `
-                        <button class="accordion-trigger" onclick="toggleAccordion('q${i}')">
-                            <div class="question-number ${q.status}">${q.number}</div>
-                            <div class="question-info">
-                                <p>${q.question}</p>
-                                <p>Status: ${q.status}</p>
-                            </div>
-                        </button>
-                        <div id="q${i}" class="accordion-content">
-                            <div class="analysis-section">
-                                <h3><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg> Student Solution</h3>
-                                <div class="solution-card"><div class="solution-steps">${processSteps(q.student_original)}</div></div>
-                            </div>
-                            <div class="analysis-section">
-                                <h3><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Error Analysis</h3>
-                                <div class="solution-card error"><p>${q.error}</p></div>
-                            </div>
-                            <div class="analysis-section">
-                                <h3><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> LLM-Corrected Solution</h3>
-                                <div class="solution-card corrected"><div class="solution-steps">${processSteps(q.correct_solution)}</div></div>
-                            </div>
-                            ${q.dataURL ? `<button class="btn-outline" onclick="openImageModal(${i}, '${q.status}', '${q.image_file || ''}', ${JSON.stringify(q.error_bbox || {})})">
-                                <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                                View Answer Image
-                            </button>` : ''}
-                            <div class="reanalysis-card">
-                                <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem;">Re-analyze This Question</h3>
-                                <div class="reanalysis-input-group">
-                                    <input type="text" id="reanalysisInput${i}" placeholder="Ask AI to re-analyze this question...">
-                                    <button class="btn-primary" style="width: auto;" onclick="reanalyzeQuestion(${i})">Send</button>
-                                </div>
-                                <div id="aiResponse${i}" style="display: none;" class="ai-response">
-                                    <div class="ai-badge">AI</div>
-                                    <p></p>
-                                </div>
-                            </div>
-                        </div>`;
-                    accordion.appendChild(item);
-                    renderMath(item);
-                });
-               
-                document.getElementById('badgeGroup').innerHTML = `
-                    <div class="badge"><div class="badge-dot correct"></div>${counts.correct} Correct</div>
-                    <div class="badge"><div class="badge-dot partial"></div>${counts.partial} Partial</div>
-                    <div class="badge"><div class="badge-dot incorrect"></div>${counts.incorrect} Incorrect</div>
-                `;
-            }
+                    </button>
+                    <div id="q${i}" class="accordion-content">
+                        ${generateQuestionHTML(q, i)}
+                    </div>`;
+                accordion.appendChild(item);
+                renderMath(item);
+            });
+            document.getElementById('badgeGroup').innerHTML = `
+                <div class="badge"><div class="badge-dot correct"></div>${counts.correct} Correct</div>
+                <div class="badge"><div class="badge-dot partial"></div>${counts.partial} Partial</div>
+                <div class="badge"><div class="badge-dot incorrect"></div>${counts.incorrect} Incorrect</div>
+            `;
             // For practice
             const viewBtn = document.getElementById('viewPracticeButton');
             if (analysis && analysis.practice_pdf_path) {
@@ -2078,10 +2226,14 @@
             } else {
                 viewBtn.style.display = 'none';
             }
-        }
-        function displayLoadedAnalysis(analysis) {
-            analysisResult = {questions: analysis.analysis_structure.questions || []};
-            displayAnalysis(analysisResult, true, analysis);
+            // Update corrected for loaded
+            if (isLoaded && analysis.corrected_paper_data) {
+                hasCorrectedPaper = true;
+                correctedPaperData = analysis.corrected_paper_data;
+                document.getElementById('viewCorrectedButton').style.display = 'flex';
+            } else {
+                document.getElementById('viewCorrectedButton').style.display = hasCorrectedPaper ? 'flex' : 'none';
+            }
         }
         function toggleAccordion(id) {
             document.getElementById(id).classList.toggle('open');
@@ -2089,11 +2241,11 @@
         async function reanalyzeQuestion(i) {
             const query = document.getElementById(`reanalysisInput${i}`).value.trim();
             if (!query) return;
-           
+         
             const question = analysisResult.questions[i];
             const btn = event.target;
             btn.innerHTML = '<div class="loading" style="width: 16px; height: 16px; border-width: 2px;"></div>';
-           
+         
             try {
                 const response = await fetch(`${BACKEND_URL}/reanalyze`, {
                     method: 'POST',
@@ -2107,15 +2259,15 @@
                     }),
                     credentials: 'include'
                 });
-               
+             
                 if (response.status === 401) {
                     showLoginPage();
                     alert('Session expired. Please login again.');
                     return;
                 }
-               
+             
                 const data = await response.json();
-               
+             
                 if (data.error) {
                     alert(data.error);
                 } else {
@@ -2135,22 +2287,33 @@
             const modalImage = document.getElementById('modalImage');
             const modalTitle = document.getElementById('modalTitle');
             const errorHighlight = document.getElementById('errorHighlight');
+            const errorLabel = document.getElementById('errorLabel');
             const modalCaption = document.getElementById('modalCaption');
-           
+            const container = document.getElementById('modalImageContainer');
+         
             modalTitle.textContent = `Answer Sheet - Question ${analysisResult.questions[i].number}`;
             modalImage.src = analysisResult.questions[i].dataURL || '';
             modalCaption.textContent = `Status: ${status}`;
-           
-            if (bbox && bbox.x && bbox.y && bbox.width && bbox.height) {
-                errorHighlight.style.display = 'block';
-                errorHighlight.style.left = `${bbox.x}px`;
-                errorHighlight.style.top = `${bbox.y}px`;
-                errorHighlight.style.width = `${bbox.width}px`;
-                errorHighlight.style.height = `${bbox.height}px`;
-            } else {
-                errorHighlight.style.display = 'none';
-            }
-           
+         
+            modalImage.onload = () => {
+                if (bbox && bbox.x != null && bbox.y != null && bbox.width != null && bbox.height != null) {
+                    const imgWidth = modalImage.clientWidth;
+                    const imgHeight = modalImage.clientHeight;
+                    errorHighlight.style.display = 'block';
+                    errorHighlight.style.left = `${bbox.x * 100}%`;
+                    errorHighlight.style.top = `${bbox.y * 100}%`;
+                    errorHighlight.style.width = `${bbox.width * 100}%`;
+                    errorHighlight.style.height = `${bbox.height * 100}%`;
+                    errorLabel.style.display = 'block';
+                    errorLabel.textContent = `Q${analysisResult.questions[i].number}`;
+                    errorLabel.style.left = `${bbox.x * 100}%`;
+                    errorLabel.style.top = `${(bbox.y * 100) - 2}%`; // Above the box
+                } else {
+                    errorHighlight.style.display = 'none';
+                    errorLabel.style.display = 'none';
+                }
+            };
+         
             modal.classList.add('open');
         }
         function closeImageModal() {
@@ -2158,10 +2321,10 @@
         }
         async function generatePracticePaper() {
             if (!analysisResult) return;
-           
+         
             const content = document.getElementById('practicePaperContent');
             content.innerHTML = '<div class="loading"></div> Generating...';
-           
+         
             try {
                 const response = await fetch(`${BACKEND_URL}/generate_practice`, {
                     method: 'POST',
@@ -2169,15 +2332,15 @@
                     body: JSON.stringify({analysis: analysisResult}),
                     credentials: 'include'
                 });
-               
+             
                 if (response.status === 401) {
                     showLoginPage();
                     alert('Session expired. Please login again.');
                     return;
                 }
-               
+             
                 const data = await response.json();
-               
+             
                 if (data.error) {
                     content.innerHTML = `<p>Error: ${data.error}</p>`;
                 } else if (data.practice_questions.length === 0) {
@@ -2202,7 +2365,7 @@
                                 <button class="btn-outline" onclick="downloadPracticePaper()"> 📥 Download as PDF </button>
                             </div>
                         </div>`;
-                   
+                 
                     setTimeout(() => {
                         renderMath(document.getElementById('practice-paper'));
                     }, 500);
@@ -2218,12 +2381,12 @@
         async function downloadPracticePaper() {
             if (!practiceResult) return;
             const practicePaper = document.getElementById('practice-paper');
-           
+         
             if (!practicePaper) {
                 alert('Practice paper not found!');
                 return;
             }
-           
+         
             const loading = document.createElement('div');
             loading.innerHTML = '<div class="loading"></div> Generating PDF...';
             Object.assign(loading.style, {
@@ -2237,19 +2400,19 @@
                 zIndex: '9999'
             });
             document.body.appendChild(loading);
-           
+         
             try {
                 if (window.MathJax) {
                     await MathJax.typesetPromise([practicePaper]);
                 }
-               
+             
                 await new Promise(resolve => setTimeout(resolve, 1500));
-               
+             
                 const clone = practicePaper.cloneNode(true);
                 clone.querySelectorAll('script[type*="math"]').forEach(el => el.remove());
                 clone.querySelectorAll('.MathJax_Preview, .MathJax_Processing, .MathJax_Display').forEach(el => el.remove());
                 clone.querySelectorAll('mjx-container mjx-container').forEach(el => el.remove());
-               
+             
                 const textNodes = [];
                 const walker = document.createTreeWalker(clone, NodeFilter.SHOW_TEXT);
                 let node;
@@ -2264,14 +2427,14 @@
                         node.remove();
                     }
                 });
-               
+             
                 clone.style.position = 'absolute';
                 clone.style.left = '-9999px';
                 clone.style.top = '0';
                 clone.style.width = '1200px';
                 clone.style.background = '#ffffff';
                 document.body.appendChild(clone);
-               
+             
                 const canvas = await html2canvas(clone, {
                     scale: 2,
                     useCORS: true,
@@ -2285,9 +2448,9 @@
                                element.classList.contains('MathJax_Processing');
                     }
                 });
-               
+             
                 document.body.removeChild(clone);
-               
+             
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF('p', 'mm', 'a4');
                 const imgData = canvas.toDataURL('image/png');
@@ -2295,22 +2458,22 @@
                 const pdfHeight = pdf.internal.pageSize.getHeight();
                 const imgWidth = pdfWidth - 20;
                 const imgHeight = (canvas.height * imgWidth) / canvas.width;
-               
+             
                 let heightLeft = imgHeight;
                 let position = 10;
-               
+             
                 pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
                 heightLeft -= (pdfHeight - 20);
-               
+             
                 while (heightLeft > 0) {
                     position = heightLeft - imgHeight + 10;
                     pdf.addPage();
                     pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
                     heightLeft -= (pdfHeight - 20);
                 }
-               
+             
                 pdf.save(`Math_Practice_Paper_${new Date().toISOString().slice(0,10)}.pdf`);
-               
+             
             } catch (error) {
                 console.error('PDF generation failed:', error);
                 alert('Failed to generate PDF: ' + error.message);
@@ -2325,13 +2488,13 @@
                     method: 'GET',
                     credentials: 'include'
                 });
-               
+             
                 if (response.status === 401) {
                     return; // Not authenticated
                 }
-               
+             
                 const data = await response.json();
-               
+             
                 if (data.success) {
                     analyses = data.analyses;
                     populateSidebar(analyses);
@@ -2354,7 +2517,7 @@
         </div>
     `).join('');
     document.getElementById('historyList').innerHTML = html;
-    
+  
     // Process MathJax for each preview
     setTimeout(() => {
         analysesList.forEach(a => {
@@ -2383,7 +2546,7 @@
         </div>
     `).join('');
     document.getElementById('mobileHistoryList').innerHTML = html;
-    
+  
     // Process MathJax for mobile previews too
     setTimeout(() => {
         analysesList.forEach(a => {
@@ -2475,7 +2638,8 @@
                 const data = await response.json();
                 if (data.success) {
                     currentAnalysisId = id;
-                    displayLoadedAnalysis(data.analysis);
+                    analysisResult = {questions: data.analysis.analysis_structure.questions || []};
+                    displayAnalysis(analysisResult, true, data.analysis);
                     document.getElementById('uploadSection').classList.add('hidden');
                     document.getElementById('resultsSection').classList.remove('hidden');
                     document.getElementById('saveAnalysisBtn').style.display = 'flex';
@@ -2495,10 +2659,10 @@
         // Initialize app on page load
         window.addEventListener('DOMContentLoaded', async () => {
             console.log('Page loaded, checking authentication...');
-           
+         
             // Check authentication once
             const isAuthenticated = await checkAuth();
-           
+         
             if (isAuthenticated && currentUser) {
                 showDashboard(currentUser);
             } else {
