@@ -1350,108 +1350,188 @@
                 return null;
             }
         }
+        
 
         function displayQuestionImage(container, q) {
-            if (q.status === 'correct' || !q.corrected_image_path) return;
+    if (q.status === 'correct' || !q.corrected_image_path) return;
 
-            const section = document.createElement('div');
-            section.className = 'question-image-section';
-            section.innerHTML = `<h4>Mistakes Highlighted</h4>`;
+    const section = document.createElement('div');
+    section.className = 'question-image-section';
+    section.innerHTML = `<h4>Mistakes Highlighted</h4>
+                         <p style="font-size: 12px; color: #666; margin-bottom: 8px;">
+                            Click image to view full size with bounding boxes
+                         </p>`;
 
-            const wrapper = document.createElement('div');
-            wrapper.className = 'question-image-container';
+    const wrapper = document.createElement('div');
+    wrapper.className = 'question-image-container';
+    wrapper.style.cursor = 'pointer';
+    wrapper.onclick = () => showFullCorrectedImage(q.corrected_image_path, q.bounding_boxes);
 
-            const img = document.createElement('img');
-            img.src = `${BACKEND_URL}/api/question-image/${q.corrected_image_path}`;
-            img.alt = `Corrected Question ${q.number}`;
+    const img = document.createElement('img');
+    img.src = `${BACKEND_URL}/api/question-image/${q.corrected_image_path}`;
+    img.alt = `Corrected Question ${q.number}`;
+    img.style.maxWidth = '400px';
+    img.style.width = '100%';
 
-            wrapper.appendChild(img);
-            section.appendChild(wrapper);
+    wrapper.appendChild(img);
+    section.appendChild(wrapper);
 
-            if (q.bounding_boxes && q.bounding_boxes.length > 0) {
-                img.onload = () => {
-                    q.bounding_boxes.forEach(bbox => {
-                        const overlay = document.createElement('div');
-                        overlay.className = 'bbox-overlay';
-                        overlay.style.left = `${bbox.x}px`;
-                        overlay.style.top = `${bbox.y}px`;
-                        overlay.style.width = `${bbox.width}px`;
-                        overlay.style.height = `${bbox.height}px`;
-                        wrapper.appendChild(overlay);
-                    });
-                };
-            }
+    if (q.bounding_boxes && q.bounding_boxes.length > 0) {
+        img.onload = () => {
+            // FIXED: Add proper scaling (1000x1500 reference from backend)
+            const scaleX = img.width / 1000;
+            const scaleY = img.height / 1500;
+            
+            q.bounding_boxes.forEach(bbox => {
+                const overlay = document.createElement('div');
+                overlay.className = 'bbox-overlay';
+                overlay.style.left = `${bbox.x * scaleX}px`;
+                overlay.style.top = `${bbox.y * scaleY}px`;
+                overlay.style.width = `${bbox.width * scaleX}px`;
+                overlay.style.height = `${bbox.height * scaleY}px`;
+                wrapper.appendChild(overlay);
+                
+                // Add error type label
+                if (bbox.error_type) {
+                    const label = document.createElement('div');
+                    label.style.position = 'absolute';
+                    label.style.background = 'rgba(230, 57, 70, 0.9)';
+                    label.style.color = 'white';
+                    label.style.padding = '2px 6px';
+                    label.style.borderRadius = '4px';
+                    label.style.fontSize = '11px';
+                    label.style.pointerEvents = 'none';
+                    label.textContent = bbox.error_type;
+                    label.style.left = `${bbox.x * scaleX}px`;
+                    label.style.top = `${(bbox.y * scaleY) - 25}px`;
+                    wrapper.appendChild(label);
+                }
+            });
+        };
+    }
 
-            container.appendChild(section);
-        }
-
-        function displayAnalysis(result) {
-            const accordion = document.getElementById('accordion');
-            accordion.innerHTML = '';
-            const questions = result.questions || [];
-            const counts = {correct: 0, partial: 0, incorrect: 0};
-            questions.forEach(q => counts[q.status]++);
-
-            questions.forEach((q, i) => {
-                const item = document.createElement('div');
-                item.className = 'accordion-item';
-                item.innerHTML = `
-                    <button class="accordion-trigger" onclick="toggleAccordion('q${i}')">
-                        <div class="question-number ${q.status}">${q.number}</div>
-                        <div class="question-info">
-                            <p>${q.question}</p>
-                            <p>Status: ${q.status.toUpperCase()}</p>
-                        </div>
-                    </button>
-                    <div id="q${i}" class="accordion-content">
-                        <div class="analysis-section">
-                            <h3>Student Solution</h3>
-                            <div class="solution-card"><div class="solution-steps">${processSteps(q.student_original)}</div></div>
-                        </div>
-                        <div class="analysis-section">
-                            <h3>Error Analysis</h3>
-                            <div class="solution-card error"><p>${q.error || 'No errors'}</p></div>
-                        </div>
-                        <div class="analysis-section">
-                            <h3>Correct Solution</h3>
-                            <div class="solution-card corrected"><div class="solution-steps">${processSteps(q.correct_solution)}</div></div>
-                        </div>
-                        ${q.dataURL ? `<button class="btn-outline" style="margin: 12px 0;" onclick="openImageModal(${i})">View Original Image</button>` : ''}
-                        <div id="questionImageContainer${i}"></div>
-                        <div class="reanalysis-card">
-                            <h3 style="font-size: 1rem; margin-bottom: 0.75rem;">Re-analyze</h3>
-                            <div class="reanalysis-input-group">
-                                <input id="reanalysisInput${i}" placeholder="Ask AI to re-analyze...">
-                                <button class="btn-primary" onclick="reanalyzeQuestion(${i})">Send</button>
-                            </div>
-                            <div id="aiResponse${i}" class="ai-response" style="display:none;">
-                                <div class="ai-badge">AI</div>
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                accordion.appendChild(item);
-                renderMath(item);
-
-                if (currentAnalysisId && q.status !== 'correct') {
-                    fetchQuestionImage(currentAnalysisId, q.number).then(data => {
-                        if (data) {
-                            q.corrected_image_path = data.corrected_image_path;
-                            q.bounding_boxes = data.bounding_boxes || [];
-                            displayQuestionImage(document.getElementById(`questionImageContainer${i}`), q);
+    container.appendChild(section);
+}
+        function showFullCorrectedImage(filename, bboxes) {
+    const w = window.open('', '_blank');
+    w.document.write(`
+        <html><head><title>Corrected Image with Bounding Boxes</title><style>
+            body { margin: 0; padding: 20px; background: #f5f5f5; text-align: center; }
+            img { max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+            .container { position: relative; display: inline-block; }
+            .box { position: absolute; border: 3px solid #e63946; border-radius: 4px; background: rgba(230,57,70,0.1); }
+            .label { position: absolute; background: rgba(230,57,70,0.9); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
+        </style></head>
+        <body>
+            <h3>Corrected Image with Bounding Boxes</h3>
+            <div class="container">
+                <img src="${BACKEND_URL}/api/question-image/${filename}" 
+                     onload="initBoxes(this)" style="display:none;">
+            </div>
+            <script>
+                function initBoxes(img) {
+                    const container = img.parentElement;
+                    img.style.display = 'block';
+                    ${JSON.stringify(bboxes || [])}.forEach(bbox => {
+                        const box = document.createElement('div');
+                        box.className = 'box';
+                        const scaleX = img.width / 1000;
+                        const scaleY = img.height / 1500;
+                        box.style.left = \`\${bbox.x * scaleX}px\`;
+                        box.style.top = \`\${bbox.y * scaleY}px\`;
+                        box.style.width = \`\${bbox.width * scaleX}px\`;
+                        box.style.height = \`\${bbox.height * scaleY}px\`;
+                        container.appendChild(box);
+                        
+                        if (bbox.error_type) {
+                            const label = document.createElement('div');
+                            label.className = 'label';
+                            label.textContent = bbox.error_type;
+                            label.style.left = \`\${bbox.x * scaleX}px\`;
+                            label.style.top = \`\${(bbox.y * scaleY) - 30}px\`;
+                            container.appendChild(label);
                         }
                     });
                 }
+            <\/script>
+        </body></html>
+    `);
+    w.document.close();
+}
+
+        
+
+        function displayAnalysis(result) {
+    const accordion = document.getElementById('accordion');
+    accordion.innerHTML = '';
+    const questions = result.questions || [];
+    const counts = {correct: 0, partial: 0, incorrect: 0};
+    questions.forEach(q => counts[q.status]++);
+
+    questions.forEach((q, i) => {
+        const item = document.createElement('div');
+        item.className = 'accordion-item';
+        item.innerHTML = `
+            <button class="accordion-trigger" onclick="toggleAccordion('q${i}')">
+                <div class="question-number ${q.status}">${q.number}</div>
+                <div class="question-info">
+                    <p>${q.question}</p>
+                    <p>Status: ${q.status.toUpperCase()}</p>
+                </div>
+            </button>
+            <div id="q${i}" class="accordion-content">
+                <div class="analysis-section">
+                    <h3>Student Solution</h3>
+                    <div class="solution-card"><div class="solution-steps">${processSteps(q.student_original)}</div></div>
+                </div>
+                <div class="analysis-section">
+                    <h3>Error Analysis</h3>
+                    <div class="solution-card error"><p>${q.error || 'No errors'}</p></div>
+                </div>
+                <div class="analysis-section">
+                    <h3>Correct Solution</h3>
+                    <div class="solution-card corrected"><div class="solution-steps">${processSteps(q.correct_solution)}</div></div>
+                </div>
+                ${q.dataURL ? `<button class="btn-outline" style="margin: 12px 0;" onclick="openImageModal(${i})">View Original Image</button>` : ''}
+                <div id="questionImageContainer${i}"></div>
+                <div class="reanalysis-card">
+                    <h3 style="font-size: 1rem; margin-bottom: 0.75rem;">Re-analyze</h3>
+                    <div class="reanalysis-input-group">
+                        <input id="reanalysisInput${i}" placeholder="Ask AI to re-analyze...">
+                        <button class="btn-primary" onclick="reanalyzeQuestion(${i})">Send</button>
+                    </div>
+                    <div id="aiResponse${i}" class="ai-response" style="display:none;">
+                        <div class="ai-badge">AI</div>
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+        `;
+        accordion.appendChild(item);
+        renderMath(item);
+
+        // FIXED: Show bounding boxes for both NEW and LOADED analyses
+        if (q.status !== 'correct' && q.bounding_boxes && q.bounding_boxes.length > 0) {
+            // For new analyses, bounding boxes come directly from the API response
+            displayQuestionImage(document.getElementById(`questionImageContainer${i}`), q);
+        } else if (currentAnalysisId && q.status !== 'correct') {
+            // For loaded analyses, fetch from database
+            fetchQuestionImage(currentAnalysisId, q.number).then(data => {
+                if (data) {
+                    q.corrected_image_path = data.corrected_image_path;
+                    q.bounding_boxes = data.bounding_boxes || [];
+                    displayQuestionImage(document.getElementById(`questionImageContainer${i}`), q);
+                }
             });
-
-            document.getElementById('badgeGroup').innerHTML = `
-                <div class="badge"><div class="badge-dot correct"></div>${counts.correct} Correct</div>
-                <div class="badge"><div class="badge-dot partial"></div>${counts.partial} Partial</div>
-                <div class="badge"><div class="badge-dot incorrect"></div>${counts.incorrect} Incorrect</div>
-            `;
         }
+    });
 
+    document.getElementById('badgeGroup').innerHTML = `
+        <div class="badge"><div class="badge-dot correct"></div>${counts.correct} Correct</div>
+        <div class="badge"><div class="badge-dot partial"></div>${counts.partial} Partial</div>
+        <div class="badge"><div class="badge-dot incorrect"></div>${counts.incorrect} Incorrect</div>
+    `;
+}
         async function displayLoadedAnalysis(analysis) {
             analysisResult = { questions: analysis.analysis_structure?.questions || [] };
             currentAnalysisId = analysis.id;
