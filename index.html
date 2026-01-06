@@ -26,7 +26,7 @@
     <!-- PDF & Canvas libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-
+    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
@@ -64,7 +64,6 @@
             overflow: hidden;
             height: 100vh;
         }
-
         /* Login Page */
         #loginPage {
             height: 100vh;
@@ -217,7 +216,6 @@
             display: none;
         }
         .success-message.show { display: block; }
-
         /* Dashboard */
         .dashboard-container {
             display: none;
@@ -377,20 +375,6 @@
             gap: 6px;
         }
         .btn-logout:hover { background-color: var(--accent); }
-        .btn-corrected {
-            background-color: transparent;
-            color: var(--foreground);
-            padding: 8px 16px;
-            border-radius: 6px;
-            border: 1px solid var(--border);
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .btn-corrected:hover { background-color: var(--accent); }
-        .btn-corrected:disabled { opacity: 0.5; cursor: not-allowed; }
         .content-area {
             flex: 1;
             overflow-y: auto;
@@ -601,6 +585,37 @@
         }
         .solution-steps { font-family: 'Courier New', monospace; font-size: 14px; }
         .solution-steps div { margin-bottom: 8px; }
+        /* New styles for in-dropdown corrected image with bounding boxes */
+        .question-image-section {
+            margin-top: 24px;
+            padding: 16px;
+            background-color: rgba(230, 57, 70, 0.05);
+            border: 1px solid rgba(230, 57, 70, 0.2);
+            border-radius: 8px;
+        }
+        .question-image-section h4 {
+            margin-bottom: 12px;
+            color: var(--destructive);
+            font-size: 16px;
+        }
+        .question-image-container {
+            position: relative;
+            display: inline-block;
+            max-width: 100%;
+        }
+        .question-image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+        }
+        .bbox-overlay {
+            position: absolute;
+            border: 3px solid var(--destructive);
+            border-radius: 6px;
+            pointer-events: none;
+            box-shadow: 0 0 10px rgba(230, 57, 70, 0.5);
+        }
         .practice-paper-card {
             background-color: var(--card);
             border: 2px solid rgba(67, 97, 238, 0.1);
@@ -617,29 +632,6 @@
         .practice-paper-card p {
             color: var(--muted-foreground);
             margin-bottom: 16px;
-        }
-        .new-question-list {
-            background-color: var(--background);
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 16px;
-        }
-        .new-question-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-        .new-question-item:last-child { margin-bottom: 0; }
-        .new-question-number {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            flex-shrink: 0;
         }
         .reanalysis-card {
             background-color: rgba(238, 242, 255, 0.5);
@@ -719,13 +711,6 @@
             height: 100%;
             object-fit: cover;
         }
-        .error-highlight {
-            position: absolute;
-            border: 3px solid var(--destructive);
-            border-radius: 6px;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
         .modal-caption {
             text-align: center;
             font-size: 14px;
@@ -779,98 +764,6 @@
             animation: spin 1s linear infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .practice-paper {
-            padding: 30px;
-            background: white;
-        }
-        .practice-header {
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        .practice-title {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-        .practice-subtitle {
-            font-size: 16px;
-            color: #666;
-        }
-        .practice-question {
-            margin-bottom: 30px;
-        }
-        .practice-question-number {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-
-        /* Corrected Paper Styles */
-        .corrected-paper-section {
-            margin-top: 24px;
-            padding: 16px;
-            background-color: rgba(230, 57, 70, 0.05);
-            border: 1px solid rgba(230, 57, 70, 0.2);
-            border-radius: 8px;
-        }
-        .corrected-thumbnail {
-            width: 100%;
-            max-width: 400px;
-            border-radius: 8px;
-            margin-bottom: 12px;
-            position: relative;
-            display: block;
-        }
-        .corrected-thumbnail-overlay {
-            position: absolute;
-            border: 3px solid var(--destructive);
-            border-radius: 4px;
-            pointer-events: none;
-        }
-        .corrected-actions {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        /* Corrected Modal */
-        #correctedPaperModal .modal-content {
-            max-width: 900px;
-            padding: 0;
-        }
-        .corrected-modal-header {
-            padding: 24px 24px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .corrected-modal-body {
-            padding: 24px;
-            max-height: 70vh;
-            overflow-y: auto;
-        }
-        .corrected-full-image {
-            width: 100%;
-            border-radius: 8px;
-            position: relative;
-        }
-        .corrected-full-overlay {
-            position: absolute;
-            border: 4px solid var(--destructive);
-            border-radius: 6px;
-            pointer-events: none;
-        }
-        .corrected-error-label {
-            position: absolute;
-            background: rgba(230, 57, 70, 0.9);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            pointer-events: none;
-        }
-
         #loadingOverlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -1001,7 +894,6 @@
                     <div id="historyList"></div>
                 </div>
             </aside>
-
             <!-- Mobile Sidebar Overlay -->
             <div id="mobileOverlay" class="mobile-overlay">
                 <div class="mobile-sidebar-backdrop" onclick="closeMobileMenu()"></div>
@@ -1030,7 +922,6 @@
                     </div>
                 </aside>
             </div>
-
             <!-- Main Content -->
             <div class="main-content">
                 <header class="header">
@@ -1050,12 +941,6 @@
                         </div>
                     </div>
                     <div class="header-right">
-                        <button id="correctedPaperBtn" class="btn-corrected" onclick="showCorrectedPaperModal()" disabled>
-                            <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                            </svg>
-                            Corrected Paper
-                        </button>
                         <p class="user-info">Welcome, <span class="user-name" id="userName"></span></p>
                         <button class="btn-logout" onclick="handleLogout()">
                             <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1065,7 +950,6 @@
                         </button>
                     </div>
                 </header>
-
                 <main class="content-area">
                     <!-- Upload Section -->
                     <div id="uploadSection" class="upload-section">
@@ -1118,7 +1002,6 @@
                             </button>
                         </div>
                     </div>
-
                     <!-- Results Section -->
                     <div id="resultsSection" class="results-section hidden">
                         <div class="results-header">
@@ -1157,7 +1040,7 @@
         </div>
     </div>
 
-    <!-- Image Modal -->
+    <!-- Original Image Modal -->
     <div id="imageModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1165,7 +1048,6 @@
             </div>
             <div class="modal-image">
                 <img id="modalImage" src="" alt="Answer sheet">
-                <div id="errorHighlight" class="error-highlight" style="display: none;"></div>
             </div>
             <p class="modal-caption" id="modalCaption"></p>
             <button class="btn-outline" style="width: 100%; margin-top: 1rem;" onclick="closeImageModal()">Close</button>
@@ -1232,24 +1114,9 @@
         </div>
     </div>
 
-    <!-- Corrected Paper Modal -->
-    <div id="correctedPaperModal" class="modal">
-        <div class="modal-content">
-            <div class="corrected-modal-header">
-                <h3>Corrected Answer Sheet</h3>
-                <button class="btn-outline" onclick="closeCorrectedPaperModal()">Close</button>
-            </div>
-            <div class="corrected-modal-body" id="correctedModalBody">
-                <!-- Content loaded dynamically -->
-            </div>
-        </div>
-    </div>
-
     <script>
-        // Backend URL
         const BACKEND_URL = 'https://navalsheth.pythonanywhere.com';
 
-        // State
         let questionFiles = [];
         let answerFiles = [];
         let allFiles = [];
@@ -1259,16 +1126,13 @@
         let isAnalyzing = false;
         let currentAnalysisId = null;
         let analyses = [];
-        let correctedImages = [];
 
-        // Render MathJax
         function renderMath(element) {
             if (window.MathJax) {
                 MathJax.typesetPromise([element]).catch(err => console.error('MathJax error:', err));
             }
         }
 
-        // Auth Check
         async function checkAuth() {
             try {
                 const response = await fetch(`${BACKEND_URL}/api/check-auth`, {
@@ -1276,10 +1140,7 @@
                     credentials: 'include',
                     headers: { 'Accept': 'application/json', 'Cache-Control': 'no-cache' }
                 });
-                if (!response.ok) {
-                    if (response.status === 401) return false;
-                    throw new Error(`Auth check failed: ${response.status}`);
-                }
+                if (!response.ok) return false;
                 const data = await response.json();
                 if (data.authenticated && data.user) {
                     currentUser = data.user;
@@ -1288,12 +1149,10 @@
                 }
                 return false;
             } catch (error) {
-                console.error('Auth check failed:', error);
                 return false;
             }
         }
 
-        // Login
         async function loginUser(username, password) {
             const errorMsg = document.getElementById('loginErrorMessage');
             const successMsg = document.getElementById('loginSuccessMessage');
@@ -1308,25 +1167,19 @@
                 });
                 const data = await response.json();
                 if (data.success) {
-                    successMsg.textContent = data.message;
-                    successMsg.classList.add('show');
                     currentUser = data.user;
                     localStorage.setItem('user', JSON.stringify(data.user));
-                    setTimeout(() => {
-                        showDashboard(data.user);
-                        successMsg.classList.remove('show');
-                    }, 1000);
+                    showDashboard(data.user);
                 } else {
                     errorMsg.textContent = data.message;
                     errorMsg.classList.add('show');
                 }
             } catch (error) {
-                errorMsg.textContent = 'Connection error. Please try again.';
+                errorMsg.textContent = 'Connection error.';
                 errorMsg.classList.add('show');
             }
         }
 
-        // Register
         async function registerUser(username, phone, password) {
             const errorMsg = document.getElementById('registerErrorMessage');
             const successMsg = document.getElementById('registerSuccessMessage');
@@ -1343,11 +1196,7 @@
                 if (data.success) {
                     successMsg.textContent = 'Registration successful! Please login.';
                     successMsg.classList.add('show');
-                    document.getElementById('registerForm').reset();
-                    setTimeout(() => {
-                        closeRegisterModal();
-                        successMsg.classList.remove('show');
-                    }, 2000);
+                    setTimeout(() => closeRegisterModal(), 2000);
                 } else {
                     errorMsg.textContent = data.message;
                     errorMsg.classList.add('show');
@@ -1358,20 +1207,13 @@
             }
         }
 
-        // Logout
         async function logoutUser() {
-            try {
-                await fetch(`${BACKEND_URL}/api/logout`, {
-                    method: 'POST',
-                    credentials: 'include'
-                });
-            } catch (error) {}
+            await fetch(`${BACKEND_URL}/api/logout`, { method: 'POST', credentials: 'include' });
             localStorage.removeItem('user');
             currentUser = null;
             showLoginPage();
         }
 
-        // Page Navigation
         function showDashboard(user) {
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('dashboardPage').style.display = 'flex';
@@ -1382,82 +1224,30 @@
         function showLoginPage() {
             document.getElementById('loginPage').style.display = 'flex';
             document.getElementById('dashboardPage').style.display = 'none';
-            document.getElementById('loginForm').reset();
-            document.getElementById('loginErrorMessage').classList.remove('show');
-            document.getElementById('loginSuccessMessage').classList.remove('show');
         }
 
-        // Modals
-        function showRegisterModal() {
-            document.getElementById('registerModal').classList.add('open');
-            document.getElementById('registerForm').reset();
-            document.getElementById('registerErrorMessage').classList.remove('show');
-            document.getElementById('registerSuccessMessage').classList.remove('show');
-        }
+        function showRegisterModal() { document.getElementById('registerModal').classList.add('open'); }
         function closeRegisterModal() { document.getElementById('registerModal').classList.remove('open'); }
-
         function showSaveModal(defaultName = `Analysis ${new Date().toLocaleString()}`) {
             document.getElementById('analysisName').value = defaultName;
             document.getElementById('saveModal').classList.add('open');
-            document.getElementById('saveErrorMessage').classList.remove('show');
-            document.getElementById('saveSuccessMessage').classList.remove('show');
         }
         function closeSaveModal() { document.getElementById('saveModal').classList.remove('open'); }
 
-        async function saveAnalysisName() {
-            const name = document.getElementById('analysisName').value.trim();
-            if (!name) {
-                document.getElementById('saveErrorMessage').textContent = 'Name is required';
-                document.getElementById('saveErrorMessage').classList.add('show');
-                return;
-            }
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/update-analysis-name/${currentAnalysisId}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ analysis_name: name }),
-                    credentials: 'include'
-                });
-                const data = await response.json();
-                if (data.success) {
-                    document.getElementById('saveSuccessMessage').textContent = 'Saved successfully';
-                    document.getElementById('saveSuccessMessage').classList.add('show');
-                    setTimeout(() => {
-                        closeSaveModal();
-                        loadAnalyses();
-                    }, 1000);
-                } else {
-                    document.getElementById('saveErrorMessage').textContent = data.error;
-                    document.getElementById('saveErrorMessage').classList.add('show');
-                }
-            } catch (error) {
-                document.getElementById('saveErrorMessage').textContent = 'Connection error';
-                document.getElementById('saveErrorMessage').classList.add('show');
-            }
-        }
-
-        // Mobile Menu
         function openMobileMenu() { document.getElementById('mobileOverlay').classList.add('open'); }
         function closeMobileMenu() { document.getElementById('mobileOverlay').classList.remove('open'); }
         function handleLogout() { logoutUser(); }
+
         function resetToDashboard() {
             document.getElementById('uploadSection').classList.remove('hidden');
             document.getElementById('resultsSection').classList.add('hidden');
             document.getElementById('saveAnalysisBtn').style.display = 'none';
-            document.getElementById('correctedPaperBtn').disabled = true;
             closeMobileMenu();
-            document.querySelectorAll('.sidebar-item, .mobile-sidebar .sidebar-item').forEach(el => el.classList.remove('active'));
         }
 
-        // File Upload
-        document.getElementById('questionInput').addEventListener('change', async e => {
-            await handleFileUpload(e.target.files, questionFiles, 'questionFileList');
-            checkStartButton();
-        });
-        document.getElementById('answerInput').addEventListener('change', async e => {
-            await handleFileUpload(e.target.files, answerFiles, 'answerFileList');
-            checkStartButton();
-        });
+        document.getElementById('questionInput').addEventListener('change', e => handleFileUpload(e.target.files, questionFiles, 'questionFileList'));
+        document.getElementById('answerInput').addEventListener('change', e => handleFileUpload(e.target.files, answerFiles, 'answerFileList'));
+
         async function handleFileUpload(files, targetArray, listId) {
             for (let file of files) {
                 if (!targetArray.find(f => f.name === file.name)) {
@@ -1473,7 +1263,9 @@
                 }
             }
             displayFiles(listId, targetArray);
+            checkStartButton();
         }
+
         function displayFiles(id, files) {
             document.getElementById(id).innerHTML = files.map(f => `
                 <div class="file-item">
@@ -1482,29 +1274,22 @@
                 </div>
             `).join('');
         }
+
         function checkStartButton() {
             document.getElementById('startAnalysisBtn').disabled = questionFiles.length === 0 || answerFiles.length === 0;
         }
 
-        // Analysis
         async function startAnalysis() {
             if (isAnalyzing) return;
             const isAuth = await checkAuth();
-            if (!isAuth) {
-                alert('Please login');
-                showLoginPage();
-                return;
-            }
-            if (questionFiles.length === 0 || answerFiles.length === 0) {
-                alert('Upload both question and answer sheets');
-                return;
-            }
+            if (!isAuth) { alert('Please login'); showLoginPage(); return; }
+            if (questionFiles.length === 0 || answerFiles.length === 0) { alert('Upload both'); return; }
+
             isAnalyzing = true;
             const btn = document.getElementById('startAnalysisBtn');
             btn.innerHTML = '<div class="loading"></div> Analyzing...';
             btn.disabled = true;
 
-            // Loading overlay
             const loadingOverlay = document.createElement('div');
             loadingOverlay.id = 'loadingOverlay';
             loadingOverlay.innerHTML = `
@@ -1527,29 +1312,19 @@
             allFiles.forEach(f => formData.append('files', f.file, f.name));
 
             try {
-                const response = await fetch(`${BACKEND_URL}/analyze`, {
-                    method: 'POST',
-                    body: formData,
-                    credentials: 'include'
-                });
-                if (response.status === 401) {
-                    localStorage.removeItem('user');
-                    showLoginPage();
-                    alert('Session expired');
-                    return;
-                }
+                const response = await fetch(`${BACKEND_URL}/analyze`, { method: 'POST', body: formData, credentials: 'include' });
                 const data = await response.json();
                 if (data.error) throw new Error(data.error);
-                analysisResult = data;
+                analysisResult = { questions: data.questions };
+                currentAnalysisId = null;
                 allFiles.forEach(f => {
                     const q = analysisResult.questions.find(q => q.image_file === f.name);
                     if (q) q.dataURL = f.dataURL;
                 });
-                displayAnalysis(data);
+                displayAnalysis(analysisResult);
                 document.getElementById('uploadSection').classList.add('hidden');
                 document.getElementById('resultsSection').classList.remove('hidden');
                 document.getElementById('saveAnalysisBtn').style.display = 'flex';
-                promptForAnalysisName();
             } catch (error) {
                 alert('Error: ' + error.message);
             } finally {
@@ -1560,29 +1335,66 @@
             }
         }
 
-        async function promptForAnalysisName() {
-            await loadAnalyses();
-            const latest = analyses[0];
-            if (latest) showSaveModal(`Analysis ${new Date().toLocaleString()}`);
-        }
-
         function processSteps(str) {
             if (!str) return '';
             return str.split('<br>').filter(s => s.trim()).map(s => `<p style="margin-bottom: 0.75rem;">${s.trim()}</p>`).join('');
+        }
+
+        async function fetchQuestionImage(analysisId, questionNumber) {
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/get-question-image/${analysisId}/${questionNumber}`, { credentials: 'include' });
+                if (!response.ok) return null;
+                const data = await response.json();
+                return data.success ? data.image_data : null;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function displayQuestionImage(container, q) {
+            if (q.status === 'correct' || !q.corrected_image_path) return;
+
+            const section = document.createElement('div');
+            section.className = 'question-image-section';
+            section.innerHTML = `<h4>Mistakes Highlighted</h4>`;
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'question-image-container';
+
+            const img = document.createElement('img');
+            img.src = `${BACKEND_URL}/api/question-image/${q.corrected_image_path}`;
+            img.alt = `Corrected Question ${q.number}`;
+
+            wrapper.appendChild(img);
+            section.appendChild(wrapper);
+
+            if (q.bounding_boxes && q.bounding_boxes.length > 0) {
+                img.onload = () => {
+                    q.bounding_boxes.forEach(bbox => {
+                        const overlay = document.createElement('div');
+                        overlay.className = 'bbox-overlay';
+                        overlay.style.left = `${bbox.x}px`;
+                        overlay.style.top = `${bbox.y}px`;
+                        overlay.style.width = `${bbox.width}px`;
+                        overlay.style.height = `${bbox.height}px`;
+                        wrapper.appendChild(overlay);
+                    });
+                };
+            }
+
+            container.appendChild(section);
         }
 
         function displayAnalysis(result) {
             const accordion = document.getElementById('accordion');
             accordion.innerHTML = '';
             const questions = result.questions || [];
-            let counts = {correct: 0, partial: 0, incorrect: 0};
+            const counts = {correct: 0, partial: 0, incorrect: 0};
             questions.forEach(q => counts[q.status]++);
 
             questions.forEach((q, i) => {
                 const item = document.createElement('div');
                 item.className = 'accordion-item';
-                const correctedSection = (q.status !== 'correct' && q.bounding_boxes?.length > 0) ?
-                    `<div class="corrected-paper-section" id="corrected-paper-${q.number}"></div>` : '';
                 item.innerHTML = `
                     <button class="accordion-trigger" onclick="toggleAccordion('q${i}')">
                         <div class="question-number ${q.status}">${q.number}</div>
@@ -1604,8 +1416,8 @@
                             <h3>Correct Solution</h3>
                             <div class="solution-card corrected"><div class="solution-steps">${processSteps(q.correct_solution)}</div></div>
                         </div>
-                        ${q.dataURL ? `<button class="btn-outline" onclick="openImageModal(${i}, '${q.status}', '${q.image_file}', ${JSON.stringify(q.error_bbox || {})})">View Original Image</button>` : ''}
-                        ${correctedSection}
+                        ${q.dataURL ? `<button class="btn-outline" style="margin: 12px 0;" onclick="openImageModal(${i})">View Original Image</button>` : ''}
+                        <div id="questionImageContainer${i}"></div>
                         <div class="reanalysis-card">
                             <h3 style="font-size: 1rem; margin-bottom: 0.75rem;">Re-analyze</h3>
                             <div class="reanalysis-input-group">
@@ -1621,6 +1433,16 @@
                 `;
                 accordion.appendChild(item);
                 renderMath(item);
+
+                if (currentAnalysisId && q.status !== 'correct') {
+                    fetchQuestionImage(currentAnalysisId, q.number).then(data => {
+                        if (data) {
+                            q.corrected_image_path = data.corrected_image_path;
+                            q.bounding_boxes = data.bounding_boxes || [];
+                            displayQuestionImage(document.getElementById(`questionImageContainer${i}`), q);
+                        }
+                    });
+                }
             });
 
             document.getElementById('badgeGroup').innerHTML = `
@@ -1628,158 +1450,72 @@
                 <div class="badge"><div class="badge-dot partial"></div>${counts.partial} Partial</div>
                 <div class="badge"><div class="badge-dot incorrect"></div>${counts.incorrect} Incorrect</div>
             `;
-            document.getElementById('correctedPaperBtn').disabled = false;
         }
 
         async function displayLoadedAnalysis(analysis) {
-            analysisResult = {questions: analysis.analysis_structure?.questions || []};
-            correctedImages = analysis.corrected_images || [];
+            analysisResult = { questions: analysis.analysis_structure?.questions || [] };
             currentAnalysisId = analysis.id;
+
+            if (analysis.question_images) {
+                const map = {};
+                analysis.question_images.forEach(img => map[img.question_number] = img);
+                analysisResult.questions.forEach(q => {
+                    const img = map[q.number];
+                    if (img) {
+                        q.corrected_image_path = img.corrected_image_path;
+                        q.bounding_boxes = img.bounding_boxes || [];
+                    }
+                });
+            }
+
             displayAnalysis(analysisResult);
-            correctedImages.forEach(img => {
-                const section = document.querySelector(`#corrected-paper-${img.question_number}`);
-                if (section) displayCorrectedPaperInDropdown(section, analysisResult.questions.find(q => q.number === img.question_number), correctedImages);
-            });
-            document.getElementById('correctedPaperBtn').disabled = false;
+            document.getElementById('uploadSection').classList.add('hidden');
+            document.getElementById('resultsSection').classList.remove('hidden');
+            document.getElementById('saveAnalysisBtn').style.display = 'flex';
         }
 
         async function loadAnalysis(id) {
             try {
-                const response = await fetch(`${BACKEND_URL}/api/get-analysis/${id}`, {
-                    method: 'GET',
-                    credentials: 'include'
-                });
+                const response = await fetch(`${BACKEND_URL}/api/get-analysis/${id}`, { credentials: 'include' });
                 const data = await response.json();
                 if (data.success) {
-                    currentAnalysisId = id;
                     await displayLoadedAnalysis(data.analysis);
-                    document.getElementById('uploadSection').classList.add('hidden');
-                    document.getElementById('resultsSection').classList.remove('hidden');
-                    document.getElementById('saveAnalysisBtn').style.display = 'flex';
-                    document.querySelectorAll('.sidebar-item, .mobile-sidebar .sidebar-item').forEach(el => el.classList.remove('active'));
+                    document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
                     document.getElementById(`sidebar-item-${id}`)?.classList.add('active');
-                    document.getElementById(`mobile-sidebar-item-${id}`)?.classList.add('active');
                 }
-            } catch (error) {}
+            } catch (e) {}
         }
 
-        // Corrected Paper Functions
-        async function loadCorrectedPaperImages(analysisId) {
+        async function loadAnalyses() {
             try {
-                const response = await fetch(`${BACKEND_URL}/api/get-corrected-paper/${analysisId}`, {
-                    method: 'GET',
-                    credentials: 'include'
-                });
-                if (!response.ok) return [];
+                const response = await fetch(`${BACKEND_URL}/api/get-analyses`, { credentials: 'include' });
                 const data = await response.json();
-                return data.success ? data.corrected_images || [] : [];
-            } catch (err) {
-                console.error(err);
-                return [];
-            }
+                if (data.success) {
+                    analyses = data.analyses;
+                    populateSidebar(analyses);
+                    populateMobileSidebar(analyses);
+                }
+            } catch (e) {}
         }
 
-        function displayCorrectedPaperInDropdown(container, question, images) {
-            const match = images.find(c => c.question_number === question.number);
-            if (!match) return;
-            const bboxes = match.bounding_box || [];
-            container.innerHTML = `
-                <h4 style="margin-bottom:12px; color:var(--destructive);">Mistakes Highlighted</h4>
-                <div style="position:relative; display:inline-block;">
-                    <img src="${BACKEND_URL}/api/corrected-paper-image/${match.corrected_image_path}" 
-                         class="corrected-thumbnail" alt="Corrected ${question.number}">
-                </div>
-                <div class="corrected-actions">
-                    <button class="btn-outline" onclick="openSingleCorrectedImage('${match.corrected_image_path}', '${question.number}', ${JSON.stringify(bboxes)})">View Full</button>
-                    <button class="btn-outline" onclick="downloadCorrectedImage('${match.corrected_image_path}')">Download</button>
-                </div>
-            `;
-            const img = container.querySelector('.corrected-thumbnail');
-            img.onload = () => {
-                const parent = img.parentElement;
-                parent.style.position = 'relative';
-                bboxes.forEach(bbox => {
-                    const overlay = document.createElement('div');
-                    overlay.className = 'corrected-thumbnail-overlay';
-                    const scaleX = img.width / 1000;
-                    const scaleY = img.height / 1500;
-                    overlay.style.left = `${bbox.x * scaleX}px`;
-                    overlay.style.top = `${bbox.y * scaleY}px`;
-                    overlay.style.width = `${bbox.width * scaleX}px`;
-                    overlay.style.height = `${bbox.height * scaleY}px`;
-                    parent.appendChild(overlay);
-                });
-            };
-        }
-
-        function openSingleCorrectedImage(filename, qNum, bboxes) {
-            const body = document.getElementById('correctedModalBody');
-            body.innerHTML = `
-                <h4>Question ${qNum} - Corrected</h4>
-                <div style="position:relative; display:inline-block; margin:20px 0;">
-                    <img src="${BACKEND_URL}/api/corrected-paper-image/${filename}" class="corrected-full-image" alt="Full">
-                </div>
-                <div style="text-align:center;">
-                    <button class="btn-outline" onclick="downloadCorrectedImage('${filename}')">Download Image</button>
-                </div>
-            `;
-            const img = body.querySelector('.corrected-full-image');
-            img.onload = () => {
-                const parent = img.parentElement;
-                bboxes.forEach(bbox => {
-                    const overlay = document.createElement('div');
-                    overlay.className = 'corrected-full-overlay';
-                    const scaleX = img.width / 1000;
-                    const scaleY = img.height / 1500;
-                    overlay.style.left = `${bbox.x * scaleX}px`;
-                    overlay.style.top = `${bbox.y * scaleY}px`;
-                    overlay.style.width = `${bbox.width * scaleX}px`;
-                    overlay.style.height = `${bbox.height * scaleY}px`;
-                    parent.appendChild(overlay);
-
-                    const label = document.createElement('div');
-                    label.className = 'corrected-error-label';
-                    label.textContent = bbox.error_type || 'Mistake';
-                    label.style.left = `${bbox.x * scaleX}px`;
-                    label.style.top = `${(bbox.y * scaleY) - 30}px`;
-                    parent.appendChild(label);
-                });
-            };
-            document.getElementById('correctedPaperModal').classList.add('open');
-        }
-
-        function downloadCorrectedImage(filename) {
-            const link = document.createElement('a');
-            link.href = `${BACKEND_URL}/api/corrected-paper-image/${filename}`;
-            link.download = filename;
-            link.click();
-        }
-
-        async function showCorrectedPaperModal() {
-            if (!currentAnalysisId) return;
-            const body = document.getElementById('correctedModalBody');
-            body.innerHTML = `<div style="text-align:center;padding:40px;"><div class="loading"></div><p>Loading...</p></div>`;
-            document.getElementById('correctedPaperModal').classList.add('open');
-
-            const images = await loadCorrectedPaperImages(currentAnalysisId);
-            if (images.length === 0) {
-                body.innerHTML = '<p>No mistakes found.</p>';
-                return;
-            }
-            body.innerHTML = images.map(img => `
-                <div style="margin-bottom:32px;">
-                    <h4>Question ${img.question_number}</h4>
-                    <img src="${BACKEND_URL}/api/corrected-paper-image/${img.corrected_image_path}" 
-                         style="width:100%; max-width:800px; border-radius:8px;" 
-                         alt="Q${img.question_number}"
-                         onclick="openSingleCorrectedImage('${img.corrected_image_path}', '${img.question_number}', ${JSON.stringify(img.bounding_box || [])})">
-                    <button class="btn-outline" onclick="downloadCorrectedImage('${img.corrected_image_path}')">Download</button>
+        function populateSidebar(list) {
+            document.getElementById('historyList').innerHTML = list.map(a => `
+                <div class="sidebar-item ${a.id === currentAnalysisId ? 'active' : ''}" id="sidebar-item-${a.id}">
+                    <div class="sidebar-item-title" onclick="loadAnalysis(${a.id})">${a.analysis_name}</div>
+                    <div class="sidebar-item-date">${a.formatted_date}</div>
                 </div>
             `).join('');
         }
-        function closeCorrectedPaperModal() { document.getElementById('correctedPaperModal').classList.remove('open'); }
 
-        // Other functions (reanalyze, generatePracticePaper, etc.) remain as in original
+        function populateMobileSidebar(list) {
+            document.getElementById('mobileHistoryList').innerHTML = list.map(a => `
+                <div class="sidebar-item ${a.id === currentAnalysisId ? 'active' : ''}" id="mobile-sidebar-item-${a.id}">
+                    <div class="sidebar-item-title" onclick="loadAnalysis(${a.id}); closeMobileMenu();">${a.analysis_name}</div>
+                    <div class="sidebar-item-date">${a.formatted_date}</div>
+                </div>
+            `).join('');
+        }
+
         async function reanalyzeQuestion(i) {
             const query = document.getElementById(`reanalysisInput${i}`).value.trim();
             if (!query) return;
@@ -1799,11 +1535,6 @@
                     }),
                     credentials: 'include'
                 });
-                if (response.status === 401) {
-                    showLoginPage();
-                    alert('Session expired');
-                    return;
-                }
                 const data = await response.json();
                 if (data.error) alert(data.error);
                 else {
@@ -1830,11 +1561,6 @@
                     body: JSON.stringify({ analysis: analysisResult }),
                     credentials: 'include'
                 });
-                if (response.status === 401) {
-                    showLoginPage();
-                    alert('Session expired');
-                    return;
-                }
                 const data = await response.json();
                 if (data.error) {
                     content.innerHTML = `<p>Error: ${data.error}</p>`;
@@ -1884,7 +1610,7 @@
                 clone.style.width = '1200px';
                 clone.style.background = '#ffffff';
                 document.body.appendChild(clone);
-                const canvas = await html2canvas(clone, { scale: 2, useCORS: true, backgroundColor: '#ffffff', logging: false });
+                const canvas = await html2canvas(clone, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
                 document.body.removeChild(clone);
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF('p', 'mm', 'a4');
@@ -1899,7 +1625,7 @@
                 heightLeft -= (pdfHeight - 20);
                 while (heightLeft > 0) {
                     pdf.addPage();
-                    pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                    pdf.addImage(imgData, 'PNG', 10, position - heightLeft, imgWidth, imgHeight);
                     heightLeft -= (pdfHeight - 20);
                 }
                 pdf.save(`Math_Practice_${new Date().toISOString().slice(0,10)}.pdf`);
@@ -1910,133 +1636,51 @@
             }
         }
 
-        function openImageModal(i, status, file, bbox) {
-            const modal = document.getElementById('imageModal');
-            document.getElementById('modalTitle').textContent = `Question ${analysisResult.questions[i].number}`;
-            document.getElementById('modalImage').src = analysisResult.questions[i].dataURL;
-            document.getElementById('modalCaption').textContent = `Status: ${status}`;
-            const highlight = document.getElementById('errorHighlight');
-            if (bbox && bbox.x) {
-                highlight.style.display = 'block';
-                highlight.style.left = `${bbox.x}px`;
-                highlight.style.top = `${bbox.y}px`;
-                highlight.style.width = `${bbox.width}px`;
-                highlight.style.height = `${bbox.height}px`;
-            } else highlight.style.display = 'none';
-            modal.classList.add('open');
+        function openImageModal(i) {
+            const q = analysisResult.questions[i];
+            document.getElementById('modalTitle').textContent = `Question ${q.number}`;
+            document.getElementById('modalImage').src = q.dataURL;
+            document.getElementById('modalCaption').textContent = `Status: ${q.status.toUpperCase()}`;
+            document.getElementById('imageModal').classList.add('open');
         }
-        function closeImageModal() { document.getElementById('imageModal').classList.remove('open'); }
 
-        // History
-        async function loadAnalyses() {
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/get-analyses`, { method: 'GET', credentials: 'include' });
-                if (response.status === 401) return;
-                const data = await response.json();
-                if (data.success) {
-                    analyses = data.analyses;
-                    populateSidebar(analyses);
-                    populateMobileSidebar(analyses);
-                }
-            } catch (error) {}
+        function closeImageModal() {
+            document.getElementById('imageModal').classList.remove('open');
         }
-        function populateSidebar(list) {
-            const html = list.map(a => `
-                <div class="sidebar-item ${a.id === currentAnalysisId ? 'active' : ''}" id="sidebar-item-${a.id}">
-                    <div class="sidebar-item-title" id="title-${a.id}" onclick="loadAnalysis(${a.id})">${a.analysis_name}</div>
-                    <div class="sidebar-item-date">${a.formatted_date}</div>
-                    <div class="sidebar-item-preview" id="preview-${a.id}"></div>
-                    <div class="sidebar-actions">
-                        <button onclick="startEditName(${a.id}, event)">Edit</button>
-                        <button onclick="deleteAnalysis(${a.id}, event)">Delete</button>
-                    </div>
-                </div>
-            `).join('');
-            document.getElementById('historyList').innerHTML = html;
-            setTimeout(() => {
-                list.forEach(a => {
-                    const el = document.getElementById(`preview-${a.id}`);
-                    if (el) {
-                        el.textContent = a.preview;
-                        renderMath(el);
-                    }
-                });
-            }, 100);
+
+        function toggleAccordion(id) {
+            document.getElementById(id).classList.toggle('open');
         }
-        function populateMobileSidebar(list) {
-            const html = list.map(a => `
-                <div class="sidebar-item ${a.id === currentAnalysisId ? 'active' : ''}" id="mobile-sidebar-item-${a.id}">
-                    <div class="sidebar-item-title" id="mobile-title-${a.id}" onclick="loadAnalysis(${a.id}); closeMobileMenu();">${a.analysis_name}</div>
-                    <div class="sidebar-item-date">${a.formatted_date}</div>
-                    <div class="sidebar-item-preview" id="mobile-preview-${a.id}"></div>
-                    <div class="sidebar-actions">
-                        <button onclick="startEditName(${a.id}, event)">Edit</button>
-                        <button onclick="deleteAnalysis(${a.id}, event)">Delete</button>
-                    </div>
-                </div>
-            `).join('');
-            document.getElementById('mobileHistoryList').innerHTML = html;
-            setTimeout(() => {
-                list.forEach(a => {
-                    const el = document.getElementById(`mobile-preview-${a.id}`);
-                    if (el) {
-                        el.textContent = a.preview;
-                        renderMath(el);
-                    }
-                });
-            }, 100);
-        }
-        function startEditName(id, event) {
-            event.stopPropagation();
-            const title = document.getElementById(`title-${id}`);
-            const mobile = document.getElementById(`mobile-title-${id}`);
-            const old = title.textContent;
-            title.contentEditable = true;
-            title.focus();
-            const blur = async () => {
-                const newName = title.textContent.trim();
-                if (newName && newName !== old) await updateAnalysisName(id, newName);
-                title.contentEditable = false;
-                title.removeEventListener('blur', blur);
-            };
-            title.addEventListener('blur', blur);
-            if (mobile) mobile.textContent = title.textContent;
-        }
-        async function updateAnalysisName(id, name) {
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/update-analysis-name/${id}`, {
+
+        async function saveAnalysisName() {
+            const name = document.getElementById('analysisName').value.trim();
+            if (!name) {
+                document.getElementById('saveErrorMessage').textContent = 'Name is required';
+                document.getElementById('saveErrorMessage').classList.add('show');
+                return;
+            }
+            if (currentAnalysisId) {
+                // rename existing
+                const response = await fetch(`${BACKEND_URL}/api/update-analysis-name/${currentAnalysisId}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ analysis_name: name }),
                     credentials: 'include'
                 });
-                const data = await response.json();
-                if (data.success) loadAnalyses();
-            } catch (error) {}
-        }
-        async function deleteAnalysis(id, event) {
-            event.stopPropagation();
-            if (!confirm('Delete this analysis?')) return;
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/delete-analysis/${id}`, {
-                    method: 'DELETE',
-                    credentials: 'include'
-                });
-                const data = await response.json();
-                if (data.success) {
+                if (response.ok) {
+                    closeSaveModal();
                     loadAnalyses();
-                    if (id === currentAnalysisId) resetToDashboard();
                 }
-            } catch (error) {}
+            }
         }
 
-        // Event Listeners
         document.getElementById('loginForm').addEventListener('submit', e => {
             e.preventDefault();
             const u = document.getElementById('loginUsername').value.trim();
             const p = document.getElementById('loginPassword').value;
             if (u && p) loginUser(u, p);
         });
+
         document.getElementById('registerForm').addEventListener('submit', e => {
             e.preventDefault();
             const u = document.getElementById('registerUsername').value.trim();
@@ -2046,16 +1690,11 @@
             if (u && ph && p && cp && p === cp && u.length >= 3 && p.length >= 6) registerUser(u, ph, p);
         });
 
-        // Init
         window.addEventListener('DOMContentLoaded', async () => {
             const auth = await checkAuth();
             if (auth && currentUser) showDashboard(currentUser);
             else showLoginPage();
         });
-
-        function toggleAccordion(id) {
-            document.getElementById(id).classList.toggle('open');
-        }
     </script>
 </body>
 </html>
