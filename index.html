@@ -54,7 +54,7 @@
             --shadow-md: 0 4px 6px rgba(0,0,0,0.07);
             --shadow-lg: 0 10px 15px rgba(0,0,0,0.08);
         }
-     
+    
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Roboto', sans-serif;
             background-color: var(--background);
@@ -260,13 +260,13 @@
             width: 100%;
             overflow: hidden;
         }
-     
+    
         .dashboard-layout {
             display: flex;
             height: 100%;
             width: 100%;
         }
-     
+    
         .sidebar {
             width: 280px;
             background-color: var(--sidebar);
@@ -276,23 +276,23 @@
             height: 100%;
             box-shadow: var(--shadow-sm);
         }
-     
+    
         .sidebar-header {
             padding: 24px;
             border-bottom: 1px solid var(--sidebar-border);
         }
-     
+    
         .sidebar-logo {
             display: flex;
             align-items: center;
             gap: 12px;
             cursor: pointer;
         }
-     
+    
         .sidebar-logo:hover {
             opacity: 0.8;
         }
-     
+    
         .sidebar-logo-icon {
             width: 40px;
             height: 40px;
@@ -302,25 +302,25 @@
             align-items: center;
             justify-content: center;
         }
-     
+    
         .sidebar-logo-icon svg {
             width: 24px;
             height: 24px;
             color: var(--primary-foreground);
         }
-     
+    
         .sidebar-logo h1 {
             font-size: 20px;
             font-weight: 700;
             color: var(--foreground);
         }
-     
+    
         .sidebar-content {
             flex: 1;
             overflow-y: auto;
             padding: 20px;
         }
-     
+    
         .sidebar-section-title {
             font-size: 12px;
             font-weight: 600;
@@ -330,7 +330,7 @@
             padding: 0 12px;
             margin-bottom: 12px;
         }
-     
+    
         .sidebar-item {
             padding: 16px;
             border-radius: var(--radius);
@@ -444,14 +444,14 @@
         .mobile-sidebar .sidebar-actions {
             opacity: 1;
         }
-     
+    
         .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
             overflow: hidden;
         }
-     
+    
         .header {
             border-bottom: 1px solid var(--border);
             background-color: var(--card);
@@ -461,24 +461,24 @@
             justify-content: space-between;
             width: 100%;
         }
-     
+    
         .header-left {
             display: flex;
             align-items: center;
             gap: 16px;
         }
-     
+    
         .header-logo {
             display: flex;
             align-items: center;
             gap: 8px;
             cursor: pointer;
         }
-     
+    
         .header-logo:hover {
             opacity: 0.8;
         }
-     
+    
         .header-logo-icon {
             width: 32px;
             height: 32px;
@@ -488,35 +488,35 @@
             align-items: center;
             justify-content: center;
         }
-     
+    
         .header-logo-icon svg {
             width: 18px;
             height: 18px;
             color: var(--primary-foreground);
         }
-     
+    
         .header-brand {
             font-weight: 700;
             font-size: 18px;
             color: var(--foreground);
         }
-     
+    
         .header-right {
             display: flex;
             align-items: center;
             gap: 16px;
         }
-     
+    
         .user-info {
             font-size: 14px;
             font-weight: 500;
         }
-     
+    
         .user-name {
             color: var(--primary);
             font-weight: 600;
         }
-     
+    
         .btn-logout {
             background-color: transparent;
             color: var(--foreground);
@@ -529,11 +529,11 @@
             align-items: center;
             gap: 6px;
         }
-     
+    
         .btn-logout:hover {
             background-color: var(--accent);
         }
-     
+    
         .content-area {
             flex: 1;
             overflow: auto;
@@ -541,29 +541,29 @@
             width: 100%;
             -webkit-overflow-scrolling: touch;
         }
-     
+    
         .upload-section {
             max-width: 1200px;
             margin: 0 auto;
             width: 100%;
         }
-     
+    
         .section-header {
             margin-bottom: 32px;
         }
-     
+    
         .section-header h1 {
             font-size: 36px;
             font-weight: 700;
             margin-bottom: 8px;
             color: var(--foreground);
         }
-     
+    
         .section-header p {
             font-size: 18px;
             color: var(--muted-foreground);
         }
-     
+    
         .upload-grid {
             display: flex;
             justify-content: center;
@@ -571,7 +571,7 @@
             margin-bottom: 32px;
             flex-wrap: wrap;
         }
-     
+    
         .upload-card {
             background-color: var(--card);
             border: 2px dashed var(--border);
@@ -584,13 +584,13 @@
             width: 100%;
             box-shadow: var(--shadow-sm);
         }
-     
+    
         .upload-card:hover {
             border-color: var(--primary);
             transform: translateY(-2px);
             box-shadow: var(--shadow-md);
         }
-     
+    
         .upload-icon {
             width: 64px;
             height: 64px;
@@ -601,30 +601,30 @@
             justify-content: center;
             margin: 0 auto 16px;
         }
-     
+    
         .upload-icon svg {
             width: 32px;
             height: 32px;
             color: var(--primary);
         }
-     
+    
         .upload-card h3 {
             font-weight: 600;
             margin-bottom: 8px;
             font-size: 18px;
         }
-     
+    
         .upload-card p {
             font-size: 14px;
             color: var(--muted-foreground);
             margin-bottom: 16px;
         }
-     
+    
         .file-list {
             text-align: left;
             margin-top: 16px;
         }
-     
+    
         .file-item {
             display: flex;
             align-items: center;
@@ -636,12 +636,12 @@
             background: var(--muted);
             border-radius: 4px;
         }
-     
+    
         .file-item svg {
             width: 12px;
             height: 12px;
         }
-     
+    
         .btn-start {
             background: linear-gradient(135deg, var(--primary) 0%, #3a56d4 100%);
             color: var(--primary-foreground);
@@ -657,7 +657,7 @@
             transition: all 0.2s;
             font-weight: 600;
         }
-     
+    
         .btn-start:disabled {
             opacity: 0.5;
             cursor: not-allowed;
@@ -666,13 +666,13 @@
             transform: translateY(-1px);
             box-shadow: var(--shadow-md);
         }
-     
+    
         .results-section {
             max-width: 1200px;
             margin: 0 auto;
             width: 100%;
         }
-     
+    
         .results-header {
             display: flex;
             align-items: center;
@@ -681,23 +681,23 @@
             flex-wrap: wrap;
             gap: 16px;
         }
-     
+    
         .results-header h1 {
             font-size: 30px;
             font-weight: 700;
         }
-     
+    
         .results-header p {
             color: var(--muted-foreground);
             margin-top: 4px;
         }
-     
+    
         .badge-group {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
         }
-     
+    
         .badge {
             padding: 6px 12px;
             border-radius: 6px;
@@ -708,31 +708,31 @@
             gap: 8px;
             border: 1px solid var(--border);
         }
-     
+    
         .badge-dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
         }
-     
+    
         .badge-dot.correct {
             background-color: #10b981;
         }
-     
+    
         .badge-dot.partial {
             background-color: #f59e0b;
         }
-     
+    
         .badge-dot.incorrect {
             background-color: var(--destructive);
         }
-     
+    
         .accordion {
             display: flex;
             flex-direction: column;
             gap: 16px;
         }
-     
+    
         .accordion-item {
             background-color: var(--card);
             border: 1px solid var(--border);
@@ -740,7 +740,7 @@
             overflow: hidden;
             box-shadow: var(--shadow-sm);
         }
-     
+    
         .accordion-trigger {
             width: 100%;
             padding: 20px;
@@ -753,11 +753,11 @@
             text-align: left;
             transition: background-color 0.2s;
         }
-     
+    
         .accordion-trigger:hover {
             background-color: var(--accent);
         }
-     
+    
         .question-number {
             width: 40px;
             height: 40px;
@@ -769,53 +769,53 @@
             flex-shrink: 0;
             font-size: 16px;
         }
-     
+    
         .question-number.correct {
             background-color: rgba(16, 185, 129, 0.1);
             color: #10b981;
         }
-     
+    
         .question-number.partial {
             background-color: rgba(245, 158, 11, 0.1);
             color: #f59e0b;
         }
-     
+    
         .question-number.incorrect {
             background-color: rgba(230, 57, 70, 0.1);
             color: var(--destructive);
         }
-     
+    
         .question-info {
             flex: 1;
             padding-top: 4px;
         }
-     
+    
         .question-info p:first-child {
             font-weight: 600;
             margin-bottom: 4px;
             font-size: 16px;
         }
-     
+    
         .question-info p:last-child {
             font-size: 14px;
             color: var(--muted-foreground);
             text-transform: capitalize;
         }
-     
+    
         .accordion-content {
             display: none;
             padding: 0 20px 20px;
             overflow-x: auto;
         }
-     
+    
         .accordion-content.open {
             display: block;
         }
-     
+    
         .analysis-section {
             margin-bottom: 20px;
         }
-     
+    
         .analysis-section h3 {
             font-weight: 600;
             margin-bottom: 12px;
@@ -824,12 +824,12 @@
             gap: 8px;
             font-size: 16px;
         }
-     
+    
         .analysis-section h3 svg {
             width: 20px;
             height: 20px;
         }
-     
+    
         .solution-card {
             background-color: var(--secondary);
             border: 1px solid var(--border);
@@ -837,28 +837,49 @@
             padding: 16px;
             overflow-x: auto;
         }
-     
+    
         .solution-card.error {
             background-color: rgba(230, 57, 70, 0.05);
             border-color: rgba(230, 57, 70, 0.2);
         }
-     
+    
         .solution-card.corrected {
             background-color: rgba(16, 185, 129, 0.05);
             border-color: rgba(16, 185, 129, 0.2);
         }
-     
+    
         .solution-steps {
             font-family: 'Courier New', monospace;
             font-size: 14px;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
         }
-     
-        .solution-steps div {
-            margin-bottom: 8px;
+    
+        /* === FIX FOR LONG STEPS / EQUATIONS === */
+        .solution-steps > p,
+        .solution-steps > div,
+        .step-line {
+            white-space: nowrap;
+            margin-bottom: 12px;
+            line-height: 1.8;
+            min-width: 100%;
         }
-     
+    
+        .solution-steps mjx-container {
+            display: inline-block !important;
+            white-space: nowrap !important;
+        }
+    
+        .ai-response {
+            overflow-x: auto;
+        }
+        .ai-response p {
+            white-space: nowrap;
+            line-height: 1.8;
+            margin-bottom: 12px;
+        }
+        /* === END OF FIX === */
+    
         mjx-container {
             max-width: 100% !important;
             overflow-x: auto !important;
@@ -869,7 +890,6 @@
         mjx-container[display="true"] {
             margin: 1em 0 !important;
         }
-
         .practice-paper-card {
             background-color: var(--card);
             border: 2px solid rgba(67, 97, 238, 0.1);
@@ -878,18 +898,18 @@
             margin-top: 24px;
             box-shadow: var(--shadow-sm);
         }
-     
+    
         .practice-paper-card h3 {
             font-size: 20px;
             font-weight: 600;
             margin-bottom: 8px;
         }
-     
+    
         .practice-paper-card p {
             color: var(--muted-foreground);
             margin-bottom: 16px;
         }
-     
+    
         .reanalysis-card {
             background-color: rgba(238, 242, 255, 0.5);
             border: 1px solid var(--border);
@@ -897,13 +917,13 @@
             padding: 16px;
             margin-top: 16px;
         }
-     
+    
         .reanalysis-input-group {
             display: flex;
             gap: 8px;
             margin-bottom: 12px;
         }
-     
+    
         .reanalysis-input-group input {
             flex: 1;
             padding: 10px 12px;
@@ -911,7 +931,7 @@
             border-radius: 6px;
             font-size: 14px;
         }
-     
+    
         .ai-response {
             background-color: var(--background);
             border: 1px solid var(--border);
@@ -921,7 +941,7 @@
             align-items: flex-start;
             gap: 12px;
         }
-     
+    
         .ai-badge {
             background-color: var(--primary);
             color: var(--primary-foreground);
@@ -932,13 +952,13 @@
             flex-shrink: 0;
             margin-top: 2px;
         }
-     
+    
         .ai-response p {
             font-size: 14px;
             line-height: 1.6;
             flex: 1;
         }
-     
+    
         .modal {
             display: none;
             position: fixed;
@@ -952,11 +972,11 @@
             justify-content: center;
             padding: 16px;
         }
-     
+    
         .modal.open {
             display: flex;
         }
-     
+    
         .modal-content {
             background-color: var(--card);
             border-radius: var(--radius);
@@ -966,16 +986,16 @@
             overflow-y: auto;
             padding: 24px;
         }
-     
+    
         .modal-header {
             margin-bottom: 16px;
         }
-     
+    
         .modal-header h3 {
             font-size: 20px;
             font-weight: 600;
         }
-     
+    
         .modal-image {
             position: relative;
             aspect-ratio: 3/4;
@@ -984,44 +1004,44 @@
             overflow: hidden;
             margin-bottom: 16px;
         }
-     
+    
         .modal-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-     
+    
         .error-highlight {
             position: absolute;
             border: 3px solid var(--destructive);
             border-radius: 6px;
             animation: pulse 2s infinite;
         }
-     
+    
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
         }
-     
+    
         .modal-caption {
             text-align: center;
             font-size: 14px;
             color: var(--muted-foreground);
         }
-     
+    
         .mobile-menu-btn {
             display: none;
         }
-     
+    
         .mobile-overlay {
             display: none;
         }
-     
+    
         @media (max-width: 1024px) {
             .sidebar {
                 display: none;
             }
-          
+         
             .mobile-menu-btn {
                 display: flex;
                 background: transparent;
@@ -1029,7 +1049,7 @@
                 padding: 8px;
                 cursor: pointer;
             }
-          
+         
             .mobile-overlay {
                 display: none;
                 position: fixed;
@@ -1040,11 +1060,11 @@
                 z-index: 1000;
                 background-color: rgba(0, 0, 0, 0.5);
             }
-          
+         
             .mobile-overlay.open {
                 display: block;
             }
-          
+         
             .mobile-sidebar {
                 position: absolute;
                 top: 0;
@@ -1056,56 +1076,56 @@
                 transition: transform 0.3s ease;
                 z-index: 1001;
             }
-          
+         
             .mobile-overlay.open .mobile-sidebar {
                 transform: translateX(0);
             }
-          
+         
             .btn-logout {
                 display: none;
             }
-          
+         
             .header-brand {
                 display: block;
                 font-size: 16px;
             }
-          
+         
             .upload-grid {
                 flex-direction: column;
                 align-items: center;
                 padding: 0 16px;
             }
-          
+         
             .upload-card {
                 max-width: 100%;
                 margin-bottom: 20px;
                 padding: 20px;
             }
-          
+         
             .btn-start, .btn-primary, .btn-outline {
                 padding: 12px 20px;
                 font-size: 16px;
                 width: 100%;
                 max-width: 300px;
             }
-          
+         
             .accordion-trigger {
                 padding: 16px;
                 flex-direction: column;
                 align-items: flex-start;
             }
-          
+         
             .question-number {
                 margin-bottom: 10px;
             }
-          
+         
             .modal-content {
                 width: 95%;
                 max-height: 85vh;
                 margin: 0 10px;
                 padding: 20px;
             }
-          
+         
             .mobile-logout {
                 position: absolute;
                 bottom: 0;
@@ -1114,7 +1134,7 @@
                 padding: 16px;
                 border-top: 1px solid var(--sidebar-border);
             }
-          
+         
             .mobile-logout button {
                 width: 100%;
                 justify-content: flex-start;
@@ -1123,70 +1143,69 @@
                 padding: 12px;
             }
         }
-         
+        
         @media (max-width: 768px) {
             .header {
                 padding: 12px 16px;
             }
-          
+         
             .user-info {
                 display: none;
             }
-          
+         
             .section-header h1 {
                 font-size: 24px;
                 text-align: center;
             }
-          
+         
             .section-header p {
                 font-size: 16px;
                 text-align: center;
             }
-          
+         
             .results-header {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 12px;
             }
-          
+         
             .badge-group {
                 width: 100%;
                 justify-content: center;
             }
-          
+         
             .accordion-content {
                 padding: 0 16px 16px;
             }
-          
+         
             .analysis-section {
                 margin-bottom: 16px;
             }
-          
+         
             .solution-card {
                 padding: 12px;
                 font-size: 14px;
             }
-          
+         
             .practice-paper-card {
                 padding: 16px;
                 margin: 0 16px;
             }
-          
+         
             .sidebar-item {
                 padding: 14px 12px;
                 min-height: 60px;
             }
-          
+         
             .sidebar-item-title {
                 font-size: 16px;
                 margin-bottom: 6px;
             }
-          
+         
             .sidebar-actions button {
                 padding: 6px 12px;
                 font-size: 14px;
             }
-
             .content-area {
                 padding: 16px;
                 padding-bottom: 80px;
@@ -1197,43 +1216,43 @@
                 padding: 20px;
                 margin: 0 16px;
             }
-          
+         
             .ai-mastery-text {
                 font-size: 28px;
                 padding: 0 16px;
             }
-          
+         
             .login-brand {
                 font-size: 24px;
             }
-          
+         
             .login-subtitle {
                 font-size: 14px;
             }
-          
+         
             .upload-icon {
                 width: 56px;
                 height: 56px;
             }
-          
+         
             .upload-icon svg {
                 width: 28px;
                 height: 28px;
             }
-          
+         
             .upload-card h3 {
                 font-size: 16px;
             }
-          
+         
             .upload-card p {
                 font-size: 13px;
             }
         }
-         
+        
         .hidden {
             display: none;
         }
-         
+        
         .btn, button {
             padding: 10px 24px;
             border-radius: 8px;
@@ -1247,26 +1266,26 @@
             justify-content: center;
             gap: 8px;
         }
-         
+        
         .btn-primary {
             background-color: var(--primary);
             color: var(--primary-foreground);
         }
-         
+        
         .btn-primary:hover {
             opacity: 0.9;
         }
-         
+        
         .btn-outline {
             background-color: transparent;
             border: 1px solid var(--border);
             color: var(--foreground);
         }
-         
+        
         .btn-outline:hover {
             background-color: var(--accent);
         }
-         
+        
         .loading {
             display: inline-block;
             width: 20px;
@@ -1276,43 +1295,43 @@
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
-         
+        
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-         
+        
         .practice-paper {
             padding: 30px;
             background: white;
         }
-         
+        
         .practice-header {
             margin-bottom: 30px;
             text-align: center;
         }
-         
+        
         .practice-title {
             font-size: 24px;
             font-weight: 700;
             margin-bottom: 8px;
         }
-         
+        
         .practice-subtitle {
             font-size: 16px;
             color: #666;
         }
-         
+        
         .practice-question {
             margin-bottom: 30px;
         }
-         
+        
         .practice-question-number {
             font-size: 18px;
             font-weight: 700;
             color: var(--primary);
             margin-bottom: 10px;
         }
-         
+        
         #loadingOverlay {
             position: fixed;
             top: 0;
@@ -1403,7 +1422,7 @@
             <div class="math-term">$\frac{d}{dx}e^x = e^x$</div>
             <div class="math-term">$F = G\frac{m_1 m_2}{r^2}$</div>
         </div>
-     
+    
         <div class="math-terms-right">
             <div class="math-term">$a^2 + b^2 = c^2$</div>
             <div class="math-term">$\sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}$</div>
@@ -1411,7 +1430,7 @@
             <div class="math-term">$\frac{\partial u}{\partial t} = \alpha \nabla^2 u$</div>
             <div class="math-term">$\hbar \frac{\partial}{\partial t} \Psi = \hat{H} \Psi$</div>
         </div>
-     
+    
         <div class="login-background"></div>
         <div class="login-container">
             <div class="login-header">
@@ -1419,7 +1438,7 @@
                 <div class="login-brand">CAS <span>Educations</span></div>
                 <p class="login-subtitle">AI-Powered Math Analysis Platform</p>
             </div>
-         
+        
             <div class="login-card">
                 <form id="loginForm" class="login-form">
                     <div class="form-group">
@@ -1468,7 +1487,7 @@
                     <div id="historyList"></div>
                 </div>
             </aside>
-         
+        
             <!-- Mobile Overlay -->
             <div id="mobileOverlay" class="mobile-overlay">
                 <div class="mobile-sidebar-backdrop" onclick="closeMobileMenu()"></div>
@@ -1497,7 +1516,7 @@
                     </div>
                 </aside>
             </div>
-         
+        
             <!-- Main Content -->
             <div class="main-content">
                 <header class="header">
@@ -1526,7 +1545,7 @@
                         </button>
                     </div>
                 </header>
-             
+            
                 <main class="content-area">
                     <!-- Upload Section -->
                     <div id="uploadSection" class="upload-section">
@@ -1579,7 +1598,7 @@
                             </button>
                         </div>
                     </div>
-                 
+                
                     <!-- Results Section -->
                     <div id="resultsSection" class="results-section hidden">
                         <div class="results-header">
@@ -1590,7 +1609,7 @@
                             <div class="badge-group" id="badgeGroup"></div>
                         </div>
                         <div class="accordion" id="accordion"></div>
-                     
+                    
                         <!-- Practice Paper -->
                         <div class="practice-paper-card" id="practicePaperCard">
                             <h3>Generate Personalized Practice Paper</h3>
@@ -1619,7 +1638,6 @@
             </div>
         </div>
     </div>
- 
     <!-- Image Modal -->
     <div id="imageModal" class="modal">
         <div class="modal-content">
@@ -1634,7 +1652,6 @@
             <button class="btn-outline" style="width: 100%; margin-top: 1rem;" onclick="closeImageModal()">Close</button>
         </div>
     </div>
- 
     <!-- Register Modal -->
     <div id="registerModal" class="modal">
         <div class="modal-content">
@@ -1695,7 +1712,6 @@
     </div>
     <script>
         const BACKEND_URL = 'https://navalsheth.pythonanywhere.com';
-
         let questionFiles = [];
         let answerFiles = [];
         let allFiles = [];
@@ -1705,13 +1721,11 @@
         let isAnalyzing = false;
         let currentAnalysisId = null;
         let analyses = [];
-
         function renderMath(element) {
             if (window.MathJax) {
                 MathJax.typesetPromise([element]).catch(err => console.error('MathJax error:', err));
             }
         }
-
         async function checkAuth() {
             try {
                 const response = await fetch(`${BACKEND_URL}/api/check-auth`, {
@@ -1722,14 +1736,11 @@
                         'Cache-Control': 'no-cache'
                     }
                 });
-
                 if (!response.ok) {
                     if (response.status === 401) return false;
                     throw new Error(`Auth check failed with status: ${response.status}`);
                 }
-
                 const data = await response.json();
-
                 if (data.authenticated && data.user) {
                     currentUser = data.user;
                     localStorage.setItem('user', JSON.stringify(data.user));
@@ -1746,31 +1757,30 @@
                 return false;
             }
         }
-
         async function loginUser(username, password) {
             try {
                 const errorMessage = document.getElementById('loginErrorMessage');
                 const successMessage = document.getElementById('loginSuccessMessage');
-             
+            
                 errorMessage.classList.remove('show');
                 successMessage.classList.remove('show');
-             
+            
                 const response = await fetch(`${BACKEND_URL}/api/login`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({username, password}),
                     credentials: 'include'
                 });
-             
+            
                 const data = await response.json();
-             
+            
                 if (data.success) {
                     successMessage.textContent = data.message;
                     successMessage.classList.add('show');
-                 
+                
                     currentUser = data.user;
                     localStorage.setItem('user', JSON.stringify(data.user));
-                 
+                
                     setTimeout(() => {
                         showDashboard(data.user);
                         successMessage.classList.remove('show');
@@ -1785,30 +1795,29 @@
                 errorMessage.classList.add('show');
             }
         }
-
         async function registerUser(username, phone, password) {
             try {
                 const errorMessage = document.getElementById('registerErrorMessage');
                 const successMessage = document.getElementById('registerSuccessMessage');
-             
+            
                 errorMessage.classList.remove('show');
                 successMessage.classList.remove('show');
-             
+            
                 const response = await fetch(`${BACKEND_URL}/api/register`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({username, phone, password}),
                     credentials: 'include'
                 });
-             
+            
                 const data = await response.json();
-             
+            
                 if (data.success) {
                     successMessage.textContent = 'Registration successful! Please login with your credentials.';
                     successMessage.classList.add('show');
-                 
+                
                     document.getElementById('registerForm').reset();
-                 
+                
                     setTimeout(() => {
                         closeRegisterModal();
                         successMessage.classList.remove('show');
@@ -1823,14 +1832,13 @@
                 errorMessage.classList.add('show');
             }
         }
-
         async function logoutUser() {
             try {
                 const response = await fetch(`${BACKEND_URL}/api/logout`, {
                     method: 'POST',
                     credentials: 'include'
                 });
-             
+            
                 localStorage.removeItem('user');
                 currentUser = null;
                 showLoginPage();
@@ -1839,14 +1847,12 @@
                 showLoginPage();
             }
         }
-
         function showDashboard(user) {
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('dashboardPage').style.display = 'flex';
             document.getElementById('userName').textContent = user.username;
             loadAnalyses();
         }
-
         function showLoginPage() {
             document.getElementById('loginPage').style.display = 'flex';
             document.getElementById('dashboardPage').style.display = 'none';
@@ -1854,18 +1860,15 @@
             document.getElementById('loginErrorMessage').classList.remove('show');
             document.getElementById('loginSuccessMessage').classList.remove('show');
         }
-
         function showRegisterModal() {
             document.getElementById('registerModal').classList.add('open');
             document.getElementById('registerForm').reset();
             document.getElementById('registerErrorMessage').classList.remove('show');
             document.getElementById('registerSuccessMessage').classList.remove('show');
         }
-
         function closeRegisterModal() {
             document.getElementById('registerModal').classList.remove('open');
         }
-
         function showSaveModal(defaultName = '', id = null) {
             currentAnalysisId = id;
             document.getElementById('analysisName').value = defaultName;
@@ -1873,11 +1876,9 @@
             document.getElementById('saveErrorMessage').classList.remove('show');
             document.getElementById('saveSuccessMessage').classList.remove('show');
         }
-
         function closeSaveModal() {
             document.getElementById('saveModal').classList.remove('open');
         }
-
         async function saveAnalysisName() {
             const name = document.getElementById('analysisName').value.trim();
             if (!name) {
@@ -1909,19 +1910,15 @@
                 document.getElementById('saveErrorMessage').classList.add('show');
             }
         }
-
         function openMobileMenu() {
             document.getElementById('mobileOverlay').classList.add('open');
         }
-
         function closeMobileMenu() {
             document.getElementById('mobileOverlay').classList.remove('open');
         }
-
         function handleLogout() {
             logoutUser();
         }
-
         function resetToDashboard() {
             document.getElementById('uploadSection').classList.remove('hidden');
             document.getElementById('resultsSection').classList.add('hidden');
@@ -1930,70 +1927,65 @@
             document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.mobile-sidebar .sidebar-item').forEach(el => el.classList.remove('active'));
         }
-
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const username = document.getElementById('loginUsername').value.trim();
             const password = document.getElementById('loginPassword').value;
-         
+        
             if (!username || !password) {
                 const errorMessage = document.getElementById('loginErrorMessage');
                 errorMessage.textContent = 'Please enter both username and password';
                 errorMessage.classList.add('show');
                 return;
             }
-         
+        
             await loginUser(username, password);
         });
-
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const username = document.getElementById('registerUsername').value.trim();
             const phone = document.getElementById('registerPhone').value.trim();
             const password = document.getElementById('registerPassword').value;
             const confirmPassword = document.getElementById('registerConfirmPassword').value;
-         
+        
             if (!username || !phone || !password || !confirmPassword) {
                 const errorMessage = document.getElementById('registerErrorMessage');
                 errorMessage.textContent = 'All fields are required';
                 errorMessage.classList.add('show');
                 return;
             }
-         
+        
             if (username.length < 3) {
                 const errorMessage = document.getElementById('registerErrorMessage');
                 errorMessage.textContent = 'Username must be at least 3 characters';
                 errorMessage.classList.add('show');
                 return;
             }
-         
+        
             if (password.length < 6) {
                 const errorMessage = document.getElementById('registerErrorMessage');
                 errorMessage.textContent = 'Password must be at least 6 characters';
                 errorMessage.classList.add('show');
                 return;
             }
-         
+        
             if (password !== confirmPassword) {
                 const errorMessage = document.getElementById('registerErrorMessage');
                 errorMessage.textContent = 'Passwords do not match';
                 errorMessage.classList.add('show');
                 return;
             }
-         
+        
             await registerUser(username, phone, password);
         });
-
         document.getElementById('questionInput').addEventListener('change', async e => {
             await handleFileUpload(e.target.files, questionFiles, 'questionFileList');
             checkStartButton();
         });
-
         document.getElementById('answerInput').addEventListener('change', async e => {
             await handleFileUpload(e.target.files, answerFiles, 'answerFileList');
             checkStartButton();
         });
-
         async function handleFileUpload(files, targetArray, listId) {
             for (let file of files) {
                 if (!targetArray.find(f => f.name === file.name)) {
@@ -2010,7 +2002,6 @@
             }
             displayFiles(listId, targetArray);
         }
-
         function displayFiles(elementId, files) {
             const el = document.getElementById(elementId);
             el.innerHTML = files.map(f => `
@@ -2020,29 +2011,27 @@
                 </div>
             `).join('');
         }
-
         function checkStartButton() {
             document.getElementById('startAnalysisBtn').disabled = questionFiles.length === 0 || answerFiles.length === 0;
         }
-
         async function startAnalysis() {
             if (isAnalyzing) return;
-         
+        
             const isAuthenticated = await checkAuth();
             if (!isAuthenticated) {
                 alert('Please login to start analysis');
                 showLoginPage();
                 return;
             }
-         
+        
             if (questionFiles.length === 0 || answerFiles.length === 0) {
                 alert('Please upload both question papers and answer sheets');
                 return;
             }
-         
+        
             isAnalyzing = true;
             const btn = document.getElementById('startAnalysisBtn');
-         
+        
             const loadingOverlay = document.createElement('div');
             loadingOverlay.id = 'loadingOverlay';
             loadingOverlay.innerHTML = `
@@ -2061,23 +2050,23 @@
                 </div>
             `;
             document.getElementById('uploadSection').appendChild(loadingOverlay);
-         
+        
             btn.innerHTML = '<div class="loading"></div> Analyzing...';
             btn.disabled = true;
-         
+        
             const formData = new FormData();
             allFiles = [...questionFiles, ...answerFiles];
             allFiles.forEach(f => {
                 formData.append('files', f.file, f.name);
             });
-         
+        
             try {
                 const response = await fetch(`${BACKEND_URL}/analyze`, {
                     method: 'POST',
                     body: formData,
                     credentials: 'include'
                 });
-         
+        
                 if (response.status === 401) {
                     localStorage.removeItem('user');
                     currentUser = null;
@@ -2085,9 +2074,9 @@
                     alert('Session expired. Please login again.');
                     return;
                 }
-         
+        
                 const data = await response.json();
-         
+        
                 if (data.error) {
                     throw new Error(data.error);
                 } else {
@@ -2098,9 +2087,9 @@
                             q.dataURL = file.dataURL;
                         }
                     });
-         
+        
                     displayAnalysis(data);
-         
+        
                     setTimeout(() => {
                         removeLoadingOverlay();
                         document.getElementById('uploadSection').classList.add('hidden');
@@ -2119,7 +2108,6 @@
                 btn.disabled = false;
             }
         }
-
         async function promptForAnalysisName() {
             await loadAnalyses();
             const latest = analyses[0];
@@ -2127,20 +2115,21 @@
                 showSaveModal(`Analysis ${new Date().toLocaleString()}`, latest.id);
             }
         }
-
         function removeLoadingOverlay() {
             const overlay = document.getElementById('loadingOverlay');
             if (overlay) {
                 overlay.remove();
             }
         }
-
         function processSteps(str) {
             if (!str) return '';
             const steps = str.split('<br>').filter(step => step.trim() !== '');
-            return steps.map(step => `<p style="margin-bottom: 0.75rem; line-height: 1.8;">${step.trim()}</p>`).join('');
+            return steps.map(step => `
+                <div class="step-line">
+                    ${step.trim()}
+                </div>
+            `).join('');
         }
-
         function displayAnalysis(result, isLoaded = false, analysis = null) {
             const accordion = document.getElementById('accordion');
             accordion.innerHTML = '';
@@ -2205,7 +2194,7 @@
                     accordion.appendChild(item);
                     renderMath(item);
                 });
-             
+            
                 document.getElementById('badgeGroup').innerHTML = `
                     <div class="badge"><div class="badge-dot correct"></div>${counts.correct} Correct</div>
                     <div class="badge"><div class="badge-dot partial"></div>${counts.partial} Partial</div>
@@ -2220,24 +2209,21 @@
                 viewBtn.style.display = 'none';
             }
         }
-
         function displayLoadedAnalysis(analysis) {
             analysisResult = {questions: analysis.analysis_structure.questions || []};
             displayAnalysis(analysisResult, true, analysis);
         }
-
         function toggleAccordion(id) {
             document.getElementById(id).classList.toggle('open');
         }
-
         async function reanalyzeQuestion(i) {
             const query = document.getElementById(`reanalysisInput${i}`).value.trim();
             if (!query) return;
-         
+        
             const question = analysisResult.questions[i];
             const btn = event.target;
             btn.innerHTML = '<div class="loading" style="width: 16px; height: 16px; border-width: 2px;"></div>';
-         
+        
             try {
                 const response = await fetch(`${BACKEND_URL}/reanalyze`, {
                     method: 'POST',
@@ -2251,15 +2237,15 @@
                     }),
                     credentials: 'include'
                 });
-             
+            
                 if (response.status === 401) {
                     showLoginPage();
                     alert('Session expired. Please login again.');
                     return;
                 }
-             
+            
                 const data = await response.json();
-             
+            
                 if (data.error) {
                     alert(data.error);
                 } else {
@@ -2274,18 +2260,17 @@
                 btn.innerHTML = 'Send';
             }
         }
-
         function openImageModal(i, status, imageFile, bbox) {
             const modal = document.getElementById('imageModal');
             const modalImage = document.getElementById('modalImage');
             const modalTitle = document.getElementById('modalTitle');
             const errorHighlight = document.getElementById('errorHighlight');
             const modalCaption = document.getElementById('modalCaption');
-         
+        
             modalTitle.textContent = `Answer Sheet - Question ${analysisResult.questions[i].number}`;
             modalImage.src = analysisResult.questions[i].dataURL || '';
             modalCaption.textContent = `Status: ${status}`;
-         
+        
             if (bbox && bbox.x && bbox.y && bbox.width && bbox.height) {
                 errorHighlight.style.display = 'block';
                 errorHighlight.style.left = `${bbox.x}px`;
@@ -2295,20 +2280,18 @@
             } else {
                 errorHighlight.style.display = 'none';
             }
-         
+        
             modal.classList.add('open');
         }
-
         function closeImageModal() {
             document.getElementById('imageModal').classList.remove('open');
         }
-
         async function generatePracticePaper() {
             if (!analysisResult) return;
-         
+        
             const content = document.getElementById('practicePaperContent');
             content.innerHTML = '<div class="loading"></div> Generating...';
-         
+        
             try {
                 const response = await fetch(`${BACKEND_URL}/generate_practice`, {
                     method: 'POST',
@@ -2316,15 +2299,15 @@
                     body: JSON.stringify({analysis: analysisResult}),
                     credentials: 'include'
                 });
-             
+            
                 if (response.status === 401) {
                     showLoginPage();
                     alert('Session expired. Please login again.');
                     return;
                 }
-             
+            
                 const data = await response.json();
-             
+            
                 if (data.error) {
                     content.innerHTML = `<p>Error: ${data.error}</p>`;
                 } else if (data.practice_questions.length === 0) {
@@ -2349,7 +2332,7 @@
                                 <button class="btn-outline" onclick="downloadPracticePaper()"> 📥 Download as PDF </button>
                             </div>
                         </div>`;
-                 
+                
                     setTimeout(() => {
                         renderMath(document.getElementById('practice-paper'));
                     }, 500);
@@ -2358,20 +2341,18 @@
                 content.innerHTML = `<p>Error: ${error.message}</p>`;
             }
         }
-
         function viewPracticePaper() {
             generatePracticePaper();
         }
-
         async function downloadPracticePaper() {
             if (!practiceResult) return;
             const practicePaper = document.getElementById('practice-paper');
-         
+        
             if (!practicePaper) {
                 alert('Practice paper not found!');
                 return;
             }
-         
+        
             const loading = document.createElement('div');
             loading.innerHTML = '<div class="loading"></div> Generating PDF...';
             Object.assign(loading.style, {
@@ -2385,25 +2366,25 @@
                 zIndex: '9999'
             });
             document.body.appendChild(loading);
-         
+        
             try {
                 if (window.MathJax) {
                     await MathJax.typesetPromise([practicePaper]);
                 }
-             
+            
                 await new Promise(resolve => setTimeout(resolve, 1500));
-             
+            
                 const clone = practicePaper.cloneNode(true);
                 clone.querySelectorAll('script[type*="math"]').forEach(el => el.remove());
                 clone.querySelectorAll('.MathJax_Preview, .MathJax_Processing, .MathJax_Display').forEach(el => el.remove());
-             
+            
                 clone.style.position = 'absolute';
                 clone.style.left = '-9999px';
                 clone.style.top = '0';
                 clone.style.width = '1200px';
                 clone.style.background = '#ffffff';
                 document.body.appendChild(clone);
-             
+            
                 const canvas = await html2canvas(clone, {
                     scale: 2,
                     useCORS: true,
@@ -2417,9 +2398,9 @@
                                element.classList.contains('MathJax_Processing');
                     }
                 });
-             
+            
                 document.body.removeChild(clone);
-             
+            
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF('p', 'mm', 'a4');
                 const imgData = canvas.toDataURL('image/png');
@@ -2427,22 +2408,22 @@
                 const pdfHeight = pdf.internal.pageSize.getHeight();
                 const imgWidth = pdfWidth - 20;
                 const imgHeight = (canvas.height * imgWidth) / canvas.width;
-             
+            
                 let heightLeft = imgHeight;
                 let position = 10;
-             
+            
                 pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
                 heightLeft -= (pdfHeight - 20);
-             
+            
                 while (heightLeft > 0) {
                     position = heightLeft - imgHeight + 10;
                     pdf.addPage();
                     pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
                     heightLeft -= (pdfHeight - 20);
                 }
-             
+            
                 pdf.save(`Math_Practice_Paper_${new Date().toISOString().slice(0,10)}.pdf`);
-             
+            
             } catch (error) {
                 console.error('PDF generation failed:', error);
                 alert('Failed to generate PDF: ' + error.message);
@@ -2450,20 +2431,19 @@
                 document.body.removeChild(loading);
             }
         }
-
         async function loadAnalyses() {
             try {
                 const response = await fetch(`${BACKEND_URL}/api/get-analyses`, {
                     method: 'GET',
                     credentials: 'include'
                 });
-             
+            
                 if (response.status === 401) {
                     return;
                 }
-             
+            
                 const data = await response.json();
-             
+            
                 if (data.success) {
                     analyses = data.analyses;
                     populateSidebar(analyses);
@@ -2473,7 +2453,6 @@
                 console.error('Failed to load analyses:', error);
             }
         }
-
         function populateSidebar(analysesList) {
             const html = analysesList.map(a => `
                 <div class="sidebar-item ${a.id === currentAnalysisId ? 'active' : ''}" id="sidebar-item-${a.id}">
@@ -2491,7 +2470,7 @@
                 </div>
             `).join('');
             document.getElementById('historyList').innerHTML = html;
-          
+         
             setTimeout(() => {
                 analysesList.forEach(a => {
                     const previewEl = document.getElementById(`preview-${a.id}`);
@@ -2501,7 +2480,6 @@
                 });
             }, 100);
         }
-
         function populateMobileSidebar(analysesList) {
             const html = analysesList.map(a => `
                 <div class="sidebar-item ${a.id === currentAnalysisId ? 'active' : ''}" id="mobile-sidebar-item-${a.id}">
@@ -2519,7 +2497,7 @@
                 </div>
             `).join('');
             document.getElementById('mobileHistoryList').innerHTML = html;
-          
+         
             setTimeout(() => {
                 analysesList.forEach(a => {
                     const previewEl = document.getElementById(`mobile-preview-${a.id}`);
@@ -2529,7 +2507,6 @@
                 });
             }, 100);
         }
-
         function startEditName(id, event) {
             event.stopPropagation();
             const titleEl = document.getElementById(`title-${id}`);
@@ -2558,7 +2535,6 @@
                 mobileTitleEl.textContent = titleEl.textContent;
             }
         }
-
         async function updateAnalysisName(id, name) {
             try {
                 const response = await fetch(`${BACKEND_URL}/api/update-analysis-name/${id}`, {
@@ -2577,7 +2553,6 @@
                 alert('Error updating name');
             }
         }
-
         async function deleteAnalysis(id, event) {
             event.stopPropagation();
             if (confirm('Are you sure you want to delete this analysis?')) {
@@ -2600,7 +2575,6 @@
                 }
             }
         }
-
         async function loadAnalysis(id) {
             try {
                 const response = await fetch(`${BACKEND_URL}/api/get-analysis/${id}`, {
@@ -2626,10 +2600,9 @@
                 alert('Error loading analysis');
             }
         }
-
         window.addEventListener('DOMContentLoaded', async () => {
             const isAuthenticated = await checkAuth();
-         
+        
             if (isAuthenticated && currentUser) {
                 showDashboard(currentUser);
             } else {
