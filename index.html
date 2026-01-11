@@ -2891,91 +2891,68 @@
         }
 
         async function loadAndDisplayImageWithBoundingBox(imgData, questionNumber, index) {
-            const container = document.getElementById(`imageContainer-${questionNumber}-${index}`);
-
-            try {
-                let imageUrl = '';
-                const matchingFile = allFiles.find(f => f.name === imgData.image_filename);
-
-                if (matchingFile && matchingFile.dataURL) {
-                    imageUrl = matchingFile.dataURL;
-                } else {
-                    const response = await fetch(`${BACKEND_URL}${imgData.original_image_path}`, {
-                        credentials: 'include'
-                    });
-
-                    if (response.ok) {
-                        const blob = await response.blob();
-                        imageUrl = URL.createObjectURL(blob);
-                    } else {
-                        throw new Error('Image not found');
-                    }
-                }
-
-                const img = document.createElement('img');
-                img.src = imageUrl;
-                img.className = 'corrected-paper-image';
-                img.onload = function() {
-                    container.innerHTML = '';
-                    container.appendChild(img);
-
-                    if (imgData.bounding_box && typeof imgData.bounding_box === 'object') {
-                        const bbox = imgData.bounding_box;
-
-                        const box = document.createElement('div');
-                        box.className = 'bounding-box';
-
-                        const left = bbox.x || 0;
-                        const top = bbox.y || 0;
-                        const width = bbox.width || 10;
-                        const height = bbox.height || 10;
-
-                        box.style.left = `${left}%`;
-                        box.style.top = `${top}%`;
-                        box.style.width = `${width}%`;
-                        box.style.height = `${height}%`;
-
-                        const label = document.createElement('div');
-                        label.className = 'bounding-box-label';
-                        label.textContent = 'Error';
-
-                        box.appendChild(label);
-                        container.appendChild(box);
-
-                        box.addEventListener('click', function(e) {
-                            e.stopPropagation();
-                            box.style.borderColor = '#4361ee';
-                            box.style.background = 'rgba(67, 97, 238, 0.3)';
-                            label.style.background = '#4361ee';
-
-                            setTimeout(() => {
-                                box.style.borderColor = '#e63946';
-                                box.style.background = 'rgba(230, 57, 70, 0.2)';
-                                label.style.background = '#e63946';
-                            }, 1000);
-                        });
-                    }
-                };
-
-                img.onerror = function() {
-                    container.innerHTML = `
-                        <div style="padding: 40px; text-align: center; color: var(--muted-foreground);">
-                            <p>Could not load image: ${imgData.image_filename}</p>
-                            <p>Bounding box coordinates: ${JSON.stringify(imgData.bounding_box)}</p>
-                        </div>
-                    `;
-                };
-
-            } catch (error) {
-                container.innerHTML = `
-                    <div style="padding: 40px; text-align: center; color: var(--muted-foreground);">
-                        <p>Error loading image: ${error.message}</p>
-                        <p>Filename: ${imgData.image_filename}</p>
-                        <p>Bounding Box: ${JSON.stringify(imgData.bounding_box)}</p>
-                    </div>
-                `;
+    const container = document.getElementById(`imageContainer-${questionNumber}-${index}`);
+    
+    try {
+        // Use the correct image path from backend
+        let imageUrl = `${BACKEND_URL}${imgData.original_image_path}`;
+        
+        const img = document.createElement('img');
+        img.src = imageUrl;
+        img.className = 'corrected-paper-image';
+        img.style.maxWidth = '100%';
+        img.style.height = 'auto';
+        
+        img.onload = function() {
+            container.innerHTML = '';
+            container.appendChild(img);
+            
+            if (imgData.bounding_box && imgData.bounding_box.x !== undefined) {
+                // Create bounding box (coordinates are in percentages)
+                const box = document.createElement('div');
+                box.className = 'bounding-box';
+                
+                box.style.left = `${imgData.bounding_box.x}%`;
+                box.style.top = `${imgData.bounding_box.y}%`;
+                box.style.width = `${imgData.bounding_box.width}%`;
+                box.style.height = `${imgData.bounding_box.height}%`;
+                
+                const label = document.createElement('div');
+                label.className = 'bounding-box-label';
+                label.textContent = 'Error';
+                box.appendChild(label);
+                
+                container.appendChild(box);
             }
-        }
+        };
+        
+        img.onerror = function() {
+            container.innerHTML = `
+                <div style="padding: 20px; text-align: center; color: #666;">
+                    <p>Image not found: ${imgData.original_image_path}</p>
+                    <p>Trying alternative...</p>
+                </div>
+            `;
+            
+            // Try to find image in uploaded files
+            const matchingFile = allFiles.find(f => 
+                f.name.includes(imgData.image_filename) || 
+                imgData.image_filename.includes(f.name)
+            );
+            
+            if (matchingFile && matchingFile.dataURL) {
+                container.innerHTML = `<img src="${matchingFile.dataURL}" class="corrected-paper-image" style="max-width:100%;">`;
+            }
+        };
+        
+    } catch (error) {
+        container.innerHTML = `
+            <div style="padding: 20px; text-align: center; color: #666;">
+                <p>Error loading image: ${error.message}</p>
+            </div>
+        `;
+    }
+}
 
         function updateDisplayAnalysisForCorrectedPaper(counts) {
             const correctedPaperBtn = document.getElementById('correctedPaperBtn');
