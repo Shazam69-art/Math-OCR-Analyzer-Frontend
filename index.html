@@ -1,334 +1,309 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bounding Box Generator</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 16px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-        h1 {
-            color: #4361ee;
-            text-align: center;
-            margin-bottom: 10px;
-            font-size: 2em;
-        }
-        .subtitle {
-            color: #666;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .upload-area {
-            border: 3px dashed #4361ee;
-            padding: 50px;
-            text-align: center;
-            cursor: pointer;
-            background: #f5f7fa;
-            border-radius: 12px;
-            transition: all 0.3s;
-        }
-        .upload-area:hover {
-            border-color: #3a56d4;
-            background: #e0e7ff;
-        }
-        .file-list {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
-        .file-item {
-            padding: 12px;
-            background: white;
-            margin: 8px 0;
-            border-radius: 6px;
-            display: flex;
-            justify-content: space-between;
-        }
-        button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 14px 32px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            margin: 10px 5px;
-            transition: all 0.3s;
-        }
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-        }
-        button:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-        }
-        .results {
-            margin-top: 30px;
-            display: none;
-        }
-        .success-box {
-            background: #d4edda;
-            color: #155724;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-            border: 2px solid #c3e6cb;
-        }
-        .image-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
-        }
-        .image-card {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 20px;
-            border: 2px solid #dee2e6;
-        }
-        .image-card h3 {
-            color: #4361ee;
-            margin-bottom: 15px;
-        }
-        .image-card img {
-            max-width: 100%;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            cursor: pointer;
-        }
-        .image-card img:hover {
-            transform: scale(1.02);
-            transition: transform 0.3s;
-        }
-        .download-btn {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            width: 100%;
-            margin-top: 15px;
-        }
-        .error-box {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 16px;
-            border-radius: 8px;
-            margin: 16px 0;
-            display: none;
-            border: 2px solid #f5c6cb;
-        }
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #f3f4f6;
-            border-top-color: #4361ee;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin-right: 8px;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bounding Box Generator</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    h1 {
+      color: #4361ee;
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 2em;
+    }
+    .subtitle {
+      color: #666;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .upload-area {
+      border: 3px dashed #4361ee;
+      padding: 50px;
+      text-align: center;
+      cursor: pointer;
+      background: #f5f7fa;
+      border-radius: 12px;
+      transition: all 0.3s;
+    }
+    .upload-area:hover {
+      border-color: #3a56d4;
+      background: #e0e7ff;
+    }
+    .file-list {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    .file-item {
+      padding: 12px;
+      background: white;
+      margin: 8px 0;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+    button {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      margin: 10px 5px;
+      transition: all 0.3s;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    }
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .results {
+      margin-top: 30px;
+      display: none;
+    }
+    .success-box {
+      background: #d4edda;
+      color: #155724;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+      border: 2px solid #c3e6cb;
+    }
+    .image-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+    }
+    .image-card {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 20px;
+      border: 2px solid #dee2e6;
+    }
+    .image-card h3 {
+      color: #4361ee;
+      margin-bottom: 15px;
+    }
+    .image-card img {
+      max-width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      cursor: pointer;
+    }
+    .image-card img:hover {
+      transform: scale(1.02);
+      transition: transform 0.3s;
+    }
+    .download-btn {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      width: 100%;
+      margin-top: 15px;
+    }
+    .error-box {
+      background: #f8d7da;
+      color: #721c24;
+      padding: 16px;
+      border-radius: 8px;
+      margin: 16px 0;
+      display: none;
+      border: 2px solid #f5c6cb;
+    }
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid #f3f4f6;
+      border-top-color: #4361ee;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-right: 8px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>📦 Bounding Box Generator</h1>
-        <p class="subtitle">Upload answer sheets to create error-highlighting bounding boxes</p>
-        
-        <div class="upload-area" onclick="document.getElementById('fileInput').click()">
-            <h3>📤 Click to Upload Images</h3>
-            <p>Select student answer sheet images</p>
-        </div>
-        
-        <input type="file" id="fileInput" multiple accept="image/*" style="display: none;" onchange="showSelectedFiles()">
-        
-        <div id="selectedFiles" class="file-list" style="display: none;"></div>
-        
-        <div style="text-align: center; margin: 30px 0;">
-            <button id="analyzeBtn" onclick="analyzeFiles()" disabled>
-                🔍 Generate Bounding Boxes
-            </button>
-        </div>
-        
-        <div id="errorBox" class="error-box"></div>
-        
-        <div id="resultsSection" class="results">
-            <div class="success-box">
-                <strong>✅ Bounding Boxes Created!</strong>
-                <p id="summaryText"></p>
-            </div>
-            
-            <h2 style="margin: 30px 0 20px 0;">📸 Corrected Images with Bounding Boxes</h2>
-            <div id="imageGallery" class="image-gallery"></div>
-        </div>
+  <div class="container">
+    <h1>📦 Bounding Box Generator</h1>
+    <p class="subtitle">Upload answer sheets to highlight errors with bounding boxes</p>
+    
+    <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+      <h3>📤 Click to Upload Images</h3>
+      <p>Select student answer sheet images</p>
     </div>
     
-    <script>
-        const BACKEND_URL = 'https://navalsheth.pythonanywhere.com';
-        let selectedFiles = [];
+    <input type="file" id="fileInput" multiple accept="image/*" style="display: none;" onchange="showSelectedFiles()">
+    
+    <div id="selectedFiles" class="file-list" style="display: none;"></div>
+    
+    <div style="text-align: center; margin: 30px 0;">
+      <button id="analyzeBtn" onclick="analyzeFiles()" disabled>
+        🔍 Generate Bounding Boxes
+      </button>
+    </div>
+    
+    <div id="errorBox" class="error-box"></div>
+    
+    <div id="resultsSection" class="results">
+      <div class="success-box">
+        <strong>✅ Bounding Boxes Created!</strong>
+        <p id="summaryText">Errors highlighted on incorrect/partial answers.</p>
+      </div>
+      
+      <h2 style="margin: 30px 0 20px 0;">📸 Images with Error Bounding Boxes</h2>
+      <div id="imageGallery" class="image-gallery"></div>
+    </div>
+  </div>
+  
+  <script>
+    const BACKEND_URL = 'https://navalsheth.pythonanywhere.com';
+    let selectedFiles = [];
+    
+    function showSelectedFiles() {
+      const fileInput = document.getElementById('fileInput');
+      selectedFiles = Array.from(fileInput.files);
+      const analyzeBtn = document.getElementById('analyzeBtn');
+      const filesDiv = document.getElementById('selectedFiles');
+      
+      if (selectedFiles.length === 0) {
+        filesDiv.style.display = 'none';
+        analyzeBtn.disabled = true;
+        return;
+      }
+      
+      let html = '<h3>📁 Selected Files:</h3>';
+      selectedFiles.forEach(file => {
+        html += `
+          <div class="file-item">
+            <span><strong>${file.name}</strong></span>
+            <span>${formatBytes(file.size)}</span>
+          </div>
+        `;
+      });
+      
+      filesDiv.innerHTML = html;
+      filesDiv.style.display = 'block';
+      analyzeBtn.disabled = false;
+    }
+    
+    function formatBytes(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+    
+    function showError(message) {
+      const errorBox = document.getElementById('errorBox');
+      errorBox.innerHTML = '<strong>❌ Error:</strong> ' + message;
+      errorBox.style.display = 'block';
+    }
+    
+    function hideError() {
+      document.getElementById('errorBox').style.display = 'none';
+    }
+    
+    async function analyzeFiles() {
+      if (selectedFiles.length === 0) return;
+      
+      hideError();
+      
+      const analyzeBtn = document.getElementById('analyzeBtn');
+      const originalHTML = analyzeBtn.innerHTML;
+      analyzeBtn.innerHTML = '<div class="loading"></div> Creating Bounding Boxes...';
+      analyzeBtn.disabled = true;
+      
+      const formData = new FormData();
+      selectedFiles.forEach(file => {
+        formData.append('files', file);
+      });
+      
+      try {
+        const response = await fetch(`${BACKEND_URL}/bounding-analyze`, {
+          method: 'POST',
+          body: formData,
+          credentials: 'include'
+        });
         
-        function showSelectedFiles() {
-            const fileInput = document.getElementById('fileInput');
-            selectedFiles = Array.from(fileInput.files);
-            const analyzeBtn = document.getElementById('analyzeBtn');
-            const filesDiv = document.getElementById('selectedFiles');
-            
-            if (selectedFiles.length === 0) {
-                filesDiv.style.display = 'none';
-                analyzeBtn.disabled = true;
-                return;
-            }
-            
-            let html = '<h3>📁 Selected Files:</h3>';
-            selectedFiles.forEach(file => {
-                html += `
-                    <div class="file-item">
-                        <span><strong>${file.name}</strong></span>
-                        <span>${formatBytes(file.size)}</span>
-                    </div>
-                `;
-            });
-            
-            filesDiv.innerHTML = html;
-            filesDiv.style.display = 'block';
-            analyzeBtn.disabled = false;
+        const data = await response.json();
+        console.log('Response:', data);
+        
+        if (data.success) {
+          displayImages(data.corrected_images);
+          
+          document.getElementById('resultsSection').style.display = 'block';
+          document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+        } else {
+          showError(data.error || 'Failed to create bounding boxes');
         }
+      } catch (error) {
+        console.error('Error:', error);
+        showError('Network error: ' + error.message);
+      } finally {
+        analyzeBtn.innerHTML = originalHTML;
+        analyzeBtn.disabled = false;
+      }
+    }
+    
+    function displayImages(images) {
+      const gallery = document.getElementById('imageGallery');
+      gallery.innerHTML = '';
+      
+      images.forEach((img, index) => {
+        const card = document.createElement('div');
+        card.className = 'image-card';
         
-        function formatBytes(bytes) {
-            if (bytes === 0) return '0 Bytes';
-            const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-        }
+        card.innerHTML = `
+          <h3>📄 ${img.original_filename || `Image ${index + 1}`}</h3>
+          <p style="color: #666; margin-bottom: 10px;">
+            Errors highlighted with red boxes
+          </p>
+          <img src="${img.image_base64}" 
+            alt="Image with bounding boxes ${index + 1}"
+            onclick="window.open('${img.image_base64}', '_blank')"
+            title="Click to view full size">
+          <p style="color: #999; font-size: 12px; margin-top: 8px;">
+            🔴 Red = Error
+          </p>
+          <button class="download-btn" onclick="downloadImage('${img.corrected_filename}')">
+            ⬇️ Download High Quality Image
+          </button>
+        `;
         
-        function showError(message) {
-            const errorBox = document.getElementById('errorBox');
-            errorBox.innerHTML = '<strong>❌ Error:</strong> ' + message;
-            errorBox.style.display = 'block';
-        }
-        
-        function hideError() {
-            document.getElementById('errorBox').style.display = 'none';
-        }
-        
-        async function analyzeFiles() {
-            if (selectedFiles.length === 0) return;
-            
-            hideError();
-            
-            const analyzeBtn = document.getElementById('analyzeBtn');
-            const originalHTML = analyzeBtn.innerHTML;
-            analyzeBtn.innerHTML = '<div class="loading"></div> Creating Bounding Boxes...';
-            analyzeBtn.disabled = true;
-            
-            const formData = new FormData();
-            selectedFiles.forEach(file => {
-                formData.append('files', file);
-            });
-            
-            try {
-                const response = await fetch(`${BACKEND_URL}/bounding-analyze`, {
-                    method: 'POST',
-                    body: formData,
-                    credentials: 'include'
-                });
-                
-                const data = await response.json();
-                console.log('Response:', data);
-                
-                if (data.success) {
-                    const errorCount = data.questions.filter(q => q.has_error).length;
-                    
-                    // Show identified questions
-                    let questionsList = '';
-                    if (data.questions_list) {
-                        questionsList = '<br><strong>Questions identified:</strong> ';
-                        questionsList += data.questions_list.map(q => {
-                            if (q.sub_parts && q.sub_parts.length > 0) {
-                                return `Q${q.question_number}(${q.sub_parts.join(',')})`;
-                            }
-                            return `Q${q.question_number}`;
-                        }).join(', ');
-                    }
-                    
-                    document.getElementById('summaryText').innerHTML = `
-                        Found <strong>${data.questions.length}</strong> student answers${questionsList}
-                        <br><br>
-                        <strong style="color: #dc3545;">🔴 ${errorCount}</strong> questions with errors (red boxes)
-                        <br>
-                        <strong style="color: #28a745;">🟢 ${data.questions.length - errorCount}</strong> questions correct (green boxes)
-                    `;
-                    
-                    // Display images
-                    displayImages(data.corrected_images);
-                    
-                    // Show results
-                    document.getElementById('resultsSection').style.display = 'block';
-                    document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
-                    
-                } else {
-                    showError(data.error || 'Failed to create bounding boxes');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                showError('Network error: ' + error.message);
-            } finally {
-                analyzeBtn.innerHTML = originalHTML;
-                analyzeBtn.disabled = false;
-            }
-        }
-        
-        function displayImages(images) {
-            const gallery = document.getElementById('imageGallery');
-            gallery.innerHTML = '';
-            
-            images.forEach((img, index) => {
-                const card = document.createElement('div');
-                card.className = 'image-card';
-                
-                card.innerHTML = `
-                    <h3>📄 ${img.original_filename || `Image ${index + 1}`}</h3>
-                    <p style="color: #666; margin-bottom: 10px;">
-                        <strong>${img.box_count}</strong> question${img.box_count !== 1 ? 's' : ''}: ${img.questions.join(', ')}
-                    </p>
-                    <img src="${img.image_base64}" 
-                         alt="Corrected image ${index + 1}"
-                         onclick="window.open('${img.image_base64}', '_blank')"
-                         title="Click to view full size">
-                    <p style="color: #999; font-size: 12px; margin-top: 8px;">
-                        🔴 Red = Error | 🟢 Green = Correct
-                    </p>
-                    <button class="download-btn" onclick="downloadImage('${img.corrected_filename}')">
-                        ⬇️ Download High Quality Image
-                    </button>
-                `;
-                
-                gallery.appendChild(card);
-            });
-        }
-        
-        function downloadImage(filename) {
-            window.open(`${BACKEND_URL}/download-corrected/${filename}`, '_blank');
-        }
-        
-        console.log('✅ Bounding Box Generator Ready');
-    </script>
+        gallery.appendChild(card);
+      });
+    }
+    
+    function downloadImage(filename) {
+      window.open(`${BACKEND_URL}/download-corrected/${filename}`, '_blank');
+    }
+    
+    console.log('✅ Bounding Box Generator Ready');
+  </script>
 </body>
 </html>
