@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Bounding Box System</title>
+    <title>Bounding Box Test</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: Arial, sans-serif;
             background: #f5f7fa;
             padding: 20px;
-        }
-        .container {
             max-width: 1200px;
             margin: 0 auto;
+        }
+        .container {
             background: white;
             border-radius: 12px;
             padding: 30px;
@@ -21,10 +21,15 @@
         }
         h1 {
             color: #4361ee;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             text-align: center;
         }
-        .upload-section {
+        .subtitle {
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .upload-area {
             border: 3px dashed #ccc;
             padding: 40px;
             text-align: center;
@@ -32,22 +37,24 @@
             cursor: pointer;
             background: #f9f9f9;
             border-radius: 8px;
+            transition: all 0.3s;
         }
-        .upload-section:hover {
+        .upload-area:hover {
             border-color: #4361ee;
             background: #eef2ff;
         }
         .file-list {
-            margin: 20px 0;
             background: #f5f7fa;
             padding: 15px;
             border-radius: 8px;
+            margin: 20px 0;
         }
         .file-item {
             padding: 8px;
             border-bottom: 1px solid #ddd;
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
         button {
             background: #4361ee;
@@ -70,8 +77,9 @@
         }
         .results {
             margin-top: 30px;
+            display: none;
         }
-        .question-item {
+        .question-card {
             background: white;
             border: 1px solid #dee2e6;
             border-radius: 8px;
@@ -81,8 +89,8 @@
         }
         .question-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 15px;
             margin-bottom: 15px;
         }
         .question-number {
@@ -175,12 +183,6 @@
             font-weight: bold;
             pointer-events: none;
         }
-        .error-details {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 20px;
-        }
         .loading {
             display: inline-block;
             width: 20px;
@@ -193,16 +195,30 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+        .error-box {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 10px 0;
+            display: none;
+        }
+        .corrected-btn {
+            background: #28a745;
+            margin-top: 20px;
+            display: none;
+        }
+        .corrected-btn:hover {
+            background: #218838;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🧪 Test Bounding Box System</h1>
-        <p style="text-align: center; color: #666; margin-bottom: 30px;">
-            Upload answer sheets to test bounding box generation
-        </p>
+        <h1>🧪 Bounding Box Test</h1>
+        <p class="subtitle">Upload answer sheets to test bounding box generation</p>
         
-        <div class="upload-section" onclick="document.getElementById('fileInput').click()">
+        <div class="upload-area" onclick="document.getElementById('fileInput').click()">
             <h3>📤 Click to Select Files</h3>
             <p>Select image files of student answer sheets</p>
         </div>
@@ -215,13 +231,15 @@
             <button id="analyzeBtn" onclick="analyzeFiles()" disabled>Start Analysis</button>
         </div>
         
-        <div id="resultsSection" class="results" style="display: none;">
+        <div id="errorBox" class="error-box"></div>
+        
+        <div id="resultsSection" class="results">
             <h2>Analysis Results</h2>
             <div id="questionsList"></div>
             
             <div style="text-align: center; margin: 30px 0;">
-                <button id="showCorrectedBtn" onclick="showCorrectedPaper()" style="display: none;">
-                    📄 View Corrected Paper with Bounding Boxes
+                <button id="correctedBtn" class="corrected-btn" onclick="showCorrectedPaper()">
+                    📋 View Corrected Paper with Bounding Boxes
                 </button>
             </div>
         </div>
@@ -236,7 +254,7 @@
             </div>
             
             <div id="modalBody">
-                <!-- Bounding boxes will be dynamically added here -->
+                <!-- Images with bounding boxes will appear here -->
             </div>
         </div>
     </div>
@@ -280,8 +298,20 @@
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
         
+        function showError(message) {
+            const errorBox = document.getElementById('errorBox');
+            errorBox.textContent = message;
+            errorBox.style.display = 'block';
+        }
+        
+        function hideError() {
+            document.getElementById('errorBox').style.display = 'none';
+        }
+        
         async function analyzeFiles() {
             if (selectedFiles.length === 0) return;
+            
+            hideError();
             
             const analyzeBtn = document.getElementById('analyzeBtn');
             const originalText = analyzeBtn.textContent;
@@ -294,14 +324,14 @@
             });
             
             try {
-                // First make OPTIONS request
-                await fetch(`${BACKEND_URL}/test-analyze`, {
+                // Make OPTIONS request first
+                await fetch(`${BACKEND_URL}/bounding-analyze`, {
                     method: 'OPTIONS',
                     credentials: 'include'
                 });
                 
-                // Then make POST request
-                const response = await fetch(`${BACKEND_URL}/test-analyze`, {
+                // Make POST request
+                const response = await fetch(`${BACKEND_URL}/bounding-analyze`, {
                     method: 'POST',
                     body: formData,
                     credentials: 'include'
@@ -317,23 +347,23 @@
                     // Display questions
                     displayQuestions(data.questions);
                     
-                    // Show results section
+                    // Show results
                     document.getElementById('resultsSection').style.display = 'block';
                     
-                    // Show corrected paper button if we have corrected images
+                    // Show corrected button if we have corrected images
                     if (correctedImages.length > 0) {
-                        document.getElementById('showCorrectedBtn').style.display = 'inline-block';
+                        document.getElementById('correctedBtn').style.display = 'inline-block';
                     }
                     
                     // Scroll to results
                     document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
                     
                 } else {
-                    alert('Error: ' + (data.error || 'Analysis failed'));
+                    showError('Error: ' + (data.error || 'Analysis failed'));
                 }
             } catch (error) {
                 console.error('Analysis error:', error);
-                alert('Network error: ' + error.message);
+                showError('Network error: ' + error.message);
             } finally {
                 analyzeBtn.textContent = originalText;
                 analyzeBtn.disabled = false;
@@ -351,17 +381,15 @@
                                   q.status === 'incorrect' ? '#ef4444' : '#f59e0b';
                 
                 html += `
-                    <div class="question-item">
+                    <div class="question-card">
                         <div class="question-header">
-                            <div style="display: flex; align-items: center; gap: 15px;">
-                                <div class="question-number" style="background: ${statusColor}20; color: ${statusColor}">
-                                    ${q.number}
-                                </div>
-                                <div>
-                                    <h3>${q.question}</h3>
-                                    <div style="font-size: 14px; color: #666; margin-top: 5px;">
-                                        Status: <span class="status-badge ${statusClass}">${q.status}</span>
-                                    </div>
+                            <div class="question-number" style="background: ${statusColor}20; color: ${statusColor}">
+                                ${q.number}
+                            </div>
+                            <div style="flex: 1;">
+                                <h3 style="margin-bottom: 5px;">${q.question}</h3>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <span class="status-badge ${statusClass}">${q.status}</span>
                                 </div>
                             </div>
                         </div>
@@ -408,27 +436,27 @@
             // Clear previous content
             modalBody.innerHTML = '';
             
-            // Add each corrected image with bounding boxes
+            // Add each corrected image
             correctedImages.forEach((img, index) => {
                 const imageDiv = document.createElement('div');
                 imageDiv.className = 'image-container';
                 imageDiv.style.position = 'relative';
                 imageDiv.style.marginBottom = '30px';
                 
-                // Title for this image
+                // Title
                 const title = document.createElement('h3');
                 title.textContent = `Question ${img.question_number} - ${img.status.toUpperCase()}`;
                 title.style.color = img.status === 'incorrect' ? '#ef4444' : '#f59e0b';
                 title.style.marginBottom = '15px';
                 
-                // Image element
+                // Image
                 const imgElement = document.createElement('img');
                 imgElement.className = 'corrected-image';
                 imgElement.src = img.image_base64;
-                imgElement.alt = `Corrected image for Question ${img.question_number}`;
+                imgElement.alt = `Corrected Q${img.question_number}`;
                 imgElement.style.cursor = 'pointer';
                 
-                // Make image clickable to view full size
+                // Click to view full size
                 imgElement.onclick = function() {
                     window.open(img.image_base64, '_blank');
                 };
@@ -444,16 +472,16 @@
                 imageDiv.appendChild(title);
                 imageDiv.appendChild(imgElement);
                 imageDiv.appendChild(boxesContainer);
-                
                 modalBody.appendChild(imageDiv);
                 
-                // Wait for image to load before positioning bounding boxes
+                // Wait for image to load, then position boxes
                 imgElement.onload = function() {
                     const scaleX = imgElement.offsetWidth / imgElement.naturalWidth;
                     const scaleY = imgElement.offsetHeight / imgElement.naturalHeight;
                     
                     // Add bounding boxes
                     img.bounding_boxes.forEach(bbox => {
+                        // Box
                         const boxDiv = document.createElement('div');
                         boxDiv.className = 'bounding-box';
                         boxDiv.style.position = 'absolute';
@@ -463,7 +491,7 @@
                         boxDiv.style.width = (bbox.width * scaleX) + 'px';
                         boxDiv.style.height = (bbox.height * scaleY) + 'px';
                         
-                        // Add label if exists
+                        // Label
                         if (bbox.label) {
                             const labelDiv = document.createElement('div');
                             labelDiv.className = 'box-label';
@@ -479,17 +507,19 @@
                 };
                 
                 // Error details
-                const errorDiv = document.createElement('div');
-                errorDiv.className = 'error-details';
-                errorDiv.innerHTML = `
-                    <h4>Error Details:</h4>
-                    <p>Question ${img.question_number} has <strong>${img.status}</strong> errors.</p>
-                    <p>Red/orange boxes highlight the areas where errors were detected in the student's work.</p>
+                const details = document.createElement('div');
+                details.style.background = '#f8f9fa';
+                details.style.padding = '15px';
+                details.style.borderRadius = '8px';
+                details.style.marginTop = '10px';
+                details.innerHTML = `
+                    <p><strong>Question ${img.question_number}</strong> has <span style="color: ${img.status === 'incorrect' ? '#ef4444' : '#f59e0b'}">${img.status}</span> errors.</p>
+                    <p>Red boxes highlight areas with major errors, orange boxes show partial errors.</p>
                 `;
                 
-                modalBody.appendChild(errorDiv);
+                modalBody.appendChild(details);
                 
-                // Add separator if not last image
+                // Separator if not last
                 if (index < correctedImages.length - 1) {
                     const separator = document.createElement('hr');
                     separator.style.margin = '30px 0';
@@ -513,8 +543,10 @@
             }
         };
         
-        
-        
+        // Test connection on load
+        window.onload = function() {
+            console.log('Bounding box test loaded');
+        };
     </script>
 </body>
 </html>
