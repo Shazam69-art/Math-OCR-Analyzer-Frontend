@@ -150,51 +150,51 @@
     <div class="container">
         <h1>📦 Bounding Box Generator</h1>
         <p class="subtitle">Upload answer sheets to create error-highlighting bounding boxes</p>
-        
+       
         <div class="upload-area" onclick="document.getElementById('fileInput').click()">
             <h3>📤 Click to Upload Images</h3>
             <p>Select student answer sheet images</p>
         </div>
-        
+       
         <input type="file" id="fileInput" multiple accept="image/*" style="display: none;" onchange="showSelectedFiles()">
-        
+       
         <div id="selectedFiles" class="file-list" style="display: none;"></div>
-        
+       
         <div style="text-align: center; margin: 30px 0;">
             <button id="analyzeBtn" onclick="analyzeFiles()" disabled>
                 🔍 Generate Bounding Boxes
             </button>
         </div>
-        
+       
         <div id="errorBox" class="error-box"></div>
-        
+       
         <div id="resultsSection" class="results">
             <div class="success-box">
                 <strong>✅ Bounding Boxes Created!</strong>
                 <p id="summaryText"></p>
             </div>
-            
+           
             <h2 style="margin: 30px 0 20px 0;">📸 Corrected Images with Bounding Boxes</h2>
             <div id="imageGallery" class="image-gallery"></div>
         </div>
     </div>
-    
+   
     <script>
         const BACKEND_URL = 'https://navalsheth.pythonanywhere.com';
         let selectedFiles = [];
-        
+       
         function showSelectedFiles() {
             const fileInput = document.getElementById('fileInput');
             selectedFiles = Array.from(fileInput.files);
             const analyzeBtn = document.getElementById('analyzeBtn');
             const filesDiv = document.getElementById('selectedFiles');
-            
+           
             if (selectedFiles.length === 0) {
                 filesDiv.style.display = 'none';
                 analyzeBtn.disabled = true;
                 return;
             }
-            
+           
             let html = '<h3>📁 Selected Files:</h3>';
             selectedFiles.forEach(file => {
                 html += `
@@ -204,12 +204,12 @@
                     </div>
                 `;
             });
-            
+           
             filesDiv.innerHTML = html;
             filesDiv.style.display = 'block';
             analyzeBtn.disabled = false;
         }
-        
+       
         function formatBytes(bytes) {
             if (bytes === 0) return '0 Bytes';
             const k = 1024;
@@ -217,45 +217,45 @@
             const i = Math.floor(Math.log(bytes) / Math.log(k));
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
-        
+       
         function showError(message) {
             const errorBox = document.getElementById('errorBox');
             errorBox.innerHTML = '<strong>❌ Error:</strong> ' + message;
             errorBox.style.display = 'block';
         }
-        
+       
         function hideError() {
             document.getElementById('errorBox').style.display = 'none';
         }
-        
+       
         async function analyzeFiles() {
             if (selectedFiles.length === 0) return;
-            
+           
             hideError();
-            
+           
             const analyzeBtn = document.getElementById('analyzeBtn');
             const originalHTML = analyzeBtn.innerHTML;
             analyzeBtn.innerHTML = '<div class="loading"></div> Creating Bounding Boxes...';
             analyzeBtn.disabled = true;
-            
+           
             const formData = new FormData();
             selectedFiles.forEach(file => {
                 formData.append('files', file);
             });
-            
+           
             try {
                 const response = await fetch(`${BACKEND_URL}/bounding-analyze`, {
                     method: 'POST',
                     body: formData,
                     credentials: 'include'
                 });
-                
+               
                 const data = await response.json();
                 console.log('Response:', data);
-                
+               
                 if (data.success) {
                     const errorCount = data.questions.filter(q => q.has_error).length;
-                    
+                   
                     document.getElementById('summaryText').innerHTML = `
                         Found <strong>${data.questions.length}</strong> questions with bounding boxes
                         <br>
@@ -263,14 +263,14 @@
                         <br>
                         <strong style="color: #28a745;">${data.questions.length - errorCount}</strong> questions correct (green boxes)
                     `;
-                    
+                   
                     // Display images
                     displayImages(data.corrected_images);
-                    
+                   
                     // Show results
                     document.getElementById('resultsSection').style.display = 'block';
                     document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
-                    
+                   
                 } else {
                     showError(data.error || 'Failed to create bounding boxes');
                 }
@@ -282,36 +282,36 @@
                 analyzeBtn.disabled = false;
             }
         }
-        
+       
         function displayImages(images) {
             const gallery = document.getElementById('imageGallery');
             gallery.innerHTML = '';
-            
+           
             images.forEach((img, index) => {
                 const card = document.createElement('div');
                 card.className = 'image-card';
-                
+               
                 card.innerHTML = `
                     <h3>📄 Image ${index + 1}</h3>
                     <p style="color: #666; margin-bottom: 10px;">
                         ${img.box_count} bounding box${img.box_count !== 1 ? 'es' : ''} drawn
                     </p>
-                    <img src="${img.image_base64}" 
+                    <img src="${img.image_base64}"
                          alt="Corrected image ${index + 1}"
                          onclick="window.open('${img.image_base64}', '_blank')">
                     <button class="download-btn" onclick="downloadImage('${img.corrected_filename}')">
                         ⬇️ Download Image
                     </button>
                 `;
-                
+               
                 gallery.appendChild(card);
             });
         }
-        
+       
         function downloadImage(filename) {
             window.open(`${BACKEND_URL}/download-corrected/${filename}`, '_blank');
         }
-        
+       
         console.log('✅ Bounding Box Generator Ready');
     </script>
 </body>
