@@ -3,33 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math OCR Bounding Box Analyzer</title>
-    
-    <!-- MathJax for LaTeX rendering -->
-    <script>
-        MathJax = {
-            tex: {
-                inlineMath: [['$', '$']],
-                displayMath: [['$$', '$$']],
-                processEscapes: true
-            },
-            svg: {
-                fontCache: 'global'
-            }
-        };
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-    
+    <title>Bounding Box Generator</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: Arial, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
         }
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
             background: white;
             border-radius: 16px;
@@ -38,55 +22,41 @@
         }
         h1 {
             color: #4361ee;
-            margin-bottom: 10px;
             text-align: center;
-            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-size: 2em;
         }
         .subtitle {
             color: #666;
             text-align: center;
             margin-bottom: 30px;
-            font-size: 1.1em;
         }
         .upload-area {
             border: 3px dashed #4361ee;
-            padding: 60px 40px;
+            padding: 50px;
             text-align: center;
-            margin: 20px 0;
             cursor: pointer;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: #f5f7fa;
             border-radius: 12px;
             transition: all 0.3s;
         }
         .upload-area:hover {
             border-color: #3a56d4;
-            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
-            transform: translateY(-2px);
-        }
-        .upload-area h3 {
-            color: #4361ee;
-            margin-bottom: 10px;
-            font-size: 1.5em;
+            background: #e0e7ff;
         }
         .file-list {
             background: #f8f9fa;
             padding: 20px;
             border-radius: 8px;
             margin: 20px 0;
-            border: 1px solid #dee2e6;
         }
         .file-item {
             padding: 12px;
-            border-bottom: 1px solid #dee2e6;
+            background: white;
+            margin: 8px 0;
+            border-radius: 6px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            background: white;
-            margin-bottom: 8px;
-            border-radius: 6px;
-        }
-        .file-item:last-child {
-            border-bottom: none;
         }
         button {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -99,7 +69,6 @@
             font-weight: 600;
             margin: 10px 5px;
             transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
         button:hover {
             transform: translateY(-2px);
@@ -108,138 +77,64 @@
         button:disabled {
             background: #ccc;
             cursor: not-allowed;
-            box-shadow: none;
             transform: none;
         }
         .results {
-            margin-top: 40px;
+            margin-top: 30px;
             display: none;
         }
-        .question-card {
-            background: white;
-            border: 2px solid #e9ecef;
-            border-radius: 12px;
-            padding: 24px;
-            margin: 20px 0;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            transition: all 0.3s;
-        }
-        .question-card:hover {
-            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-            transform: translateY(-2px);
-        }
-        .question-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        .question-number {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        .status-badge {
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        .status-correct { background: #d4edda; color: #155724; }
-        .status-incorrect { background: #f8d7da; color: #721c24; }
-        .status-partial { background: #fff3cd; color: #856404; }
-        .content-box {
-            background: #f8f9fa;
-            padding: 16px;
-            border-radius: 8px;
-            margin: 12px 0;
-            border-left: 4px solid #dee2e6;
-        }
-        .content-box.error {
-            background: #fef2f2;
-            border-left-color: #ef4444;
-        }
-        .content-box.solution {
-            background: #f0fdf4;
-            border-left-color: #10b981;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.7);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
+        .success-box {
+            background: #d4edda;
+            color: #155724;
             padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px solid #c3e6cb;
         }
-        .modal.open {
-            display: flex;
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
         }
-        .modal-content {
-            background: white;
-            border-radius: 16px;
-            max-width: 1200px;
-            width: 100%;
-            max-height: 90vh;
-            overflow: auto;
-            padding: 32px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-        }
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-            padding-bottom: 16px;
-            border-bottom: 2px solid #e9ecef;
-        }
-        .modal-title {
-            font-size: 28px;
-            font-weight: bold;
-            color: #4361ee;
-        }
-        .close-btn {
-            background: #6c757d;
-            padding: 10px 20px;
-            font-size: 14px;
-        }
-        .image-container {
+        .image-card {
             background: #f8f9fa;
             border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 24px;
+            padding: 20px;
             border: 2px solid #dee2e6;
         }
-        .corrected-image {
+        .image-card h3 {
+            color: #4361ee;
+            margin-bottom: 15px;
+        }
+        .image-card img {
             max-width: 100%;
-            height: auto;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             cursor: pointer;
-            transition: transform 0.3s;
         }
-        .corrected-image:hover {
+        .image-card img:hover {
             transform: scale(1.02);
+            transition: transform 0.3s;
         }
         .download-btn {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            margin-top: 16px;
+            width: 100%;
+            margin-top: 15px;
+        }
+        .error-box {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+            display: none;
+            border: 2px solid #f5c6cb;
         }
         .loading {
             display: inline-block;
-            width: 24px;
-            height: 24px;
+            width: 20px;
+            height: 20px;
             border: 3px solid #f3f4f6;
             border-top-color: #4361ee;
             border-radius: 50%;
@@ -249,52 +144,25 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-        .error-box {
-            background: #fee;
-            color: #c00;
-            padding: 16px;
-            border-radius: 8px;
-            margin: 16px 0;
-            display: none;
-            border: 2px solid #fcc;
-        }
-        .success-box {
-            background: #d4edda;
-            color: #155724;
-            padding: 16px;
-            border-radius: 8px;
-            margin: 16px 0;
-            border: 2px solid #c3e6cb;
-        }
-        .info-tag {
-            display: inline-block;
-            background: #e0e7ff;
-            color: #4361ee;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-left: 8px;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📐 Math OCR Bounding Box Analyzer</h1>
-        <p class="subtitle">Upload student answer sheets to analyze errors with precise bounding boxes</p>
+        <h1>📦 Bounding Box Generator</h1>
+        <p class="subtitle">Upload answer sheets to create error-highlighting bounding boxes</p>
         
         <div class="upload-area" onclick="document.getElementById('fileInput').click()">
-            <h3>📤 Click to Select Answer Sheets</h3>
-            <p>Upload one or more images of student work (JPG, PNG, PDF)</p>
+            <h3>📤 Click to Upload Images</h3>
+            <p>Select student answer sheet images</p>
         </div>
         
-        <input type="file" id="fileInput" multiple accept="image/*,application/pdf" style="display: none;" onchange="showSelectedFiles()">
+        <input type="file" id="fileInput" multiple accept="image/*" style="display: none;" onchange="showSelectedFiles()">
         
         <div id="selectedFiles" class="file-list" style="display: none;"></div>
         
         <div style="text-align: center; margin: 30px 0;">
             <button id="analyzeBtn" onclick="analyzeFiles()" disabled>
-                🔍 Start Analysis
+                🔍 Generate Bounding Boxes
             </button>
         </div>
         
@@ -302,37 +170,18 @@
         
         <div id="resultsSection" class="results">
             <div class="success-box">
-                <strong>✅ Analysis Complete!</strong>
+                <strong>✅ Bounding Boxes Created!</strong>
                 <p id="summaryText"></p>
             </div>
             
-            <h2 style="margin: 30px 0 20px 0;">📝 Question-by-Question Analysis</h2>
-            <div id="questionsList"></div>
-            
-            <div style="text-align: center; margin: 40px 0;">
-                <button id="correctedBtn" class="download-btn" onclick="showCorrectedPaper()" style="display: none;">
-                    📋 View Corrected Papers with Bounding Boxes
-                </button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Corrected Paper Modal -->
-    <div id="correctedModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">📋 Corrected Papers with Error Highlights</div>
-                <button class="close-btn" onclick="closeModal()">✕ Close</button>
-            </div>
-            <div id="modalBody"></div>
+            <h2 style="margin: 30px 0 20px 0;">📸 Corrected Images with Bounding Boxes</h2>
+            <div id="imageGallery" class="image-gallery"></div>
         </div>
     </div>
     
     <script>
         const BACKEND_URL = 'https://navalsheth.pythonanywhere.com';
         let selectedFiles = [];
-        let analysisResult = null;
-        let correctedImages = [];
         
         function showSelectedFiles() {
             const fileInput = document.getElementById('fileInput');
@@ -351,7 +200,7 @@
                 html += `
                     <div class="file-item">
                         <span><strong>${file.name}</strong></span>
-                        <span class="info-tag">${formatBytes(file.size)}</span>
+                        <span>${formatBytes(file.size)}</span>
                     </div>
                 `;
             });
@@ -386,7 +235,7 @@
             
             const analyzeBtn = document.getElementById('analyzeBtn');
             const originalHTML = analyzeBtn.innerHTML;
-            analyzeBtn.innerHTML = '<div class="loading"></div> Analyzing with AI...';
+            analyzeBtn.innerHTML = '<div class="loading"></div> Creating Bounding Boxes...';
             analyzeBtn.disabled = true;
             
             const formData = new FormData();
@@ -402,56 +251,31 @@
                 });
                 
                 const data = await response.json();
+                console.log('Response:', data);
                 
                 if (data.success) {
-                    analysisResult = data;
-                    correctedImages = data.corrected_images || [];
-                    
-                    // Update summary
-                    const correctCount = data.questions.filter(q => q.status === 'correct').length;
-                    const incorrectCount = data.questions.filter(q => q.status === 'incorrect').length;
-                    const partialCount = data.questions.filter(q => q.status === 'partial').length;
-                    
-                    const notAttempted = data.questions.filter(q => q.status === 'not_attempted').length;
-                    const highConfidence = data.questions.filter(q => q.confidence === 'high').length;
+                    const errorCount = data.questions.filter(q => q.has_error).length;
                     
                     document.getElementById('summaryText').innerHTML = `
-                        Found <strong>${data.questions.length}</strong> questions: 
-                        <span style="color: #155724;">✅ ${correctCount} correct</span>, 
-                        <span style="color: #721c24;">❌ ${incorrectCount} incorrect</span>, 
-                        <span style="color: #856404;">⚠️ ${partialCount} partial</span>
-                        ${notAttempted > 0 ? `, <span style="color: #6c757d;">⭕ ${notAttempted} not attempted</span>` : ''}
+                        Found <strong>${data.questions.length}</strong> questions with bounding boxes
                         <br>
-                        <small style="color: #666;">Coordinate confidence: ${highConfidence}/${data.questions.length} boxes with high precision</small>
+                        <strong style="color: #dc3545;">${errorCount}</strong> questions marked with errors (red boxes)
+                        <br>
+                        <strong style="color: #28a745;">${data.questions.length - errorCount}</strong> questions correct (green boxes)
                     `;
                     
-                    // Display questions
-                    displayQuestions(data.questions);
+                    // Display images
+                    displayImages(data.corrected_images);
                     
                     // Show results
                     document.getElementById('resultsSection').style.display = 'block';
-                    
-                    // Show corrected button if we have errors
-                    if (correctedImages.length > 0) {
-                        document.getElementById('correctedBtn').style.display = 'inline-block';
-                    }
-                    
-                    // Render MathJax
-                    if (window.MathJax) {
-                        MathJax.typesetPromise();
-                    }
-                    
-                    // Scroll to results
-                    document.getElementById('resultsSection').scrollIntoView({ 
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                    document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
                     
                 } else {
-                    showError(data.error || 'Analysis failed');
+                    showError(data.error || 'Failed to create bounding boxes');
                 }
             } catch (error) {
-                console.error('Analysis error:', error);
+                console.error('Error:', error);
                 showError('Network error: ' + error.message);
             } finally {
                 analyzeBtn.innerHTML = originalHTML;
@@ -459,159 +283,36 @@
             }
         }
         
-        function displayQuestions(questions) {
-            const container = document.getElementById('questionsList');
-            let html = '';
+        function displayImages(images) {
+            const gallery = document.getElementById('imageGallery');
+            gallery.innerHTML = '';
             
-            questions.forEach(q => {
-                const statusClass = `status-${q.status}`;
-                const statusColor = q.status === 'correct' ? '#10b981' : 
-                                  q.status === 'incorrect' ? '#ef4444' : '#f59e0b';
+            images.forEach((img, index) => {
+                const card = document.createElement('div');
+                card.className = 'image-card';
                 
-                const confidenceBadge = q.confidence ? 
-                    `<span style="background: ${q.confidence === 'high' ? '#d4edda' : q.confidence === 'medium' ? '#fff3cd' : '#f8d7da'}; 
-                     color: ${q.confidence === 'high' ? '#155724' : q.confidence === 'medium' ? '#856404' : '#721c24'}; 
-                     padding: 4px 8px; border-radius: 4px; font-size: 11px; margin-left: 8px;">
-                     📍 ${q.confidence} precision</span>` : '';
-                
-                html += `
-                    <div class="question-card">
-                        <div class="question-header">
-                            <div class="question-number" style="background: ${statusColor}20; color: ${statusColor}">
-                                ${q.question_number}
-                            </div>
-                            <div style="flex: 1;">
-                                <div style="font-size: 1.2em; margin-bottom: 8px; color: #212529;">
-                                    ${q.question_text}
-                                </div>
-                                <div>
-                                    <span class="status-badge ${statusClass}">${q.status}</span>
-                                    ${confidenceBadge}
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="content-box">
-                            <div style="font-weight: 600; color: #4361ee; margin-bottom: 8px;">
-                                📝 Student's Work:
-                            </div>
-                            <div>${q.student_work}</div>
-                        </div>
-                        
-                        ${q.status !== 'correct' && q.status !== 'not_attempted' ? `
-                            <div class="content-box error">
-                                <div style="font-weight: 600; color: #ef4444; margin-bottom: 8px;">
-                                    ⚠️ Error Analysis:
-                                </div>
-                                <div>${q.error_explanation}</div>
-                                ${q.error_location ? `
-                                    <div style="margin-top: 8px; padding: 8px; background: rgba(239, 68, 68, 0.1); border-radius: 4px;">
-                                        <strong>📍 Error Location:</strong> ${q.error_location}
-                                    </div>
-                                ` : ''}
-                            </div>
-                        ` : ''}
-                        
-                        <div class="content-box solution">
-                            <div style="font-weight: 600; color: #10b981; margin-bottom: 8px;">
-                                ✅ Correct Solution:
-                            </div>
-                            <div>${q.correct_solution}</div>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            container.innerHTML = html;
-        }
-        
-        function showCorrectedPaper() {
-            if (!correctedImages || correctedImages.length === 0) {
-                alert('No corrected images with errors found');
-                return;
-            }
-            
-            const modal = document.getElementById('correctedModal');
-            const modalBody = document.getElementById('modalBody');
-            
-            modalBody.innerHTML = '';
-            
-            correctedImages.forEach((img, index) => {
-                const imageSection = document.createElement('div');
-                imageSection.className = 'image-container';
-                
-                imageSection.innerHTML = `
-                    <h3 style="color: #4361ee; margin-bottom: 16px;">
-                        📄 Corrected Image ${index + 1}
-                        <span class="info-tag">${img.error_count} error(s) found</span>
-                        <span class="info-tag">Questions: ${img.questions.join(', ')}</span>
-                    </h3>
-                    
+                card.innerHTML = `
+                    <h3>📄 Image ${index + 1}</h3>
+                    <p style="color: #666; margin-bottom: 10px;">
+                        ${img.box_count} bounding box${img.box_count !== 1 ? 'es' : ''} drawn
+                    </p>
                     <img src="${img.image_base64}" 
-                         alt="Corrected paper ${index + 1}" 
-                         class="corrected-image"
+                         alt="Corrected image ${index + 1}"
                          onclick="window.open('${img.image_base64}', '_blank')">
-                    
-                    <div style="margin-top: 16px; padding: 12px; background: white; border-radius: 6px;">
-                        <p style="color: #666; margin-bottom: 8px;">
-                            <strong style="color: #ef4444;">🔴 Red boxes:</strong> Incorrect answers with major errors
-                        </p>
-                        <p style="color: #666; margin-bottom: 8px;">
-                            <strong style="color: #ff8c00;">🟠 Orange boxes:</strong> Partially correct answers
-                        </p>
-                        <p style="color: #666;">
-                            💡 Click image to view full size | Right-click to save | Boxes positioned at exact error locations
-                        </p>
-                    </div>
-                    
                     <button class="download-btn" onclick="downloadImage('${img.corrected_filename}')">
-                        ⬇️ Download This Corrected Image (High Quality)
+                        ⬇️ Download Image
                     </button>
                 `;
                 
-                modalBody.appendChild(imageSection);
-                
-                if (index < correctedImages.length - 1) {
-                    const separator = document.createElement('hr');
-                    separator.style.margin = '40px 0';
-                    separator.style.border = 'none';
-                    separator.style.borderTop = '2px solid #e9ecef';
-                    modalBody.appendChild(separator);
-                }
+                gallery.appendChild(card);
             });
-            
-            modal.classList.add('open');
-            
-            // Render MathJax in modal
-            if (window.MathJax) {
-                MathJax.typesetPromise();
-            }
         }
         
         function downloadImage(filename) {
             window.open(`${BACKEND_URL}/download-corrected/${filename}`, '_blank');
         }
         
-        function closeModal() {
-            document.getElementById('correctedModal').classList.remove('open');
-        }
-        
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            const modal = document.getElementById('correctedModal');
-            if (event.target === modal) {
-                closeModal();
-            }
-        };
-        
-        // ESC key to close modal
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                closeModal();
-            }
-        });
-        
-        console.log('✅ Math OCR Bounding Box Analyzer loaded');
+        console.log('✅ Bounding Box Generator Ready');
     </script>
 </body>
 </html>
