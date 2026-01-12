@@ -3,115 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bounding Box Test</title>
+    <title>Math OCR Bounding Box Analyzer</title>
+    
+    <!-- MathJax for LaTeX rendering -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],
+                displayMath: [['$$', '$$']],
+                processEscapes: true
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: Arial, sans-serif;
-            background: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
         }
         .container {
+            max-width: 1400px;
+            margin: 0 auto;
             background: white;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
         h1 {
             color: #4361ee;
             margin-bottom: 10px;
             text-align: center;
+            font-size: 2.5em;
         }
         .subtitle {
             color: #666;
             text-align: center;
             margin-bottom: 30px;
+            font-size: 1.1em;
         }
         .upload-area {
-            border: 3px dashed #ccc;
-            padding: 40px;
+            border: 3px dashed #4361ee;
+            padding: 60px 40px;
             text-align: center;
             margin: 20px 0;
             cursor: pointer;
-            background: #f9f9f9;
-            border-radius: 8px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 12px;
             transition: all 0.3s;
         }
         .upload-area:hover {
-            border-color: #4361ee;
-            background: #eef2ff;
+            border-color: #3a56d4;
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+            transform: translateY(-2px);
+        }
+        .upload-area h3 {
+            color: #4361ee;
+            margin-bottom: 10px;
+            font-size: 1.5em;
         }
         .file-list {
-            background: #f5f7fa;
-            padding: 15px;
+            background: #f8f9fa;
+            padding: 20px;
             border-radius: 8px;
             margin: 20px 0;
+            border: 1px solid #dee2e6;
         }
         .file-item {
-            padding: 8px;
-            border-bottom: 1px solid #ddd;
+            padding: 12px;
+            border-bottom: 1px solid #dee2e6;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: white;
+            margin-bottom: 8px;
+            border-radius: 6px;
+        }
+        .file-item:last-child {
+            border-bottom: none;
         }
         button {
-            background: #4361ee;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
+            padding: 14px 32px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 16px;
+            font-weight: 600;
             margin: 10px 5px;
-            transition: all 0.2s;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
         button:hover {
-            background: #3a56d4;
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
         }
         button:disabled {
             background: #ccc;
             cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
         }
         .results {
-            margin-top: 30px;
+            margin-top: 40px;
             display: none;
         }
         .question-card {
             background: white;
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 15px 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+        .question-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
         }
         .question-header {
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         .question-number {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         .status-badge {
-            padding: 6px 12px;
-            border-radius: 6px;
+            padding: 8px 16px;
+            border-radius: 20px;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 600;
+            text-transform: uppercase;
         }
         .status-correct { background: #d4edda; color: #155724; }
         .status-incorrect { background: #f8d7da; color: #721c24; }
         .status-partial { background: #fff3cd; color: #856404; }
+        .content-box {
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 12px 0;
+            border-left: 4px solid #dee2e6;
+        }
+        .content-box.error {
+            background: #fef2f2;
+            border-left-color: #ef4444;
+        }
+        .content-box.solution {
+            background: #f0fdf4;
+            border-left-color: #10b981;
+        }
         .modal {
             display: none;
             position: fixed;
@@ -119,7 +177,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.7);
             z-index: 1000;
             align-items: center;
             justify-content: center;
@@ -130,116 +188,130 @@
         }
         .modal-content {
             background: white;
-            border-radius: 12px;
-            max-width: 900px;
+            border-radius: 16px;
+            max-width: 1200px;
             width: 100%;
             max-height: 90vh;
             overflow: auto;
-            padding: 24px;
+            padding: 32px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
         }
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #e9ecef;
         }
         .modal-title {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: bold;
             color: #4361ee;
         }
         .close-btn {
             background: #6c757d;
-            padding: 8px 16px;
+            padding: 10px 20px;
             font-size: 14px;
         }
         .image-container {
-            position: relative;
             background: #f8f9fa;
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 20px;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 2px solid #dee2e6;
         }
         .corrected-image {
             max-width: 100%;
-            max-height: 60vh;
-            border-radius: 6px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: transform 0.3s;
         }
-        .bounding-box {
-            position: absolute;
-            border: 3px solid red;
-            border-radius: 4px;
-            pointer-events: none;
+        .corrected-image:hover {
+            transform: scale(1.02);
         }
-        .box-label {
-            position: absolute;
-            background: red;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-            pointer-events: none;
+        .download-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            margin-top: 16px;
         }
         .loading {
             display: inline-block;
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             border: 3px solid #f3f4f6;
             border-top-color: #4361ee;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
         }
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
         .error-box {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 12px;
-            border-radius: 6px;
-            margin: 10px 0;
+            background: #fee;
+            color: #c00;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
             display: none;
+            border: 2px solid #fcc;
         }
-        .corrected-btn {
-            background: #28a745;
-            margin-top: 20px;
-            display: none;
+        .success-box {
+            background: #d4edda;
+            color: #155724;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+            border: 2px solid #c3e6cb;
         }
-        .corrected-btn:hover {
-            background: #218838;
+        .info-tag {
+            display: inline-block;
+            background: #e0e7ff;
+            color: #4361ee;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 8px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🧪 Bounding Box Test</h1>
-        <p class="subtitle">Upload answer sheets to test bounding box generation</p>
+        <h1>📐 Math OCR Bounding Box Analyzer</h1>
+        <p class="subtitle">Upload student answer sheets to analyze errors with precise bounding boxes</p>
         
         <div class="upload-area" onclick="document.getElementById('fileInput').click()">
-            <h3>📤 Click to Select Files</h3>
-            <p>Select image files of student answer sheets</p>
+            <h3>📤 Click to Select Answer Sheets</h3>
+            <p>Upload one or more images of student work (JPG, PNG, PDF)</p>
         </div>
         
-        <input type="file" id="fileInput" multiple style="display: none;" onchange="showSelectedFiles()">
+        <input type="file" id="fileInput" multiple accept="image/*,application/pdf" style="display: none;" onchange="showSelectedFiles()">
         
-        <div id="selectedFiles" class="file-list"></div>
+        <div id="selectedFiles" class="file-list" style="display: none;"></div>
         
         <div style="text-align: center; margin: 30px 0;">
-            <button id="analyzeBtn" onclick="analyzeFiles()" disabled>Start Analysis</button>
+            <button id="analyzeBtn" onclick="analyzeFiles()" disabled>
+                🔍 Start Analysis
+            </button>
         </div>
         
         <div id="errorBox" class="error-box"></div>
         
         <div id="resultsSection" class="results">
-            <h2>Analysis Results</h2>
+            <div class="success-box">
+                <strong>✅ Analysis Complete!</strong>
+                <p id="summaryText"></p>
+            </div>
+            
+            <h2 style="margin: 30px 0 20px 0;">📝 Question-by-Question Analysis</h2>
             <div id="questionsList"></div>
             
-            <div style="text-align: center; margin: 30px 0;">
-                <button id="correctedBtn" class="corrected-btn" onclick="showCorrectedPaper()">
-                    📋 View Corrected Paper with Bounding Boxes
+            <div style="text-align: center; margin: 40px 0;">
+                <button id="correctedBtn" class="download-btn" onclick="showCorrectedPaper()" style="display: none;">
+                    📋 View Corrected Papers with Bounding Boxes
                 </button>
             </div>
         </div>
@@ -249,13 +321,10 @@
     <div id="correctedModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title">📋 Corrected Paper with Error Highlights</div>
+                <div class="modal-title">📋 Corrected Papers with Error Highlights</div>
                 <button class="close-btn" onclick="closeModal()">✕ Close</button>
             </div>
-            
-            <div id="modalBody">
-                <!-- Images with bounding boxes will appear here -->
-            </div>
+            <div id="modalBody"></div>
         </div>
     </div>
     
@@ -269,24 +338,26 @@
             const fileInput = document.getElementById('fileInput');
             selectedFiles = Array.from(fileInput.files);
             const analyzeBtn = document.getElementById('analyzeBtn');
+            const filesDiv = document.getElementById('selectedFiles');
             
             if (selectedFiles.length === 0) {
-                document.getElementById('selectedFiles').innerHTML = '<p>No files selected</p>';
+                filesDiv.style.display = 'none';
                 analyzeBtn.disabled = true;
                 return;
             }
             
-            let html = '<h3>Selected Files:</h3>';
+            let html = '<h3>📁 Selected Files:</h3>';
             selectedFiles.forEach(file => {
                 html += `
                     <div class="file-item">
-                        <span>${file.name}</span>
-                        <span>${formatBytes(file.size)}</span>
+                        <span><strong>${file.name}</strong></span>
+                        <span class="info-tag">${formatBytes(file.size)}</span>
                     </div>
                 `;
             });
             
-            document.getElementById('selectedFiles').innerHTML = html;
+            filesDiv.innerHTML = html;
+            filesDiv.style.display = 'block';
             analyzeBtn.disabled = false;
         }
         
@@ -300,7 +371,7 @@
         
         function showError(message) {
             const errorBox = document.getElementById('errorBox');
-            errorBox.textContent = message;
+            errorBox.innerHTML = '<strong>❌ Error:</strong> ' + message;
             errorBox.style.display = 'block';
         }
         
@@ -314,8 +385,8 @@
             hideError();
             
             const analyzeBtn = document.getElementById('analyzeBtn');
-            const originalText = analyzeBtn.textContent;
-            analyzeBtn.innerHTML = '<div class="loading"></div> Analyzing...';
+            const originalHTML = analyzeBtn.innerHTML;
+            analyzeBtn.innerHTML = '<div class="loading"></div> Analyzing with AI...';
             analyzeBtn.disabled = true;
             
             const formData = new FormData();
@@ -324,13 +395,6 @@
             });
             
             try {
-                // Make OPTIONS request first
-                await fetch(`${BACKEND_URL}/bounding-analyze`, {
-                    method: 'OPTIONS',
-                    credentials: 'include'
-                });
-                
-                // Make POST request
                 const response = await fetch(`${BACKEND_URL}/bounding-analyze`, {
                     method: 'POST',
                     body: formData,
@@ -338,11 +402,22 @@
                 });
                 
                 const data = await response.json();
-                console.log('Server response:', data);
                 
                 if (data.success) {
                     analysisResult = data;
                     correctedImages = data.corrected_images || [];
+                    
+                    // Update summary
+                    const correctCount = data.questions.filter(q => q.status === 'correct').length;
+                    const incorrectCount = data.questions.filter(q => q.status === 'incorrect').length;
+                    const partialCount = data.questions.filter(q => q.status === 'partial').length;
+                    
+                    document.getElementById('summaryText').innerHTML = `
+                        Found <strong>${data.questions.length}</strong> questions: 
+                        <span style="color: #155724;">${correctCount} correct</span>, 
+                        <span style="color: #721c24;">${incorrectCount} incorrect</span>, 
+                        <span style="color: #856404;">${partialCount} partial</span>
+                    `;
                     
                     // Display questions
                     displayQuestions(data.questions);
@@ -350,24 +425,31 @@
                     // Show results
                     document.getElementById('resultsSection').style.display = 'block';
                     
-                    // Show corrected button if we have corrected images
+                    // Show corrected button if we have errors
                     if (correctedImages.length > 0) {
                         document.getElementById('correctedBtn').style.display = 'inline-block';
                     }
                     
+                    // Render MathJax
+                    if (window.MathJax) {
+                        MathJax.typesetPromise();
+                    }
+                    
                     // Scroll to results
-                    document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+                    document.getElementById('resultsSection').scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
                     
                 } else {
-                    showError('Error: ' + (data.error || 'Analysis failed'));
+                    showError(data.error || 'Analysis failed');
                 }
             } catch (error) {
                 console.error('Analysis error:', error);
                 showError('Network error: ' + error.message);
             } finally {
-                analyzeBtn.textContent = originalText;
+                analyzeBtn.innerHTML = originalHTML;
                 analyzeBtn.disabled = false;
-                analyzeBtn.innerHTML = originalText;
             }
         }
         
@@ -384,38 +466,37 @@
                     <div class="question-card">
                         <div class="question-header">
                             <div class="question-number" style="background: ${statusColor}20; color: ${statusColor}">
-                                ${q.number}
+                                ${q.question_number}
                             </div>
                             <div style="flex: 1;">
-                                <h3 style="margin-bottom: 5px;">${q.question}</h3>
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <span class="status-badge ${statusClass}">${q.status}</span>
+                                <div style="font-size: 1.2em; margin-bottom: 8px; color: #212529;">
+                                    ${q.question_text}
                                 </div>
+                                <span class="status-badge ${statusClass}">${q.status}</span>
                             </div>
                         </div>
                         
-                        <div style="margin: 15px 0;">
-                            <div style="font-weight: 600; color: #4361ee; margin-bottom: 5px;">Student's Answer:</div>
-                            <div style="background: #f8f9fa; padding: 10px; border-radius: 6px;">
-                                ${q.student_original}
+                        <div class="content-box">
+                            <div style="font-weight: 600; color: #4361ee; margin-bottom: 8px;">
+                                📝 Student's Work:
                             </div>
+                            <div>${q.student_work}</div>
                         </div>
                         
-                        <div style="margin: 15px 0;">
-                            <div style="font-weight: 600; color: ${q.status === 'incorrect' ? '#ef4444' : '#f59e0b'}; margin-bottom: 5px;">
-                                Error Analysis:
+                        ${q.status !== 'correct' ? `
+                            <div class="content-box error">
+                                <div style="font-weight: 600; color: #ef4444; margin-bottom: 8px;">
+                                    ⚠️ Error Analysis:
+                                </div>
+                                <div>${q.error_explanation}</div>
                             </div>
-                            <div style="background: ${q.status === 'incorrect' ? '#fef2f2' : '#fffbeb'}; 
-                                 padding: 10px; border-radius: 6px; border-left: 4px solid ${q.status === 'incorrect' ? '#ef4444' : '#f59e0b'};">
-                                ${q.error}
-                            </div>
-                        </div>
+                        ` : ''}
                         
-                        <div style="margin: 15px 0;">
-                            <div style="font-weight: 600; color: #10b981; margin-bottom: 5px;">Correct Solution:</div>
-                            <div style="background: #f0fdf4; padding: 10px; border-radius: 6px; border-left: 4px solid #10b981;">
-                                ${q.correct_solution}
+                        <div class="content-box solution">
+                            <div style="font-weight: 600; color: #10b981; margin-bottom: 8px;">
+                                ✅ Correct Solution:
                             </div>
+                            <div>${q.correct_solution}</div>
                         </div>
                     </div>
                 `;
@@ -426,109 +507,66 @@
         
         function showCorrectedPaper() {
             if (!correctedImages || correctedImages.length === 0) {
-                alert('No corrected images available');
+                alert('No corrected images with errors found');
                 return;
             }
             
             const modal = document.getElementById('correctedModal');
             const modalBody = document.getElementById('modalBody');
             
-            // Clear previous content
             modalBody.innerHTML = '';
             
-            // Add each corrected image
             correctedImages.forEach((img, index) => {
-                const imageDiv = document.createElement('div');
-                imageDiv.className = 'image-container';
-                imageDiv.style.position = 'relative';
-                imageDiv.style.marginBottom = '30px';
+                const imageSection = document.createElement('div');
+                imageSection.className = 'image-container';
                 
-                // Title
-                const title = document.createElement('h3');
-                title.textContent = `Question ${img.question_number} - ${img.status.toUpperCase()}`;
-                title.style.color = img.status === 'incorrect' ? '#ef4444' : '#f59e0b';
-                title.style.marginBottom = '15px';
-                
-                // Image
-                const imgElement = document.createElement('img');
-                imgElement.className = 'corrected-image';
-                imgElement.src = img.image_base64;
-                imgElement.alt = `Corrected Q${img.question_number}`;
-                imgElement.style.cursor = 'pointer';
-                
-                // Click to view full size
-                imgElement.onclick = function() {
-                    window.open(img.image_base64, '_blank');
-                };
-                
-                // Container for bounding boxes
-                const boxesContainer = document.createElement('div');
-                boxesContainer.style.position = 'absolute';
-                boxesContainer.style.top = '0';
-                boxesContainer.style.left = '0';
-                boxesContainer.style.width = '100%';
-                boxesContainer.style.height = '100%';
-                
-                imageDiv.appendChild(title);
-                imageDiv.appendChild(imgElement);
-                imageDiv.appendChild(boxesContainer);
-                modalBody.appendChild(imageDiv);
-                
-                // Wait for image to load, then position boxes
-                imgElement.onload = function() {
-                    const scaleX = imgElement.offsetWidth / imgElement.naturalWidth;
-                    const scaleY = imgElement.offsetHeight / imgElement.naturalHeight;
+                imageSection.innerHTML = `
+                    <h3 style="color: #4361ee; margin-bottom: 16px;">
+                        📄 Corrected Image ${index + 1}
+                        <span class="info-tag">Questions: ${img.questions.join(', ')}</span>
+                    </h3>
                     
-                    // Add bounding boxes
-                    img.bounding_boxes.forEach(bbox => {
-                        // Box
-                        const boxDiv = document.createElement('div');
-                        boxDiv.className = 'bounding-box';
-                        boxDiv.style.position = 'absolute';
-                        boxDiv.style.borderColor = img.status === 'incorrect' ? 'red' : 'orange';
-                        boxDiv.style.left = (bbox.x * scaleX) + 'px';
-                        boxDiv.style.top = (bbox.y * scaleY) + 'px';
-                        boxDiv.style.width = (bbox.width * scaleX) + 'px';
-                        boxDiv.style.height = (bbox.height * scaleY) + 'px';
-                        
-                        // Label
-                        if (bbox.label) {
-                            const labelDiv = document.createElement('div');
-                            labelDiv.className = 'box-label';
-                            labelDiv.textContent = bbox.label;
-                            labelDiv.style.left = (bbox.x * scaleX) + 'px';
-                            labelDiv.style.top = ((bbox.y * scaleY) - 25) + 'px';
-                            labelDiv.style.backgroundColor = img.status === 'incorrect' ? 'red' : 'orange';
-                            boxesContainer.appendChild(labelDiv);
-                        }
-                        
-                        boxesContainer.appendChild(boxDiv);
-                    });
-                };
-                
-                // Error details
-                const details = document.createElement('div');
-                details.style.background = '#f8f9fa';
-                details.style.padding = '15px';
-                details.style.borderRadius = '8px';
-                details.style.marginTop = '10px';
-                details.innerHTML = `
-                    <p><strong>Question ${img.question_number}</strong> has <span style="color: ${img.status === 'incorrect' ? '#ef4444' : '#f59e0b'}">${img.status}</span> errors.</p>
-                    <p>Red boxes highlight areas with major errors, orange boxes show partial errors.</p>
+                    <img src="${img.image_base64}" 
+                         alt="Corrected paper ${index + 1}" 
+                         class="corrected-image"
+                         onclick="window.open('${img.image_base64}', '_blank')">
+                    
+                    <div style="margin-top: 16px; padding: 12px; background: white; border-radius: 6px;">
+                        <p style="color: #666; margin-bottom: 8px;">
+                            <strong>Red boxes:</strong> Incorrect answers | 
+                            <strong>Orange boxes:</strong> Partial answers
+                        </p>
+                        <p style="color: #666;">
+                            Click image to view full size | Right-click to save
+                        </p>
+                    </div>
+                    
+                    <button class="download-btn" onclick="downloadImage('${img.corrected_filename}')">
+                        ⬇️ Download This Corrected Image
+                    </button>
                 `;
                 
-                modalBody.appendChild(details);
+                modalBody.appendChild(imageSection);
                 
-                // Separator if not last
                 if (index < correctedImages.length - 1) {
                     const separator = document.createElement('hr');
-                    separator.style.margin = '30px 0';
-                    separator.style.borderColor = '#e9ecef';
+                    separator.style.margin = '40px 0';
+                    separator.style.border = 'none';
+                    separator.style.borderTop = '2px solid #e9ecef';
                     modalBody.appendChild(separator);
                 }
             });
             
             modal.classList.add('open');
+            
+            // Render MathJax in modal
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+        
+        function downloadImage(filename) {
+            window.open(`${BACKEND_URL}/download-corrected/${filename}`, '_blank');
         }
         
         function closeModal() {
@@ -543,10 +581,14 @@
             }
         };
         
-        // Test connection on load
-        window.onload = function() {
-            console.log('Bounding box test loaded');
-        };
+        // ESC key to close modal
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+        
+        console.log('✅ Math OCR Bounding Box Analyzer loaded');
     </script>
 </body>
 </html>
