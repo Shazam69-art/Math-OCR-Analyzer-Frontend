@@ -412,11 +412,17 @@
                     const incorrectCount = data.questions.filter(q => q.status === 'incorrect').length;
                     const partialCount = data.questions.filter(q => q.status === 'partial').length;
                     
+                    const notAttempted = data.questions.filter(q => q.status === 'not_attempted').length;
+                    const highConfidence = data.questions.filter(q => q.confidence === 'high').length;
+                    
                     document.getElementById('summaryText').innerHTML = `
                         Found <strong>${data.questions.length}</strong> questions: 
-                        <span style="color: #155724;">${correctCount} correct</span>, 
-                        <span style="color: #721c24;">${incorrectCount} incorrect</span>, 
-                        <span style="color: #856404;">${partialCount} partial</span>
+                        <span style="color: #155724;">✅ ${correctCount} correct</span>, 
+                        <span style="color: #721c24;">❌ ${incorrectCount} incorrect</span>, 
+                        <span style="color: #856404;">⚠️ ${partialCount} partial</span>
+                        ${notAttempted > 0 ? `, <span style="color: #6c757d;">⭕ ${notAttempted} not attempted</span>` : ''}
+                        <br>
+                        <small style="color: #666;">Coordinate confidence: ${highConfidence}/${data.questions.length} boxes with high precision</small>
                     `;
                     
                     // Display questions
@@ -462,6 +468,12 @@
                 const statusColor = q.status === 'correct' ? '#10b981' : 
                                   q.status === 'incorrect' ? '#ef4444' : '#f59e0b';
                 
+                const confidenceBadge = q.confidence ? 
+                    `<span style="background: ${q.confidence === 'high' ? '#d4edda' : q.confidence === 'medium' ? '#fff3cd' : '#f8d7da'}; 
+                     color: ${q.confidence === 'high' ? '#155724' : q.confidence === 'medium' ? '#856404' : '#721c24'}; 
+                     padding: 4px 8px; border-radius: 4px; font-size: 11px; margin-left: 8px;">
+                     📍 ${q.confidence} precision</span>` : '';
+                
                 html += `
                     <div class="question-card">
                         <div class="question-header">
@@ -472,7 +484,10 @@
                                 <div style="font-size: 1.2em; margin-bottom: 8px; color: #212529;">
                                     ${q.question_text}
                                 </div>
-                                <span class="status-badge ${statusClass}">${q.status}</span>
+                                <div>
+                                    <span class="status-badge ${statusClass}">${q.status}</span>
+                                    ${confidenceBadge}
+                                </div>
                             </div>
                         </div>
                         
@@ -483,12 +498,17 @@
                             <div>${q.student_work}</div>
                         </div>
                         
-                        ${q.status !== 'correct' ? `
+                        ${q.status !== 'correct' && q.status !== 'not_attempted' ? `
                             <div class="content-box error">
                                 <div style="font-weight: 600; color: #ef4444; margin-bottom: 8px;">
                                     ⚠️ Error Analysis:
                                 </div>
                                 <div>${q.error_explanation}</div>
+                                ${q.error_location ? `
+                                    <div style="margin-top: 8px; padding: 8px; background: rgba(239, 68, 68, 0.1); border-radius: 4px;">
+                                        <strong>📍 Error Location:</strong> ${q.error_location}
+                                    </div>
+                                ` : ''}
                             </div>
                         ` : ''}
                         
@@ -523,6 +543,7 @@
                 imageSection.innerHTML = `
                     <h3 style="color: #4361ee; margin-bottom: 16px;">
                         📄 Corrected Image ${index + 1}
+                        <span class="info-tag">${img.error_count} error(s) found</span>
                         <span class="info-tag">Questions: ${img.questions.join(', ')}</span>
                     </h3>
                     
@@ -533,16 +554,18 @@
                     
                     <div style="margin-top: 16px; padding: 12px; background: white; border-radius: 6px;">
                         <p style="color: #666; margin-bottom: 8px;">
-                            <strong>Red boxes:</strong> Incorrect answers | 
-                            <strong>Orange boxes:</strong> Partial answers
+                            <strong style="color: #ef4444;">🔴 Red boxes:</strong> Incorrect answers with major errors
+                        </p>
+                        <p style="color: #666; margin-bottom: 8px;">
+                            <strong style="color: #ff8c00;">🟠 Orange boxes:</strong> Partially correct answers
                         </p>
                         <p style="color: #666;">
-                            Click image to view full size | Right-click to save
+                            💡 Click image to view full size | Right-click to save | Boxes positioned at exact error locations
                         </p>
                     </div>
                     
                     <button class="download-btn" onclick="downloadImage('${img.corrected_filename}')">
-                        ⬇️ Download This Corrected Image
+                        ⬇️ Download This Corrected Image (High Quality)
                     </button>
                 `;
                 
