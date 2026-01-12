@@ -256,12 +256,24 @@
                 if (data.success) {
                     const errorCount = data.questions.filter(q => q.has_error).length;
                     
+                    // Show identified questions
+                    let questionsList = '';
+                    if (data.questions_list) {
+                        questionsList = '<br><strong>Questions identified:</strong> ';
+                        questionsList += data.questions_list.map(q => {
+                            if (q.sub_parts && q.sub_parts.length > 0) {
+                                return `Q${q.question_number}(${q.sub_parts.join(',')})`;
+                            }
+                            return `Q${q.question_number}`;
+                        }).join(', ');
+                    }
+                    
                     document.getElementById('summaryText').innerHTML = `
-                        Found <strong>${data.questions.length}</strong> questions with bounding boxes
+                        Found <strong>${data.questions.length}</strong> student answers${questionsList}
+                        <br><br>
+                        <strong style="color: #dc3545;">🔴 ${errorCount}</strong> questions with errors (red boxes)
                         <br>
-                        <strong style="color: #dc3545;">${errorCount}</strong> questions marked with errors (red boxes)
-                        <br>
-                        <strong style="color: #28a745;">${data.questions.length - errorCount}</strong> questions correct (green boxes)
+                        <strong style="color: #28a745;">🟢 ${data.questions.length - errorCount}</strong> questions correct (green boxes)
                     `;
                     
                     // Display images
@@ -292,15 +304,19 @@
                 card.className = 'image-card';
                 
                 card.innerHTML = `
-                    <h3>📄 Image ${index + 1}</h3>
+                    <h3>📄 ${img.original_filename || `Image ${index + 1}`}</h3>
                     <p style="color: #666; margin-bottom: 10px;">
-                        ${img.box_count} bounding box${img.box_count !== 1 ? 'es' : ''} drawn
+                        <strong>${img.box_count}</strong> question${img.box_count !== 1 ? 's' : ''}: ${img.questions.join(', ')}
                     </p>
                     <img src="${img.image_base64}" 
                          alt="Corrected image ${index + 1}"
-                         onclick="window.open('${img.image_base64}', '_blank')">
+                         onclick="window.open('${img.image_base64}', '_blank')"
+                         title="Click to view full size">
+                    <p style="color: #999; font-size: 12px; margin-top: 8px;">
+                        🔴 Red = Error | 🟢 Green = Correct
+                    </p>
                     <button class="download-btn" onclick="downloadImage('${img.corrected_filename}')">
-                        ⬇️ Download Image
+                        ⬇️ Download High Quality Image
                     </button>
                 `;
                 
