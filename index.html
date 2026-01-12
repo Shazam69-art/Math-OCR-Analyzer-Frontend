@@ -513,16 +513,8 @@
             }
         };
         
-        // Test CORS by making an OPTIONS request on page load
-        window.onload = function() {
-            fetch(`${BACKEND_URL}/test-health`, {
-                method: 'GET',
-                credentials: 'include'
-            })
-            .then(response => response.json())
-            .then(data => console.log('Health check:', data))
-            .catch(err => console.log('Health check failed (might be CORS):', err));
-        };
+        
+        
     </script>
 </body>
 </html>
