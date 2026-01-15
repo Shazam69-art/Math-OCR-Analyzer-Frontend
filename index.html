@@ -857,12 +857,9 @@
 
         /* === FIX FOR LONG STEPS / EQUATIONS === */
         .solution-steps > p,
-        .solution-steps > div,
-        .step-line {
-            white-space: nowrap;
-            margin-bottom: 12px;
-            line-height: 1.8;
-            min-width: 100%;
+       .solution-steps > div {
+       margin-bottom: 8px;
+       line-height: 1.8;
         }
 
         .solution-steps mjx-container {
@@ -910,28 +907,7 @@
             margin-bottom: 16px;
         }
 
-        .reanalysis-card {
-            background-color: rgba(238, 242, 255, 0.5);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 16px;
-            margin-top: 16px;
-        }
-
-        .reanalysis-input-group {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
-        }
-
-        .reanalysis-input-group input {
-            flex: 1;
-            padding: 10px 12px;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 14px;
-        }
-
+        
         .ai-response {
             background-color: var(--background);
             border: 1px solid var(--border);
@@ -2216,12 +2192,12 @@
 
         function processSteps(str) {
             if (!str) return '';
-            const steps = str.split('<br>').filter(step => step.trim() !== '');
-            return steps.map(step => `
-                <div class="step-line">
-                    ${step.trim()}
-                </div>
-            `).join('');
+            // Remove any existing HTML tags except <br>
+            let cleaned = str.replace(/<(?!br\s*\/?)[^>]+>/gi, '');
+            // Split by <br> and filter empty lines
+            const steps = cleaned.split(/<br\s*\/?>/i).filter(step => step.trim() !== '');
+            // Join with simple line breaks, no extra divs
+            return steps.map(step => step.trim()).join('<br>');
         }
 
         function displayAnalysis(result, isLoaded = false, analysis = null) {
@@ -2273,17 +2249,7 @@
                                 <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                                 View Answer Image
                             </button>` : ''}
-                            <div class="reanalysis-card">
-                                <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem;">Re-analyze This Question</h3>
-                                <div class="reanalysis-input-group">
-                                    <input type="text" id="reanalysisInput${i}" placeholder="Ask AI to re-analyze this question...">
-                                    <button class="btn-primary" style="width: auto;" onclick="reanalyzeQuestion(${i})">Send</button>
-                                </div>
-                                <div id="aiResponse${i}" style="display: none;" class="ai-response">
-                                    <div class="ai-badge">AI</div>
-                                    <p></p>
-                                </div>
-                            </div>
+                           
                         </div>`;
                     accordion.appendChild(item);
                     renderMath(item);
@@ -2313,51 +2279,7 @@
             document.getElementById(id).classList.toggle('open');
         }
 
-        async function reanalyzeQuestion(i) {
-            const query = document.getElementById(`reanalysisInput${i}`).value.trim();
-            if (!query) return;
-
-            const question = analysisResult.questions[i];
-            const btn = event.target;
-            btn.innerHTML = '<div class="loading" style="width: 16px; height: 16px; border-width: 2px;"></div>';
-
-            try {
-                const response = await fetch(`${BACKEND_URL}/reanalyze`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        user_query: query,
-                        question: question.question,
-                        student_original: question.student_original,
-                        error: question.error,
-                        correct_solution: question.correct_solution
-                    }),
-                    credentials: 'include'
-                });
-
-                if (response.status === 401) {
-                    showLoginPage();
-                    alert('Session expired. Please login again.');
-                    return;
-                }
-
-                const data = await response.json();
-
-                if (data.error) {
-                    alert(data.error);
-                } else {
-                    const responseDiv = document.getElementById(`aiResponse${i}`);
-                    responseDiv.style.display = 'flex';
-                    responseDiv.querySelector('p').innerHTML = data.response;
-                    renderMath(responseDiv);
-                }
-            } catch (error) {
-                alert('Error: ' + error.message);
-            } finally {
-                btn.innerHTML = 'Send';
-            }
-        }
-
+        
         function openImageModal(i, status, imageFile, bbox) {
             const modal = document.getElementById('imageModal');
             const modalImage = document.getElementById('modalImage');
