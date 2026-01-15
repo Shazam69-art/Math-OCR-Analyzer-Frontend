@@ -853,19 +853,18 @@
             font-size: 14px;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
+            line-height: 1.8;
         }
 
-        /* === FIX FOR LONG STEPS / EQUATIONS === */
         .solution-steps > p,
-       .solution-steps > div {
-       margin-bottom: 8px;
-       line-height: 1.8;
+        .solution-steps > div {
+            margin-bottom: 12px;
+            line-height: 1.8;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
-        .solution-steps mjx-container {
-            display: inline-block !important;
-            white-space: nowrap !important;
-        }
+        
 
         .ai-response {
             overflow-x: auto;
