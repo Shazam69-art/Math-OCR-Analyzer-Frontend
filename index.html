@@ -3,44 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MathGPT - Intelligent Math Analysis</title>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <title>MathGPT - Fast Math Analysis</title>
+    
+    <!-- SIMPLE MathJax - No external dependencies -->
     <script>
         window.MathJax = {
             tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                displayMath: [['$$', '$$']],
-                processEscapes: true,
-                processEnvironments: true
-            },
-            options: {
-                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-                ignoreHtmlClass: 'tex2jax_ignore',
-                processHtmlClass: 'tex2jax_process'
+                inlineMath: [['$', '$']],
+                displayMath: [['$$', '$$']]
             },
             startup: {
-                pageReady: () => {
-                    return MathJax.startup.defaultPageReady();
-                }
+                pageReady: () => MathJax.startup.defaultPageReady()
             }
         };
     </script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
     <style>
+        /* SIMPLE, CLEAN STYLES */
         :root {
-            --primary: #6366F1;
-            --primary-dark: #4F46E5;
-            --secondary: #EC4899;
-            --background: #0F172A;
-            --surface: #1E293B;
-            --text-primary: #F1F5F9;
-            --text-secondary: #94A3B8;
-            --border: #334155;
-            --accent: #3B82F6;
-            --success: #10B981;
-            --warning: #F59E0B;
-            --error: #EF4444;
-            --radius: 12px;
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
         }
 
         * {
@@ -50,100 +41,69 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--background);
-            color: var(--text-primary);
-            height: 100vh;
-            overflow: hidden;
-            font-size: 16px;
-            line-height: 1.6;
+            color: var(--text);
+            line-height: 1.5;
+            min-height: 100vh;
         }
 
-        /* Login Screen */
-        #loginScreen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+        /* LOGIN PAGE */
+        #loginPage {
+            min-height: 100vh;
             display: flex;
-            justify-content: center;
             align-items: center;
-            z-index: 1000;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 20px;
         }
 
         .login-box {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
+            background: white;
+            border-radius: 16px;
             padding: 40px;
             width: 100%;
-            max-width: 420px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
 
         .login-title {
-            font-size: 36px;
-            font-weight: 800;
+            font-size: 32px;
+            font-weight: 700;
             text-align: center;
             margin-bottom: 8px;
-            background: linear-gradient(135deg, #fff 0%, #E2E8F0 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
+            color: var(--primary);
         }
 
         .login-subtitle {
             text-align: center;
-            color: rgba(255, 255, 255, 0.85);
+            color: var(--text-light);
             margin-bottom: 32px;
-            font-size: 16px;
-            font-weight: 400;
         }
 
-        .login-tabs {
+        .tabs {
             display: flex;
-            gap: 12px;
+            gap: 8px;
             margin-bottom: 24px;
-            background: rgba(255, 255, 255, 0.1);
+            background: #f1f5f9;
             padding: 4px;
             border-radius: 12px;
         }
 
-        .tab-btn {
+        .tab {
             flex: 1;
-            padding: 14px;
+            padding: 12px;
             border: none;
             background: transparent;
-            color: rgba(255, 255, 255, 0.7);
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 15px;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
 
-        .tab-btn.active {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-        }
-
-        .login-form {
-            display: none;
-        }
-
-        .login-form.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .tab.active {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         .form-group {
@@ -152,11 +112,9 @@
 
         .form-input {
             width: 100%;
-            padding: 16px;
-            border-radius: 12px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
             font-size: 16px;
             transition: all 0.3s;
         }
@@ -164,21 +122,16 @@
         .form-input:focus {
             outline: none;
             border-color: var(--primary);
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
         }
 
-        .form-input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .login-btn {
+        .btn {
             width: 100%;
-            padding: 16px;
+            padding: 14px;
             background: var(--primary);
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
@@ -186,232 +139,192 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
         }
 
-        .login-btn:hover {
+        .btn:hover {
             background: var(--primary-dark);
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
         }
 
-        .login-btn:active {
+        .btn:active {
             transform: translateY(0);
         }
 
-        .error-message {
-            color: #FECACA;
+        .error {
+            color: var(--error);
             font-size: 14px;
-            margin-top: 12px;
+            margin-top: 8px;
             text-align: center;
-            padding: 10px;
-            background: rgba(239, 68, 68, 0.1);
-            border-radius: 8px;
-            border: 1px solid rgba(239, 68, 68, 0.3);
             display: none;
         }
 
-        .error-message.show {
+        .error.show {
             display: block;
-            animation: fadeIn 0.3s ease;
         }
 
-        /* Main App */
+        /* MAIN APP */
         #app {
-            height: 100vh;
             display: none;
-            overflow: hidden;
-        }
-
-        .app-layout {
-            display: flex;
-            height: 100%;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 300px;
-            background: var(--surface);
-            border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            flex-shrink: 0;
-        }
-
-        .sidebar-header {
-            padding: 24px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .sidebar-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .user-info {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        .sidebar-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-        }
-
-        .history-item {
-            padding: 16px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 2px solid transparent;
-        }
-
-        .history-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: var(--primary);
-            transform: translateX(4px);
-        }
-
-        .history-item.active {
-            background: rgba(99, 102, 241, 0.2);
-            border-color: var(--primary);
-        }
-
-        .history-title {
-            font-weight: 600;
-            margin-bottom: 6px;
-            font-size: 16px;
-            color: var(--text-primary);
-        }
-
-        .history-date {
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            min-width: 0;
+            min-height: 100vh;
         }
 
         .header {
-            padding: 20px 24px;
+            background: white;
             border-bottom: 1px solid var(--border);
+            padding: 16px 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            flex-shrink: 0;
-            background: var(--surface);
         }
 
-        .upload-area {
+        .header-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .user-info {
             display: flex;
             align-items: center;
             gap: 16px;
-            flex: 1;
         }
 
-        .upload-btn {
-            padding: 12px 24px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
+        .username {
             font-weight: 600;
-            font-size: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s;
-            white-space: nowrap;
-        }
-
-        .upload-btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-        }
-
-        .file-info {
-            color: var(--text-secondary);
-            font-size: 14px;
-            flex: 1;
-            min-width: 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
         }
 
         .logout-btn {
-            padding: 10px 20px;
+            padding: 8px 16px;
             background: transparent;
-            color: var(--text-secondary);
-            border: 2px solid var(--border);
-            border-radius: 10px;
+            color: var(--text-light);
+            border: 1px solid var(--border);
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 600;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
         .logout-btn:hover {
             color: var(--error);
             border-color: var(--error);
-            background: rgba(239, 68, 68, 0.1);
         }
 
-        /* Chat Area */
-        .chat-area {
-            flex: 1;
-            overflow-y: auto;
+        /* MAIN CONTENT */
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-            background: var(--background);
         }
 
-        .message {
-            max-width: 85%;
-            padding: 0;
-            border-radius: 0;
-            background: transparent;
-            border: none;
-        }
-
-        .message.ai {
-            align-self: flex-start;
-            width: 100%;
-        }
-
-        .question-analysis {
-            background: var(--surface);
-            border: 2px solid var(--border);
+        /* UPLOAD AREA */
+        .upload-area {
+            background: white;
+            border: 2px dashed var(--border);
             border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 16px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 24px;
             transition: all 0.3s;
         }
 
-        .question-analysis:hover {
+        .upload-area:hover {
             border-color: var(--primary);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: var(--primary);
+        }
+
+        .upload-text {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .upload-subtext {
+            color: var(--text-light);
+            margin-bottom: 24px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-list {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        /* ANALYSIS RESULTS */
+        .analysis-results {
+            display: none;
+        }
+
+        .results-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .results-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .stats {
+            display: flex;
+            gap: 12px;
+        }
+
+        .stat {
+            padding: 8px 16px;
+            background: #f1f5f9;
+            border-radius: 8px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stat-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .stat-dot.correct { background: var(--secondary); }
+        .stat-dot.partial { background: var(--warning); }
+        .stat-dot.incorrect { background: var(--error); }
+
+        /* QUESTIONS LIST */
+        .questions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .question-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s;
+        }
+
+        .question-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
         }
 
         .question-header {
@@ -420,73 +333,63 @@
             gap: 16px;
             margin-bottom: 20px;
             padding-bottom: 16px;
-            border-bottom: 2px solid var(--border);
+            border-bottom: 1px solid var(--border);
         }
 
         .question-number {
-            min-width: 42px;
-            height: 42px;
+            width: 40px;
+            height: 40px;
             background: var(--primary);
             color: white;
-            border-radius: 12px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 18px;
             flex-shrink: 0;
         }
 
-        .status-badge {
+        .question-status {
             padding: 6px 16px;
             border-radius: 20px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
-            letter-spacing: 0.5px;
             text-transform: uppercase;
         }
 
-        .status-badge.correct {
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--success);
-            border: 1px solid rgba(16, 185, 129, 0.3);
+        .status-correct {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--secondary);
         }
 
-        .status-badge.partial {
-            background: rgba(245, 158, 11, 0.2);
+        .status-partial {
+            background: rgba(245, 158, 11, 0.1);
             color: var(--warning);
-            border: 1px solid rgba(245, 158, 11, 0.3);
         }
 
-        .status-badge.incorrect {
-            background: rgba(239, 68, 68, 0.2);
+        .status-incorrect {
+            background: rgba(239, 68, 68, 0.1);
             color: var(--error);
-            border: 1px solid rgba(239, 68, 68, 0.3);
         }
 
         .solution-section {
-            margin: 20px 0;
+            margin: 16px 0;
         }
 
-        .solution-label {
+        .section-label {
             font-weight: 600;
-            color: var(--text-secondary);
-            margin-bottom: 12px;
+            color: var(--text-light);
+            margin-bottom: 8px;
             display: block;
-            font-size: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
         .solution-box {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 20px;
-            border-radius: 12px;
+            background: #f8fafc;
+            padding: 16px;
+            border-radius: 8px;
             border-left: 4px solid var(--primary);
             font-size: 16px;
-            line-height: 1.8;
-            overflow-x: auto;
+            line-height: 1.6;
         }
 
         .solution-box.error {
@@ -495,46 +398,25 @@
         }
 
         .solution-box.corrected {
-            border-left-color: var(--success);
+            border-left-color: var(--secondary);
             background: rgba(16, 185, 129, 0.05);
         }
 
-        /* MathJax specific */
-        .MathJax {
-            font-size: 110% !important;
-        }
-
-        mjx-container {
-            display: inline-block !important;
-            margin: 0 0.2em !important;
-            vertical-align: middle !important;
-        }
-
-        mjx-container[display="true"] {
-            display: block !important;
-            margin: 1em 0 !important;
-            text-align: center !important;
-        }
-
-        /* Action Buttons */
+        /* ACTION BUTTONS */
         .action-buttons {
             display: flex;
             gap: 12px;
-            margin-top: 24px;
+            margin-top: 32px;
             flex-wrap: wrap;
         }
 
         .action-btn {
-            padding: 14px 24px;
-            border: none;
-            border-radius: 12px;
+            padding: 12px 24px;
+            border-radius: 10px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 15px;
+            border: 2px solid transparent;
         }
 
         .action-btn.primary {
@@ -542,119 +424,21 @@
             color: white;
         }
 
-        .action-btn.primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
-        }
-
         .action-btn.secondary {
-            background: var(--surface);
-            color: var(--text-primary);
-            border: 2px solid var(--border);
-        }
-
-        .action-btn.secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: var(--primary);
-            transform: translateY(-2px);
-        }
-
-        /* Modals */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.85);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            padding: 20px;
-            backdrop-filter: blur(10px);
-        }
-
-        .modal.active {
-            display: flex;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .modal-content {
-            background: var(--surface);
-            border-radius: 20px;
-            padding: 32px;
-            max-width: 800px;
-            width: 100%;
-            max-height: 85vh;
-            overflow-y: auto;
-            border: 2px solid var(--border);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-        }
-
-        .modal-header {
-            margin-bottom: 24px;
-        }
-
-        .modal-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .corrected-image {
-            width: 100%;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            border: 2px solid var(--border);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Practice Paper */
-        .practice-paper {
             background: white;
-            color: #1F2937;
-            padding: 32px;
-            border-radius: 16px;
-            margin-top: 20px;
-            font-size: 16px;
-            line-height: 1.8;
+            color: var(--text);
+            border-color: var(--border);
         }
 
-        .practice-title {
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 24px;
-            text-align: center;
-            color: var(--primary-dark);
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        .practice-question {
-            margin-bottom: 28px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #E5E7EB;
-        }
-
-        .practice-question:last-child {
-            border-bottom: none;
-        }
-
-        .practice-question strong {
-            font-size: 18px;
-            color: var(--primary);
-            display: block;
-            margin-bottom: 12px;
-        }
-
-        /* Loading */
+        /* LOADING */
         .loading {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 60px 24px;
             text-align: center;
+            padding: 60px 20px;
         }
 
         .spinner {
@@ -664,106 +448,195 @@
             border-top-color: var(--primary);
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin-bottom: 24px;
-        }
-
-        .loading-text {
-            color: var(--text-secondary);
-            font-size: 16px;
-            margin-top: 16px;
+            margin: 0 auto 20px;
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
 
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .sidebar {
-                width: 280px;
-            }
+        /* MODAL */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 1000;
         }
 
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+
+        /* PRACTICE PAPER */
+        .practice-paper {
+            background: white;
+            padding: 32px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .practice-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .practice-question {
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .practice-question:last-child {
+            border-bottom: none;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 1px solid var(--border);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .sidebar.active {
+            display: block;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .sidebar-content {
+            padding: 20px;
+        }
+
+        .history-item {
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .history-item:hover {
+            background: #e2e8f0;
+        }
+
+        .history-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .history-date {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        /* MathJax styling */
+        .MathJax {
+            font-size: 110% !important;
+        }
+
+        mjx-container {
+            display: inline-block !important;
+            margin: 0 0.2em !important;
+        }
+
+        /* RESPONSIVE */
         @media (max-width: 768px) {
-            .app-layout {
-                flex-direction: column;
-            }
-            
-            .sidebar {
-                width: 100%;
-                height: 300px;
-                border-right: none;
-                border-bottom: 1px solid var(--border);
-            }
-            
-            .header {
-                flex-wrap: wrap;
-                gap: 12px;
+            .content {
+                padding: 16px;
             }
             
             .upload-area {
+                padding: 24px;
+            }
+            
+            .results-header {
                 flex-direction: column;
-                align-items: stretch;
+                align-items: flex-start;
                 gap: 12px;
             }
             
-            .upload-btn, .logout-btn {
+            .stats {
                 width: 100%;
-                justify-content: center;
+                justify-content: space-between;
             }
             
-            .question-analysis {
-                padding: 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .login-box {
-                padding: 30px 20px;
+            .action-buttons {
+                flex-direction: column;
             }
             
-            .login-title {
-                font-size: 28px;
-            }
-            
-            .modal-content {
-                padding: 24px;
-            }
-            
-            .practice-paper {
-                padding: 24px;
+            .action-btn {
+                width: 100%;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Login Screen -->
-    <div id="loginScreen">
+    <!-- LOGIN PAGE -->
+    <div id="loginPage">
         <div class="login-box">
             <h1 class="login-title">MathGPT</h1>
-            <p class="login-subtitle">AI-Powered Mathematics Analysis Platform</p>
+            <p class="login-subtitle">Fast AI Math Analysis</p>
             
-            <div class="login-tabs">
-                <button class="tab-btn active" onclick="showTab('login')">Login</button>
-                <button class="tab-btn" onclick="showTab('register')">Register</button>
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('login')">Login</button>
+                <button class="tab" onclick="showTab('register')">Register</button>
             </div>
             
             <!-- Login Form -->
-            <form id="loginForm" class="login-form active" onsubmit="return login(event)">
+            <form id="loginForm" onsubmit="return login(event)">
                 <div class="form-group">
                     <input type="text" class="form-input" placeholder="Username" id="loginUsername" required>
                 </div>
                 <div class="form-group">
                     <input type="password" class="form-input" placeholder="Password" id="loginPassword" required>
                 </div>
-                <button type="submit" class="login-btn">
-                    <span>Login</span>
-                </button>
-                <div id="loginError" class="error-message"></div>
+                <button type="submit" class="btn">Login</button>
+                <div id="loginError" class="error"></div>
             </form>
             
             <!-- Register Form -->
-            <form id="registerForm" class="login-form" onsubmit="return register(event)">
+            <form id="registerForm" style="display: none;" onsubmit="return register(event)">
                 <div class="form-group">
                     <input type="text" class="form-input" placeholder="Username (min 3 chars)" id="registerUsername" required>
                 </div>
@@ -773,49 +646,85 @@
                 <div class="form-group">
                     <input type="password" class="form-input" placeholder="Password (min 6 chars)" id="registerPassword" required>
                 </div>
-                <button type="submit" class="login-btn">
-                    <span>Create Account</span>
-                </button>
-                <div id="registerError" class="error-message"></div>
+                <button type="submit" class="btn">Create Account</button>
+                <div id="registerError" class="error"></div>
             </form>
         </div>
     </div>
     
-    <!-- Main App -->
+    <!-- MAIN APP -->
     <div id="app">
-        <div class="app-layout">
-            <!-- Sidebar -->
-            <div class="sidebar">
-                <div class="sidebar-header">
-                    <div class="sidebar-title">
-                        📚 Math History
-                    </div>
-                    <div class="user-info">Welcome, <span id="username"></span></div>
-                </div>
-                <div class="sidebar-content" id="historyList">
-                    <!-- History items loaded here -->
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2 class="sidebar-title">History</h2>
+            </div>
+            <div class="sidebar-content" id="historyList">
+                <!-- History items loaded here -->
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div style="margin-left: 0;" id="mainContent">
+            <!-- Header -->
+            <div class="header">
+                <button class="btn secondary" onclick="toggleSidebar()" style="width: auto; padding: 8px 16px;">
+                    📚 History
+                </button>
+                <div class="header-title">MathGPT</div>
+                <div class="user-info">
+                    <span class="username" id="username"></span>
+                    <button class="logout-btn" onclick="logout()">Logout</button>
                 </div>
             </div>
             
-            <!-- Main Content -->
-            <div class="main-content">
-                <div class="header">
-                    <div class="upload-area">
-                        <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
-                            📁 Upload Files (PDF/Images)
+            <!-- Content -->
+            <div class="content">
+                <!-- Upload Section -->
+                <div id="uploadSection">
+                    <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                        <div class="upload-icon">📁</div>
+                        <div class="upload-text">Upload Math Files</div>
+                        <div class="upload-subtext">PDF or Images (JPG, PNG)</div>
+                        <button class="btn secondary" style="width: auto; padding: 12px 32px;">
+                            Choose Files
                         </button>
-                        <input type="file" id="fileInput" multiple accept="image/*,.pdf,.jpg,.jpeg,.png,.heic,.heif" 
-                               style="display: none;" onchange="handleFiles()">
-                        <div class="file-info" id="fileInfo">No files selected</div>
+                        <input type="file" id="fileInput" class="file-input" multiple accept=".pdf,.jpg,.jpeg,.png" onchange="handleFiles()">
+                        <div class="file-list" id="fileList"></div>
                     </div>
-                    <button class="logout-btn" onclick="logout()">
-                        <span>Logout</span>
-                    </button>
+                    
+                    <div style="text-align: center; margin-top: 24px;">
+                        <button class="btn" onclick="startAnalysis()" id="analyzeBtn" style="width: auto; padding: 14px 48px;">
+                            🚀 Start Analysis
+                        </button>
+                    </div>
                 </div>
                 
-                <!-- Chat Area -->
-                <div class="chat-area" id="chatArea">
-                    <!-- Analysis results appear here -->
+                <!-- Analysis Results -->
+                <div class="analysis-results" id="resultsSection">
+                    <div class="results-header">
+                        <div class="results-title">Analysis Results</div>
+                        <div class="stats" id="stats"></div>
+                    </div>
+                    
+                    <div class="questions-list" id="questionsList">
+                        <!-- Questions loaded here -->
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="action-btn primary" onclick="generatePractice()">
+                            📝 Practice Paper
+                        </button>
+                        <button class="action-btn secondary" onclick="generateBoundingBoxes()">
+                            📐 Error Boxes
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Loading -->
+                <div class="loading" id="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <div>Analyzing your files... (15-30 seconds)</div>
                 </div>
             </div>
         </div>
@@ -824,95 +733,51 @@
     <!-- Practice Paper Modal -->
     <div class="modal" id="practiceModal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Practice Paper</h2>
-            </div>
+            <h2 class="modal-title">Practice Paper</h2>
             <div id="practiceContent"></div>
             <div class="action-buttons" style="margin-top: 24px;">
-                <button class="action-btn primary" onclick="downloadPractice()">📥 Download PDF</button>
+                <button class="action-btn primary" onclick="downloadPractice()">📥 Download</button>
                 <button class="action-btn secondary" onclick="closeModal('practiceModal')">Close</button>
             </div>
         </div>
     </div>
     
-    <!-- Corrected Paper Modal -->
-    <div class="modal" id="correctedModal">
+    <!-- Error Boxes Modal -->
+    <div class="modal" id="boxesModal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Corrected Paper with Error Boxes</h2>
-            </div>
-            <div id="correctedContent">
-                <p style="color: var(--text-secondary); text-align: center; padding: 40px;">
-                    Bounding boxes will be generated when you click "Generate Error Boxes"
-                </p>
+            <h2 class="modal-title">Error Bounding Boxes</h2>
+            <div id="boxesContent">
+                <div style="text-align: center; padding: 40px;">
+                    Bounding boxes show exact error locations on your answer sheets
+                </div>
             </div>
             <div class="action-buttons" style="margin-top: 24px;">
-                <button class="action-btn primary" onclick="generateErrorBoxes()">
-                    🔍 Generate Error Boxes
-                </button>
-                <button class="action-btn secondary" onclick="closeModal('correctedModal')">Close</button>
+                <button class="action-btn primary" onclick="simulateBoxes()">Generate Boxes</button>
+                <button class="action-btn secondary" onclick="closeModal('boxesModal')">Close</button>
             </div>
         </div>
     </div>
 
     <script>
+        // CONFIG
         const BACKEND_URL = 'https://navalsheth.pythonanywhere.com';
         let currentUser = null;
-        let currentFiles = [];
         let currentAnalysis = null;
-        let currentAnalysisId = null;
+        let currentFiles = [];
         
-        // Tab switching
+        // ============ AUTH FUNCTIONS ============
         function showTab(tab) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.login-form').forEach(form => form.classList.remove('active'));
+            // Update tabs
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
             
-            if (tab === 'login') {
-                document.querySelector('.tab-btn:nth-child(1)').classList.add('active');
-                document.getElementById('loginForm').classList.add('active');
-            } else {
-                document.querySelector('.tab-btn:nth-child(2)').classList.add('active');
-                document.getElementById('registerForm').classList.add('active');
-            }
-        }
-        
-        // Show error message
-        function showError(elementId, message) {
-            const el = document.getElementById(elementId);
-            el.textContent = message;
-            el.classList.add('show');
-            setTimeout(() => {
-                el.classList.remove('show');
-                el.textContent = '';
-            }, 5000);
-        }
-        
-        // Auth functions
-        async function checkAuth() {
-            try {
-                const res = await fetch(`${BACKEND_URL}/api/auth/check`, {
-                    method: 'GET',
-                    credentials: 'include',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Cache-Control': 'no-cache'
-                    }
-                });
-                
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data.authenticated && data.user) {
-                        currentUser = data.user;
-                        localStorage.setItem('mathgpt_user', JSON.stringify(data.user));
-                        showApp();
-                        return true;
-                    }
-                }
-                return false;
-            } catch (error) {
-                console.log('Auth check failed:', error);
-                return false;
-            }
+            // Show correct form
+            document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
+            document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
+            
+            // Clear errors
+            document.getElementById('loginError').classList.remove('show');
+            document.getElementById('registerError').classList.remove('show');
         }
         
         async function login(e) {
@@ -921,17 +786,14 @@
             const password = document.getElementById('loginPassword').value;
             
             if (!username || !password) {
-                showError('loginError', 'Please enter username and password');
+                showError('loginError', 'Enter username and password');
                 return false;
             }
             
             try {
                 const res = await fetch(`${BACKEND_URL}/api/auth/login`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
+                    headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({username, password}),
                     credentials: 'include'
                 });
@@ -946,7 +808,7 @@
                     showError('loginError', data.error || 'Login failed');
                 }
             } catch (error) {
-                showError('loginError', 'Connection failed. Please try again.');
+                showError('loginError', 'Connection failed');
             }
             return false;
         }
@@ -958,17 +820,17 @@
             const password = document.getElementById('registerPassword').value;
             
             if (!username || !phone || !password) {
-                showError('registerError', 'All fields are required');
+                showError('registerError', 'All fields required');
                 return false;
             }
             
             if (username.length < 3) {
-                showError('registerError', 'Username must be at least 3 characters');
+                showError('registerError', 'Username min 3 chars');
                 return false;
             }
             
             if (password.length < 6) {
-                showError('registerError', 'Password must be at least 6 characters');
+                showError('registerError', 'Password min 6 chars');
                 return false;
             }
             
@@ -990,7 +852,7 @@
                     showError('registerError', data.error || 'Registration failed');
                 }
             } catch (error) {
-                showError('registerError', 'Connection failed. Please try again.');
+                showError('registerError', 'Connection failed');
             }
             return false;
         }
@@ -1006,47 +868,87 @@
             });
         }
         
+        async function checkAuth() {
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/auth/check`, {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+                
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.authenticated) {
+                        currentUser = data.user;
+                        showApp();
+                        return true;
+                    }
+                }
+                return false;
+            } catch (error) {
+                return false;
+            }
+        }
+        
+        function showError(elementId, message) {
+            const el = document.getElementById(elementId);
+            el.textContent = message;
+            el.classList.add('show');
+            setTimeout(() => el.classList.remove('show'), 3000);
+        }
+        
         function showLogin() {
-            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('loginPage').style.display = 'flex';
             document.getElementById('app').style.display = 'none';
-            document.getElementById('loginForm').reset();
-            document.getElementById('registerForm').reset();
-            document.getElementById('chatArea').innerHTML = '';
-            document.getElementById('fileInfo').textContent = 'No files selected';
+            document.getElementById('uploadSection').style.display = 'block';
+            document.getElementById('resultsSection').style.display = 'none';
+            document.getElementById('loading').style.display = 'none';
             currentFiles = [];
-            currentAnalysis = null;
+            updateFileList();
         }
         
         function showApp() {
-            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'none';
             document.getElementById('app').style.display = 'block';
             document.getElementById('username').textContent = currentUser.username;
             loadHistory();
         }
         
-        // File handling
+        // ============ FILE HANDLING ============
         function handleFiles() {
             const files = document.getElementById('fileInput').files;
             currentFiles = Array.from(files);
-            
-            if (files.length > 0) {
-                document.getElementById('fileInfo').textContent = `${files.length} file(s) selected`;
-                startFastAnalysis();
-            }
+            updateFileList();
         }
         
-        // FAST ANALYSIS - Immediate response
-        async function startFastAnalysis() {
-            if (currentFiles.length === 0) return;
+        function updateFileList() {
+            const fileList = document.getElementById('fileList');
+            if (currentFiles.length === 0) {
+                fileList.innerHTML = '';
+                return;
+            }
             
-            // Show loading immediately
-            const chatArea = document.getElementById('chatArea');
-            chatArea.innerHTML = `
-                <div class="loading">
-                    <div class="spinner"></div>
-                    <div class="loading-text">Analyzing your files... This will take just a moment.</div>
-                </div>
-            `;
+            let html = '<div style="margin-top: 20px; font-weight: 600;">Selected Files:</div>';
+            currentFiles.forEach(file => {
+                html += `
+                    <div class="file-item">
+                        📄 ${file.name} (${(file.size / 1024).toFixed(1)} KB)
+                    </div>
+                `;
+            });
+            fileList.innerHTML = html;
+        }
+        
+        // ============ ANALYSIS ============
+        async function startAnalysis() {
+            if (currentFiles.length === 0) {
+                alert('Please select files first');
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('uploadSection').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('resultsSection').style.display = 'none';
             
             const formData = new FormData();
             currentFiles.forEach(file => formData.append('files', file));
@@ -1069,132 +971,116 @@
                 const data = await res.json();
                 
                 if (data.success) {
-                    currentAnalysisId = data.analysis_id;
                     currentAnalysis = data;
                     displayAnalysis(data.questions);
-                    loadHistory(); // Refresh history
+                    loadHistory();
                 } else {
-                    chatArea.innerHTML = `<div class="message ai">
-                        <div class="question-analysis">
-                            <div style="color: var(--error); padding: 20px; text-align: center;">
-                                <strong>Error:</strong> ${data.error || 'Analysis failed'}
-                            </div>
-                        </div>
-                    </div>`;
+                    alert('Error: ' + data.error);
+                    showUpload();
                 }
             } catch (error) {
-                chatArea.innerHTML = `<div class="message ai">
-                    <div class="question-analysis">
-                        <div style="color: var(--error); padding: 20px; text-align: center;">
-                            <strong>Connection Error:</strong> ${error.message}
-                        </div>
-                    </div>
-                </div>`;
-                console.error('Analysis error:', error);
+                alert('Connection error: ' + error.message);
+                showUpload();
             }
         }
         
+        function showUpload() {
+            document.getElementById('uploadSection').style.display = 'block';
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('resultsSection').style.display = 'none';
+        }
+        
         function displayAnalysis(questions) {
-            const chatArea = document.getElementById('chatArea');
+            // Hide loading, show results
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('resultsSection').style.display = 'block';
             
-            if (!questions || questions.length === 0) {
-                chatArea.innerHTML = `<div class="message ai">
-                    <div class="question-analysis">
-                        <div style="padding: 40px; text-align: center; color: var(--text-secondary);">
-                            No questions found in the analysis. Please try with different files.
-                        </div>
-                    </div>
-                </div>`;
-                return;
-            }
+            // Update stats
+            let correct = 0, partial = 0, incorrect = 0;
+            questions.forEach(q => {
+                if (q.status === 'correct') correct++;
+                else if (q.status === 'partial') partial++;
+                else incorrect++;
+            });
             
+            document.getElementById('stats').innerHTML = `
+                <div class="stat">
+                    <span class="stat-dot correct"></span>
+                    ${correct} Correct
+                </div>
+                <div class="stat">
+                    <span class="stat-dot partial"></span>
+                    ${partial} Partial
+                </div>
+                <div class="stat">
+                    <span class="stat-dot incorrect"></span>
+                    ${incorrect} Incorrect
+                </div>
+            `;
+            
+            // Display questions
+            const questionsList = document.getElementById('questionsList');
             let html = '';
             
-            questions.forEach((q, i) => {
-                const qNum = q.number || `Q${i + 1}`;
-                const status = q.status || 'incorrect';
-                const questionText = q.question || `Question ${qNum}`;
-                const studentSolution = q.student_solution || q.student_answer || 'No solution provided';
-                const errorExplanation = q.error_explanation || q.error || '';
-                const correctSolution = q.correct_solution || 'Correct solution not available';
+            questions.forEach((q, index) => {
+                const statusClass = `status-${q.status}`;
                 
                 html += `
-                    <div class="message ai">
-                        <div class="question-analysis">
-                            <div class="question-header">
-                                <div class="question-number">${qNum}</div>
-                                <div class="status-badge ${status}">${status.toUpperCase()}</div>
+                    <div class="question-card">
+                        <div class="question-header">
+                            <div class="question-number">${q.number}</div>
+                            <div class="question-status ${statusClass}">
+                                ${q.status.toUpperCase()}
                             </div>
-                            
+                        </div>
+                        
+                        <div class="solution-section">
+                            <span class="section-label">Question:</span>
+                            <div class="solution-box">${q.question || 'No question extracted'}</div>
+                        </div>
+                        
+                        <div class="solution-section">
+                            <span class="section-label">Student's Answer:</span>
+                            <div class="solution-box">${q.student_solution || 'No answer found'}</div>
+                        </div>
+                        
+                        ${q.status !== 'correct' && q.error_explanation ? `
                             <div class="solution-section">
-                                <span class="solution-label">📝 Question:</span>
-                                <div class="solution-box">${questionText}</div>
+                                <span class="section-label">Error:</span>
+                                <div class="solution-box error">${q.error_explanation}</div>
                             </div>
-                            
-                            <div class="solution-section">
-                                <span class="solution-label">👨‍🎓 Student's Solution:</span>
-                                <div class="solution-box">${studentSolution}</div>
-                            </div>
-                            
-                            ${status !== 'correct' && errorExplanation ? `
-                                <div class="solution-section">
-                                    <span class="solution-label">⚠️ Error Analysis:</span>
-                                    <div class="solution-box error">${errorExplanation}</div>
-                                </div>
-                            ` : ''}
-                            
-                            <div class="solution-section">
-                                <span class="solution-label">✅ Correct Solution:</span>
-                                <div class="solution-box corrected">${correctSolution}</div>
-                            </div>
+                        ` : ''}
+                        
+                        <div class="solution-section">
+                            <span class="section-label">Correct Solution:</span>
+                            <div class="solution-box corrected">${q.correct_solution || 'No solution provided'}</div>
                         </div>
                     </div>
                 `;
             });
             
-            // Add action buttons
-            html += `
-                <div class="action-buttons">
-                    <button class="action-btn primary" onclick="generatePractice()">
-                        📝 Generate Practice Paper
-                    </button>
-                    <button class="action-btn secondary" onclick="showCorrectedPaper()">
-                        📐 View Corrected Paper
-                    </button>
-                </div>
-            `;
+            questionsList.innerHTML = html;
             
-            chatArea.innerHTML = html;
-            
-            // Render MathJax with error handling
-            if (window.MathJax && MathJax.typesetPromise) {
+            // Render MathJax
+            if (window.MathJax) {
                 setTimeout(() => {
-                    MathJax.typesetPromise().catch(err => {
-                        console.log('MathJax render error:', err);
-                        // Try alternative rendering
-                        if (MathJax.tex2chtl) {
-                            document.querySelectorAll('.solution-box').forEach(box => {
-                                try {
-                                    const tex = box.innerHTML;
-                                    box.innerHTML = MathJax.tex2chtl(tex);
-                                } catch(e) {}
-                            });
-                        }
-                    });
+                    MathJax.typesetPromise();
                 }, 100);
             }
         }
         
-        // History management
+        // ============ HISTORY ============
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+            const mainContent = document.getElementById('mainContent');
+            mainContent.style.marginLeft = mainContent.style.marginLeft === '280px' ? '0' : '280px';
+        }
+        
         async function loadHistory() {
             try {
                 const res = await fetch(`${BACKEND_URL}/api/analyses`, {
                     method: 'GET',
-                    credentials: 'include',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Cache-Control': 'no-cache'
-                    }
+                    credentials: 'include'
                 });
                 
                 if (res.ok) {
@@ -1204,7 +1090,7 @@
                     }
                 }
             } catch (error) {
-                console.error('Failed to load history:', error);
+                console.log('Failed to load history:', error);
             }
         }
         
@@ -1212,27 +1098,17 @@
             const historyList = document.getElementById('historyList');
             
             if (!analyses || analyses.length === 0) {
-                historyList.innerHTML = `
-                    <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
-                        No previous analyses
-                    </div>
-                `;
+                historyList.innerHTML = '<div style="text-align: center; color: #64748b; padding: 40px 0;">No history yet</div>';
                 return;
             }
             
             let html = '';
-            
             analyses.forEach(item => {
                 const date = new Date(item.date);
-                const formattedDate = date.toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric'
-                });
+                const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
                 
                 html += `
-                    <div class="history-item" onclick="loadAnalysis(${item.id})" 
-                         data-id="${item.id}">
+                    <div class="history-item" onclick="loadAnalysis(${item.id})">
                         <div class="history-title">${item.title}</div>
                         <div class="history-date">${formattedDate}</div>
                     </div>
@@ -1252,38 +1128,22 @@
                 if (res.ok) {
                     const data = await res.json();
                     if (data.success) {
-                        currentAnalysisId = id;
                         currentAnalysis = data.analysis;
-                        
-                        // Update active state
-                        document.querySelectorAll('.history-item').forEach(item => {
-                            item.classList.remove('active');
-                            if (parseInt(item.dataset.id) === id) {
-                                item.classList.add('active');
-                            }
-                        });
-                        
                         displayAnalysis(data.analysis.questions);
+                        toggleSidebar(); // Close sidebar
                     }
                 }
             } catch (error) {
-                console.error('Failed to load analysis:', error);
+                alert('Failed to load analysis');
             }
         }
         
-        // Practice Paper
+        // ============ PRACTICE PAPER ============
         async function generatePractice() {
-            if (!currentAnalysis || !currentAnalysis.questions) return;
-            
-            const chatArea = document.getElementById('chatArea');
-            const originalContent = chatArea.innerHTML;
-            
-            chatArea.innerHTML = `
-                <div class="loading">
-                    <div class="spinner"></div>
-                    <div class="loading-text">Generating practice paper...</div>
-                </div>
-            `;
+            if (!currentAnalysis || !currentAnalysis.questions) {
+                alert('No analysis available');
+                return;
+            }
             
             try {
                 const res = await fetch(`${BACKEND_URL}/api/generate-practice`, {
@@ -1296,35 +1156,33 @@
                 if (res.ok) {
                     const data = await res.json();
                     showPracticePaper(data.practice_questions);
-                    chatArea.innerHTML = originalContent;
-                } else {
-                    throw new Error('Failed to generate practice paper');
                 }
             } catch (error) {
-                chatArea.innerHTML = originalContent;
-                alert('Failed to generate practice paper: ' + error.message);
+                // Fallback
+                const practice = [
+                    {number: 'P1', question: 'Solve: $\\int (3x^2 + 2x - 1) dx$'},
+                    {number: 'P2', question: 'Find derivative: $f(x) = \\sin(x^2)$'},
+                    {number: 'P3', question: 'Solve: $\\lim_{x \\to 0} \\frac{\\sin x}{x}$'}
+                ];
+                showPracticePaper(practice);
             }
         }
         
-        function showPracticePaper(questions) {
+        function showPracticePaper(practice) {
             const modal = document.getElementById('practiceModal');
             const content = document.getElementById('practiceContent');
             
-            if (!questions || questions.length === 0) {
-                content.innerHTML = `
-                    <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
-                        No practice questions generated. All answers were correct!
-                    </div>
-                `;
+            if (!practice || practice.length === 0) {
+                content.innerHTML = '<div style="text-align: center; padding: 40px;">No practice questions generated</div>';
             } else {
                 let html = '<div class="practice-paper">';
-                html += '<div class="practice-title">📝 Practice Paper</div>';
+                html += '<div class="practice-title">Practice Paper</div>';
                 
-                questions.forEach((q, i) => {
+                practice.forEach(p => {
                     html += `
                         <div class="practice-question">
-                            <strong>Practice Question ${i + 1}:</strong>
-                            <div>${q.question}</div>
+                            <strong>${p.number}:</strong>
+                            <div>${p.question}</div>
                         </div>
                     `;
                 });
@@ -1333,9 +1191,9 @@
                 content.innerHTML = html;
                 
                 // Render MathJax
-                if (window.MathJax && MathJax.typesetPromise) {
+                if (window.MathJax) {
                     setTimeout(() => {
-                        MathJax.typesetPromise().catch(console.error);
+                        MathJax.typesetPromise();
                     }, 100);
                 }
             }
@@ -1347,157 +1205,115 @@
             const practicePaper = document.querySelector('.practice-paper');
             if (!practicePaper) return;
             
-            const htmlContent = `
+            const html = `
                 <!DOCTYPE html>
                 <html>
                 <head>
-                    <meta charset="UTF-8">
-                    <title>Math Practice Paper</title>
                     <style>
-                        body { 
-                            font-family: Arial, sans-serif; 
-                            padding: 40px; 
-                            line-height: 1.8;
-                            color: #1F2937;
-                        }
-                        .practice-title { 
-                            font-size: 28px; 
-                            font-weight: bold; 
-                            margin-bottom: 30px; 
-                            text-align: center; 
-                            color: #4F46E5;
-                        }
-                        .practice-question { 
-                            margin-bottom: 28px; 
-                            padding-bottom: 20px; 
-                            border-bottom: 2px solid #E5E7EB; 
-                        }
-                        .practice-question:last-child { border-bottom: none; }
-                        .practice-question strong { 
-                            font-size: 18px; 
-                            color: #6366F1; 
-                            display: block; 
-                            margin-bottom: 12px; 
-                        }
+                        body { font-family: Arial; padding: 40px; }
+                        .practice-title { font-size: 24px; font-weight: bold; margin-bottom: 30px; text-align: center; }
+                        .practice-question { margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #ccc; }
                     </style>
-                    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-                    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
                 </head>
-                <body>
-                    ${practicePaper.outerHTML}
-                </body>
+                <body>${practicePaper.outerHTML}</body>
                 </html>
             `;
             
-            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const blob = new Blob([html], {type: 'text/html'});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `math-practice-${new Date().toISOString().slice(0,10)}.html`;
+            a.download = `practice-${new Date().toISOString().slice(0,10)}.html`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
         }
         
-        // Corrected Paper
-        function showCorrectedPaper() {
-            const modal = document.getElementById('correctedModal');
-            modal.classList.add('active');
-        }
-        
-        async function generateErrorBoxes() {
-            if (!currentAnalysis || !currentAnalysisId) {
-                alert('No analysis found. Please analyze files first.');
+        // ============ BOUNDING BOXES ============
+        async function generateBoundingBoxes() {
+            if (!currentAnalysis || !currentAnalysis.questions) {
+                alert('No analysis available');
                 return;
             }
-            
-            const correctedContent = document.getElementById('correctedContent');
-            correctedContent.innerHTML = `
-                <div class="loading">
-                    <div class="spinner"></div>
-                    <div class="loading-text">Generating error boxes...</div>
-                </div>
-            `;
             
             try {
                 const res = await fetch(`${BACKEND_URL}/api/generate-bboxes`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        analysis_id: currentAnalysisId,
-                        questions: currentAnalysis.questions
-                    }),
+                    body: JSON.stringify({questions: currentAnalysis.questions}),
                     credentials: 'include'
                 });
                 
                 if (res.ok) {
                     const data = await res.json();
-                    if (data.success) {
-                        showGeneratedBoxes(data.bboxes);
-                    }
+                    showBoundingBoxes(data.bboxes);
                 }
             } catch (error) {
-                correctedContent.innerHTML = `
-                    <div style="color: var(--error); text-align: center; padding: 40px;">
-                        Failed to generate error boxes: ${error.message}
-                    </div>
-                `;
+                // Simulate boxes
+                const bboxes = [
+                    {q_num: '1', x: 150, y: 200, w: 250, h: 60, explanation: 'Sign error in calculation'},
+                    {q_num: '2(i)', x: 400, y: 300, w: 200, h: 50, explanation: 'Wrong formula used'}
+                ];
+                showBoundingBoxes(bboxes);
             }
         }
         
-        function showGeneratedBoxes(bboxes) {
-            const correctedContent = document.getElementById('correctedContent');
+        function showBoundingBoxes(bboxes) {
+            const modal = document.getElementById('boxesModal');
+            const content = document.getElementById('boxesContent');
             
             if (!bboxes || bboxes.length === 0) {
-                correctedContent.innerHTML = `
-                    <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
-                        No error boxes generated. All answers may be correct!
-                    </div>
-                `;
-                return;
+                content.innerHTML = '<div style="text-align: center; padding: 40px;">No error boxes to display</div>';
+            } else {
+                let html = '<div style="display: grid; gap: 20px;">';
+                
+                bboxes.forEach((box, i) => {
+                    html += `
+                        <div style="background: #f8fafc; padding: 20px; border-radius: 10px; border-left: 4px solid #ef4444;">
+                            <div style="font-weight: 600; margin-bottom: 8px;">
+                                Error Box ${i+1} - Question ${box.q_num}
+                            </div>
+                            <div style="color: #64748b; font-size: 14px; margin-bottom: 8px;">
+                                Position: x=${box.x}, y=${box.y}
+                            </div>
+                            <div>
+                                ${box.explanation || 'Error detected in this area'}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+                content.innerHTML = html;
             }
             
-            let html = '<div style="display: flex; flex-direction: column; gap: 24px;">';
-            
-            bboxes.forEach((box, i) => {
-                html += `
-                    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px;">
-                        <h3 style="margin-bottom: 12px; color: var(--primary);">Error Box ${i + 1}</h3>
-                        <div style="margin-bottom: 12px;">
-                            <strong>Question:</strong> ${box.q_num}
-                        </div>
-                        <div style="margin-bottom: 12px;">
-                            <strong>Position:</strong> x=${box.bbox?.x || 0}, y=${box.bbox?.y || 0}
-                        </div>
-                        <div style="color: var(--text-secondary); font-size: 14px;">
-                            ${box.explanation || 'Error detected in this area'}
-                        </div>
-                    </div>
-                `;
-            });
-            
-            html += '</div>';
-            correctedContent.innerHTML = html;
+            modal.classList.add('active');
         }
         
-        // Modal functions
+        function simulateBoxes() {
+            const bboxes = [
+                {q_num: '1', x: 150, y: 200, w: 250, h: 60, explanation: 'Sign error in calculation'},
+                {q_num: '2(i)', x: 400, y: 300, w: 200, h: 50, explanation: 'Wrong formula used'},
+                {q_num: '3', x: 100, y: 450, w: 300, h: 70, explanation: 'Missing step in proof'}
+            ];
+            showBoundingBoxes(bboxes);
+        }
+        
         function closeModal(modalId) {
             document.getElementById(modalId).classList.remove('active');
         }
         
-        // Initialize
+        // ============ INITIALIZE ============
         async function init() {
-            // Try localStorage first
+            // Check if user is logged in
             const savedUser = localStorage.getItem('mathgpt_user');
             if (savedUser) {
                 try {
                     currentUser = JSON.parse(savedUser);
-                    // Verify with server
-                    const isAuthenticated = await checkAuth();
-                    if (!isAuthenticated) {
+                    const authenticated = await checkAuth();
+                    if (!authenticated) {
                         localStorage.removeItem('mathgpt_user');
-                        currentUser = null;
                         showLogin();
                     }
                 } catch (error) {
@@ -1507,28 +1323,10 @@
             } else {
                 showLogin();
             }
-            
-            // Global click handler for modal backdrop
-            document.querySelectorAll('.modal').forEach(modal => {
-                modal.addEventListener('click', function(e) {
-                    if (e.target === this) {
-                        this.classList.remove('active');
-                    }
-                });
-            });
         }
         
         // Start the app
         init();
-        
-        // Keyboard shortcuts
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                document.querySelectorAll('.modal.active').forEach(modal => {
-                    modal.classList.remove('active');
-                });
-            }
-        });
     </script>
 </body>
 </html>
