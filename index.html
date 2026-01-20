@@ -976,58 +976,84 @@
         }
 
         .modal-image {
-    position: relative;
-    width: 100%;
-    max-height: 70vh;
-    background-color: var(--muted);
-    border-radius: 8px;
-    overflow: auto; /* Changed from hidden to auto */
-    margin-bottom: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-}
+            position: relative;
+            aspect-ratio: 3/4;
+            background-color: var(--muted);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
 
-.modal-image img {
-    width: auto; /* Changed from 100% */
-    height: auto; /* Changed from 100% */
-    max-width: 100%;
-    max-height: 70vh;
-    object-fit: contain; /* Changed from cover */
-    display: block;
-}
+        .modal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-/* Corrected Paper Gallery - NO CROPPING */
-.corrected-gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
-    gap: 30px;
-    margin-top: 30px;
-}
+        .error-highlight {
+            position: absolute;
+            border: 3px solid var(--destructive);
+            border-radius: 6px;
+            animation: pulse 2s infinite;
+        }
 
-.corrected-card {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border-radius: 12px;
-    padding: 25px;
-    border: 3px solid #dc3545;
-    box-shadow: 0 6px 20px rgba(220, 53, 69, 0.2);
-}
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
 
-.corrected-card img {
-    width: 100%; /* Full width of container */
-    height: auto; /* Preserve aspect ratio */
-    max-height: none; /* No height restriction */
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    cursor: pointer;
-    transition: transform 0.3s;
-    object-fit: contain; /* Never crop */
-    display: block;
-}
+        .modal-caption {
+            text-align: center;
+            font-size: 14px;
+            color: var(--muted-foreground);
+        }
 
-.corrected-card img:hover {
-    transform: scale(1.02);
-}
+        .mobile-menu-btn {
+            display: none;
+        }
+
+        .mobile-overlay {
+            display: none;
+        }
+
+        /* Corrected Paper Gallery */
+        .corrected-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .corrected-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 25px;
+            border: 3px solid #dc3545;
+            box-shadow: 0 6px 20px rgba(220, 53, 69, 0.2);
+        }
+        .corrected-card h3 {
+            color: #dc3545;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        .error-count-badge {
+            background: #dc3545;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        .corrected-card img {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .corrected-card img:hover {
+            transform: scale(1.02);
+        }
         .download-btn {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             width: 100%;
@@ -2664,65 +2690,39 @@
 
         // View Corrected Paper
         function viewCorrectedPaper() {
-    const modal = document.getElementById('correctedPaperModal');
-    const content = document.getElementById('correctedPaperContent');
+            const modal = document.getElementById('correctedPaperModal');
+            const content = document.getElementById('correctedPaperContent');
 
-    if (!window.correctedImagesData || window.correctedImagesData.length === 0) {
-        content.innerHTML = '<p>No corrected images found. Please run bounding box analysis first.</p>';
-    } else {
-        let html = '<div class="corrected-gallery">';
+            if (!window.correctedImagesData || window.correctedImagesData.length === 0) {
+                content.innerHTML = '<p>No corrected images found. Please run bounding box analysis first.</p>';
+            } else {
+                let html = '<div class="corrected-gallery">';
 
-        window.correctedImagesData.forEach((img, index) => {
-            // Build error details list with MathJax support
-            let errorsList = '';
-            if (img.error_data && Array.isArray(img.error_data)) {
-                errorsList = img.error_data.map(err => `
-                    <div style="margin: 8px 0; padding: 8px; background: rgba(255,255,255,0.5); border-radius: 4px;">
-                        <strong>Q${err.question_number}:</strong> 
-                        <span class="math-explanation">${err.explanation}</span>
-                    </div>
-                `).join('');
+                window.correctedImagesData.forEach((img, index) => {
+                    html += `
+                        <div class="corrected-card">
+                            <h3>📄 Corrected Sheet ${index + 1}</h3>
+                            <div class="error-count-badge">
+                                🔴 ${img.error_count} Error${img.error_count !== 1 ? 's' : ''} Detected
+                            </div>
+                            <img src="${img.image_base64}"
+                                 alt="Error-marked sheet ${index + 1}"
+                                 onclick="window.open('${img.image_base64}', '_blank')"
+                                 title="Click to view full size">
+                            <button class="download-btn" onclick="downloadCorrectedImage('${img.corrected_filename}')">
+                                ⬇️ Download Marked Sheet
+                            </button>
+                        </div>
+                    `;
+                });
+
+                html += '</div>';
+                content.innerHTML = html;
             }
 
-            html += `
-                <div class="corrected-card">
-                    <h3>📄 ${img.original_filename}</h3>
-                    <div class="error-count-badge">
-                        🔴 ${img.error_count || 0} Error${img.error_count !== 1 ? 's' : ''} Detected
-                    </div>
-                    
-                    ${errorsList ? `<div style="margin: 15px 0; max-height: 200px; overflow-y: auto;">${errorsList}</div>` : ''}
-                    
-                    <div style="width: 100%; overflow-x: auto; background: white; padding: 10px; border-radius: 8px;">
-                        <img src="${img.image_base64}"
-                             alt="Error-marked sheet ${index + 1}"
-                             style="width: 100%; height: auto; display: block; cursor: pointer;"
-                             onclick="window.open('${img.image_base64}', '_blank')"
-                             title="Click to view full size in new tab">
-                    </div>
-                    
-                    <button class="download-btn" onclick="downloadCorrectedImage('${img.corrected_filename}')">
-                        ⬇️ Download Marked Sheet
-                    </button>
-                </div>
-            `;
-        });
+            modal.classList.add('open');
+        }
 
-        html += '</div>';
-        content.innerHTML = html;
-
-        // Render MathJax for all error explanations
-        setTimeout(() => {
-            const mathElements = document.querySelectorAll('.math-explanation');
-            if (window.MathJax && mathElements.length > 0) {
-                MathJax.typesetPromise(Array.from(mathElements))
-                    .catch(err => console.error('MathJax rendering error:', err));
-            }
-        }, 100);
-    }
-
-    modal.classList.add('open');
-}
         // Download Corrected Image
         async function downloadCorrectedImage(filename) {
             const analysisId = window.currentAnalysisId || currentAnalysisId;
