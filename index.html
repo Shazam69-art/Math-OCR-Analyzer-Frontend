@@ -2686,39 +2686,78 @@
 
         // View Corrected Paper
         function viewCorrectedPaper() {
-            const modal = document.getElementById('correctedPaperModal');
-            const content = document.getElementById('correctedPaperContent');
+    const modal = document.getElementById('correctedPaperModal');
+    const content = document.getElementById('correctedPaperContent');
 
-            if (!window.correctedImagesData || window.correctedImagesData.length === 0) {
-                content.innerHTML = '<p>No corrected images found. Please run bounding box analysis first.</p>';
-            } else {
-                let html = '<div class="corrected-gallery">';
+    if (!window.correctedImagesData || window.correctedImagesData.length === 0) {
+        content.innerHTML = '<p>No corrected images found. Please run bounding box analysis first.</p>';
+    } else {
+        let html = '<div class="corrected-gallery">';
 
-                window.correctedImagesData.forEach((img, index) => {
-                    html += `
-                        <div class="corrected-card">
-                            <h3>📄 Corrected Sheet ${index + 1}</h3>
-                            <div class="error-count-badge">
-                                🔴 ${img.error_count} Error${img.error_count !== 1 ? 's' : ''} Detected
+        window.correctedImagesData.forEach((img, index) => {
+            html += `
+                <div class="corrected-card">
+                    <h3>📄 Corrected Sheet ${index + 1}</h3>
+                    <div class="error-count-badge">
+                        🔴 ${img.error_count} Error${img.error_count !== 1 ? 's' : ''} Detected
+                    </div>
+                    <img src="${img.image_base64}"
+                         alt="Error-marked sheet ${index + 1}"
+                         onclick="window.open('${img.image_base64}', '_blank')"
+                         title="Click to view full size">
+                    
+                    <div class="error-details" style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; display: none;" id="error-details-${index}">
+                        <h4 style="margin-bottom: 10px;">Error Details:</h4>
+                        ${img.error_data ? img.error_data.map((error, idx) => `
+                            <div style="margin-bottom: 10px; padding: 10px; background: white; border-left: 4px solid #dc3545; border-radius: 4px;">
+                                <strong>Q${error.question_number}:</strong> 
+                                <span class="math-explanation">${error.explanation}</span>
                             </div>
-                            <img src="${img.image_base64}"
-                                 alt="Error-marked sheet ${index + 1}"
-                                 onclick="window.open('${img.image_base64}', '_blank')"
-                                 title="Click to view full size">
-                            <button class="download-btn" onclick="downloadCorrectedImage('${img.corrected_filename}')">
-                                ⬇️ Download Marked Sheet
-                            </button>
-                        </div>
-                    `;
-                });
+                        `).join('') : 'No error details'}
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; margin-top: 15px;">
+                        <button class="download-btn" onclick="downloadCorrectedImage('${img.corrected_filename}')">
+                            ⬇️ Download Marked Sheet
+                        </button>
+                        <button class="btn-outline" onclick="toggleErrorDetails(${index})" style="flex: 1;">
+                            📝 Show Error Details
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
 
-                html += '</div>';
-                content.innerHTML = html;
+        html += '</div>';
+        content.innerHTML = html;
+        
+        // Process MathJax for error explanations
+        setTimeout(() => {
+            const mathElements = content.querySelectorAll('.math-explanation');
+            mathElements.forEach(el => {
+                el.innerHTML = el.textContent;
+            });
+            if (window.MathJax) {
+                MathJax.typesetPromise([content]).catch(err => console.error('MathJax error:', err));
             }
+        }, 100);
+    }
 
-            modal.classList.add('open');
-        }
+    modal.classList.add('open');
+}
 
+function toggleErrorDetails(index) {
+    const detailsEl = document.getElementById(`error-details-${index}`);
+    const btn = event.target;
+    
+    if (detailsEl.style.display === 'none' || !detailsEl.style.display) {
+        detailsEl.style.display = 'block';
+        btn.textContent = '📝 Hide Error Details';
+    } else {
+        detailsEl.style.display = 'none';
+        btn.textContent = '📝 Show Error Details';
+    }
+}
         // Download Corrected Image
         async function downloadCorrectedImage(filename) {
             const analysisId = window.currentAnalysisId || currentAnalysisId;
