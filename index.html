@@ -3,140 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MathGPT - Intelligent Mathematics Learning</title>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <title>MathGPT - AI Mathematics Learning</title>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #343541; color: #ECECF1; }
         
-        /* Login Screen */
-        #loginScreen { display: flex; min-height: 100vh; background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%); }
-        .login-container { margin: auto; background: white; padding: 40px; border-radius: 16px; width: 400px; }
-        .login-title { font-size: 24px; font-weight: 700; margin-bottom: 24px; text-align: center; }
+        /* Login */
+        #loginScreen { display: flex; min-height: 100vh; background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%); align-items: center; justify-content: center; }
+        .login-box { background: white; padding: 40px; border-radius: 16px; width: 400px; color: #1F2937; }
+        .login-title { font-size: 28px; font-weight: 700; margin-bottom: 8px; text-align: center; background: linear-gradient(135deg, #6366F1 0%, #EC4899 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .login-subtitle { font-size: 14px; color: #6B7280; text-align: center; margin-bottom: 32px; }
         .form-group { margin-bottom: 16px; }
-        .form-label { display: block; margin-bottom: 8px; font-weight: 500; }
+        .form-label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 14px; }
         .form-input { width: 100%; padding: 12px; border: 1px solid #E5E7EB; border-radius: 8px; font-size: 14px; }
-        .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
+        .form-input:focus { outline: none; border-color: #6366F1; }
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 15px; transition: all 0.2s; }
         .btn-primary { background: #6366F1; color: white; margin-bottom: 8px; }
-        .btn-secondary { background: #E5E7EB; color: #374151; }
-        .error { color: #EF4444; font-size: 14px; margin-top: 8px; display: none; }
+        .btn-primary:hover { background: #4F46E5; }
+        .btn-secondary { background: #F3F4F6; color: #374151; }
+        .btn-secondary:hover { background: #E5E7EB; }
+        .error { color: #EF4444; font-size: 13px; margin-top: 8px; display: none; text-align: center; }
+        .switch-auth { text-align: center; margin-top: 16px; font-size: 14px; color: #6B7280; }
+        .switch-auth a { color: #6366F1; cursor: pointer; text-decoration: none; font-weight: 600; }
         
-        /* Chat Interface */
+        /* Chat Layout */
         #chatScreen { display: none; height: 100vh; }
         .chat-layout { display: flex; height: 100%; }
-        .sidebar { width: 260px; background: #F9FAFB; border-right: 1px solid #E5E7EB; display: flex; flex-direction: column; }
-        .sidebar-header { padding: 20px; border-bottom: 1px solid #E5E7EB; }
-        .logo { font-size: 20px; font-weight: 700; color: #6366F1; }
-        .chat-list { flex: 1; overflow-y: auto; padding: 12px; }
-        .chat-item { padding: 12px; margin-bottom: 8px; background: white; border-radius: 8px; cursor: pointer; border: 1px solid #E5E7EB; }
-        .chat-item:hover { background: #F3F4F6; }
-        .chat-item.active { background: #EEF2FF; border-color: #6366F1; }
-        .chat-title { font-weight: 600; font-size: 14px; }
-        .chat-date { font-size: 12px; color: #6B7280; margin-top: 4px; }
         
-        .main-chat { flex: 1; display: flex; flex-direction: column; background: white; }
-        .chat-header { padding: 16px 24px; border-bottom: 1px solid #E5E7EB; display: flex; justify-content: space-between; align-items: center; }
-        .messages { flex: 1; overflow-y: auto; padding: 24px; }
-        .message { margin-bottom: 24px; }
-        .message-user { text-align: right; }
-        .message-content { display: inline-block; max-width: 80%; padding: 12px 16px; border-radius: 12px; }
-        .message-user .message-content { background: #6366F1; color: white; }
-        .message-assistant .message-content { background: #F3F4F6; }
+        /* Sidebar */
+        .sidebar { width: 260px; background: #202123; display: flex; flex-direction: column; border-right: 1px solid #2A2B32; }
+        .sidebar-header { padding: 16px; border-bottom: 1px solid #2A2B32; }
+        .new-chat-btn { width: 100%; padding: 12px; background: #343541; border: 1px solid #565869; border-radius: 8px; color: #ECECF1; cursor: pointer; font-weight: 500; transition: all 0.2s; display: flex; align-items: center; gap: 8px; justify-content: center; }
+        .new-chat-btn:hover { background: #40414F; }
+        .chat-list { flex: 1; overflow-y: auto; padding: 8px; }
+        .chat-item { padding: 12px; margin-bottom: 4px; background: transparent; border-radius: 8px; cursor: pointer; transition: all 0.2s; border-left: 3px solid transparent; }
+        .chat-item:hover { background: #343541; }
+        .chat-item.active { background: #343541; border-left-color: #6366F1; }
+        .chat-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .chat-date { font-size: 11px; color: #8E8EA0; }
+        .sidebar-footer { padding: 16px; border-top: 1px solid #2A2B32; }
+        .user-info { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; padding: 8px; background: #343541; border-radius: 8px; }
+        .user-avatar { width: 32px; height: 32px; background: linear-gradient(135deg, #6366F1, #EC4899); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; }
+        .logout-btn { width: 100%; padding: 10px; background: transparent; border: 1px solid #565869; border-radius: 6px; color: #ECECF1; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+        .logout-btn:hover { background: #40414F; }
         
-        .question-card { background: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 12px; padding: 20px; margin: 12px 0; }
-        .question-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-        .question-number { background: #6366F1; color: white; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
-        .status-badge { padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; }
-        .status-correct { background: #D1FAE5; color: #065F46; }
-        .status-partial { background: #FEF3C7; color: #92400E; }
-        .status-incorrect { background: #FEE2E2; color: #991B1B; }
+        /* Main Chat */
+        .main-chat { flex: 1; display: flex; flex-direction: column; background: #343541; }
+        .chat-header { padding: 16px 24px; border-bottom: 1px solid #565869; display: flex; justify-content: space-between; align-items: center; background: #343541; }
+        .chat-header-title { font-weight: 600; font-size: 16px; }
+        .messages { flex: 1; overflow-y: auto; }
+        
+        /* Messages */
+        .message { padding: 24px; border-bottom: 1px solid #565869; }
+        .message-user { background: #343541; }
+        .message-assistant { background: #444654; }
+        .message-content { max-width: 800px; margin: 0 auto; }
+        .message-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .message-avatar { width: 32px; height: 32px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; }
+        .user-avatar-msg { background: linear-gradient(135deg, #6366F1, #EC4899); }
+        .assistant-avatar { background: #10A37F; }
+        .message-text { line-height: 1.7; font-size: 15px; }
+        
+        /* Analysis Cards */
+        .question-card { background: #40414F; border: 1px solid #565869; border-radius: 12px; padding: 20px; margin: 16px 0; }
+        .question-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #565869; }
+        .question-number { background: linear-gradient(135deg, #6366F1, #8B5CF6); color: white; width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; }
+        .question-title { flex: 1; font-weight: 600; font-size: 16px; }
+        .status-badge { padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; text-transform: uppercase; }
+        .status-correct { background: #10B981; color: white; }
+        .status-partial { background: #F59E0B; color: white; }
+        .status-incorrect { background: #EF4444; color: white; }
         
         .section { margin: 16px 0; }
-        .section-title { font-weight: 600; margin-bottom: 8px; font-size: 14px; color: #6B7280; }
-        .section-content { background: white; padding: 12px; border-radius: 8px; border: 1px solid #E5E7EB; line-height: 1.8; }
+        .section-label { font-size: 12px; font-weight: 600; color: #8E8EA0; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .section-box { background: #343541; padding: 16px; border-radius: 8px; border-left: 3px solid #565869; line-height: 1.8; }
+        .section-box.error { border-left-color: #EF4444; background: rgba(239, 68, 68, 0.1); }
+        .section-box.solution { border-left-color: #10B981; }
         
-        .input-area { padding: 20px; border-top: 1px solid #E5E7EB; display: flex; gap: 12px; }
-        .file-input { display: none; }
-        .attach-btn { padding: 12px; background: #F3F4F6; border: none; border-radius: 8px; cursor: pointer; }
-        .send-btn { padding: 12px 24px; background: #6366F1; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
+        /* Action Buttons */
+        .action-buttons { display: flex; gap: 12px; margin-top: 20px; padding-top: 16px; border-top: 1px solid #565869; flex-wrap: wrap; }
+        .action-btn { padding: 10px 16px; border-radius: 8px; border: 1px solid #565869; background: #40414F; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+        .action-btn:hover { background: #565869; }
+        .action-btn-primary { background: linear-gradient(135deg, #6366F1, #8B5CF6); border: none; color: white; }
+        .action-btn-primary:hover { opacity: 0.9; }
         
-        .action-buttons { display: flex; gap: 8px; margin-top: 16px; }
-        .action-btn { padding: 10px 16px; border-radius: 8px; border: 1px solid #E5E7EB; background: white; cursor: pointer; font-size: 14px; }
-        .action-btn:hover { background: #F9FAFB; }
+        /* Input Area */
+        .input-area { padding: 20px 24px; background: #343541; border-top: 1px solid #565869; }
+        .input-container { max-width: 800px; margin: 0 auto; position: relative; }
+        .input-wrapper { display: flex; align-items: flex-end; gap: 8px; background: #40414F; border: 1px solid #565869; border-radius: 12px; padding: 12px; }
+        .attach-btn { padding: 8px 12px; background: transparent; border: none; cursor: pointer; color: #8E8EA0; transition: all 0.2s; border-radius: 6px; font-size: 20px; }
+        .attach-btn:hover { background: #565869; }
+        .message-input { flex: 1; background: transparent; border: none; color: #ECECF1; font-size: 15px; resize: none; max-height: 200px; font-family: inherit; outline: none; }
+        .send-btn { padding: 8px 16px; background: linear-gradient(135deg, #6366F1, #8B5CF6); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .send-btn:hover:not(:disabled) { opacity: 0.9; }
         
-        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 100; align-items: center; justify-content: center; }
+        .file-preview { margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap; }
+        .file-tag { background: #565869; padding: 6px 12px; border-radius: 6px; font-size: 12px; display: flex; align-items: center; gap: 8px; }
+        .file-remove { cursor: pointer; color: #EF4444; font-weight: 700; }
+        
+        /* Modal */
+        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
         .modal.open { display: flex; }
-        .modal-content { background: white; border-radius: 16px; padding: 24px; max-width: 800px; width: 90%; max-height: 90vh; overflow-y: auto; }
-        .modal-header { font-size: 20px; font-weight: 700; margin-bottom: 20px; }
-        .corrected-image { width: 100%; border-radius: 8px; margin: 12px 0; }
+        .modal-content { background: #343541; border-radius: 16px; padding: 32px; max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto; border: 1px solid #565869; }
+        .modal-header { font-size: 24px; font-weight: 700; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+        .modal-close { margin-left: auto; cursor: pointer; color: #8E8EA0; font-size: 24px; }
+        .modal-close:hover { color: #ECECF1; }
+        .corrected-image { width: 100%; border-radius: 12px; margin: 16px 0; border: 2px solid #565869; }
         
-        .loading { display: inline-block; width: 16px; height: 16px; border: 2px solid #E5E7EB; border-top-color: #6366F1; border-radius: 50%; animation: spin 0.6s linear infinite; }
+        .loading { display: inline-block; width: 16px; height: 16px; border: 2px solid #565869; border-top-color: #6366F1; border-radius: 50%; animation: spin 0.6s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .empty-state { text-align: center; padding: 60px 20px; color: #8E8EA0; }
+        .empty-state-icon { font-size: 48px; margin-bottom: 16px; }
+        .empty-state-text { font-size: 18px; font-weight: 500; margin-bottom: 8px; }
+        .empty-state-subtext { font-size: 14px; }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #2A2B32; }
+        ::-webkit-scrollbar-thumb { background: #565869; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6B6C7B; }
     </style>
 </head>
 <body>
-    <!-- Login Screen -->
+    <!-- Login -->
     <div id="loginScreen">
-        <div class="login-container">
-            <div class="login-title">MathGPT by CAS Educations</div>
+        <div class="login-box">
+            <div class="login-title">MathGPT</div>
+            <div class="login-subtitle">AI-Powered Mathematics Learning by CAS Educations</div>
+            
             <div id="loginForm">
                 <div class="form-group">
                     <label class="form-label">Username</label>
-                    <input type="text" id="username" class="form-input" placeholder="Enter username">
+                    <input type="text" id="username" class="form-input" placeholder="Enter your username">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Password</label>
-                    <input type="password" id="password" class="form-input" placeholder="Enter password">
+                    <input type="password" id="password" class="form-input" placeholder="Enter your password" onkeypress="if(event.key==='Enter') login()">
                 </div>
                 <div id="loginError" class="error"></div>
-                <button class="btn btn-primary" onclick="login()">Login</button>
-                <button class="btn btn-secondary" onclick="showRegister()">Register</button>
+                <button class="btn btn-primary" onclick="login()">Sign In</button>
+                <div class="switch-auth">Don't have an account? <a onclick="showRegister()">Sign up</a></div>
             </div>
+            
             <div id="registerForm" style="display:none;">
                 <div class="form-group">
                     <label class="form-label">Username</label>
-                    <input type="text" id="regUsername" class="form-input">
+                    <input type="text" id="regUsername" class="form-input" placeholder="Choose a username">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Phone</label>
-                    <input type="text" id="regPhone" class="form-input">
+                    <label class="form-label">Phone (optional)</label>
+                    <input type="text" id="regPhone" class="form-input" placeholder="Your phone number">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Password</label>
-                    <input type="password" id="regPassword" class="form-input">
+                    <input type="password" id="regPassword" class="form-input" placeholder="Create a password">
                 </div>
                 <div id="regError" class="error"></div>
                 <button class="btn btn-primary" onclick="register()">Create Account</button>
-                <button class="btn btn-secondary" onclick="showLogin()">Back to Login</button>
+                <div class="switch-auth">Already have an account? <a onclick="showLogin()">Sign in</a></div>
             </div>
         </div>
     </div>
 
-    <!-- Chat Screen -->
+    <!-- Chat -->
     <div id="chatScreen">
         <div class="chat-layout">
             <div class="sidebar">
                 <div class="sidebar-header">
-                    <div class="logo">MathGPT</div>
-                    <div style="font-size:12px;color:#6B7280;margin-top:4px;">by CAS Educations</div>
+                    <button class="new-chat-btn" onclick="createNewChat()">
+                        <span style="font-size:18px;">+</span> New Chat
+                    </button>
                 </div>
                 <div class="chat-list" id="chatList"></div>
-                <div style="padding:12px;"><button class="btn btn-secondary" onclick="logout()">Logout</button></div>
+                <div class="sidebar-footer">
+                    <div class="user-info">
+                        <div class="user-avatar" id="userAvatar">U</div>
+                        <div style="flex:1;min-width:0;">
+                            <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="userName">User</div>
+                            <div style="font-size:11px;color:#8E8EA0;">Free Plan</div>
+                        </div>
+                    </div>
+                    <button class="logout-btn" onclick="logout()">Log Out</button>
+                </div>
             </div>
             
             <div class="main-chat">
                 <div class="chat-header">
-                    <div id="chatTitle" style="font-weight:600;">New Chat</div>
+                    <div class="chat-header-title" id="chatTitle">MathGPT</div>
                 </div>
-                <div class="messages" id="messages"></div>
+                <div class="messages" id="messages">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📚</div>
+                        <div class="empty-state-text">Welcome to MathGPT</div>
+                        <div class="empty-state-subtext">Upload math problems to get instant analysis and solutions</div>
+                    </div>
+                </div>
                 <div class="input-area">
-                    <input type="file" id="fileInput" class="file-input" multiple accept="image/*,.pdf" onchange="handleFiles()">
-                    <button class="attach-btn" onclick="document.getElementById('fileInput').click()">📎 Attach</button>
-                    <div id="filePreview" style="flex:1;display:none;"></div>
-                    <button class="send-btn" id="sendBtn" onclick="analyze()" disabled>Analyze</button>
+                    <div class="input-container">
+                        <input type="file" id="fileInput" style="display:none;" multiple accept="image/*,.pdf" onchange="handleFiles()">
+                        <div id="filePreview" class="file-preview"></div>
+                        <div class="input-wrapper">
+                            <button class="attach-btn" onclick="document.getElementById('fileInput').click()" title="Attach files">📎</button>
+                            <textarea class="message-input" id="messageInput" placeholder="Ask about the analysis or upload files to analyze..." rows="1" onkeydown="handleKeyDown(event)"></textarea>
+                            <button class="send-btn" id="sendBtn" onclick="sendMessage()" disabled>Send</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -145,18 +220,26 @@
     <!-- Modals -->
     <div id="practiceModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">Practice Paper</div>
+            <div class="modal-header">
+                📝 Practice Paper
+                <span class="modal-close" onclick="closeModal('practiceModal')">×</span>
+            </div>
             <div id="practiceContent"></div>
-            <button class="btn btn-primary" onclick="downloadPDF()" style="margin-top:16px;">Download PDF</button>
-            <button class="btn btn-secondary" onclick="closeModal('practiceModal')" style="margin-top:8px;">Close</button>
+            <div style="margin-top:24px;display:flex;gap:12px;">
+                <button class="btn btn-primary" onclick="downloadPDF()">Download PDF</button>
+                <button class="btn btn-secondary" onclick="closeModal('practiceModal')">Close</button>
+            </div>
         </div>
     </div>
 
     <div id="correctedModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">Corrected Papers</div>
+            <div class="modal-header">
+                📐 Corrected Papers with Error Highlights
+                <span class="modal-close" onclick="closeModal('correctedModal')">×</span>
+            </div>
             <div id="correctedContent"></div>
-            <button class="btn btn-secondary" onclick="closeModal('correctedModal')" style="margin-top:16px;">Close</button>
+            <button class="btn btn-secondary" onclick="closeModal('correctedModal')" style="margin-top:16px;width:100%;">Close</button>
         </div>
     </div>
 
@@ -165,6 +248,8 @@
         let currentChatId = null;
         let selectedFiles = [];
         let currentAnalysis = null;
+        let currentUser = null;
+        let messageContext = [];
 
         window.MathJax = {
             tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] },
@@ -172,54 +257,88 @@
         };
 
         async function login() {
-            const username = document.getElementById('username').value;
+            const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
-            const res = await fetch(`${API}/api/login`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({username, password}),
-                credentials: 'include'
-            });
-            const data = await res.json();
-            if (data.success) {
-                document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('chatScreen').style.display = 'block';
-                loadChats();
-            } else {
-                document.getElementById('loginError').textContent = data.message;
-                document.getElementById('loginError').style.display = 'block';
+            
+            if (!username || !password) {
+                showError('loginError', 'Please enter both username and password');
+                return;
+            }
+            
+            try {
+                const res = await fetch(`${API}/api/login`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({username, password}),
+                    credentials: 'include'
+                });
+                const data = await res.json();
+                
+                if (data.success) {
+                    currentUser = data.user;
+                    showChatScreen();
+                } else {
+                    showError('loginError', data.message);
+                }
+            } catch (e) {
+                showError('loginError', 'Connection error. Please try again.');
             }
         }
 
         async function register() {
-            const username = document.getElementById('regUsername').value;
-            const phone = document.getElementById('regPhone').value;
+            const username = document.getElementById('regUsername').value.trim();
+            const phone = document.getElementById('regPhone').value.trim();
             const password = document.getElementById('regPassword').value;
-            const res = await fetch(`${API}/api/register`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({username, phone, password}),
-                credentials: 'include'
-            });
-            const data = await res.json();
-            if (data.success) {
-                document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('chatScreen').style.display = 'block';
-                loadChats();
-            } else {
-                document.getElementById('regError').textContent = data.message;
-                document.getElementById('regError').style.display = 'block';
+            
+            if (!username || !password) {
+                showError('regError', 'Username and password required');
+                return;
             }
+            
+            try {
+                const res = await fetch(`${API}/api/register`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({username, phone, password}),
+                    credentials: 'include'
+                });
+                const data = await res.json();
+                
+                if (data.success) {
+                    currentUser = data.user;
+                    showChatScreen();
+                } else {
+                    showError('regError', data.message);
+                }
+            } catch (e) {
+                showError('regError', 'Connection error. Please try again.');
+            }
+        }
+
+        function showError(id, msg) {
+            const el = document.getElementById(id);
+            el.textContent = msg;
+            el.style.display = 'block';
         }
 
         function showRegister() {
             document.getElementById('loginForm').style.display = 'none';
             document.getElementById('registerForm').style.display = 'block';
+            document.getElementById('loginError').style.display = 'none';
         }
 
         function showLogin() {
             document.getElementById('loginForm').style.display = 'block';
             document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('regError').style.display = 'none';
+        }
+
+        function showChatScreen() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('chatScreen').style.display = 'block';
+            document.getElementById('userName').textContent = currentUser.username;
+            document.getElementById('userAvatar').textContent = currentUser.username[0].toUpperCase();
+            loadChats();
         }
 
         async function logout() {
@@ -230,170 +349,186 @@
         function handleFiles() {
             selectedFiles = Array.from(document.getElementById('fileInput').files);
             const preview = document.getElementById('filePreview');
-            preview.style.display = 'block';
-            preview.innerHTML = selectedFiles.map(f => `<div style="font-size:12px;">${f.name}</div>`).join('');
-            document.getElementById('sendBtn').disabled = false;
+            
+            if (selectedFiles.length > 0) {
+                preview.innerHTML = selectedFiles.map((f, i) => `
+                    <div class="file-tag">
+                        📄 ${f.name}
+                        <span class="file-remove" onclick="removeFile(${i})">×</span>
+                    </div>
+                `).join('');
+                document.getElementById('sendBtn').disabled = false;
+            } else {
+                preview.innerHTML = '';
+                updateSendButton();
+            }
         }
 
-        async function analyze() {
-            if (!selectedFiles.length) return;
+        function removeFile(index) {
+            selectedFiles.splice(index, 1);
+            const dt = new DataTransfer();
+            selectedFiles.forEach(f => dt.items.add(f));
+            document.getElementById('fileInput').files = dt.files;
+            handleFiles();
+        }
+
+        function handleKeyDown(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+            updateSendButton();
+        }
+
+        function updateSendButton() {
+            const hasFiles = selectedFiles.length > 0;
+            const hasText = document.getElementById('messageInput').value.trim().length > 0;
+            document.getElementById('sendBtn').disabled = !hasFiles && !hasText;
+        }
+
+        async function sendMessage() {
+            const messageText = document.getElementById('messageInput').value.trim();
+            const hasFiles = selectedFiles.length > 0;
             
+            if (!hasFiles && !messageText) return;
+            
+            // Clear input
+            document.getElementById('messageInput').value = '';
+            document.getElementById('sendBtn').disabled = true;
+            
+            if (hasFiles) {
+                // Analysis mode
+                await analyzeFiles(messageText);
+            } else {
+                // Chat mode
+                await chatMessage(messageText);
+            }
+        }
+
+        async function analyzeFiles(messageText) {
             const formData = new FormData();
             selectedFiles.forEach(f => formData.append('files', f));
             if (currentChatId) formData.append('chat_id', currentChatId);
+            if (messageText) formData.append('message', messageText);
             
-            document.getElementById('sendBtn').innerHTML = '<div class="loading"></div>';
-            document.getElementById('sendBtn').disabled = true;
+            // Show user message
+            if (messageText) {
+                addMessage('user', messageText);
+            }
             
-            const res = await fetch(`${API}/api/analyze`, {
-                method: 'POST',
-                body: formData,
-                credentials: 'include'
-            });
-            const data = await res.json();
+            // Show loading
+            const loadingDiv = addMessage('assistant', '<div class="loading"></div> Analyzing your math problems...');
             
-            currentChatId = data.chat_id;
-            currentAnalysis = data;
-            displayAnalysis(data);
-            loadChats();
+            try {
+                const res = await fetch(`${API}/api/analyze`, {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'include'
+                });
+                const data = await res.json();
+                
+                if (data.error) {
+                    loadingDiv.innerHTML = `<div class="message-text" style="color:#EF4444;">Error: ${data.error}</div>`;
+                } else {
+                    currentChatId = data.chat_id;
+                    currentAnalysis = data;
+                    displayAnalysis(data, loadingDiv);
+                    loadChats();
+                }
+            } catch (e) {
+                loadingDiv.innerHTML = `<div class="message-text" style="color:#EF4444;">Error: ${e.message}</div>`;
+            }
             
+            // Clear files
             selectedFiles = [];
-            document.getElementById('filePreview').style.display = 'none';
             document.getElementById('fileInput').value = '';
-            document.getElementById('sendBtn').innerHTML = 'Analyze';
+            document.getElementById('filePreview').innerHTML = '';
+            updateSendButton();
         }
 
-        function displayAnalysis(data) {
-            const messages = document.getElementById('messages');
-            const html = data.questions.map(q => `
-                <div class="question-card">
-                    <div class="question-header">
-                        <div class="question-number">${q.number}</div>
-                        <span class="status-badge status-${q.status}">${q.status.toUpperCase()}</span>
-                    </div>
-                    <div class="section">
-                        <div class="section-title">Question</div>
-                        <div class="section-content">${q.question}</div>
-                    </div>
-                    <div class="section">
-                        <div class="section-title">Student's Solution</div>
-                        <div class="section-content">${q.student}</div>
-                    </div>
-                    ${q.error ? `<div class="section">
-                        <div class="section-title">Error Analysis</div>
-                        <div class="section-content" style="color:#DC2626;">${q.error}</div>
-                    </div>` : ''}
-                    <div class="section">
-                        <div class="section-title">Corrected Solution</div>
-                        <div class="section-content">${q.solution}</div>
-                    </div>
-                </div>
-            `).join('');
+        async function chatMessage(messageText) {
+            if (!currentChatId) return;
             
-            messages.innerHTML += `
-                <div class="message message-assistant">
-                    <div class="message-content" style="max-width:100%;">
-                        ${html}
-                        <div class="action-buttons">
-                            <button class="action-btn" onclick="generatePractice()">📝 Generate Practice Paper</button>
-                            ${data.corrected_images?.length ? `<button class="action-btn" onclick="viewCorrected()">📐 View Corrected Paper</button>` : ''}
-                        </div>
+            addMessage('user', messageText);
+            
+            const loadingDiv = addMessage('assistant', '<div class="loading"></div>');
+            
+            try {
+                const res = await fetch(`${API}/api/chat-message`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        chat_id: currentChatId,
+                        message: messageText,
+                        context: messageContext
+                    }),
+                    credentials: 'include'
+                });
+                const data = await res.json();
+                
+                if (data.error) {
+                    loadingDiv.innerHTML = `<div class="message-text" style="color:#EF4444;">Error: ${data.error}</div>`;
+                } else {
+                    loadingDiv.innerHTML = `<div class="message-text">${data.message}</div>`;
+                    messageContext.push({role: 'user', content: messageText});
+                    messageContext.push({role: 'assistant', content: data.message});
+                    renderMath(loadingDiv);
+                }
+            } catch (e) {
+                loadingDiv.innerHTML = `<div class="message-text" style="color:#EF4444;">Error: ${e.message}</div>`;
+            }
+        }
+
+        function addMessage(role, content) {
+            const messages = document.getElementById('messages');
+            const emptyState = messages.querySelector('.empty-state');
+            if (emptyState) emptyState.remove();
+            
+            const div = document.createElement('div');
+            div.className = `message message-${role}`;
+            
+            const avatar = role === 'user' ? 
+                `<div class="message-avatar user-avatar-msg">${currentUser.username[0].toUpperCase()}</div>` :
+                `<div class="message-avatar assistant-avatar">AI</div>`;
+            
+            div.innerHTML = `
+                <div class="message-content">
+                    <div class="message-header">
+                        ${avatar}
+                        <strong>${role === 'user' ? 'You' : 'MathGPT'}</strong>
                     </div>
+                    <div class="message-text">${content}</div>
                 </div>
             `;
             
-            setTimeout(() => MathJax.typesetPromise([messages]), 100);
+            messages.appendChild(div);
             messages.scrollTop = messages.scrollHeight;
+            return div.querySelector('.message-text');
         }
 
-        async function generatePractice() {
-            const res = await fetch(`${API}/api/practice-paper`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({questions: currentAnalysis.questions}),
-                credentials: 'include'
-            });
-            const data = await res.json();
+        function displayAnalysis(data, container) {
+            const stats = {correct: 0, partial: 0, incorrect: 0};
+            data.questions.forEach(q => stats[q.status]++);
             
-            const content = data.questions.map((q, i) => `
-                <div class="question-card">
-                    <div style="font-weight:600;margin-bottom:12px;">Question ${q.number}</div>
-                    <div>${q.question}</div>
+            const html = `
+                <div style="margin-bottom:20px;padding:16px;background:#40414F;border-radius:8px;">
+                    <div style="font-weight:600;margin-bottom:12px;">Analysis Summary</div>
+                    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                        <span class="status-badge status-correct">✓ ${stats.correct} Correct</span>
+                        <span class="status-badge status-partial">~ ${stats.partial} Partial</span>
+                        <span class="status-badge status-incorrect">✗ ${stats.incorrect} Incorrect</span>
+                    </div>
                 </div>
-            `).join('');
-            
-            document.getElementById('practiceContent').innerHTML = content;
-            document.getElementById('practiceModal').classList.add('open');
-            setTimeout(() => MathJax.typesetPromise([document.getElementById('practiceContent')]), 100);
-        }
-
-        function viewCorrected() {
-            const content = currentAnalysis.corrected_images.map(img => `
-                <div style="margin:16px 0;">
-                    <div style="font-weight:600;margin-bottom:8px;">Question ${img.question}</div>
-                    <img src="${img.data}" class="corrected-image" alt="Corrected">
-                </div>
-            `).join('');
-            
-            document.getElementById('correctedContent').innerHTML = content;
-            document.getElementById('correctedModal').classList.add('open');
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.remove('open');
-        }
-
-        async function downloadPDF() {
-            const element = document.getElementById('practiceContent');
-            const canvas = await html2canvas(element);
-            const imgData = canvas.toDataURL('image/png');
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF();
-            const imgWidth = 190;
-            const imgHeight = (canvas.height * imgWidth) / canvas.width;
-            pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
-            pdf.save('Practice_Paper.pdf');
-        }
-
-        async function loadChats() {
-            const res = await fetch(`${API}/api/chats`, {credentials: 'include'});
-            const data = await res.json();
-            const list = document.getElementById('chatList');
-            list.innerHTML = data.chats.map(c => `
-                <div class="chat-item ${c.id === currentChatId ? 'active' : ''}" onclick="loadChat(${c.id})">
-                    <div class="chat-title">${c.title}</div>
-                    <div class="chat-date">${new Date(c.created_at).toLocaleDateString()}</div>
-                </div>
-            `).join('');
-        }
-
-        async function loadChat(id) {
-            currentChatId = id;
-            const res = await fetch(`${API}/api/chat/${id}`, {credentials: 'include'});
-            const data = await res.json();
-            
-            const messages = document.getElementById('messages');
-            messages.innerHTML = '';
-            
-            data.messages.forEach(msg => {
-                if (msg.analysis_data) {
-                    currentAnalysis = {questions: msg.analysis_data, corrected_images: msg.corrected_images};
-                    displayAnalysis(currentAnalysis);
-                }
-            });
-            
-            loadChats();
-        }
-
-        window.addEventListener('load', async () => {
-            const res = await fetch(`${API}/api/check-auth`, {credentials: 'include'});
-            const data = await res.json();
-            if (data.authenticated) {
-                document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('chatScreen').style.display = 'block';
-                loadChats();
-            }
-        });
-    </script>
-</body>
-</html>
+                ${data.questions.map(q => `
+                    <div class="question-card">
+                        <div class="question-header">
+                            <div class="question-number">${q.number}</div>
+                            <div class="question-title">${q.question}</div>
+                            <span class="status-badge status-${q.status}">${q.status}</span>
+                        </div>
+                        <div class="section">
+                            <div class="section-label">Student's Solution</div>
+                            <div class="section-box">${q.student}</div>
+                        </div>
+                        ${q.error ? `
+                        <div class="section">
