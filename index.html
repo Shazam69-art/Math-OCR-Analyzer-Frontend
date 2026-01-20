@@ -3,1855 +3,1038 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MathGPT - AI Math Analyzer</title>
-    <!-- MathJax -->
+    <title>MathGPT - Intelligent Math Analysis</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <!-- PDF Generation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
-        /* ===== RESET & BASE ===== */
+        :root {
+            --primary: #6366F1;
+            --primary-dark: #4F46E5;
+            --secondary: #EC4899;
+            --background: #0F172A;
+            --surface: #1E293B;
+            --text-primary: #F1F5F9;
+            --text-secondary: #94A3B8;
+            --border: #334155;
+            --accent: #3B82F6;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --error: #EF4444;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
-        :root {
-            --primary: #6366F1;
-            --primary-dark: #4F46E5;
-            --primary-light: #C7D2FE;
-            --secondary: #EC4899;
-            --success: #10B981;
-            --warning: #F59E0B;
-            --error: #EF4444;
-            --background: #F8FAFC;
-            --surface: #FFFFFF;
-            --surface-alt: #F1F5F9;
-            --text-primary: #1F2937;
-            --text-secondary: #6B7280;
-            --text-tertiary: #9CA3AF;
-            --border: #E5E7EB;
-            --border-light: #F3F4F6;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            --radius-sm: 0.375rem;
-            --radius-md: 0.5rem;
-            --radius-lg: 0.75rem;
-            --radius-xl: 1rem;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #667EEA 0%, #764BA2 50%, #F093FB 100%);
-            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--background);
             color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
+            height: 100vh;
+            overflow: hidden;
         }
-        
-        /* ===== LAYOUT ===== */
-        .app-container {
+
+        /* Login Screen */
+        #loginScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
             display: flex;
-            min-height: 100vh;
-            max-width: 1600px;
-            margin: 0 auto;
-            background: var(--surface);
-            box-shadow: var(--shadow-xl);
-            position: relative;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
         }
-        
-        /* ===== SIDEBAR ===== */
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .login-title {
+            font-size: 32px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #fff, #E2E8F0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .login-subtitle {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 30px;
+        }
+
+        .login-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .login-form {
+            display: none;
+        }
+
+        .login-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .login-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            color: #FECACA;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        /* Main App */
+        #app {
+            height: 100vh;
+            display: none;
+            overflow: hidden;
+        }
+
+        .app-layout {
+            display: flex;
+            height: 100%;
+        }
+
+        /* Sidebar */
         .sidebar {
-            width: 300px;
+            width: 280px;
             background: var(--surface);
             border-right: 1px solid var(--border);
             display: flex;
             flex-direction: column;
-            height: 100vh;
-            position: sticky;
-            top: 0;
-            overflow-y: auto;
-            z-index: 50;
         }
-        
+
         .sidebar-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid var(--border-light);
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
         }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            color: white;
-            font-size: 1.5rem;
+
+        .sidebar-title {
+            font-size: 20px;
             font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-        
-        .logo-icon {
-            width: 2rem;
-            height: 2rem;
-            background: white;
-            border-radius: var(--radius-md);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
             color: var(--primary);
+            margin-bottom: 5px;
         }
-        
-        .sidebar-subtitle {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 0.875rem;
-            font-weight: 500;
+
+        .user-info {
+            font-size: 14px;
+            color: var(--text-secondary);
         }
-        
-        .new-analysis-btn {
-            width: 100%;
-            margin: 1rem 0;
-            background: white;
-            color: var(--primary);
-            border: none;
-            padding: 0.75rem 1rem;
-            border-radius: var(--radius-md);
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-        }
-        
-        .new-analysis-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-        
+
         .sidebar-content {
             flex: 1;
-            padding: 1rem;
             overflow-y: auto;
+            padding: 20px;
         }
-        
-        .history-section {
-            margin-bottom: 2rem;
-        }
-        
-        .section-title {
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 1rem;
-            padding-left: 0.5rem;
-        }
-        
-        .history-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-        
+
         .history-item {
-            padding: 1rem;
-            background: var(--surface-alt);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius-md);
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin-bottom: 10px;
             cursor: pointer;
-            transition: var(--transition);
-            position: relative;
+            transition: all 0.3s;
+            border: 1px solid transparent;
         }
-        
+
         .history-item:hover {
-            background: var(--primary-light);
+            background: rgba(255, 255, 255, 0.1);
             border-color: var(--primary);
-            transform: translateX(4px);
         }
-        
+
         .history-item.active {
-            background: linear-gradient(135deg, var(--primary-light) 0%, rgba(99, 102, 241, 0.1) 100%);
+            background: rgba(99, 102, 241, 0.2);
             border-color: var(--primary);
-            border-left: 4px solid var(--primary);
         }
-        
+
         .history-title {
             font-weight: 600;
-            font-size: 0.95rem;
-            margin-bottom: 0.25rem;
-            color: var(--text-primary);
+            margin-bottom: 5px;
         }
-        
-        .history-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.75rem;
+
+        .history-date {
+            font-size: 12px;
             color: var(--text-secondary);
         }
-        
-        .history-stats {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
-        
-        .stat-badge {
-            padding: 0.125rem 0.5rem;
-            border-radius: 1rem;
-            font-size: 0.7rem;
-            font-weight: 600;
-        }
-        
-        .stat-correct { background: rgba(16, 185, 129, 0.1); color: var(--success); }
-        .stat-incorrect { background: rgba(239, 68, 68, 0.1); color: var(--error); }
-        .stat-partial { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
-        
-        /* ===== MAIN CONTENT ===== */
+
+        /* Main Content */
         .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
-            max-width: 1000px;
-            margin: 0 auto;
-            width: 100%;
-            min-height: 100vh;
+            overflow: hidden;
         }
-        
+
         .header {
-            padding: 1rem 2rem;
-            background: var(--surface);
+            padding: 20px;
             border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 40;
-            backdrop-filter: blur(10px);
         }
-        
-        .user-info {
+
+        .upload-area {
+            flex: 1;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            font-weight: 500;
+            gap: 15px;
         }
-        
-        .user-avatar {
-            width: 2.5rem;
-            height: 2.5rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+
+        .upload-btn {
+            padding: 12px 24px;
+            background: var(--primary);
             color: white;
-            font-weight: 600;
-        }
-        
-        .logout-btn {
-            background: transparent;
-            border: 1px solid var(--border);
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius-md);
-            color: var(--text-secondary);
+            border: none;
+            border-radius: 10px;
             cursor: pointer;
-            font-weight: 500;
-            transition: var(--transition);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
         }
-        
+
+        .upload-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .file-info {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .logout-btn {
+            padding: 8px 16px;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
         .logout-btn:hover {
-            border-color: var(--error);
             color: var(--error);
+            border-color: var(--error);
         }
-        
-        /* ===== CHAT CONTAINER ===== */
-        .chat-container {
+
+        /* Chat Area */
+        .chat-area {
             flex: 1;
             overflow-y: auto;
-            padding: 2rem;
-            background: var(--background);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
-        
-        .chat-message {
-            max-width: 800px;
-            margin: 0 auto 2rem;
-            animation: slideUp 0.3s ease-out;
+
+        .message {
+            max-width: 80%;
+            padding: 15px;
+            border-radius: 15px;
         }
-        
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .message-ai {
-            background: var(--surface);
-            border-radius: var(--radius-xl);
-            padding: 2rem;
-            box-shadow: var(--shadow-lg);
-            border: 1px solid var(--border-light);
-        }
-        
-        .welcome-header {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding: 2rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            border-radius: var(--radius-xl);
+
+        .message.user {
+            align-self: flex-end;
+            background: var(--primary);
             color: white;
         }
-        
-        .welcome-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, #FFFFFF 0%, #F3F4F6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .welcome-subtitle {
-            font-size: 1.25rem;
-            opacity: 0.9;
-            font-weight: 500;
-        }
-        
-        /* ===== QUESTION DISPLAY ===== */
-        .question-container {
-            margin-bottom: 2rem;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
+
+        .message.ai {
+            align-self: flex-start;
             background: var(--surface);
-            transition: var(--transition);
+            border: 1px solid var(--border);
         }
-        
-        .question-container:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
+
+        .question-analysis {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 10px;
         }
-        
+
         .question-header {
-            padding: 1.25rem 1.5rem;
-            background: var(--surface-alt);
-            border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 10px;
+            margin-bottom: 15px;
         }
-        
+
         .question-number {
-            width: 2.5rem;
-            height: 2.5rem;
+            width: 32px;
+            height: 32px;
             background: var(--primary);
             color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
-            font-size: 1rem;
-            flex-shrink: 0;
-        }
-        
-        .question-title {
-            flex: 1;
             font-weight: 600;
-            font-size: 1.1rem;
-            color: var(--text-primary);
         }
-        
+
         .status-badge {
-            padding: 0.375rem 0.875rem;
-            border-radius: 2rem;
-            font-size: 0.875rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.025em;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
         }
-        
-        .status-correct { background: var(--success); color: white; }
-        .status-incorrect { background: var(--error); color: white; }
-        .status-partial { background: var(--warning); color: white; }
-        
-        .question-content {
-            padding: 1.5rem;
+
+        .status-badge.correct {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
         }
-        
-        .section {
-            margin-bottom: 1.5rem;
+
+        .status-badge.partial {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
         }
-        
-        .section:last-child {
-            margin-bottom: 0;
+
+        .status-badge.incorrect {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--error);
         }
-        
-        .section-title {
-            font-size: 0.9rem;
+
+        .solution-section {
+            margin: 15px 0;
+        }
+
+        .solution-label {
             font-weight: 600;
             color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            margin-bottom: 8px;
+            display: block;
         }
-        
-        .section-content {
-            padding: 1rem;
-            background: var(--surface-alt);
-            border-radius: var(--radius-md);
+
+        .solution-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
             border-left: 4px solid var(--primary);
-            line-height: 1.8;
         }
-        
-        .error-section {
+
+        .solution-box.error {
             border-left-color: var(--error);
         }
-        
-        .correction-section {
+
+        .solution-box.corrected {
             border-left-color: var(--success);
         }
-        
-        /* ===== INPUT AREA ===== */
-        .input-area {
-            padding: 1.5rem 2rem;
-            background: var(--surface);
-            border-top: 1px solid var(--border);
-            position: sticky;
-            bottom: 0;
-            z-index: 30;
-        }
-        
-        .input-container {
-            max-width: 800px;
-            margin: 0 auto;
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-        
-        .file-upload {
-            position: relative;
-            flex-shrink: 0;
-        }
-        
-        .file-input {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            cursor: pointer;
-            z-index: 2;
-        }
-        
-        .upload-btn {
-            padding: 0.875rem 1.5rem;
-            background: var(--surface-alt);
-            border: 2px dashed var(--border);
-            border-radius: var(--radius-md);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .upload-btn:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-            background: var(--primary-light);
-        }
-        
-        .file-list {
-            flex: 1;
-            padding: 0.875rem 1.25rem;
-            background: var(--surface-alt);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        .analyze-btn {
-            padding: 0.875rem 2rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            border: none;
-            border-radius: var(--radius-md);
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            transition: var(--transition);
-            min-width: 120px;
-            justify-content: center;
-        }
-        
-        .analyze-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-        }
-        
-        .analyze-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-        
-        /* ===== ACTION BUTTONS ===== */
+
+        /* Action Buttons */
         .action-buttons {
             display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
+            gap: 10px;
+            margin-top: 20px;
             flex-wrap: wrap;
         }
-        
+
         .action-btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--radius-md);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            border: none;
+            gap: 8px;
         }
-        
-        .action-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+
+        .action-btn.primary {
+            background: var(--primary);
             color: white;
         }
-        
-        .action-secondary {
-            background: var(--surface-alt);
+
+        .action-btn.secondary {
+            background: var(--surface);
             color: var(--text-primary);
             border: 1px solid var(--border);
         }
-        
+
         .action-btn:hover {
             transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
-        
-        /* ===== MODALS ===== */
-        .modal-overlay {
+
+        /* Modals */
+        .modal {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
             justify-content: center;
+            align-items: center;
             z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-            backdrop-filter: blur(4px);
+            padding: 20px;
         }
-        
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
+
+        .modal.active {
+            display: flex;
         }
-        
+
         .modal-content {
             background: var(--surface);
-            border-radius: var(--radius-xl);
-            padding: 2rem;
+            border-radius: 20px;
+            padding: 30px;
             max-width: 800px;
-            width: 90%;
+            width: 100%;
             max-height: 90vh;
             overflow-y: auto;
-            transform: translateY(20px);
-            transition: var(--transition);
-            box-shadow: var(--shadow-xl);
         }
-        
-        .modal-overlay.active .modal-content {
-            transform: translateY(0);
-        }
-        
+
         .modal-header {
-            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 24px;
             font-weight: 700;
-            margin-bottom: 1.5rem;
-            color: var(--text-primary);
         }
-        
-        .modal-body {
-            margin-bottom: 2rem;
+
+        .corrected-image {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 2px solid var(--border);
         }
-        
-        .corrected-image-container {
-            margin-bottom: 1.5rem;
+
+        /* Practice Paper */
+        .practice-paper {
+            background: white;
+            color: black;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .practice-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
             text-align: center;
         }
-        
-        .corrected-image {
-            max-width: 100%;
-            border-radius: var(--radius-md);
-            border: 3px solid var(--error);
-            box-shadow: var(--shadow-md);
-        }
-        
-        .practice-paper {
-            background: var(--surface-alt);
-            border-radius: var(--radius-lg);
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-        }
-        
+
         .practice-question {
-            margin-bottom: 1.5rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid var(--border);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
         }
-        
-        .practice-question:last-child {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: none;
-        }
-        
-        /* ===== LOADING ===== */
+
+        /* Loading */
         .loading {
-            display: inline-block;
-            width: 1.25rem;
-            height: 1.25rem;
-            border: 3px solid rgba(99, 102, 241, 0.3);
-            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border);
             border-top-color: var(--primary);
+            border-radius: 50%;
             animation: spin 1s linear infinite;
         }
-        
+
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-        
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255, 255, 255, 0.9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            backdrop-filter: blur(5px);
+
+        /* Math styling */
+        .math {
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
         }
-        
-        .loading-card {
-            background: var(--surface);
-            padding: 3rem;
-            border-radius: var(--radius-xl);
-            box-shadow: var(--shadow-xl);
-            text-align: center;
-            max-width: 500px;
-            width: 90%;
-        }
-        
-        .loading-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
-        
-        .loading-subtitle {
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-        }
-        
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: var(--border-light);
-            border-radius: 4px;
-            overflow: hidden;
-            margin-bottom: 1.5rem;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            border-radius: 4px;
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-        
-        /* ===== MATHJAX STYLING ===== */
-        .MathJax {
-            outline: none;
-        }
-        
+
         mjx-container {
             display: inline-block;
-            margin: 0 0.25em;
+            margin: 0 2px;
         }
-        
-        mjx-container[display="true"] {
-            display: block;
-            margin: 1em 0;
-        }
-        
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 1200px) {
-            .app-container {
-                max-width: 100%;
-                margin: 0;
-            }
-        }
-        
-        @media (max-width: 1024px) {
-            .sidebar {
-                width: 280px;
-            }
-            
-            .main-content {
-                max-width: 100%;
-            }
-        }
-        
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .app-container {
+            .app-layout {
                 flex-direction: column;
             }
             
             .sidebar {
                 width: 100%;
-                height: auto;
-                position: static;
-                border-right: none;
-                border-bottom: 1px solid var(--border);
+                height: 200px;
             }
             
-            .sidebar-content {
-                max-height: 300px;
-                overflow-y: auto;
-            }
-            
-            .header {
-                padding: 1rem;
-            }
-            
-            .chat-container {
-                padding: 1rem;
-            }
-            
-            .input-area {
-                padding: 1rem;
-            }
-            
-            .input-container {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .file-upload {
-                width: 100%;
-            }
-            
-            .upload-btn {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .file-list {
-                width: 100%;
-            }
-            
-            .analyze-btn {
-                width: 100%;
-            }
-            
-            .action-buttons {
-                flex-direction: column;
-            }
-            
-            .action-btn {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .modal-content {
-                padding: 1.5rem;
-                width: 95%;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .welcome-title {
-                font-size: 2rem;
-            }
-            
-            .welcome-subtitle {
-                font-size: 1rem;
-            }
-            
-            .question-header {
+            .upload-area {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 0.75rem;
-            }
-            
-            .status-badge {
-                align-self: flex-start;
+                gap: 10px;
             }
         }
     </style>
 </head>
 <body>
     <!-- Login Screen -->
-    <div id="loginScreen" class="login-screen">
-        <div class="login-container">
-            <div class="login-header">
-                <div class="logo">
-                    <div class="logo-icon">∫</div>
-                    <span>MathGPT</span>
-                </div>
-                <p class="login-subtitle">Where Math meets AI</p>
+    <div id="loginScreen">
+        <div class="login-box">
+            <h1 class="login-title">MathGPT</h1>
+            <p class="login-subtitle">Intelligent Mathematics Analysis</p>
+            
+            <div class="login-tabs">
+                <button class="tab-btn active" onclick="showTab('login')">Login</button>
+                <button class="tab-btn" onclick="showTab('register')">Register</button>
             </div>
             
-            <form id="loginForm" class="login-form">
+            <!-- Login Form -->
+            <form id="loginForm" class="login-form active" onsubmit="login(event)">
                 <div class="form-group">
-                    <label class="form-label">Username</label>
-                    <input type="text" id="username" class="form-input" placeholder="Enter your username" required>
+                    <input type="text" class="form-input" placeholder="Username" id="loginUsername" required>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" id="password" class="form-input" placeholder="Enter your password" required>
+                    <input type="password" class="form-input" placeholder="Password" id="loginPassword" required>
                 </div>
+                <button type="submit" class="login-btn">Login</button>
                 <div id="loginError" class="error-message"></div>
-                <button type="submit" class="login-btn" id="loginBtn">
-                    <span>Login to Dashboard</span>
-                </button>
-                <div class="form-toggle">
-                    Don't have an account? <a id="showRegister">Register here</a>
-                </div>
             </form>
-        </div>
-    </div>
-    
-    <!-- Register Screen -->
-    <div id="registerScreen" class="login-screen" style="display: none;">
-        <div class="login-container">
-            <div class="login-header">
-                <div class="logo">
-                    <div class="logo-icon">∫</div>
-                    <span>MathGPT</span>
-                </div>
-                <p class="login-subtitle">Create your account</p>
-            </div>
             
-            <form id="registerForm" class="login-form">
+            <!-- Register Form -->
+            <form id="registerForm" class="login-form" onsubmit="register(event)">
                 <div class="form-group">
-                    <label class="form-label">Username</label>
-                    <input type="text" id="regUsername" class="form-input" placeholder="Choose a username" required>
+                    <input type="text" class="form-input" placeholder="Username" id="registerUsername" required>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" id="regPassword" class="form-input" placeholder="Create a password" required>
+                    <input type="tel" class="form-input" placeholder="Phone Number" id="registerPhone" required>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Confirm Password</label>
-                    <input type="password" id="regConfirm" class="form-input" placeholder="Confirm password" required>
+                    <input type="password" class="form-input" placeholder="Password" id="registerPassword" required>
                 </div>
+                <button type="submit" class="login-btn">Create Account</button>
                 <div id="registerError" class="error-message"></div>
-                <button type="submit" class="login-btn" id="registerBtn">
-                    <span>Create Account</span>
-                </button>
-                <div class="form-toggle">
-                    Already have an account? <a id="showLogin">Login here</a>
-                </div>
             </form>
         </div>
     </div>
     
     <!-- Main App -->
-    <div id="appContainer" class="app-container" style="display: none;">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">
-                    <div class="logo-icon">∫</div>
-                    <span>MathGPT</span>
+    <div id="app">
+        <div class="app-layout">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-title">Math History</div>
+                    <div class="user-info">Welcome, <span id="username"></span></div>
                 </div>
-                <p class="sidebar-subtitle">AI-Powered Math Analysis</p>
-            </div>
-            
-            <button class="new-analysis-btn" onclick="newAnalysis()">
-                <span>+</span> New Analysis
-            </button>
-            
-            <div class="sidebar-content">
-                <div class="history-section">
-                    <div class="section-title">History</div>
-                    <div id="historyList" class="history-list">
-                        <!-- History items will be loaded here -->
-                    </div>
+                <div class="sidebar-content" id="historyList">
+                    <!-- History items will be loaded here -->
                 </div>
             </div>
             
-            <div class="sidebar-footer">
-                <button class="logout-btn" onclick="logout()" style="margin: 1rem; width: calc(100% - 2rem);">
-                    Logout
-                </button>
-            </div>
-        </div>
-        
-        <!-- Main Content -->
-        <div class="main-content">
-            <div class="header">
-                <div class="user-info">
-                    <div class="user-avatar" id="userInitial">U</div>
-                    <div>
-                        <div id="userName">User</div>
-                        <div style="font-size: 0.875rem; color: var(--text-secondary);">MathGPT Pro</div>
+            <!-- Main Content -->
+            <div class="main-content">
+                <div class="header">
+                    <div class="upload-area">
+                        <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                            📁 Upload Files
+                        </button>
+                        <input type="file" id="fileInput" multiple accept="image/*,.pdf,.jpg,.jpeg,.png" style="display: none;" onchange="handleFiles()">
+                        <div class="file-info" id="fileInfo">No files selected</div>
                     </div>
+                    <button class="logout-btn" onclick="logout()">Logout</button>
                 </div>
-                <button class="logout-btn mobile-logout" onclick="logout()">
-                    Logout
-                </button>
-            </div>
-            
-            <!-- Chat Container -->
-            <div class="chat-container" id="chatContainer">
-                <div class="chat-message">
-                    <div class="welcome-header">
-                        <h1 class="welcome-title">Welcome to MathGPT</h1>
-                        <p class="welcome-subtitle">AI-Powered Math Answer Sheet Analysis</p>
-                    </div>
-                    
-                    <div style="padding: 2rem;">
-                        <h3 style="margin-bottom: 1rem; color: var(--text-primary);">How it works:</h3>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
-                            <div style="background: var(--surface-alt); padding: 1.5rem; border-radius: var(--radius-md);">
-                                <div style="font-size: 2rem; margin-bottom: 1rem; color: var(--primary);">📁</div>
-                                <h4 style="margin-bottom: 0.5rem;">Upload Files</h4>
-                                <p style="color: var(--text-secondary); font-size: 0.95rem;">Upload question papers and answer sheets (PDF, JPG, PNG)</p>
-                            </div>
-                            <div style="background: var(--surface-alt); padding: 1.5rem; border-radius: var(--radius-md);">
-                                <div style="font-size: 2rem; margin-bottom: 1rem; color: var(--primary);">🤖</div>
-                                <h4 style="margin-bottom: 0.5rem;">AI Analysis</h4>
-                                <p style="color: var(--text-secondary); font-size: 0.95rem;">GPT-4 Vision analyzes every question and detects errors</p>
-                            </div>
-                            <div style="background: var(--surface-alt); padding: 1.5rem; border-radius: var(--radius-md);">
-                                <div style="font-size: 2rem; margin-bottom: 1rem; color: var(--primary);">📊</div>
-                                <h4 style="margin-bottom: 0.5rem;">Get Results</h4>
-                                <p style="color: var(--text-secondary); font-size: 0.95rem;">View detailed corrections with bounding boxes and step-by-step solutions</p>
-                            </div>
-                        </div>
-                        
-                        <div style="text-align: center; margin-top: 2rem;">
-                            <p style="color: var(--text-secondary); font-style: italic;">
-                                "Upload your first answer sheet to get started!"
-                            </p>
-                        </div>
-                    </div>
+                
+                <!-- Chat Area -->
+                <div class="chat-area" id="chatArea">
+                    <!-- Analysis results will appear here -->
                 </div>
-            </div>
-            
-            <!-- Input Area -->
-            <div class="input-area">
-                <div class="input-container">
-                    <div class="file-upload">
-                        <input type="file" class="file-input" id="fileInput" multiple accept=".pdf,.jpg,.jpeg,.png,.heic,.heif">
-                        <label class="upload-btn">
-                            <span>📎</span>
-                            <span id="uploadText">Attach Files</span>
-                        </label>
-                    </div>
-                    <div class="file-list" id="fileList">No files selected</div>
-                    <button class="analyze-btn" id="analyzeBtn" onclick="startAnalysis()">
-                        Analyze
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Loading Overlay -->
-    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
-        <div class="loading-card">
-            <div class="loading"></div>
-            <h3 class="loading-title" id="loadingTitle">Analyzing Your Files</h3>
-            <p class="loading-subtitle" id="loadingSubtitle">GPT-4 Vision is processing your answer sheets...</p>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-            <div id="loadingDetails" style="font-size: 0.9rem; color: var(--text-secondary);">
-                Extracting questions and checking solutions...
-            </div>
-        </div>
-    </div>
-    
-    <!-- Corrected Paper Modal -->
-    <div id="correctedModal" class="modal-overlay">
-        <div class="modal-content">
-            <h3 class="modal-header">📐 Corrected Answer Sheets</h3>
-            <div class="modal-body" id="correctedImages"></div>
-            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
-                <button class="action-btn action-secondary" onclick="closeModal()">
-                    Close
-                </button>
             </div>
         </div>
     </div>
     
     <!-- Practice Paper Modal -->
-    <div id="practiceModal" class="modal-overlay">
+    <div class="modal" id="practiceModal">
         <div class="modal-content">
-            <h3 class="modal-header">📝 Practice Paper</h3>
-            <div class="modal-body" id="practiceContent"></div>
-            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
-                <button class="action-btn action-secondary" onclick="closeModal()">
-                    Close
-                </button>
-                <button class="action-btn action-primary" onclick="downloadPracticePDF()">
-                    Download PDF
-                </button>
+            <div class="modal-header">
+                <h2 class="modal-title">Practice Paper</h2>
+            </div>
+            <div id="practiceContent"></div>
+            <div class="action-buttons" style="margin-top: 20px;">
+                <button class="action-btn primary" onclick="downloadPractice()">📥 Download PDF</button>
+                <button class="action-btn secondary" onclick="closeModal('practiceModal')">Close</button>
             </div>
         </div>
     </div>
     
+    <!-- Corrected Paper Modal -->
+    <div class="modal" id="correctedModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Corrected Paper with Error Boxes</h2>
+            </div>
+            <div id="correctedContent"></div>
+            <button class="action-btn secondary" style="margin-top: 20px;" onclick="closeModal('correctedModal')">Close</button>
+        </div>
+    </div>
+
     <script>
-        // ===== CONFIGURATION =====
         const BACKEND_URL = 'https://navalsheth.pythonanywhere.com';
-        // For local testing: 'http://localhost:5000'
-        
-        // ===== STATE =====
         let currentUser = null;
+        let currentFiles = [];
         let currentAnalysis = null;
-        let uploadedFiles = [];
-        let analysesHistory = [];
         
-        // ===== INITIALIZATION =====
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('MathGPT Frontend Initializing...');
-            setupEventListeners();
-            checkAuth();
-        });
-        
-        // ===== EVENT LISTENERS =====
-        function setupEventListeners() {
-            // Login form
-            document.getElementById('loginForm').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                await login();
-            });
+        // Tab switching
+        function showTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.login-form').forEach(form => form.classList.remove('active'));
             
-            // Register form
-            document.getElementById('registerForm').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                await register();
-            });
-            
-            // Form toggles
-            document.getElementById('showRegister').addEventListener('click', () => {
-                document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('registerScreen').style.display = 'flex';
-            });
-            
-            document.getElementById('showLogin').addEventListener('click', () => {
-                document.getElementById('registerScreen').style.display = 'none';
-                document.getElementById('loginScreen').style.display = 'flex';
-            });
-            
-            // File input
-            document.getElementById('fileInput').addEventListener('change', (e) => {
-                uploadedFiles = Array.from(e.target.files);
-                updateFileList();
-            });
-            
-            // Analyze button
-            document.getElementById('analyzeBtn').addEventListener('click', startAnalysis);
-            
-            // Logout buttons
-            document.querySelectorAll('.logout-btn').forEach(btn => {
-                btn.addEventListener('click', logout);
-            });
+            if (tab === 'login') {
+                document.querySelector('.tab-btn:nth-child(1)').classList.add('active');
+                document.getElementById('loginForm').classList.add('active');
+            } else {
+                document.querySelector('.tab-btn:nth-child(2)').classList.add('active');
+                document.getElementById('registerForm').classList.add('active');
+            }
         }
         
-        // ===== AUTHENTICATION =====
+        // Auth functions
         async function checkAuth() {
             try {
-                showLoading('Checking authentication...');
-                
-                const response = await fetch(`${BACKEND_URL}/api/check-auth`, {
-                    method: 'GET',
-                    credentials: 'include',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Cache-Control': 'no-cache'
-                    }
+                const res = await fetch(`${BACKEND_URL}/api/auth/check`, {
+                    credentials: 'include'
                 });
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    
-                    if (data.authenticated && data.user) {
-                        currentUser = data.user;
-                        showApp();
-                        loadHistory();
-                    } else {
-                        showLogin();
-                    }
-                } else {
-                    showLogin();
+                const data = await res.json();
+                if (data.authenticated) {
+                    currentUser = data.user;
+                    showApp();
                 }
             } catch (error) {
                 console.error('Auth check failed:', error);
-                showLogin();
-            } finally {
-                hideLoading();
             }
         }
         
-        async function login() {
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value;
-            const errorEl = document.getElementById('loginError');
-            const btn = document.getElementById('loginBtn');
-            
-            if (!username || !password) {
-                errorEl.textContent = 'Please enter both username and password';
-                errorEl.style.display = 'block';
-                return;
-            }
-            
-            btn.innerHTML = '<div class="loading"></div>';
-            btn.disabled = true;
-            errorEl.style.display = 'none';
+        async function login(e) {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
             
             try {
-                const response = await fetch(`${BACKEND_URL}/api/login`, {
+                const res = await fetch(`${BACKEND_URL}/api/auth/login`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({ username, password }),
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({username, password}),
                     credentials: 'include'
                 });
-                
-                const data = await response.json();
+                const data = await res.json();
                 
                 if (data.success) {
                     currentUser = data.user;
                     showApp();
-                    loadHistory();
-                    
-                    // Reset form
-                    document.getElementById('loginForm').reset();
                 } else {
-                    errorEl.textContent = data.error || 'Login failed';
-                    errorEl.style.display = 'block';
+                    showError('loginError', data.error || 'Login failed');
                 }
             } catch (error) {
-                console.error('Login error:', error);
-                errorEl.textContent = 'Connection failed. Please try again.';
-                errorEl.style.display = 'block';
-            } finally {
-                btn.innerHTML = '<span>Login to Dashboard</span>';
-                btn.disabled = false;
+                showError('loginError', 'Connection failed');
             }
         }
         
-        async function register() {
-            const username = document.getElementById('regUsername').value.trim();
-            const password = document.getElementById('regPassword').value;
-            const confirmPassword = document.getElementById('regConfirm').value;
-            const errorEl = document.getElementById('registerError');
-            const btn = document.getElementById('registerBtn');
+        async function register(e) {
+            e.preventDefault();
+            const username = document.getElementById('registerUsername').value;
+            const phone = document.getElementById('registerPhone').value;
+            const password = document.getElementById('registerPassword').value;
             
-            if (!username || !password || !confirmPassword) {
-                errorEl.textContent = 'Please fill all fields';
-                errorEl.style.display = 'block';
+            if (username.length < 3 || password.length < 6) {
+                showError('registerError', 'Username min 3 chars, password min 6 chars');
                 return;
             }
-            
-            if (password !== confirmPassword) {
-                errorEl.textContent = 'Passwords do not match';
-                errorEl.style.display = 'block';
-                return;
-            }
-            
-            if (username.length < 3) {
-                errorEl.textContent = 'Username must be at least 3 characters';
-                errorEl.style.display = 'block';
-                return;
-            }
-            
-            if (password.length < 6) {
-                errorEl.textContent = 'Password must be at least 6 characters';
-                errorEl.style.display = 'block';
-                return;
-            }
-            
-            btn.innerHTML = '<div class="loading"></div>';
-            btn.disabled = true;
-            errorEl.style.display = 'none';
             
             try {
-                const response = await fetch(`${BACKEND_URL}/api/register`, {
+                const res = await fetch(`${BACKEND_URL}/api/auth/register`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({ username, password }),
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({username, phone, password}),
                     credentials: 'include'
                 });
-                
-                const data = await response.json();
+                const data = await res.json();
                 
                 if (data.success) {
                     currentUser = data.user;
                     showApp();
-                    loadHistory();
-                    
-                    // Reset form
-                    document.getElementById('registerForm').reset();
-                    
-                    // Switch back to login screen for future
-                    document.getElementById('registerScreen').style.display = 'none';
-                    document.getElementById('loginScreen').style.display = 'flex';
                 } else {
-                    errorEl.textContent = data.error || 'Registration failed';
-                    errorEl.style.display = 'block';
+                    showError('registerError', data.error || 'Registration failed');
                 }
             } catch (error) {
-                console.error('Registration error:', error);
-                errorEl.textContent = 'Connection failed. Please try again.';
-                errorEl.style.display = 'block';
-            } finally {
-                btn.innerHTML = '<span>Create Account</span>';
-                btn.disabled = false;
+                showError('registerError', 'Connection failed');
             }
         }
         
-        async function logout() {
-            try {
-                await fetch(`${BACKEND_URL}/api/logout`, {
-                    method: 'POST',
-                    credentials: 'include'
-                });
-            } catch (error) {
-                console.error('Logout error:', error);
-            }
-            
+        function logout() {
+            fetch(`${BACKEND_URL}/api/auth/logout`, {
+                method: 'POST',
+                credentials: 'include'
+            });
             currentUser = null;
-            currentAnalysis = null;
-            uploadedFiles = [];
-            analysesHistory = [];
-            
             showLogin();
         }
         
-        // ===== UI MANAGEMENT =====
+        function showError(elementId, message) {
+            const el = document.getElementById(elementId);
+            el.textContent = message;
+            setTimeout(() => el.textContent = '', 3000);
+        }
+        
         function showLogin() {
             document.getElementById('loginScreen').style.display = 'flex';
-            document.getElementById('registerScreen').style.display = 'none';
-            document.getElementById('appContainer').style.display = 'none';
-            
-            // Reset forms
+            document.getElementById('app').style.display = 'none';
             document.getElementById('loginForm').reset();
             document.getElementById('registerForm').reset();
-            document.getElementById('loginError').style.display = 'none';
-            document.getElementById('registerError').style.display = 'none';
         }
         
         function showApp() {
             document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('registerScreen').style.display = 'none';
-            document.getElementById('appContainer').style.display = 'flex';
+            document.getElementById('app').style.display = 'block';
+            document.getElementById('username').textContent = currentUser.username;
+            loadHistory();
+        }
+        
+        // File handling
+        function handleFiles() {
+            const files = document.getElementById('fileInput').files;
+            currentFiles = Array.from(files);
             
-            // Update user info
-            if (currentUser) {
-                document.getElementById('userName').textContent = currentUser.username;
-                document.getElementById('userInitial').textContent = currentUser.username.charAt(0).toUpperCase();
+            if (files.length > 0) {
+                document.getElementById('fileInfo').textContent = `${files.length} file(s) selected`;
+                startAnalysis();
             }
         }
         
-        function showLoading(message = 'Loading...') {
-            document.getElementById('loadingTitle').textContent = message;
-            document.getElementById('loadingOverlay').style.display = 'flex';
-        }
-        
-        function hideLoading() {
-            document.getElementById('loadingOverlay').style.display = 'none';
-        }
-        
-        function updateProgress(percent, message) {
-            document.getElementById('progressFill').style.width = `${percent}%`;
-            if (message) {
-                document.getElementById('loadingDetails').textContent = message;
-            }
-        }
-        
-        function updateFileList() {
-            const fileListEl = document.getElementById('fileList');
-            const uploadTextEl = document.getElementById('uploadText');
-            
-            if (uploadedFiles.length === 0) {
-                fileListEl.textContent = 'No files selected';
-                uploadTextEl.textContent = 'Attach Files';
-            } else {
-                const fileNames = uploadedFiles.map(f => f.name).join(', ');
-                fileListEl.textContent = `${uploadedFiles.length} file(s): ${fileNames.substring(0, 50)}${fileNames.length > 50 ? '...' : ''}`;
-                uploadTextEl.textContent = `${uploadedFiles.length} File(s)`;
-            }
-        }
-        
-        // ===== HISTORY MANAGEMENT =====
-        async function loadHistory() {
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/analyses`, {
-                    method: 'GET',
-                    credentials: 'include',
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    
-                    if (data.success && data.analyses) {
-                        analysesHistory = data.analyses;
-                        renderHistory();
-                    } else {
-                        console.warn('No analyses found or invalid response:', data);
-                    }
-                } else {
-                    console.error('Failed to load history:', response.status);
-                }
-            } catch (error) {
-                console.error('Error loading history:', error);
-            }
-        }
-        
-        function renderHistory() {
-            const historyListEl = document.getElementById('historyList');
-            
-            if (analysesHistory.length === 0) {
-                historyListEl.innerHTML = `
-                    <div style="text-align: center; padding: 2rem; color: var(--text-secondary);">
-                        <div style="font-size: 3rem; margin-bottom: 1rem;">📚</div>
-                        <p>No analyses yet</p>
-                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Upload your first answer sheet to get started!</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            historyListEl.innerHTML = analysesHistory.map(analysis => `
-                <div class="history-item ${currentAnalysis?.id === analysis.id ? 'active' : ''}" 
-                     onclick="loadAnalysis(${analysis.id})">
-                    <div class="history-title">${analysis.title}</div>
-                    <div class="history-meta">
-                        <span>${analysis.formatted_date || formatDate(analysis.date)}</span>
-                        <span>${analysis.question_count || 0} Qs</span>
-                    </div>
-                    <div class="history-stats">
-                        ${analysis.correct_count > 0 ? `<span class="stat-badge stat-correct">✓ ${analysis.correct_count}</span>` : ''}
-                        ${analysis.incorrect_count > 0 ? `<span class="stat-badge stat-incorrect">✗ ${analysis.incorrect_count}</span>` : ''}
-                        ${analysis.partial_count > 0 ? `<span class="stat-badge stat-partial">~ ${analysis.partial_count}</span>` : ''}
-                    </div>
-                </div>
-            `).join('');
-        }
-        
-        function formatDate(dateString) {
-            try {
-                const date = new Date(dateString);
-                return date.toLocaleDateString('en-US', { 
-                    month: 'short', 
-                    day: 'numeric',
-                    year: 'numeric'
-                });
-            } catch (e) {
-                return dateString;
-            }
-        }
-        
-        // ===== ANALYSIS FUNCTIONS =====
+        // Analysis
         async function startAnalysis() {
-            if (uploadedFiles.length === 0) {
-                alert('Please select files first');
-                return;
-            }
+            if (currentFiles.length === 0) return;
             
-            const btn = document.getElementById('analyzeBtn');
-            btn.innerHTML = '<div class="loading"></div>';
-            btn.disabled = true;
+            showLoading();
             
-            showLoading('Preparing your files...');
-            updateProgress(10, 'Uploading files...');
+            const formData = new FormData();
+            currentFiles.forEach(file => formData.append('files', file));
             
             try {
-                // Create FormData
-                const formData = new FormData();
-                uploadedFiles.forEach(file => {
-                    formData.append('files', file);
-                });
-                
-                updateProgress(30, 'Sending to AI for analysis...');
-                
-                // Send request
-                const response = await fetch(`${BACKEND_URL}/api/analyze`, {
+                const res = await fetch(`${BACKEND_URL}/api/analyze`, {
                     method: 'POST',
                     body: formData,
                     credentials: 'include'
                 });
-                
-                if (!response.ok) {
-                    if (response.status === 401) {
-                        throw new Error('Session expired. Please login again.');
-                    }
-                    throw new Error(`Server error: ${response.status}`);
-                }
-                
-                updateProgress(70, 'Processing results...');
-                
-                const data = await response.json();
+                const data = await res.json();
                 
                 if (data.success) {
-                    updateProgress(90, 'Finalizing...');
-                    
-                    // Store analysis
                     currentAnalysis = data;
-                    
-                    // Display results
-                    displayAnalysis(data);
-                    
-                    // Reload history
-                    await loadHistory();
-                    
-                    updateProgress(100, 'Analysis complete!');
-                    
-                    // Show success message
-                    setTimeout(() => {
-                        hideLoading();
-                        
-                        // Show action buttons
-                        showActionButtons();
-                    }, 500);
-                    
+                    displayAnalysis(data.questions);
+                    loadHistory();
                 } else {
-                    throw new Error(data.error || 'Analysis failed');
-                }
-                
-            } catch (error) {
-                console.error('Analysis error:', error);
-                hideLoading();
-                alert(`Analysis failed: ${error.message}`);
-            } finally {
-                btn.innerHTML = 'Analyze';
-                btn.disabled = false;
-                uploadedFiles = [];
-                updateFileList();
-            }
-        }
-        
-        async function loadAnalysis(analysisId) {
-            try {
-                showLoading('Loading analysis...');
-                
-                const response = await fetch(`${BACKEND_URL}/api/analysis/${analysisId}`, {
-                    method: 'GET',
-                    credentials: 'include'
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    
-                    if (data.success) {
-                        currentAnalysis = data.analysis;
-                        displayAnalysis(currentAnalysis);
-                        
-                        // Update history active state
-                        renderHistory();
-                        
-                        // Show action buttons
-                        showActionButtons();
-                    } else {
-                        throw new Error(data.error || 'Failed to load analysis');
-                    }
-                } else {
-                    throw new Error(`Server error: ${response.status}`);
+                    alert('Analysis failed: ' + data.error);
                 }
             } catch (error) {
-                console.error('Error loading analysis:', error);
-                alert(`Failed to load analysis: ${error.message}`);
+                alert('Error: ' + error.message);
             } finally {
                 hideLoading();
             }
         }
         
-        function newAnalysis() {
-            currentAnalysis = null;
-            uploadedFiles = [];
-            updateFileList();
+        function showLoading() {
+            const chatArea = document.getElementById('chatArea');
+            chatArea.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+        }
+        
+        function hideLoading() {
+            // Loading will be replaced by analysis results
+        }
+        
+        function displayAnalysis(questions) {
+            const chatArea = document.getElementById('chatArea');
+            let html = '';
             
-            // Clear chat container and show welcome
-            const chatContainer = document.getElementById('chatContainer');
-            chatContainer.innerHTML = `
-                <div class="chat-message">
-                    <div class="welcome-header">
-                        <h1 class="welcome-title">Start New Analysis</h1>
-                        <p class="welcome-subtitle">Upload answer sheets to begin</p>
-                    </div>
-                    
-                    <div style="padding: 2rem;">
-                        <div style="text-align: center; margin: 2rem 0;">
-                            <div style="font-size: 4rem; margin-bottom: 1rem; color: var(--primary);">📁</div>
-                            <p style="color: var(--text-secondary); font-size: 1.1rem;">
-                                Upload question papers and answer sheets to get AI-powered analysis
-                            </p>
+            questions.forEach((q, i) => {
+                html += `
+                    <div class="message ai">
+                        <div class="question-analysis">
+                            <div class="question-header">
+                                <div class="question-number">${q.number}</div>
+                                <div class="status-badge ${q.status}">${q.status.toUpperCase()}</div>
+                            </div>
+                            
+                            <div class="solution-section">
+                                <span class="solution-label">Question:</span>
+                                <div class="solution-box">${q.question}</div>
+                            </div>
+                            
+                            <div class="solution-section">
+                                <span class="solution-label">Student's Solution:</span>
+                                <div class="solution-box">${q.student_solution}</div>
+                            </div>
+                            
+                            ${q.status !== 'correct' ? `
+                                <div class="solution-section">
+                                    <span class="solution-label">Error:</span>
+                                    <div class="solution-box error">${q.error_explanation}</div>
+                                </div>
+                            ` : ''}
+                            
+                            <div class="solution-section">
+                                <span class="solution-label">Correct Solution:</span>
+                                <div class="solution-box corrected">${q.correct_solution}</div>
+                            </div>
                         </div>
                     </div>
+                `;
+            });
+            
+            // Add action buttons
+            html += `
+                <div class="action-buttons">
+                    <button class="action-btn primary" onclick="generatePractice()">
+                        📝 Generate Practice Paper
+                    </button>
+                    <button class="action-btn secondary" onclick="showCorrectedPaper()">
+                        📐 View Corrected Paper
+                    </button>
                 </div>
             `;
             
-            // Hide action buttons
-            hideActionButtons();
-            
-            // Update history active state
-            renderHistory();
-        }
-        
-        function displayAnalysis(analysisData) {
-            const chatContainer = document.getElementById('chatContainer');
-            const stats = analysisData.stats || {};
-            
-            let html = `
-                <div class="chat-message">
-                    <div class="message-ai">
-                        <div style="margin-bottom: 2rem; padding: 1.5rem; background: var(--surface-alt); border-radius: var(--radius-lg);">
-                            <h2 style="margin-bottom: 1rem; color: var(--text-primary);">${analysisData.title || 'Analysis Results'}</h2>
-                            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                    <div style="font-size: 1.5rem;">📊</div>
-                                    <div>
-                                        <div style="font-size: 0.875rem; color: var(--text-secondary);">Total Questions</div>
-                                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary);">${stats.total || 0}</div>
-                                    </div>
-                                </div>
-                                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                    <div style="font-size: 1.5rem; color: var(--success);">✓</div>
-                                    <div>
-                                        <div style="font-size: 0.875rem; color: var(--text-secondary);">Correct</div>
-                                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--success);">${stats.correct || 0}</div>
-                                    </div>
-                                </div>
-                                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                    <div style="font-size: 1.5rem; color: var(--error);">✗</div>
-                                    <div>
-                                        <div style="font-size: 0.875rem; color: var(--text-secondary);">Incorrect</div>
-                                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--error);">${stats.incorrect || 0}</div>
-                                    </div>
-                                </div>
-                                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                    <div style="font-size: 1.5rem; color: var(--warning);">~</div>
-                                    <div>
-                                        <div style="font-size: 0.875rem; color: var(--text-secondary);">Partial</div>
-                                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--warning);">${stats.partial || 0}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-            `;
-            
-            // Add questions
-            const questions = analysisData.questions || [];
-            if (questions.length > 0) {
-                questions.forEach((question, index) => {
-                    const status = question.status || 'incorrect';
-                    const statusText = status === 'correct' ? 'Correct' : 
-                                     status === 'partial' ? 'Partial' : 'Needs Correction';
-                    const statusClass = `status-${status}`;
-                    
-                    html += `
-                        <div class="question-container">
-                            <div class="question-header">
-                                <div class="question-number">${question.question_number || index + 1}</div>
-                                <div class="question-title">${question.question_text || `Question ${question.question_number || index + 1}`}</div>
-                                <div class="status-badge ${statusClass}">${statusText}</div>
-                            </div>
-                            
-                            <div class="question-content">
-                                <!-- Student's Answer -->
-                                <div class="section">
-                                    <div class="section-title">
-                                        <span>📝</span>
-                                        <span>Student's Solution</span>
-                                    </div>
-                                    <div class="section-content">
-                                        ${formatMath(question.student_answer || 'No answer provided')}
-                                    </div>
-                                </div>
-                                
-                                <!-- Error Analysis (if any) -->
-                                ${question.error_explanation ? `
-                                    <div class="section">
-                                        <div class="section-title">
-                                            <span>⚠️</span>
-                                            <span>Error Analysis</span>
-                                        </div>
-                                        <div class="section-content error-section">
-                                            ${question.error_explanation}
-                                        </div>
-                                    </div>
-                                ` : ''}
-                                
-                                <!-- Corrected Solution -->
-                                <div class="section">
-                                    <div class="section-title">
-                                        <span>✅</span>
-                                        <span>Corrected Solution</span>
-                                    </div>
-                                    <div class="section-content correction-section">
-                                        ${formatMath(question.correction || 'No correction provided')}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-            } else {
-                html += `
-                    <div style="text-align: center; padding: 3rem; color: var(--text-secondary);">
-                        <div style="font-size: 4rem; margin-bottom: 1rem;">🤔</div>
-                        <p style="font-size: 1.1rem;">No questions found in the uploaded files.</p>
-                        <p style="margin-top: 0.5rem;">Try uploading different files or ensure they contain clear math problems.</p>
-                    </div>
-                `;
-            }
-            
-            html += `</div></div>`;
-            chatContainer.innerHTML = html;
+            chatArea.innerHTML = html;
             
             // Render MathJax
             if (window.MathJax) {
-                MathJax.typesetPromise([chatContainer]).catch(err => {
-                    console.error('MathJax error:', err);
+                MathJax.typesetPromise();
+            }
+        }
+        
+        // History
+        async function loadHistory() {
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/analyses`, {
+                    credentials: 'include'
                 });
-            }
-        }
-        
-        function showActionButtons() {
-            const chatContainer = document.getElementById('chatContainer');
-            
-            if (!currentAnalysis) return;
-            
-            const actionButtons = document.createElement('div');
-            actionButtons.className = 'action-buttons';
-            actionButtons.style.marginTop = '2rem';
-            
-            actionButtons.innerHTML = `
-                ${currentAnalysis.corrected_images && currentAnalysis.corrected_images.length > 0 ? `
-                    <button class="action-btn action-primary" onclick="showCorrectedPaper()">
-                        📐 View Corrected Paper
-                    </button>
-                ` : ''}
+                const data = await res.json();
                 
-                <button class="action-btn action-secondary" onclick="generatePracticePaper()">
-                    📝 Generate Practice Paper
-                </button>
-            `;
-            
-            // Find the last message and append buttons
-            const lastMessage = chatContainer.querySelector('.message-ai:last-child');
-            if (lastMessage) {
-                lastMessage.appendChild(actionButtons);
+                const historyList = document.getElementById('historyList');
+                historyList.innerHTML = '';
+                
+                data.analyses.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'history-item';
+                    div.innerHTML = `
+                        <div class="history-title">${item.title}</div>
+                        <div class="history-date">${new Date(item.date).toLocaleDateString()}</div>
+                    `;
+                    div.onclick = () => loadAnalysis(item.id);
+                    historyList.appendChild(div);
+                });
+            } catch (error) {
+                console.error('Failed to load history:', error);
             }
         }
         
-        function hideActionButtons() {
-            // Action buttons will be hidden when creating new analysis
+        async function loadAnalysis(id) {
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/analysis/${id}`, {
+                    credentials: 'include'
+                });
+                const data = await res.json();
+                
+                if (data.data && data.data.questions) {
+                    currentAnalysis = data;
+                    displayAnalysis(data.data.questions);
+                }
+            } catch (error) {
+                alert('Failed to load analysis');
+            }
         }
         
-        // ===== MODAL FUNCTIONS =====
+        // Practice Paper
+        async function generatePractice() {
+            if (!currentAnalysis || !currentAnalysis.questions) return;
+            
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/generate-practice`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({questions: currentAnalysis.questions}),
+                    credentials: 'include'
+                });
+                const data = await res.json();
+                
+                showPracticePaper(data.practice_questions);
+            } catch (error) {
+                alert('Failed to generate practice paper');
+            }
+        }
+        
+        function showPracticePaper(questions) {
+            const modal = document.getElementById('practiceModal');
+            const content = document.getElementById('practiceContent');
+            
+            let html = '<div class="practice-paper">';
+            html += '<div class="practice-title">Practice Paper</div>';
+            
+            questions.forEach((q, i) => {
+                html += `
+                    <div class="practice-question">
+                        <strong>Question ${i + 1}:</strong>
+                        <div>${q.question}</div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            content.innerHTML = html;
+            modal.classList.add('active');
+            
+            // Render MathJax
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+        
+        // Corrected Paper
         function showCorrectedPaper() {
             if (!currentAnalysis || !currentAnalysis.corrected_images) {
                 alert('No corrected images available');
                 return;
             }
             
-            const modalContent = document.getElementById('correctedImages');
-            modalContent.innerHTML = '';
+            const modal = document.getElementById('correctedModal');
+            const content = document.getElementById('correctedContent');
             
-            currentAnalysis.corrected_images.forEach((img, index) => {
-                const imgElement = document.createElement('div');
-                imgElement.className = 'corrected-image-container';
-                imgElement.innerHTML = `
-                    <h4 style="margin-bottom: 1rem; color: var(--text-primary);">
-                        📄 ${img.original_filename || `Sheet ${index + 1}`}
-                        <span style="font-size: 0.875rem; color: var(--error); margin-left: 0.5rem;">
-                            (${img.error_count || 0} errors)
-                        </span>
-                    </h4>
-                    <img src="${img.corrected_base64}" alt="Corrected sheet ${index + 1}" class="corrected-image">
-                    <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">
-                        Red boxes highlight incorrect steps
-                    </p>
-                `;
-                modalContent.appendChild(imgElement);
-            });
-            
-            document.getElementById('correctedModal').classList.add('active');
-        }
-        
-        async function generatePracticePaper() {
-            if (!currentAnalysis || !currentAnalysis.id) {
-                alert('No analysis selected');
-                return;
-            }
-            
-            try {
-                showLoading('Generating practice questions...');
-                
-                const response = await fetch(`${BACKEND_URL}/api/generate-practice`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({ analysis_id: currentAnalysis.id }),
-                    credentials: 'include'
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    
-                    if (data.success) {
-                        showPracticePaper(data.practice_questions);
-                    } else {
-                        throw new Error(data.error || 'Failed to generate practice paper');
-                    }
-                } else {
-                    throw new Error(`Server error: ${response.status}`);
-                }
-            } catch (error) {
-                console.error('Error generating practice:', error);
-                alert(`Failed to generate practice: ${error.message}`);
-            } finally {
-                hideLoading();
-            }
-        }
-        
-        function showPracticePaper(practiceQuestions) {
-            const modalContent = document.getElementById('practiceContent');
-            
-            if (!practiceQuestions || practiceQuestions.length === 0) {
-                modalContent.innerHTML = `
-                    <div style="text-align: center; padding: 2rem; color: var(--text-secondary);">
-                        <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
-                        <p>All questions are correct! No practice needed.</p>
+            let html = '';
+            currentAnalysis.corrected_images.forEach((img, i) => {
+                html += `
+                    <div style="margin-bottom: 30px;">
+                        <h3>${img.original}</h3>
+                        <img src="data:image/png;base64,${img.corrected}" class="corrected-image" 
+                             alt="Corrected paper with error boxes">
+                        ${img.errors && img.errors.length > 0 ? `
+                            <div style="margin-top: 10px; color: var(--text-secondary);">
+                                ${img.errors.length} error(s) marked
+                            </div>
+                        ` : ''}
                     </div>
                 `;
-            } else {
-                let html = '<div class="practice-paper">';
-                html += '<h4 style="margin-bottom: 1.5rem; color: var(--text-primary);">Practice Questions</h4>';
-                
-                practiceQuestions.forEach((q, index) => {
-                    html += `
-                        <div class="practice-question">
-                            <div style="font-weight: 600; margin-bottom: 0.5rem; color: var(--primary);">
-                                Question ${q.number || index + 1}
-                            </div>
-                            <div style="color: var(--text-primary); line-height: 1.6;">
-                                ${formatMath(q.question || 'No question provided')}
-                            </div>
-                            ${q.concept ? `<div style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-secondary);">Concept: ${q.concept}</div>` : ''}
-                        </div>
-                    `;
-                });
-                
-                html += '</div>';
-                modalContent.innerHTML = html;
-                
-                // Render MathJax
-                if (window.MathJax) {
-                    MathJax.typesetPromise([modalContent]).catch(err => {
-                        console.error('MathJax error:', err);
-                    });
-                }
+            });
+            
+            content.innerHTML = html || '<p>No corrected images available</p>';
+            modal.classList.add('active');
+        }
+        
+        // Modal functions
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+        
+        function downloadPractice() {
+            const practicePaper = document.querySelector('.practice-paper');
+            if (!practicePaper) return;
+            
+            // Simple PDF download implementation
+            const content = practicePaper.innerHTML;
+            const blob = new Blob([`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 40px; }
+                        .practice-title { font-size: 24px; font-weight: bold; margin-bottom: 30px; text-align: center; }
+                        .practice-question { margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #ccc; }
+                    </style>
+                </head>
+                <body>${content}</body>
+                </html>
+            `], { type: 'text/html' });
+            
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `practice-paper-${new Date().toISOString().slice(0,10)}.html`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        // Initialize
+        window.onload = checkAuth;
+        
+        // MathJax config
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],
+                displayMath: [['$$', '$$']]
             }
-            
-            document.getElementById('practiceModal').classList.add('active');
-        }
-        
-        function closeModal() {
-            document.getElementById('correctedModal').classList.remove('active');
-            document.getElementById('practiceModal').classList.remove('active');
-        }
-        
-        function downloadPracticePDF() {
-            // PDF generation logic
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF();
-            
-            pdf.setFontSize(20);
-            pdf.text('MathGPT Practice Paper', 20, 20);
-            pdf.setFontSize(12);
-            pdf.text('Generated for your improvement', 20, 30);
-            pdf.text(new Date().toLocaleDateString(), 20, 40);
-            
-            pdf.save('mathgpt-practice.pdf');
-        }
-        
-        // ===== UTILITY FUNCTIONS =====
-        function formatMath(text) {
-            if (!text) return '';
-            
-            // Convert line breaks
-            let formatted = text.replace(/\n/g, '<br>');
-            
-            // Ensure LaTeX is properly formatted
-            formatted = formatted.replace(/\$(.*?)\$/g, '$$$1$$');
-            
-            return formatted;
-        }
-        
-        // ===== GLOBAL EXPORTS =====
-        window.newAnalysis = newAnalysis;
-        window.loadAnalysis = loadAnalysis;
-        window.startAnalysis = startAnalysis;
-        window.showCorrectedPaper = showCorrectedPaper;
-        window.generatePracticePaper = generatePracticePaper;
-        window.downloadPracticePDF = downloadPracticePDF;
-        window.closeModal = closeModal;
-        window.logout = logout;
+        };
     </script>
 </body>
 </html>
