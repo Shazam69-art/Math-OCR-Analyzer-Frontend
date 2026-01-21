@@ -3,880 +3,1513 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math AI Analyzer</title>
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <title>Math AI Analyzer - Fast & Persistent</title>
+    
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+                ignoreHtmlClass: 'tex2jax_ignore'
+            },
+            startup: {
+                pageReady: () => {
+                    return MathJax.startup.defaultPageReady().then(() => {
+                        console.log('MathJax ready');
+                    });
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; }
-        
+        /* Minimal, clean CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-sidebar: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6c757d;
+            --primary: #4361ee;
+            --primary-light: #eef2ff;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --border: #e5e7eb;
+            --radius: 8px;
+            --shadow: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.07);
+        }
+
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Login Page */
+        #loginPage {
+            height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 20px;
         }
-        
-        .container {
+
+        .login-container {
             background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
+            border-radius: var(--radius);
+            padding: 40px;
             width: 100%;
-            max-width: 1200px;
-            min-height: 700px;
-            display: flex;
-        }
-        
-        /* Login Page */
-        #loginPage {
-            width: 100%;
-            display: flex;
-        }
-        
-        .login-left {
-            flex: 1;
-            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
-            color: white;
-            padding: 60px 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        
-        .login-right {
-            flex: 1;
-            padding: 60px 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        
-        .login-title {
-            font-size: 42px;
-            font-weight: 800;
-            margin-bottom: 20px;
-            line-height: 1.1;
-        }
-        
-        .login-subtitle {
-            font-size: 18px;
-            opacity: 0.9;
-            line-height: 1.6;
-        }
-        
-        .login-form {
             max-width: 400px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h1 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .login-header p {
+            color: var(--text-secondary);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: var(--radius);
+            border: none;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background: #3a56d4;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+
+        .error-message {
+            color: var(--danger);
+            font-size: 14px;
+            margin-top: 8px;
+            text-align: center;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* Dashboard */
+        .dashboard-container {
+            display: none;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .dashboard-layout {
+            display: flex;
+            height: 100%;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .sidebar-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-item {
+            padding: 12px 16px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sidebar-item:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow);
+        }
+
+        .sidebar-item.active {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .sidebar-item-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sidebar-item-date {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .header {
+            padding: 16px 24px;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left h2 {
+            color: var(--text-primary);
+            font-size: 18px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-name {
+            font-weight: 500;
+            color: var(--primary);
+        }
+
+        .btn-logout {
+            padding: 8px 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            cursor: pointer;
+        }
+
+        .btn-logout:hover {
+            background: #e9ecef;
+        }
+
+        /* Upload Section */
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+        }
+
+        .upload-section {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-header h1 {
+            font-size: 32px;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 18px;
+        }
+
+        .upload-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .upload-card {
+            background: white;
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .upload-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .upload-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+
+        .upload-icon svg {
+            width: 32px;
+            height: 32px;
+            color: var(--primary);
+        }
+
+        .upload-card h3 {
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+
+        .upload-card p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .file-list {
+            margin-top: 16px;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            margin-bottom: 4px;
+            font-size: 14px;
+        }
+
+        .start-button-container {
+            text-align: center;
+            margin-top: 32px;
+        }
+
+        .btn-start {
+            padding: 14px 48px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .btn-start:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Results Section */
+        .results-section {
+            display: none;
+            max-width: 1000px;
             margin: 0 auto;
             width: 100%;
         }
-        
-        .form-group {
-            margin-bottom: 25px;
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
         }
-        
-        .form-label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #333;
+
+        .results-header h1 {
+            font-size: 28px;
         }
-        
-        .form-input {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #e1e5e9;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: all 0.3s;
+
+        .badge-group {
+            display: flex;
+            gap: 12px;
         }
-        
-        .form-input:focus {
-            outline: none;
-            border-color: #4361ee;
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
-        }
-        
-        .btn {
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
-        }
-        
-        .btn-secondary {
-            background: #6c757d;
-            margin-top: 10px;
-        }
-        
-        .error-message {
-            color: #dc3545;
+
+        .badge {
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            gap: 8px;
             font-size: 14px;
-            margin-top: 10px;
-            text-align: center;
         }
-        
-        /* Dashboard */
-        #dashboardPage {
-            display: none;
+
+        .badge-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .badge-dot.correct { background: var(--success); }
+        .badge-dot.partial { background: var(--warning); }
+        .badge-dot.incorrect { background: var(--danger); }
+
+        /* Questions Accordion */
+        .accordion {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .accordion-item {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .accordion-trigger {
             width: 100%;
-            height: 100%;
-        }
-        
-        .sidebar {
-            width: 280px;
-            background: #f8f9fa;
-            border-right: 1px solid #e1e5e9;
             padding: 20px;
-            overflow-y: auto;
-        }
-        
-        .main-content {
-            flex: 1;
-            padding: 30px;
-            overflow-y: auto;
-        }
-        
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #e1e5e9;
-        }
-        
-        .upload-area {
-            border: 3px dashed #4361ee;
-            border-radius: 15px;
-            padding: 60px 40px;
-            text-align: center;
-            background: #f8f9fa;
+            background: none;
+            border: none;
+            text-align: left;
             cursor: pointer;
-            transition: all 0.3s;
-            margin-bottom: 30px;
-        }
-        
-        .upload-area:hover {
-            background: #eef2ff;
-            transform: translateY(-2px);
-        }
-        
-        .upload-icon {
-            font-size: 48px;
-            color: #4361ee;
-            margin-bottom: 20px;
-        }
-        
-        .file-list {
-            margin-bottom: 30px;
-        }
-        
-        .file-item {
-            background: white;
-            border: 1px solid #e1e5e9;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 10px;
             display: flex;
             align-items: center;
+            gap: 16px;
+            transition: background 0.2s;
         }
-        
-        .file-item::before {
-            content: "📄";
-            margin-right: 10px;
+
+        .accordion-trigger:hover {
+            background: var(--bg-secondary);
         }
-        
-        .question-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            border-left: 5px solid;
-        }
-        
-        .question-card.correct { border-left-color: #28a745; }
-        .question-card.incorrect { border-left-color: #dc3545; }
-        .question-card.partial { border-left-color: #ffc107; }
-        
-        .question-header {
+
+        .question-number {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .status-badge {
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 12px;
+            justify-content: center;
             font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .question-number.correct {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .question-number.partial {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .question-number.incorrect {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .question-info {
+            flex: 1;
+        }
+
+        .question-info h4 {
+            margin-bottom: 4px;
+            font-size: 16px;
+        }
+
+        .question-info .status {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .accordion-content {
+            padding: 0 20px 20px 72px;
+            display: none;
+        }
+
+        .accordion-content.open {
+            display: block;
+        }
+
+        .analysis-section {
+            margin-bottom: 20px;
+        }
+
+        .analysis-section h5 {
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: var(--text-secondary);
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        
-        .correct .status-badge { background: #d4edda; color: #155724; }
-        .incorrect .status-badge { background: #f8d7da; color: #721c24; }
-        .partial .status-badge { background: #fff3cd; color: #856404; }
-        
-        .solution-box {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 15px 0;
-            font-family: 'Courier New', monospace;
+
+        .solution-card {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 16px;
+            margin-bottom: 16px;
+            overflow-x: auto;
         }
-        
-        .error-box {
-            background: #fff5f5;
-            border-left: 4px solid #dc3545;
-            padding: 15px;
-            margin: 15px 0;
+
+        .solution-card p {
+            margin-bottom: 8px;
         }
-        
-        .corrected-box {
-            background: #f0fff4;
-            border-left: 4px solid #28a745;
-            padding: 15px;
-            margin: 15px 0;
+
+        .solution-card.error {
+            background: rgba(239, 68, 68, 0.05);
+            border-left: 3px solid var(--danger);
         }
-        
-        .history-item {
+
+        .solution-card.corrected {
+            background: rgba(16, 185, 129, 0.05);
+            border-left: 3px solid var(--success);
+        }
+
+        .solution-steps {
+            line-height: 1.6;
+        }
+
+        /* Practice Paper */
+        .practice-paper-card {
             background: white;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 1px solid #e1e5e9;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-top: 32px;
         }
-        
-        .history-item:hover {
-            transform: translateX(5px);
-            border-color: #4361ee;
+
+        .practice-paper-card h3 {
+            margin-bottom: 8px;
         }
-        
-        .hidden {
-            display: none !important;
+
+        .practice-paper-card p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
         }
-        
-        .flex {
-            display: flex;
+
+        .practice-questions {
+            margin-top: 20px;
         }
-        
+
+        .practice-question {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .practice-question:last-child {
+            border-bottom: none;
+        }
+
+        .practice-question-number {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        /* Typing Effect */
+        .typing-container {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            min-height: 200px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .typing-line {
+            margin-bottom: 12px;
+            opacity: 0;
+            animation: fadeIn 0.3s forwards;
+        }
+
+        .typing-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background: var(--primary);
+            margin-left: 2px;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Loading */
         .loading {
             display: inline-block;
             width: 20px;
             height: 20px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #4361ee;
+            border: 3px solid #f3f4f6;
+            border-top-color: var(--primary);
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
-        
+
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal.open {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--radius);
+            padding: 24px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .header {
+                padding: 12px 16px;
+            }
+            
+            .content-area {
+                padding: 16px;
+            }
+            
+            .upload-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .results-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .badge-group {
+                justify-content: center;
+            }
+            
+            .accordion-content {
+                padding: 0 16px 16px 16px;
+            }
+        }
+
+        .hidden {
+            display: none !important;
         }
     </style>
 </head>
 <body>
     <!-- Login Page -->
-    <div class="container" id="loginPage">
-        <div class="login-left">
-            <div class="login-title">Math AI Analyzer</div>
-            <div class="login-subtitle">
-                AI-powered mathematical analysis system with OCR, error detection, and personalized practice generation.
-                Upload answer sheets and get instant feedback.
+    <div id="loginPage">
+        <div class="login-container">
+            <div class="login-header">
+                <h1>Math AI Analyzer</h1>
+                <p>AI-powered mathematical analysis</p>
             </div>
-            <div style="margin-top: 40px;">
-                <div style="font-size: 14px; opacity: 0.8; margin-bottom: 10px;">Features:</div>
-                <div style="display: flex; flex-direction: column; gap: 10px;">
-                    <div>✅ OCR analysis of handwritten math</div>
-                    <div>✅ Error detection with bounding boxes</div>
-                    <div>✅ Personalized practice papers</div>
-                    <div>✅ LaTeX/MathJax rendering</div>
-                    <div>✅ History persistence</div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="login-right">
-            <div class="login-form" id="loginForm">
-                <h2 style="margin-bottom: 30px; color: #333;">Welcome Back</h2>
-                
+            <form id="loginForm">
                 <div class="form-group">
                     <label class="form-label">Username</label>
-                    <input type="text" id="username" class="form-input" placeholder="Enter your username" value="demo">
+                    <input type="text" id="loginUsername" class="form-input" placeholder="Enter username" required>
                 </div>
-                
                 <div class="form-group">
                     <label class="form-label">Password</label>
-                    <input type="password" id="password" class="form-input" placeholder="Enter your password" value="demo123">
+                    <input type="password" id="loginPassword" class="form-input" placeholder="Enter password" required>
                 </div>
-                
-                <div id="loginError" class="error-message"></div>
-                
-                <button onclick="login()" class="btn" id="loginBtn">Login</button>
-                <button onclick="showRegister()" class="btn btn-secondary">Create New Account</button>
-            </div>
-            
-            <div class="login-form hidden" id="registerForm">
-                <h2 style="margin-bottom: 30px; color: #333;">Create Account</h2>
-                
-                <div class="form-group">
-                    <label class="form-label">Username</label>
-                    <input type="text" id="regUsername" class="form-input" placeholder="Choose username">
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" id="regPassword" class="form-input" placeholder="Min. 6 characters">
-                </div>
-                
-                <div id="registerError" class="error-message"></div>
-                
-                <button onclick="register()" class="btn" id="registerBtn">Register</button>
-                <button onclick="showLogin()" class="btn btn-secondary">Back to Login</button>
-            </div>
+                <div id="loginErrorMessage" class="error-message"></div>
+                <button type="submit" class="btn btn-primary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M13.8 12H3"/>
+                    </svg>
+                    Login
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="showRegisterModal()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="8.5" cy="7" r="4"/>
+                        <line x1="20" y1="8" x2="20" y2="14"/>
+                        <line x1="23" y1="11" x2="17" y2="11"/>
+                    </svg>
+                    Register
+                </button>
+            </form>
         </div>
     </div>
 
     <!-- Dashboard -->
-    <div class="container hidden" id="dashboardPage">
-        <div class="sidebar">
-            <div style="margin-bottom: 30px;">
-                <h2 style="color: #4361ee; margin-bottom: 5px;">Math.AI</h2>
-                <div style="color: #666; font-size: 14px;">Welcome, <span id="userName"></span></div>
-            </div>
-            
-            <button onclick="showUpload()" class="btn" style="margin-bottom: 20px;">+ New Analysis</button>
-            
-            <h3 style="margin-bottom: 15px; color: #555;">History</h3>
-            <div id="historyList">
-                <div class="history-item" style="color: #999; text-align: center;">
-                    No analyses yet
+    <div id="dashboardPage" class="dashboard-container">
+        <div class="dashboard-layout">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-logo">Math AI</div>
                 </div>
-            </div>
-            
-            <div style="margin-top: auto; padding-top: 20px;">
-                <button onclick="logout()" class="btn btn-secondary">Logout</button>
+                <div class="sidebar-content">
+                    <div class="sidebar-section-title">History</div>
+                    <div id="historyList"></div>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <header class="header">
+                    <div class="header-left">
+                        <h2>Math Analysis Dashboard</h2>
+                    </div>
+                    <div class="user-info">
+                        <span>Welcome, <span class="user-name" id="userName"></span></span>
+                        <button class="btn-logout" onclick="handleLogout()">Logout</button>
+                    </div>
+                </header>
+
+                <main class="content-area">
+                    <!-- Upload Section -->
+                    <div id="uploadSection" class="upload-section">
+                        <div class="section-header">
+                            <h1>Upload Answer Sheets</h1>
+                            <p>Upload question papers and student answers for AI analysis</p>
+                        </div>
+                        
+                        <div class="upload-grid">
+                            <div class="upload-card" onclick="document.getElementById('questionInput').click()">
+                                <div class="upload-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                        <polyline points="14 2 14 8 20 8"/>
+                                        <line x1="16" y1="13" x2="8" y2="13"/>
+                                        <line x1="16" y1="17" x2="8" y2="17"/>
+                                        <polyline points="10 9 9 9 8 9"/>
+                                    </svg>
+                                </div>
+                                <h3>Question Papers</h3>
+                                <p>Original questions (PDF/Images)</p>
+                                <input type="file" id="questionInput" multiple accept="image/*,.pdf" style="display:none">
+                                <div id="questionFileList" class="file-list"></div>
+                            </div>
+
+                            <div class="upload-card" onclick="document.getElementById('answerInput').click()">
+                                <div class="upload-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 19l7-7 3 3-7 7-3-3z"/>
+                                        <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+                                        <path d="M2 2l7.586 7.586"/>
+                                        <circle cx="11" cy="11" r="2"/>
+                                    </svg>
+                                </div>
+                                <h3>Student Answers</h3>
+                                <p>Handwritten solutions (PDF/Images)</p>
+                                <input type="file" id="answerInput" multiple accept="image/*,.pdf" style="display:none">
+                                <div id="answerFileList" class="file-list"></div>
+                            </div>
+                        </div>
+
+                        <div class="start-button-container">
+                            <button id="startAnalysisBtn" class="btn btn-primary btn-start" onclick="startStreamingAnalysis()" disabled>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="5 3 19 12 5 21 5 3"/>
+                                </svg>
+                                Start Analysis
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div id="resultsSection" class="results-section">
+                        <div class="results-header">
+                            <div>
+                                <h1>Analysis Results</h1>
+                                <p>AI-powered mathematical assessment</p>
+                            </div>
+                            <div class="badge-group" id="badgeGroup"></div>
+                        </div>
+
+                        <!-- Streaming Display -->
+                        <div id="streamingDisplay" class="typing-container" style="display: none;"></div>
+
+                        <!-- Questions Accordion -->
+                        <div class="accordion" id="accordion"></div>
+
+                        <!-- Practice Paper -->
+                        <div id="practicePaperCard" class="practice-paper-card" style="display: none;">
+                            <h3>Practice Paper</h3>
+                            <p>Generated questions based on errors</p>
+                            <div id="practicePaperContent"></div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div style="display: flex; gap: 12px; margin-top: 32px;">
+                            <button id="saveAnalysisBtn" class="btn btn-primary" onclick="saveAnalysis()" style="display: none;">
+                                Save Analysis
+                            </button>
+                            <button id="generatePracticeBtn" class="btn btn-secondary" onclick="generatePracticePaper()">
+                                Generate Practice
+                            </button>
+                            <button id="boundingBoxBtn" class="btn btn-secondary" onclick="startBoundingAnalysis()">
+                                Bounding Box Analysis
+                            </button>
+                        </div>
+                    </div>
+                </main>
             </div>
         </div>
-        
-        <div class="main-content">
-            <!-- Upload Section -->
-            <div id="uploadSection">
-                <div class="header">
-                    <h1 style="color: #333;">Upload Answer Sheets</h1>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 20px;">Register</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" id="registerUsername" class="form-input" placeholder="Choose username" required>
                 </div>
-                
-                <div class="upload-area" onclick="document.getElementById('fileInput').click()">
-                    <div class="upload-icon">📁</div>
-                    <h3 style="margin-bottom: 10px; color: #333;">Drag & Drop or Click to Upload</h3>
-                    <p style="color: #666; margin-bottom: 20px;">Upload question papers and student answer sheets</p>
-                    <input type="file" id="fileInput" multiple accept="image/*,.pdf" style="display:none;">
-                    <div style="color: #4361ee; font-weight: 600;">Choose Files</div>
+                <div class="form-group">
+                    <label class="form-label">Phone</label>
+                    <input type="tel" id="registerPhone" class="form-input" placeholder="Phone number" required>
                 </div>
-                
-                <div id="fileList" class="file-list"></div>
-                
-                <button onclick="startAnalysis()" class="btn" id="analyzeBtn" style="width: auto; padding: 15px 40px;">
-                    Start Analysis
-                </button>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="registerPassword" class="form-input" placeholder="Min 6 characters" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Confirm Password</label>
+                    <input type="password" id="registerConfirmPassword" class="form-input" placeholder="Confirm password" required>
+                </div>
+                <div id="registerErrorMessage" class="error-message"></div>
+                <div style="display: flex; gap: 12px; margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary">Register</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeRegisterModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Save Analysis Modal -->
+    <div id="saveModal" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 20px;">Save Analysis</h2>
+            <div class="form-group">
+                <input type="text" id="analysisName" class="form-input" placeholder="Analysis name" value="Analysis">
             </div>
-            
-            <!-- Results Section -->
-            <div id="resultsSection" class="hidden">
-                <div class="header">
-                    <h1 style="color: #333;">Analysis Results</h1>
-                    <div>
-                        <button onclick="saveAnalysis()" class="btn" style="width: auto; margin-right: 10px;">Save</button>
-                        <button onclick="showUpload()" class="btn btn-secondary" style="width: auto;">New</button>
-                    </div>
-                </div>
-                
-                <div id="results"></div>
-                
-                <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid #e1e5e9;">
-                    <h3 style="margin-bottom: 20px;">Generate Practice Materials</h3>
-                    <div style="display: flex; gap: 15px;">
-                        <button onclick="generatePractice()" class="btn" style="width: auto;">Practice Paper</button>
-                        <button onclick="boundingAnalysis()" class="btn btn-secondary" style="width: auto;">Bounding Box Analysis</button>
-                    </div>
-                </div>
-                
-                <div id="practiceSection" class="hidden" style="margin-top: 30px;">
-                    <h4>Practice Questions</h4>
-                    <div id="practiceContent"></div>
-                </div>
+            <div style="display: flex; gap: 12px; margin-top: 20px;">
+                <button class="btn btn-primary" onclick="saveAnalysisName()">Save</button>
+                <button class="btn btn-secondary" onclick="closeSaveModal()">Cancel</button>
             </div>
         </div>
     </div>
 
     <script>
         // Configuration
-        const API_URL = 'http://localhost:5000';
+        const BACKEND_URL = 'https://navalsheth.pythonanywhere.com';
         let currentUser = null;
-        let uploadedFiles = [];
-        let analysisResult = null;
+        let questionFiles = [];
+        let answerFiles = [];
+        let currentAnalysis = null;
         let currentAnalysisId = null;
+        let analyses = [];
+        let isAnalyzing = false;
 
-        // Initialize
-        window.addEventListener('load', () => {
-            checkAuth();
-            
-            // File input handler
-            document.getElementById('fileInput').addEventListener('change', handleFileSelect);
-            
-            // Enter key for forms
-            document.getElementById('password')?.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') login();
-            });
-            document.getElementById('regPassword')?.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') register();
-            });
-        });
-
-        // File handling
-        function handleFileSelect(e) {
-            uploadedFiles = Array.from(e.target.files);
-            const list = document.getElementById('fileList');
-            if (uploadedFiles.length === 0) {
-                list.innerHTML = '<div style="color: #999; text-align: center;">No files selected</div>';
-                return;
+        // MathJax helper
+        function renderMath(element) {
+            if (window.MathJax) {
+                MathJax.typesetPromise([element]).catch(err => console.log('MathJax error:', err));
             }
-            
-            list.innerHTML = uploadedFiles.map(f => `
-                <div class="file-item">
-                    ${f.name} (${(f.size / 1024).toFixed(1)} KB)
-                </div>
-            `).join('');
         }
 
-        // Authentication
+        // Auth functions
         async function checkAuth() {
             try {
-                console.log('Checking auth...');
-                const response = await fetch(`${API_URL}/api/check-auth`, {
-                    method: 'GET',
-                    credentials: 'include',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    }
+                const response = await fetch(`${BACKEND_URL}/api/check-auth`, {
+                    credentials: 'include'
                 });
-                
-                console.log('Auth response status:', response.status);
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log('Auth data:', data);
-                    
-                    if (data.authenticated) {
-                        currentUser = data.user;
-                        showDashboard();
-                        return true;
-                    }
+                const data = await response.json();
+                if (data.authenticated) {
+                    currentUser = data.user;
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    return true;
                 }
-                showLoginPage();
-                return false;
             } catch (error) {
                 console.error('Auth check failed:', error);
-                document.getElementById('loginError').textContent = 'Cannot connect to server. Make sure backend is running at ' + API_URL;
-                showLoginPage();
+            }
+            localStorage.removeItem('user');
+            currentUser = null;
+            return false;
+        }
+
+        async function login(username, password) {
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/login`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({username, password}),
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                if (data.success) {
+                    currentUser = data.user;
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    showDashboard();
+                    return true;
+                } else {
+                    showError('loginErrorMessage', data.message);
+                    return false;
+                }
+            } catch (error) {
+                showError('loginErrorMessage', 'Connection error');
                 return false;
             }
         }
 
-        async function login() {
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value;
-            const btn = document.getElementById('loginBtn');
-            const errorEl = document.getElementById('loginError');
-            
-            if (!username || !password) {
-                errorEl.textContent = 'Please enter username and password';
-                return;
-            }
-            
-            btn.innerHTML = '<div class="loading"></div>';
-            btn.disabled = true;
-            errorEl.textContent = '';
-            
+        async function register(username, phone, password) {
             try {
-                const response = await fetch(`${API_URL}/api/login`, {
+                const response = await fetch(`${BACKEND_URL}/api/register`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({ username, password }),
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({username, phone, password}),
                     credentials: 'include'
                 });
-                
                 const data = await response.json();
-                console.log('Login response:', data);
-                
-                if (data.success) {
-                    currentUser = data.user;
-                    showDashboard();
-                } else {
-                    errorEl.textContent = data.message || 'Login failed';
-                }
-            } catch (error) {
-                console.error('Login error:', error);
-                errorEl.textContent = 'Connection error. Make sure backend is running at ' + API_URL;
-            } finally {
-                btn.innerHTML = 'Login';
-                btn.disabled = false;
-            }
-        }
-
-        async function register() {
-            const username = document.getElementById('regUsername').value.trim();
-            const password = document.getElementById('regPassword').value;
-            const btn = document.getElementById('registerBtn');
-            const errorEl = document.getElementById('registerError');
-            
-            if (!username || !password) {
-                errorEl.textContent = 'Please enter username and password';
-                return;
-            }
-            
-            if (password.length < 6) {
-                errorEl.textContent = 'Password must be at least 6 characters';
-                return;
-            }
-            
-            btn.innerHTML = '<div class="loading"></div>';
-            btn.disabled = true;
-            errorEl.textContent = '';
-            
-            try {
-                const response = await fetch(`${API_URL}/api/register`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({ username, password }),
-                    credentials: 'include'
-                });
-                
-                const data = await response.json();
-                
                 if (data.success) {
                     alert('Registration successful! Please login.');
-                    showLogin();
+                    closeRegisterModal();
+                    return true;
                 } else {
-                    errorEl.textContent = data.message || 'Registration failed';
+                    showError('registerErrorMessage', data.message);
+                    return false;
                 }
             } catch (error) {
-                console.error('Register error:', error);
-                errorEl.textContent = 'Connection error. Make sure backend is running.';
-            } finally {
-                btn.innerHTML = 'Register';
-                btn.disabled = false;
+                showError('registerErrorMessage', 'Connection error');
+                return false;
             }
         }
 
         async function logout() {
             try {
-                await fetch(`${API_URL}/api/logout`, {
+                await fetch(`${BACKEND_URL}/api/logout`, {
                     method: 'POST',
                     credentials: 'include'
                 });
             } catch (error) {
                 console.error('Logout error:', error);
             }
-            
+            localStorage.removeItem('user');
             currentUser = null;
             showLoginPage();
         }
 
-        // UI Navigation
-        function showLogin() {
-            document.getElementById('registerForm').classList.add('hidden');
-            document.getElementById('loginForm').classList.remove('hidden');
-            document.getElementById('loginError').textContent = '';
-            document.getElementById('registerError').textContent = '';
-        }
-
-        function showRegister() {
-            document.getElementById('loginForm').classList.add('hidden');
-            document.getElementById('registerForm').classList.remove('hidden');
-            document.getElementById('loginError').textContent = '';
-            document.getElementById('registerError').textContent = '';
-        }
-
+        // UI functions
         function showLoginPage() {
-            document.getElementById('loginPage').classList.remove('hidden');
-            document.getElementById('dashboardPage').classList.add('hidden');
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('dashboardPage').style.display = 'none';
         }
 
         function showDashboard() {
-            document.getElementById('loginPage').classList.add('hidden');
-            document.getElementById('dashboardPage').classList.remove('hidden');
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('dashboardPage').style.display = 'flex';
             document.getElementById('userName').textContent = currentUser.username;
-            loadHistory();
-            showUpload();
+            loadAnalyses();
         }
 
-        function showUpload() {
-            document.getElementById('uploadSection').classList.remove('hidden');
-            document.getElementById('resultsSection').classList.add('hidden');
+        function showError(elementId, message) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.classList.add('show');
+            setTimeout(() => element.classList.remove('show'), 3000);
         }
 
-        // Analysis
-        async function startAnalysis() {
-            if (uploadedFiles.length === 0) {
-                alert('Please upload files first');
+        function showRegisterModal() {
+            document.getElementById('registerModal').classList.add('open');
+        }
+
+        function closeRegisterModal() {
+            document.getElementById('registerModal').classList.remove('open');
+        }
+
+        function showSaveModal() {
+            document.getElementById('saveModal').classList.add('open');
+        }
+
+        function closeSaveModal() {
+            document.getElementById('saveModal').classList.remove('open');
+        }
+
+        // File handling
+        document.getElementById('questionInput').addEventListener('change', handleFileUpload);
+        document.getElementById('answerInput').addEventListener('change', handleFileUpload);
+
+        async function handleFileUpload(e) {
+            const files = e.target.files;
+            const isQuestion = e.target.id === 'questionInput';
+            const targetArray = isQuestion ? questionFiles : answerFiles;
+            const listId = isQuestion ? 'questionFileList' : 'answerFileList';
+            
+            for (let file of files) {
+                if (!targetArray.find(f => f.name === file.name)) {
+                    targetArray.push(file);
+                }
+            }
+            
+            displayFileList(listId, targetArray);
+            checkStartButton();
+        }
+
+        function displayFileList(elementId, files) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = files.map(file => `
+                <div class="file-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                    </svg>
+                    ${file.name}
+                </div>
+            `).join('');
+        }
+
+        function checkStartButton() {
+            const btn = document.getElementById('startAnalysisBtn');
+            btn.disabled = questionFiles.length === 0 || answerFiles.length === 0;
+        }
+
+        // Streaming analysis with typing effect
+        async function startStreamingAnalysis() {
+            if (isAnalyzing) return;
+            
+            const isAuth = await checkAuth();
+            if (!isAuth) {
+                alert('Please login first');
+                showLoginPage();
                 return;
             }
             
-            const btn = document.getElementById('analyzeBtn');
-            btn.innerHTML = '<div class="loading"></div> Analyzing...';
+            if (questionFiles.length === 0 || answerFiles.length === 0) {
+                alert('Please upload both question and answer files');
+                return;
+            }
+            
+            isAnalyzing = true;
+            const btn = document.getElementById('startAnalysisBtn');
+            btn.innerHTML = '<div class="loading"></div> Starting...';
             btn.disabled = true;
             
+            // Prepare files
+            const allFiles = [...questionFiles, ...answerFiles];
             const formData = new FormData();
-            uploadedFiles.forEach(f => formData.append('files', f));
+            allFiles.forEach(file => {
+                formData.append('files', file, file.name);
+            });
             
-            try {
-                const response = await fetch(`${API_URL}/api/analyze`, {
+            // Show streaming display
+            document.getElementById('streamingDisplay').style.display = 'block';
+            document.getElementById('streamingDisplay').innerHTML = '';
+            
+            // Start EventSource for streaming
+            const eventSource = new EventSource(`${BACKEND_URL}/api/stream-analyze`);
+            
+            eventSource.onopen = () => {
+                console.log('Stream connected');
+                // Send files via fetch (EventSource is GET only)
+                fetch(`${BACKEND_URL}/api/stream-analyze`, {
                     method: 'POST',
                     body: formData,
                     credentials: 'include'
-                });
-                
-                if (response.status === 401) {
-                    alert('Session expired. Please login again.');
-                    showLoginPage();
-                    return;
+                }).catch(err => console.error('Fetch error:', err));
+            };
+            
+            eventSource.onmessage = (event) => {
+                try {
+                    const data = JSON.parse(event.data);
+                    
+                    if (data.status === 'start') {
+                        addTypingLine('🚀 Starting analysis...');
+                    } 
+                    else if (data.status === 'question') {
+                        const q = data.question;
+                        addTypingLine(`📝 Analyzing Question ${q.number}...`);
+                        
+                        // Store question
+                        if (!currentAnalysis) {
+                            currentAnalysis = { questions: [] };
+                        }
+                        currentAnalysis.questions.push(q);
+                        
+                        // Update UI incrementally
+                        updateQuestionDisplay(q);
+                    }
+                    else if (data.status === 'complete') {
+                        addTypingLine('✅ Analysis complete!');
+                        currentAnalysisId = data.analysis_id;
+                        
+                        // Update badges
+                        updateBadges(currentAnalysis.questions);
+                        
+                        // Show save button
+                        document.getElementById('saveAnalysisBtn').style.display = 'block';
+                        document.getElementById('practicePaperCard').style.display = 'block';
+                        
+                        // Hide streaming display after delay
+                        setTimeout(() => {
+                            document.getElementById('streamingDisplay').style.display = 'none';
+                        }, 2000);
+                        
+                        // Show results section
+                        document.getElementById('uploadSection').classList.add('hidden');
+                        document.getElementById('resultsSection').style.display = 'block';
+                        
+                        eventSource.close();
+                        isAnalyzing = false;
+                    }
+                    else if (data.status === 'error') {
+                        addTypingLine(`❌ Error: ${data.error}`);
+                        eventSource.close();
+                        isAnalyzing = false;
+                        btn.innerHTML = 'Start Analysis';
+                        btn.disabled = false;
+                    }
+                    
+                } catch (error) {
+                    console.error('Stream parsing error:', error);
                 }
-                
+            };
+            
+            eventSource.onerror = (error) => {
+                console.error('EventSource error:', error);
+                addTypingLine('❌ Connection error');
+                eventSource.close();
+                isAnalyzing = false;
+                btn.innerHTML = 'Start Analysis';
+                btn.disabled = false;
+            };
+        }
+
+        // Typing effect
+        function addTypingLine(text) {
+            const container = document.getElementById('streamingDisplay');
+            const line = document.createElement('div');
+            line.className = 'typing-line';
+            line.innerHTML = text + '<span class="typing-cursor"></span>';
+            container.appendChild(line);
+            container.scrollTop = container.scrollHeight;
+            
+            // Trigger MathJax rendering
+            setTimeout(() => renderMath(line), 100);
+        }
+
+        // Update question display incrementally
+        function updateQuestionDisplay(question) {
+            const accordion = document.getElementById('accordion');
+            
+            // Check if question already exists
+            const existingItem = document.getElementById(`q-${question.number}`);
+            if (existingItem) {
+                existingItem.remove();
+            }
+            
+            const item = document.createElement('div');
+            item.className = 'accordion-item';
+            item.id = `q-${question.number}`;
+            
+            const statusClass = question.status || 'incorrect';
+            
+            item.innerHTML = `
+                <button class="accordion-trigger" onclick="toggleAccordion('${question.number}')">
+                    <div class="question-number ${statusClass}">${question.number}</div>
+                    <div class="question-info">
+                        <h4>Question ${question.number}</h4>
+                        <div class="status">Status: ${question.status}</div>
+                    </div>
+                </button>
+                <div id="content-${question.number}" class="accordion-content">
+                    <div class="analysis-section">
+                        <h5>Student Solution</h5>
+                        <div class="solution-card">
+                            <div class="solution-steps">${question.student_original || 'No solution provided'}</div>
+                        </div>
+                    </div>
+                    <div class="analysis-section">
+                        <h5>Error Analysis</h5>
+                        <div class="solution-card error">
+                            <p>${question.error || 'No errors detected'}</p>
+                        </div>
+                    </div>
+                    <div class="analysis-section">
+                        <h5>Corrected Solution</h5>
+                        <div class="solution-card corrected">
+                            <div class="solution-steps">${question.correct_solution || 'No correction needed'}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            accordion.appendChild(item);
+            renderMath(item);
+        }
+
+        function toggleAccordion(questionNumber) {
+            const content = document.getElementById(`content-${questionNumber}`);
+            content.classList.toggle('open');
+        }
+
+        function updateBadges(questions) {
+            const counts = { correct: 0, partial: 0, incorrect: 0 };
+            questions.forEach(q => {
+                const status = q.status?.toLowerCase();
+                if (status in counts) counts[status]++;
+            });
+            
+            const badgeGroup = document.getElementById('badgeGroup');
+            badgeGroup.innerHTML = `
+                <div class="badge"><div class="badge-dot correct"></div>${counts.correct} Correct</div>
+                <div class="badge"><div class="badge-dot partial"></div>${counts.partial} Partial</div>
+                <div class="badge"><div class="badge-dot incorrect"></div>${counts.incorrect} Incorrect</div>
+            `;
+        }
+
+        // Analysis management
+        async function loadAnalyses() {
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/get-analyses`, {
+                    credentials: 'include'
+                });
                 const data = await response.json();
-                
-                if (data.questions) {
-                    analysisResult = data;
-                    displayResults(data.questions);
-                    document.getElementById('uploadSection').classList.add('hidden');
-                    document.getElementById('resultsSection').classList.remove('hidden');
-                } else {
-                    alert('Analysis failed: ' + (data.error || 'Unknown error'));
+                if (data.success) {
+                    analyses = data.analyses;
+                    populateHistory(analyses);
                 }
             } catch (error) {
-                console.error('Analysis error:', error);
-                alert('Connection error: ' + error.message);
+                console.error('Failed to load analyses:', error);
+            }
+        }
+
+        function populateHistory(analysesList) {
+            const historyList = document.getElementById('historyList');
+            historyList.innerHTML = analysesList.map(analysis => `
+                <div class="sidebar-item" onclick="loadSavedAnalysis(${analysis.id})">
+                    <div class="sidebar-item-title">${analysis.title}</div>
+                    <div class="sidebar-item-date">${analysis.formatted_date || analysis.analysis_date}</div>
+                </div>
+            `).join('');
+        }
+
+        async function loadSavedAnalysis(analysisId) {
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/get-analysis/${analysisId}`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                if (data.success) {
+                    const analysis = data.analysis;
+                    currentAnalysisId = analysis.id;
+                    currentAnalysis = analysis.analysis_data;
+                    
+                    // Display analysis
+                    displaySavedAnalysis(analysis);
+                    
+                    // Show results section
+                    document.getElementById('uploadSection').classList.add('hidden');
+                    document.getElementById('resultsSection').style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Failed to load analysis:', error);
+            }
+        }
+
+        function displaySavedAnalysis(analysis) {
+            const questions = analysis.analysis_data?.questions || [];
+            const accordion = document.getElementById('accordion');
+            accordion.innerHTML = '';
+            
+            questions.forEach(q => {
+                updateQuestionDisplay(q);
+            });
+            
+            updateBadges(questions);
+            document.getElementById('saveAnalysisBtn').style.display = 'block';
+            document.getElementById('practicePaperCard').style.display = 'block';
+        }
+
+        async function saveAnalysis() {
+            if (!currentAnalysisId) {
+                showSaveModal();
+            } else {
+                await updateAnalysisName('Analysis');
+            }
+        }
+
+        async function saveAnalysisName() {
+            const name = document.getElementById('analysisName').value.trim() || 'Analysis';
+            
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/update-analysis-name/${currentAnalysisId}`, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ analysis_name: name }),
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    closeSaveModal();
+                    loadAnalyses();
+                    alert('Analysis saved!');
+                }
+            } catch (error) {
+                console.error('Failed to save analysis:', error);
+            }
+        }
+
+        async function generatePracticePaper() {
+            if (!currentAnalysis?.questions) {
+                alert('No analysis data available');
+                return;
+            }
+            
+            const content = document.getElementById('practicePaperContent');
+            content.innerHTML = '<div class="loading"></div> Generating...';
+            
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/generate-practice`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ questions: currentAnalysis.questions }),
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                if (data.practice_questions?.length > 0) {
+                    content.innerHTML = `
+                        <div class="practice-questions">
+                            ${data.practice_questions.map(pq => `
+                                <div class="practice-question">
+                                    <div class="practice-question-number">Question ${pq.number}</div>
+                                    <div>${pq.question}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button class="btn btn-primary" onclick="downloadPracticePaper()" style="margin-top: 20px;">
+                            Download PDF
+                        </button>
+                    `;
+                    setTimeout(() => renderMath(content), 100);
+                } else {
+                    content.innerHTML = '<p>All questions are correct! No practice needed.</p>';
+                }
+            } catch (error) {
+                content.innerHTML = `<p>Error: ${error.message}</p>`;
+            }
+        }
+
+        async function startBoundingAnalysis() {
+            if (!currentAnalysisId) {
+                alert('Please complete analysis first');
+                return;
+            }
+            
+            const btn = document.getElementById('boundingBoxBtn');
+            btn.innerHTML = '<div class="loading"></div> Analyzing...';
+            btn.disabled = true;
+            
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/bounding-analyze`, {
+                    method: 'POST',
+                    body: new FormData(),
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    alert(`Found ${data.errors_found} errors with bounding boxes`);
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
             } finally {
-                btn.innerHTML = 'Start Analysis';
+                btn.innerHTML = 'Bounding Box Analysis';
                 btn.disabled = false;
             }
         }
 
-        function displayResults(questions) {
-            const container = document.getElementById('results');
+        function downloadPracticePaper() {
+            alert('PDF generation would happen here');
+            // Implement PDF download using jsPDF
+        }
+
+        // Event listeners
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            if (username && password) {
+                await login(username, password);
+            }
+        });
+
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('registerUsername').value.trim();
+            const phone = document.getElementById('registerPhone').value.trim();
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
             
-            if (!questions || questions.length === 0) {
-                container.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">No questions found in analysis</div>';
+            if (!username || !phone || !password || !confirmPassword) {
+                showError('registerErrorMessage', 'All fields required');
                 return;
             }
             
-            container.innerHTML = questions.map(q => `
-                <div class="question-card ${q.status}">
-                    <div class="question-header">
-                        <h3 style="margin: 0;">Question ${q.number}</h3>
-                        <span class="status-badge">${q.status}</span>
-                    </div>
-                    
-                    <div style="margin-bottom: 15px;">
-                        <strong>Question:</strong>
-                        <div style="margin-top: 8px; font-size: 16px;">${q.question}</div>
-                    </div>
-                    
-                    <div style="margin-bottom: 15px;">
-                        <strong>Student's Solution:</strong>
-                        <div class="solution-box">${q.student_solution}</div>
-                    </div>
-                    
-                    <div style="margin-bottom: 15px;">
-                        <strong>Error Analysis:</strong>
-                        <div class="error-box">${q.error}</div>
-                    </div>
-                    
-                    <div>
-                        <strong>Corrected Solution:</strong>
-                        <div class="corrected-box">${q.corrected}</div>
-                    </div>
-                </div>
-            `).join('');
-            
-            // Render MathJax
-            if (window.MathJax) {
-                MathJax.typesetPromise([container]).catch(err => {
-                    console.error('MathJax error:', err);
-                });
-            }
-        }
-
-        async function saveAnalysis() {
-            if (!analysisResult) return;
-            
-            const title = prompt('Enter analysis name:', `Analysis ${new Date().toLocaleString()}`);
-            if (!title) return;
-            
-            try {
-                const response = await fetch(`${API_URL}/api/save-analysis`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        title,
-                        analysis_data: analysisResult
-                    }),
-                    credentials: 'include'
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    alert('Analysis saved!');
-                    loadHistory();
-                } else {
-                    alert('Save failed: ' + (data.error || 'Unknown error'));
-                }
-            } catch (error) {
-                console.error('Save error:', error);
-                alert('Save failed: ' + error.message);
-            }
-        }
-
-        async function loadHistory() {
-            try {
-                const response = await fetch(`${API_URL}/api/get-analyses`, {
-                    credentials: 'include',
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    const container = document.getElementById('historyList');
-                    
-                    if (data.analyses.length === 0) {
-                        container.innerHTML = '<div style="color: #999; text-align: center;">No analyses yet</div>';
-                        return;
-                    }
-                    
-                    container.innerHTML = data.analyses.map(a => `
-                        <div class="history-item" onclick="loadAnalysis(${a.id})">
-                            <div style="font-weight: 600; margin-bottom: 5px;">${a.title}</div>
-                            <div style="font-size: 12px; color: #666;">${a.date}</div>
-                        </div>
-                    `).join('');
-                }
-            } catch (error) {
-                console.error('Load history error:', error);
-            }
-        }
-
-        async function loadAnalysis(id) {
-            try {
-                const response = await fetch(`${API_URL}/api/get-analysis/${id}`, {
-                    credentials: 'include',
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    currentAnalysisId = id;
-                    analysisResult = data.analysis.analysis_data;
-                    displayResults(analysisResult.questions || []);
-                    document.getElementById('uploadSection').classList.add('hidden');
-                    document.getElementById('resultsSection').classList.remove('hidden');
-                }
-            } catch (error) {
-                console.error('Load analysis error:', error);
-                alert('Failed to load analysis');
-            }
-        }
-
-        async function boundingAnalysis() {
-            if (uploadedFiles.length === 0) {
-                alert('Please upload files first');
+            if (password.length < 6) {
+                showError('registerErrorMessage', 'Password must be 6+ characters');
                 return;
             }
             
-            alert('Bounding box analysis would detect errors and draw boxes around them. This requires additional setup with OpenAI API.');
-        }
-
-        async function generatePractice() {
-            if (!analysisResult || !analysisResult.questions) {
-                alert('Please run analysis first');
+            if (password !== confirmPassword) {
+                showError('registerErrorMessage', 'Passwords do not match');
                 return;
             }
             
-            const container = document.getElementById('practiceContent');
-            container.innerHTML = '<div class="loading"></div> Generating...';
-            document.getElementById('practiceSection').classList.remove('hidden');
-            
-            // Simulate practice generation
-            setTimeout(() => {
-                const errorQuestions = analysisResult.questions.filter(q => q.status !== 'correct');
-                
-                if (errorQuestions.length === 0) {
-                    container.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">All answers correct! No practice needed.</div>';
-                    return;
-                }
-                
-                container.innerHTML = errorQuestions.map(q => `
-                    <div class="question-card">
-                        <h4>Practice for Question ${q.number}</h4>
-                        <div style="margin-top: 10px;">
-                            <strong>Original:</strong> ${q.question}
-                        </div>
-                        <div style="margin-top: 10px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
-                            <strong>Practice question:</strong> Solve a similar problem with different numbers...
-                        </div>
-                    </div>
-                `).join('');
-                
-                if (window.MathJax) {
-                    MathJax.typesetPromise([container]);
-                }
-            }, 1000);
+            await register(username, phone, password);
+        });
+
+        function handleLogout() {
+            logout();
         }
 
-        // Global exports
-        window.login = login;
-        window.register = register;
-        window.logout = logout;
-        window.showRegister = showRegister;
-        window.showLogin = showLogin;
-        window.startAnalysis = startAnalysis;
-        window.saveAnalysis = saveAnalysis;
-        window.generatePractice = generatePractice;
-        window.boundingAnalysis = boundingAnalysis;
-        window.loadAnalysis = loadAnalysis;
-        window.showUpload = showUpload;
+        // Initialize
+        window.addEventListener('DOMContentLoaded', async () => {
+            const isAuth = await checkAuth();
+            if (isAuth) {
+                showDashboard();
+            } else {
+                showLoginPage();
+            }
+        });
     </script>
 </body>
 </html>
