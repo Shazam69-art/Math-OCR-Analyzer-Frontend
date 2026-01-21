@@ -1,178 +1,259 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math AI Analyzer - Fast & Persistent</title>
-    
-    <!-- MathJax Configuration -->
+    <title>Math.AI Analyzer - CAS Educations</title>
+    <!-- Add this line in the head section for session cookies -->
+    <script>document.cookie = "same-site-cookie=foo; SameSite=Lax";</script>
     <script>
         window.MathJax = {
             tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                inlineMath: [['$', '$'], ['\\\\(', '\\\\)']],
+                displayMath: [['$$', '$$'], ['\\\\[', '\\\\]']],
                 processEscapes: true,
                 processEnvironments: true
             },
             options: {
-                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-                ignoreHtmlClass: 'tex2jax_ignore'
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
             },
             startup: {
-                pageReady: () => {
-                    return MathJax.startup.defaultPageReady().then(() => {
-                        console.log('MathJax ready');
-                    });
-                }
+                pageReady: () => { return MathJax.startup.defaultPageReady(); }
             }
         };
     </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
-        /* Minimal, clean CSS */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --bg-primary: #ffffff;
-            --bg-secondary: #f8f9fa;
-            --bg-sidebar: #ffffff;
-            --text-primary: #1a1a1a;
-            --text-secondary: #6c757d;
+            --background: #f5f7fa;
+            --foreground: #1a1a2e;
+            --card: #ffffff;
+            --card-foreground: #1a1a2e;
             --primary: #4361ee;
-            --primary-light: #eef2ff;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --border: #e5e7eb;
-            --radius: 8px;
-            --shadow: 0 1px 3px rgba(0,0,0,0.1);
+            --primary-foreground: #ffffff;
+            --secondary: #f8f9fa;
+            --secondary-foreground: #495057;
+            --muted: #e9ecef;
+            --muted-foreground: #6c757d;
+            --accent: #eef2ff;
+            --accent-foreground: #373a40;
+            --destructive: #e63946;
+            --destructive-foreground: #ffffff;
+            --border: #dee2e6;
+            --input: #e9ecef;
+            --ring: #4361ee;
+            --sidebar: #ffffff;
+            --sidebar-foreground: #373a40;
+            --sidebar-accent: #f8f9fa;
+            --sidebar-border: #e9ecef;
+            --radius: 12px;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
             --shadow-md: 0 4px 6px rgba(0,0,0,0.07);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.08);
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            line-height: 1.5;
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+            background-color: var(--background);
+            color: var(--foreground);
+            line-height: 1.6;
             height: 100vh;
             overflow: hidden;
         }
-
-        /* Login Page */
+        /* Login Page Styles */
         #loginPage {
             height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
+            background: #ffffff;
+            position: relative;
+            overflow: hidden;
         }
-
+        .login-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+        }
+        .login-background::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            right: -50%;
+            bottom: -50%;
+            background: #ffffff;
+        }
         .login-container {
-            background: white;
-            border-radius: var(--radius);
-            padding: 40px;
+            position: relative;
+            z-index: 2;
             width: 100%;
-            max-width: 400px;
-            box-shadow: var(--shadow-md);
+            max-width: 420px;
+            padding: 0 20px;
         }
-
+        /* Mathematical Terms Styles */
+        .math-terms-left,
+        .math-terms-right {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .math-terms-left {
+            left: 40px;
+        }
+        .math-terms-right {
+            right: 40px;
+        }
+        .math-term {
+            font-size: 18px;
+            color: #000000;
+            margin: 20px 0;
+            padding: 12px 15px;
+            text-align: center;
+            opacity: 1;
+            transition: all 0.3s ease;
+            font-family: 'Cambria Math', 'Latin Modern Math', STIXGeneral, serif;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .math-term:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        @media (max-width: 1024px) {
+            .math-terms-left,
+            .math-terms-right {
+                display: none;
+            }
+        }
         .login-header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
-
-        .login-header h1 {
-            color: var(--primary);
-            margin-bottom: 10px;
-            font-size: 28px;
-        }
-
-        .login-header p {
-            color: var(--text-secondary);
-        }
-
-        .form-group {
+        .ai-mastery-text {
+            color: #4361ee;
+            font-size: 42px;
+            font-weight: 700;
             margin-bottom: 20px;
+            text-align: center;
+            letter-spacing: -0.5px;
         }
-
+        .login-brand {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--foreground);
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        .login-brand span {
+            color: var(--primary);
+        }
+        .login-subtitle {
+            color: var(--muted-foreground);
+            font-size: 16px;
+        }
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius);
+            padding: 40px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .login-form {
+            margin-bottom: 32px;
+        }
+        .form-group {
+            margin-bottom: 24px;
+        }
         .form-label {
             display: block;
-            margin-bottom: 8px;
+            font-size: 14px;
             font-weight: 500;
-            color: var(--text-primary);
+            color: var(--foreground);
+            margin-bottom: 8px;
         }
-
         .form-input {
             width: 100%;
             padding: 12px 16px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            font-size: 16px;
-            transition: border-color 0.2s;
+            font-size: 15px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            background: var(--card);
+            transition: all 0.2s;
         }
-
         .form-input:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
         }
-
-        .btn {
-            padding: 12px 24px;
-            border-radius: var(--radius);
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
             border: none;
+            border-radius: 8px;
             font-size: 16px;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
-            display: inline-flex;
+            display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
         }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-            width: 100%;
-        }
-
-        .btn-primary:hover {
+        .login-btn:hover {
             background: #3a56d4;
             transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
         }
-
-        .btn-secondary {
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-            width: 100%;
+        .login-btn:active {
+            transform: translateY(0);
+        }
+        .login-btn.secondary {
+            background: #6c757d;
             margin-top: 10px;
         }
-
-        .btn-secondary:hover {
-            background: #e9ecef;
+        .login-btn.secondary:hover {
+            background: #5a6268;
         }
-
         .error-message {
-            color: var(--danger);
+            color: var(--destructive);
             font-size: 14px;
             margin-top: 8px;
             text-align: center;
             display: none;
         }
-
         .error-message.show {
             display: block;
         }
-
-        /* Dashboard */
+        .success-message {
+            color: #10b981;
+            font-size: 14px;
+            margin-top: 8px;
+            text-align: center;
+            display: none;
+        }
+        .success-message.show {
+            display: block;
+        }
         .dashboard-container {
             display: none;
             height: 100vh;
@@ -183,27 +264,55 @@
         .dashboard-layout {
             display: flex;
             height: 100%;
+            width: 100%;
         }
 
-        /* Sidebar */
         .sidebar {
             width: 280px;
-            background: var(--bg-sidebar);
-            border-right: 1px solid var(--border);
+            background-color: var(--sidebar);
+            border-right: 1px solid var(--sidebar-border);
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            height: 100%;
+            box-shadow: var(--shadow-sm);
         }
 
         .sidebar-header {
-            padding: 20px;
-            border-bottom: 1px solid var(--border);
+            padding: 24px;
+            border-bottom: 1px solid var(--sidebar-border);
         }
 
         .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .sidebar-logo:hover {
+            opacity: 0.8;
+        }
+
+        .sidebar-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary) 0%, #3a56d4 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sidebar-logo-icon svg {
+            width: 24px;
+            height: 24px;
+            color: var(--primary-foreground);
+        }
+
+        .sidebar-logo h1 {
             font-size: 20px;
             font-weight: 700;
-            color: var(--primary);
+            color: var(--foreground);
         }
 
         .sidebar-content {
@@ -215,46 +324,127 @@
         .sidebar-section-title {
             font-size: 12px;
             font-weight: 600;
-            color: var(--text-secondary);
+            color: var(--muted-foreground);
             text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0 12px;
             margin-bottom: 12px;
-            letter-spacing: 0.5px;
         }
 
         .sidebar-item {
-            padding: 12px 16px;
-            background: white;
-            border: 1px solid var(--border);
+            padding: 16px;
             border-radius: var(--radius);
-            margin-bottom: 8px;
             cursor: pointer;
             transition: all 0.2s;
+            margin-bottom: 8px;
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
         }
-
         .sidebar-item:hover {
-            border-color: var(--primary);
-            box-shadow: var(--shadow);
+            background-color: var(--sidebar-accent);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
-
         .sidebar-item.active {
+            background: linear-gradient(135deg, var(--primary) 0%, #3a56d4 100%);
+            color: var(--primary-foreground);
             border-color: var(--primary);
-            background: var(--primary-light);
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.2);
         }
-
+        .sidebar-item.active .sidebar-item-date,
+        .sidebar-item.active .sidebar-item-preview {
+            color: rgba(255, 255, 255, 0.9);
+        }
         .sidebar-item-title {
             font-weight: 600;
-            margin-bottom: 4px;
+            font-size: 15px;
+            margin-bottom: 6px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-
+        .sidebar-item-title::before {
+            content: '📊';
+            font-size: 14px;
+        }
+        .sidebar-item.active .sidebar-item-title::before {
+            content: '✅';
+        }
         .sidebar-item-date {
             font-size: 12px;
-            color: var(--text-secondary);
+            color: var(--muted-foreground);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .sidebar-item-date::before {
+            content: '📅';
+            font-size: 11px;
+        }
+        .sidebar-item-preview {
+            font-size: 13px;
+            color: var(--muted-foreground);
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid var(--border);
+        }
+        .sidebar-item.active .sidebar-item-preview {
+            border-top-color: rgba(255, 255, 255, 0.2);
+        }
+        .sidebar-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .sidebar-item:hover .sidebar-actions {
+            opacity: 1;
+        }
+        .sidebar-actions button {
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .sidebar-actions button:first-child {
+            background-color: var(--primary);
+            color: white;
+        }
+        .sidebar-actions button:first-child:hover {
+            background-color: #3a56d4;
+        }
+        .sidebar-actions button:last-child {
+            background-color: var(--destructive);
+            color: white;
+        }
+        .sidebar-actions button:last-child:hover {
+            background-color: #c53030;
+        }
+        /* Mobile sidebar specific styles */
+        .mobile-sidebar .sidebar-item {
+            background-color: var(--card);
+        }
+        .mobile-sidebar .sidebar-item.active {
+            background: linear-gradient(135deg, var(--primary) 0%, #3a56d4 100%);
+        }
+        .mobile-sidebar .sidebar-actions {
+            opacity: 1;
         }
 
-        /* Main Content */
         .main-content {
             flex: 1;
             display: flex;
@@ -263,97 +453,149 @@
         }
 
         .header {
-            padding: 16px 24px;
-            background: white;
             border-bottom: 1px solid var(--border);
+            background-color: var(--card);
+            padding: 16px 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            width: 100%;
         }
 
-        .header-left h2 {
-            color: var(--text-primary);
-            font-size: 18px;
-        }
-
-        .user-info {
+        .header-left {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 16px;
         }
 
-        .user-name {
-            font-weight: 500;
-            color: var(--primary);
-        }
-
-        .btn-logout {
-            padding: 8px 16px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             cursor: pointer;
         }
 
-        .btn-logout:hover {
-            background: #e9ecef;
+        .header-logo:hover {
+            opacity: 0.8;
         }
 
-        /* Upload Section */
+        .header-logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary) 0%, #3a56d4 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-logo-icon svg {
+            width: 18px;
+            height: 18px;
+            color: var(--primary-foreground);
+        }
+
+        .header-brand {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--foreground);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-info {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .user-name {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .btn-logout {
+            background-color: transparent;
+            color: var(--foreground);
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-logout:hover {
+            background-color: var(--accent);
+        }
+
         .content-area {
             flex: 1;
-            overflow-y: auto;
+            overflow: auto;
             padding: 24px;
+            width: 100%;
+            -webkit-overflow-scrolling: touch;
         }
 
         .upload-section {
-            max-width: 800px;
+            max-width: 1200px;
             margin: 0 auto;
+            width: 100%;
         }
 
         .section-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .section-header h1 {
-            font-size: 32px;
-            margin-bottom: 12px;
-            color: var(--text-primary);
-        }
-
-        .section-header p {
-            color: var(--text-secondary);
-            font-size: 18px;
-        }
-
-        .upload-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
             margin-bottom: 32px;
         }
 
+        .section-header h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--foreground);
+        }
+
+        .section-header p {
+            font-size: 18px;
+            color: var(--muted-foreground);
+        }
+
+        .upload-grid {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
         .upload-card {
-            background: white;
+            background-color: var(--card);
             border: 2px dashed var(--border);
             border-radius: var(--radius);
             padding: 24px;
             text-align: center;
-            cursor: pointer;
             transition: all 0.2s;
+            cursor: pointer;
+            max-width: 320px;
+            width: 100%;
+            box-shadow: var(--shadow-sm);
         }
 
         .upload-card:hover {
             border-color: var(--primary);
             transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
 
         .upload-icon {
             width: 64px;
             height: 64px;
-            background: var(--primary-light);
-            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.1) 0%, rgba(67, 97, 238, 0.05) 100%);
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -367,16 +609,19 @@
         }
 
         .upload-card h3 {
+            font-weight: 600;
             margin-bottom: 8px;
             font-size: 18px;
         }
 
         .upload-card p {
-            color: var(--text-secondary);
+            font-size: 14px;
+            color: var(--muted-foreground);
             margin-bottom: 16px;
         }
 
         .file-list {
+            text-align: left;
             margin-top: 16px;
         }
 
@@ -384,21 +629,32 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 8px;
-            background: var(--bg-secondary);
-            border-radius: var(--radius);
+            font-size: 12px;
+            color: var(--muted-foreground);
             margin-bottom: 4px;
-            font-size: 14px;
+            padding: 6px 8px;
+            background: var(--muted);
+            border-radius: 4px;
         }
 
-        .start-button-container {
-            text-align: center;
-            margin-top: 32px;
+        .file-item svg {
+            width: 12px;
+            height: 12px;
         }
 
         .btn-start {
-            padding: 14px 48px;
+            background: linear-gradient(135deg, var(--primary) 0%, #3a56d4 100%);
+            color: var(--primary-foreground);
+            padding: 12px 48px;
             font-size: 16px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
             font-weight: 600;
         }
 
@@ -406,42 +662,51 @@
             opacity: 0.5;
             cursor: not-allowed;
         }
+        .btn-start:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
 
-        /* Results Section */
         .results-section {
-            display: none;
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
             width: 100%;
         }
 
         .results-header {
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: flex-start;
             margin-bottom: 24px;
             flex-wrap: wrap;
             gap: 16px;
         }
 
         .results-header h1 {
-            font-size: 28px;
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        .results-header p {
+            color: var(--muted-foreground);
+            margin-top: 4px;
         }
 
         .badge-group {
             display: flex;
-            gap: 12px;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .badge {
-            padding: 8px 16px;
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            display: flex;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            background-color: var(--secondary);
+            display: inline-flex;
             align-items: center;
             gap: 8px;
-            font-size: 14px;
+            border: 1px solid var(--border);
         }
 
         .badge-dot {
@@ -450,84 +715,97 @@
             border-radius: 50%;
         }
 
-        .badge-dot.correct { background: var(--success); }
-        .badge-dot.partial { background: var(--warning); }
-        .badge-dot.incorrect { background: var(--danger); }
+        .badge-dot.correct {
+            background-color: #10b981;
+        }
 
-        /* Questions Accordion */
+        .badge-dot.partial {
+            background-color: #f59e0b;
+        }
+
+        .badge-dot.incorrect {
+            background-color: var(--destructive);
+        }
+
         .accordion {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 16px;
         }
 
         .accordion-item {
-            background: white;
+            background-color: var(--card);
             border: 1px solid var(--border);
             border-radius: var(--radius);
             overflow: hidden;
+            box-shadow: var(--shadow-sm);
         }
 
         .accordion-trigger {
             width: 100%;
             padding: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            cursor: pointer;
             background: none;
             border: none;
             text-align: left;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            transition: background 0.2s;
+            transition: background-color 0.2s;
         }
 
         .accordion-trigger:hover {
-            background: var(--bg-secondary);
+            background-color: var(--accent);
         }
 
         .question-number {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 600;
+            font-weight: 700;
             flex-shrink: 0;
+            font-size: 16px;
         }
 
         .question-number.correct {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success);
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10b981;
         }
 
         .question-number.partial {
-            background: rgba(245, 158, 11, 0.1);
-            color: var(--warning);
+            background-color: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
         }
 
         .question-number.incorrect {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
+            background-color: rgba(230, 57, 70, 0.1);
+            color: var(--destructive);
         }
 
         .question-info {
             flex: 1;
+            padding-top: 4px;
         }
 
-        .question-info h4 {
+        .question-info p:first-child {
+            font-weight: 600;
             margin-bottom: 4px;
             font-size: 16px;
         }
 
-        .question-info .status {
+        .question-info p:last-child {
             font-size: 14px;
-            color: var(--text-secondary);
+            color: var(--muted-foreground);
+            text-transform: capitalize;
         }
 
         .accordion-content {
-            padding: 0 20px 20px 72px;
             display: none;
+            padding: 0 20px 20px;
+            overflow-x: auto;
         }
 
         .accordion-content.open {
@@ -538,116 +816,500 @@
             margin-bottom: 20px;
         }
 
-        .analysis-section h5 {
+        .analysis-section h3 {
+            font-weight: 600;
             margin-bottom: 12px;
-            font-size: 14px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+        }
+
+        .analysis-section h3 svg {
+            width: 20px;
+            height: 20px;
         }
 
         .solution-card {
-            background: var(--bg-secondary);
-            border-radius: var(--radius);
+            background-color: var(--secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
             padding: 16px;
-            margin-bottom: 16px;
             overflow-x: auto;
         }
 
-        .solution-card p {
-            margin-bottom: 8px;
-        }
-
         .solution-card.error {
-            background: rgba(239, 68, 68, 0.05);
-            border-left: 3px solid var(--danger);
+            background-color: rgba(230, 57, 70, 0.05);
+            border-color: rgba(230, 57, 70, 0.2);
         }
 
         .solution-card.corrected {
-            background: rgba(16, 185, 129, 0.05);
-            border-left: 3px solid var(--success);
+            background-color: rgba(16, 185, 129, 0.05);
+            border-color: rgba(16, 185, 129, 0.2);
         }
 
         .solution-steps {
-            line-height: 1.6;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            line-height: 1.8;
         }
 
-        /* Practice Paper */
+        .solution-steps > p,
+        .solution-steps > div {
+            margin-bottom: 12px;
+            line-height: 1.8;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        
+
+        .ai-response {
+            overflow-x: auto;
+        }
+        .ai-response p {
+            white-space: nowrap;
+            line-height: 1.8;
+            margin-bottom: 12px;
+        }
+        /* === END OF FIX === */
+
+        mjx-container {
+            max-width: 100% !important;
+            overflow-x: auto !important;
+            -webkit-overflow-scrolling: touch !important;
+            box-sizing: border-box;
+            padding: 4px 0;
+        }
+        mjx-container[display="true"] {
+            margin: 1em 0 !important;
+        }
         .practice-paper-card {
-            background: white;
-            border: 1px solid var(--border);
+            background-color: var(--card);
+            border: 2px solid rgba(67, 97, 238, 0.1);
             border-radius: var(--radius);
             padding: 24px;
-            margin-top: 32px;
+            margin-top: 24px;
+            box-shadow: var(--shadow-sm);
         }
 
         .practice-paper-card h3 {
+            font-size: 20px;
+            font-weight: 600;
             margin-bottom: 8px;
         }
 
         .practice-paper-card p {
-            color: var(--text-secondary);
-            margin-bottom: 20px;
+            color: var(--muted-foreground);
+            margin-bottom: 16px;
         }
 
-        .practice-questions {
-            margin-top: 20px;
-        }
-
-        .practice-question {
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .practice-question:last-child {
-            border-bottom: none;
-        }
-
-        .practice-question-number {
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 8px;
-        }
-
-        /* Typing Effect */
-        .typing-container {
-            background: white;
+        
+        .ai-response {
+            background-color: var(--background);
             border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .ai-badge {
+            background-color: var(--primary);
+            color: var(--primary-foreground);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .ai-response p {
+            font-size: 14px;
+            line-height: 1.6;
+            flex: 1;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 50;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .modal.open {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--card);
             border-radius: var(--radius);
-            padding: 20px;
-            margin-bottom: 20px;
-            min-height: 200px;
-            max-height: 400px;
+            max-width: 768px;
+            width: 100%;
+            max-height: 90vh;
             overflow-y: auto;
+            padding: 24px;
+        }
+        
+        #correctedPaperModal .modal-content {
+        max-width: 1400px;
         }
 
-        .typing-line {
-            margin-bottom: 12px;
-            opacity: 0;
-            animation: fadeIn 0.3s forwards;
+        .modal-header {
+            margin-bottom: 16px;
         }
 
-        .typing-cursor {
-            display: inline-block;
-            width: 2px;
-            height: 1em;
-            background: var(--primary);
-            margin-left: 2px;
-            animation: blink 1s infinite;
-            vertical-align: middle;
+        .modal-header h3 {
+            font-size: 20px;
+            font-weight: 600;
         }
 
-        @keyframes fadeIn {
-            to { opacity: 1; }
+        .modal-image {
+            position: relative;
+            aspect-ratio: 3/4;
+            background-color: var(--muted);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 16px;
         }
 
-        @keyframes blink {
+        .modal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .error-highlight {
+            position: absolute;
+            border: 3px solid var(--destructive);
+            border-radius: 6px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
+            50% { opacity: 0.5; }
         }
 
-        /* Loading */
+        .modal-caption {
+            text-align: center;
+            font-size: 14px;
+            color: var(--muted-foreground);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+        }
+
+        .mobile-overlay {
+            display: none;
+        }
+
+        /* Corrected Paper Gallery */
+        .corrected-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .corrected-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 25px;
+            border: 3px solid #dc3545;
+            box-shadow: 0 6px 20px rgba(220, 53, 69, 0.2);
+        }
+        .corrected-card h3 {
+            color: #dc3545;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        .error-count-badge {
+            background: #dc3545;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        .corrected-card img {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .corrected-card img:hover {
+            transform: scale(1.02);
+        }
+        .download-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            width: 100%;
+            margin-top: 15px;
+            color: white;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+                background: transparent;
+                border: none;
+                padding: 8px;
+                cursor: pointer;
+            }
+
+            .mobile-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 1000;
+                background-color: rgba(0, 0, 0, 0.5);
+            }
+
+            .mobile-overlay.open {
+                display: block;
+            }
+
+            .mobile-sidebar {
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: 280px;
+                background-color: var(--sidebar);
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                z-index: 1001;
+            }
+
+            .mobile-overlay.open .mobile-sidebar {
+                transform: translateX(0);
+            }
+
+            .btn-logout {
+                display: none;
+            }
+
+            .header-brand {
+                display: block;
+                font-size: 16px;
+            }
+
+            .upload-grid {
+                flex-direction: column;
+                align-items: center;
+                padding: 0 16px;
+            }
+
+            .upload-card {
+                max-width: 100%;
+                margin-bottom: 20px;
+                padding: 20px;
+            }
+
+            .btn-start, .btn-primary, .btn-outline {
+                padding: 12px 20px;
+                font-size: 16px;
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .accordion-trigger {
+                padding: 16px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .question-number {
+                margin-bottom: 10px;
+            }
+
+            .modal-content {
+                width: 95%;
+                max-height: 85vh;
+                margin: 0 10px;
+                padding: 20px;
+            }
+
+            .mobile-logout {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                padding: 16px;
+                border-top: 1px solid var(--sidebar-border);
+            }
+
+            .mobile-logout button {
+                width: 100%;
+                justify-content: flex-start;
+                background: transparent;
+                color: var(--sidebar-foreground);
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 12px 16px;
+            }
+
+            .user-info {
+                display: none;
+            }
+
+            .section-header h1 {
+                font-size: 24px;
+                text-align: center;
+            }
+
+            .section-header p {
+                font-size: 16px;
+                text-align: center;
+            }
+
+            .results-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .badge-group {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .accordion-content {
+                padding: 0 16px 16px;
+            }
+
+            .analysis-section {
+                margin-bottom: 16px;
+            }
+
+            .solution-card {
+                padding: 12px;
+                font-size: 14px;
+            }
+
+            .practice-paper-card {
+                padding: 16px;
+                margin: 0 16px;
+            }
+
+            .sidebar-item {
+                padding: 14px 12px;
+                min-height: 60px;
+            }
+
+            .sidebar-item-title {
+                font-size: 16px;
+                margin-bottom: 6px;
+            }
+
+            .sidebar-actions button {
+                padding: 6px 12px;
+                font-size: 14px;
+            }
+            .content-area {
+                padding: 16px;
+                padding-bottom: 80px;
+            }
+        }
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 20px;
+                margin: 0 16px;
+            }
+
+            .ai-mastery-text {
+                font-size: 28px;
+                padding: 0 16px;
+            }
+
+            .login-brand {
+                font-size: 24px;
+            }
+
+            .login-subtitle {
+                font-size: 14px;
+            }
+
+            .upload-icon {
+                width: 56px;
+                height: 56px;
+            }
+
+            .upload-icon svg {
+                width: 28px;
+                height: 28px;
+            }
+
+            .upload-card h3 {
+                font-size: 16px;
+            }
+
+            .upload-card p {
+                font-size: 13px;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .btn, button {
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--primary-foreground);
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--border);
+            color: var(--foreground);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--accent);
+        }
+
         .loading {
             display: inline-block;
             width: 20px;
@@ -662,132 +1324,249 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Modal */
-        .modal {
+        .practice-paper {
+            padding: 30px;
+            background: white;
+        }
+
+        .practice-header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .practice-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .practice-subtitle {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .practice-question {
+            margin-bottom: 30px;
+        }
+
+        .practice-question-number {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        #loadingOverlay {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.5);
-            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
-            padding: 20px;
         }
-
-        .modal.open {
-            display: flex;
-        }
-
-        .modal-content {
-            background: white;
+        .loading-content {
+            background: var(--card);
             border-radius: var(--radius);
-            padding: 24px;
+            padding: 40px;
+            box-shadow: var(--shadow-lg);
             max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+        .progress-container {
+            margin-bottom: 30px;
+        }
+        .progress-bar {
             width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
+            height: 12px;
+            background: var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 20px;
         }
-
-        /* Mobile */
-        @media (max-width: 768px) {
-            .sidebar {
-                display: none;
-            }
-            
-            .header {
-                padding: 12px 16px;
-            }
-            
-            .content-area {
-                padding: 16px;
-            }
-            
-            .upload-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .results-header {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .badge-group {
-                justify-content: center;
-            }
-            
-            .accordion-content {
-                padding: 0 16px 16px 16px;
-            }
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #4361ee, #3a56d4, #38bdf8, #fb923c, #4361ee);
+            border-radius: 6px;
+            animation: progressAnimation 3s ease-in-out infinite;
         }
-
-        .hidden {
-            display: none !important;
+        @keyframes progressAnimation {
+            0% { width: 0%; background: #4361ee; }
+            25% { width: 25%; background: #3a56d4; }
+            50% { width: 50%; background: #38bdf8; }
+            75% { width: 75%; background: #fb923c; }
+            100% { width: 100%; background: #4361ee; }
+        }
+        .math-statements {
+            margin-top: 20px;
+        }
+        .math-statement {
+            font-size: 16px;
+            color: var(--muted-foreground);
+            margin: 10px 0;
+            opacity: 0;
+            animation: fadeInOut 1.5s ease-in-out infinite;
+        }
+        .math-statement:nth-child(1) { animation-delay: 0s; }
+        .math-statement:nth-child(2) { animation-delay: 0.5s; }
+        .math-statement:nth-child(3) { animation-delay: 1s; }
+        .math-statement:nth-child(4) { animation-delay: 1.5s; }
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+        .mobile-sidebar-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .mobile-overlay.open .mobile-sidebar-backdrop {
+            opacity: 1;
         }
     </style>
 </head>
 <body>
     <!-- Login Page -->
     <div id="loginPage">
+        <div class="math-terms-left">
+            <div class="math-term">$e^{i\pi} + 1 = 0$</div>
+            <div class="math-term">$\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}$</div>
+            <div class="math-term">$\nabla \cdot \mathbf{E} = \frac{\rho}{\varepsilon_0}$</div>
+            <div class="math-term">$\frac{d}{dx}e^x = e^x$</div>
+            <div class="math-term">$F = G\frac{m_1 m_2}{r^2}$</div>
+        </div>
+
+        <div class="math-terms-right">
+            <div class="math-term">$a^2 + b^2 = c^2$</div>
+            <div class="math-term">$\sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}$</div>
+            <div class="math-term">$\nabla \times \mathbf{B} = \mu_0\mathbf{J}$</div>
+            <div class="math-term">$\frac{\partial u}{\partial t} = \alpha \nabla^2 u$</div>
+            <div class="math-term">$\hbar \frac{\partial}{\partial t} \Psi = \hat{H} \Psi$</div>
+        </div>
+
+        <div class="login-background"></div>
         <div class="login-container">
             <div class="login-header">
-                <h1>Math AI Analyzer</h1>
-                <p>AI-powered mathematical analysis</p>
+                <div class="ai-mastery-text">AI Powered Math Mastery</div>
+                <div class="login-brand">CAS <span>Educations</span></div>
+                <p class="login-subtitle">AI-Powered Math Analysis Platform</p>
             </div>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label class="form-label">Username</label>
-                    <input type="text" id="loginUsername" class="form-input" placeholder="Enter username" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" id="loginPassword" class="form-input" placeholder="Enter password" required>
-                </div>
-                <div id="loginErrorMessage" class="error-message"></div>
-                <button type="submit" class="btn btn-primary">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M13.8 12H3"/>
-                    </svg>
-                    Login
-                </button>
-                <button type="button" class="btn btn-secondary" onclick="showRegisterModal()">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                        <circle cx="8.5" cy="7" r="4"/>
-                        <line x1="20" y1="8" x2="20" y2="14"/>
-                        <line x1="23" y1="11" x2="17" y2="11"/>
-                    </svg>
-                    Register
-                </button>
-            </form>
+
+            <div class="login-card">
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label class="form-label">Username</label>
+                        <input type="text" id="loginUsername" class="form-input" placeholder="Enter your username" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" id="loginPassword" class="form-input" placeholder="Enter your password" required>
+                    </div>
+                    <div id="loginErrorMessage" class="error-message"></div>
+                    <div id="loginSuccessMessage" class="success-message"></div>
+                    <button type="submit" class="login-btn">
+                        <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+                        </svg>
+                        Login to Dashboard
+                    </button>
+                    <button type="button" class="login-btn secondary" onclick="showRegisterModal()">
+                        <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+                        </svg>
+                        Register New Account
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
-
-    <!-- Dashboard -->
+    <!-- Dashboard (Initially Hidden) -->
     <div id="dashboardPage" class="dashboard-container">
         <div class="dashboard-layout">
-            <!-- Sidebar -->
+            <!-- Sidebar (Desktop) -->
             <aside class="sidebar">
                 <div class="sidebar-header">
-                    <div class="sidebar-logo">Math AI</div>
+                    <div class="sidebar-logo" onclick="resetToDashboard()">
+                        <div class="sidebar-logo-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <h1>Math.AI Analyzer</h1>
+                    </div>
                 </div>
                 <div class="sidebar-content">
-                    <div class="sidebar-section-title">History</div>
+                    <div class="sidebar-section-title">Saved Analyses</div>
                     <div id="historyList"></div>
                 </div>
             </aside>
+
+            <!-- Mobile Overlay -->
+            <div id="mobileOverlay" class="mobile-overlay">
+                <div class="mobile-sidebar-backdrop" onclick="closeMobileMenu()"></div>
+                <aside class="mobile-sidebar">
+                    <div class="sidebar-header">
+                        <div class="sidebar-logo" onclick="resetToDashboard(); closeMobileMenu();">
+                            <div class="sidebar-logo-icon">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                            <h1>Math.AI Analyzer</h1>
+                        </div>
+                    </div>
+                    <div class="sidebar-content">
+                        <div class="sidebar-section-title">Saved Analyses</div>
+                        <div id="mobileHistoryList"></div>
+                    </div>
+                    <div class="mobile-logout">
+                        <button onclick="handleLogout()">
+                            <svg style="width: 1rem; height: 1rem; margin-right: 0.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                            </svg>
+                            Logout
+                        </button>
+                    </div>
+                </aside>
+            </div>
 
             <!-- Main Content -->
             <div class="main-content">
                 <header class="header">
                     <div class="header-left">
-                        <h2>Math Analysis Dashboard</h2>
+                        <button class="mobile-menu-btn" onclick="openMobileMenu()">
+                            <svg style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                            </svg>
+                        </button>
+                        <div class="header-logo" onclick="resetToDashboard()">
+                            <div class="header-logo-icon">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                            <span class="header-brand">CAS Educations</span>
+                        </div>
                     </div>
-                    <div class="user-info">
-                        <span>Welcome, <span class="user-name" id="userName"></span></span>
-                        <button class="btn-logout" onclick="handleLogout()">Logout</button>
+                    <div class="header-right">
+                        <p class="user-info">Welcome, <span class="user-name" id="userName"></span></p>
+                        <button class="btn-logout" onclick="handleLogout()">
+                            <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                            </svg>
+                            Logout
+                        </button>
                     </div>
                 </header>
 
@@ -795,47 +1574,49 @@
                     <!-- Upload Section -->
                     <div id="uploadSection" class="upload-section">
                         <div class="section-header">
-                            <h1>Upload Answer Sheets</h1>
-                            <p>Upload question papers and student answers for AI analysis</p>
+                            <h1>Upload Answer Sheets for Analysis</h1>
+                            <p>Upload question papers and student answer sheets to get AI-powered analysis</p>
                         </div>
-                        
                         <div class="upload-grid">
                             <div class="upload-card" onclick="document.getElementById('questionInput').click()">
                                 <div class="upload-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                        <polyline points="14 2 14 8 20 8"/>
-                                        <line x1="16" y1="13" x2="8" y2="13"/>
-                                        <line x1="16" y1="17" x2="8" y2="17"/>
-                                        <polyline points="10 9 9 9 8 9"/>
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                                     </svg>
                                 </div>
                                 <h3>Question Papers</h3>
-                                <p>Original questions (PDF/Images)</p>
-                                <input type="file" id="questionInput" multiple accept="image/*,.pdf" style="display:none">
+                                <p>Upload the original question papers</p>
+                                <input type="file" id="questionInput" multiple accept="image/*,.pdf" style="display:none;">
+                                <button class="btn-outline">
+                                    <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                                    </svg>
+                                    Upload Files
+                                </button>
                                 <div id="questionFileList" class="file-list"></div>
                             </div>
-
                             <div class="upload-card" onclick="document.getElementById('answerInput').click()">
                                 <div class="upload-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M12 19l7-7 3 3-7 7-3-3z"/>
-                                        <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
-                                        <path d="M2 2l7.586 7.586"/>
-                                        <circle cx="11" cy="11" r="2"/>
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                     </svg>
                                 </div>
-                                <h3>Student Answers</h3>
-                                <p>Handwritten solutions (PDF/Images)</p>
-                                <input type="file" id="answerInput" multiple accept="image/*,.pdf" style="display:none">
+                                <h3>Student Answer Sheets</h3>
+                                <p>Upload student's handwritten answers</p>
+                                <input type="file" id="answerInput" multiple accept="image/*,.pdf" style="display:none;">
+                                <button class="btn-outline">
+                                    <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                                    </svg>
+                                    Upload Files
+                                </button>
                                 <div id="answerFileList" class="file-list"></div>
                             </div>
                         </div>
-
-                        <div class="start-button-container">
-                            <button id="startAnalysisBtn" class="btn btn-primary btn-start" onclick="startStreamingAnalysis()" disabled>
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <polygon points="5 3 19 12 5 21 5 3"/>
+                        <div style="display: flex; justify-content: center;">
+                            <button id="startAnalysisBtn" class="btn-start" onclick="startAnalysis()" disabled>
+                                <svg style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                                 </svg>
                                 Start Analysis
                             </button>
@@ -843,38 +1624,43 @@
                     </div>
 
                     <!-- Results Section -->
-                    <div id="resultsSection" class="results-section">
+                    <div id="resultsSection" class="results-section hidden">
                         <div class="results-header">
                             <div>
                                 <h1>Analysis Results</h1>
-                                <p>AI-powered mathematical assessment</p>
+                                <p>AI-powered answer sheet analysis</p>
                             </div>
                             <div class="badge-group" id="badgeGroup"></div>
                         </div>
-
-                        <!-- Streaming Display -->
-                        <div id="streamingDisplay" class="typing-container" style="display: none;"></div>
-
-                        <!-- Questions Accordion -->
                         <div class="accordion" id="accordion"></div>
 
                         <!-- Practice Paper -->
-                        <div id="practicePaperCard" class="practice-paper-card" style="display: none;">
-                            <h3>Practice Paper</h3>
-                            <p>Generated questions based on errors</p>
-                            <div id="practicePaperContent"></div>
+                        <div class="practice-paper-card" id="practicePaperCard">
+                            <h3>Generate Personalized Practice Paper</h3>
+                            <p>Create a new question paper with modified questions for incorrect and partial answers</p>
+                            <div id="practicePaperContent">
+                                <button class="btn-start" onclick="generatePracticePaper()">
+                                    <svg style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                    </svg>
+                                    Generate New Question Paper
+                                </button>
+                                <div id="viewPracticeButton" style="display: none; margin-top: 16px;">
+                                    <button class="btn-outline" onclick="viewPracticePaper()">
+                                        View Practice Paper
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-
-                        <!-- Action Buttons -->
-                        <div style="display: flex; gap: 12px; margin-top: 32px;">
-                            <button id="saveAnalysisBtn" class="btn btn-primary" onclick="saveAnalysis()" style="display: none;">
+                        <div style="margin-top: 24px; display: flex; justify-content: center; gap: 12px;">
+                            <button id="saveAnalysisBtn" class="btn-primary" style="display: none;" onclick="showSaveModal()">
                                 Save Analysis
                             </button>
-                            <button id="generatePracticeBtn" class="btn btn-secondary" onclick="generatePracticePaper()">
-                                Generate Practice
+                            <button id="boundingAnalysisBtn" class="btn-primary" style="background: linear-gradient(135deg, #e63946 0%, #c53030 100%);" onclick="startBoundingAnalysis()">
+                                🔍 Find Errors with Bounding Boxes
                             </button>
-                            <button id="boundingBoxBtn" class="btn btn-secondary" onclick="startBoundingAnalysis()">
-                                Bounding Box Analysis
+                            <button id="viewCorrectedBtn" class="btn-outline" style="display: none;" onclick="viewCorrectedPaper()">
+                                📐 View Corrected Paper
                             </button>
                         </div>
                     </div>
@@ -882,630 +1668,1077 @@
             </div>
         </div>
     </div>
-
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Answer Sheet - Question</h3>
+            </div>
+            <div class="modal-image">
+                <img id="modalImage" src="" alt="Answer sheet">
+                <div id="errorHighlight" class="error-highlight" style="display: none;"></div>
+            </div>
+            <p class="modal-caption" id="modalCaption"></p>
+            <button class="btn-outline" style="width: 100%; margin-top: 1rem;" onclick="closeImageModal()">Close</button>
+        </div>
+    </div>
+    <!-- Corrected Paper Modal -->
+    <div id="correctedPaperModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📐 Corrected Paper with Error Boxes</h3>
+            </div>
+            <div id="correctedPaperContent" style="text-align: center;">
+                <!-- Will be populated with corrected images -->
+            </div>
+            <button class="btn-outline" style="width: 100%; margin-top: 1rem;" onclick="closeCorrectedModal()">
+                Close
+            </button>
+        </div>
+    </div>
     <!-- Register Modal -->
     <div id="registerModal" class="modal">
         <div class="modal-content">
-            <h2 style="margin-bottom: 20px;">Register</h2>
+            <div class="modal-header">
+                <h3>Create New Account</h3>
+            </div>
             <form id="registerForm">
                 <div class="form-group">
                     <label class="form-label">Username</label>
-                    <input type="text" id="registerUsername" class="form-input" placeholder="Choose username" required>
+                    <input type="text" id="registerUsername" class="form-input" placeholder="Choose a username (min 3 chars)" required>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Phone</label>
-                    <input type="tel" id="registerPhone" class="form-input" placeholder="Phone number" required>
+                    <label class="form-label">Phone Number</label>
+                    <input type="tel" id="registerPhone" class="form-input" placeholder="Enter your phone number" required>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Password</label>
-                    <input type="password" id="registerPassword" class="form-input" placeholder="Min 6 characters" required>
+                    <input type="password" id="registerPassword" class="form-input" placeholder="Create a password (min 6 chars)" required>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Confirm Password</label>
-                    <input type="password" id="registerConfirmPassword" class="form-input" placeholder="Confirm password" required>
+                    <input type="password" id="registerConfirmPassword" class="form-input" placeholder="Confirm your password" required>
                 </div>
                 <div id="registerErrorMessage" class="error-message"></div>
-                <div style="display: flex; gap: 12px; margin-top: 20px;">
-                    <button type="submit" class="btn btn-primary">Register</button>
-                    <button type="button" class="btn btn-secondary" onclick="closeRegisterModal()">Cancel</button>
+                <div id="registerSuccessMessage" class="success-message"></div>
+                <div class="form-group" style="text-align: center;">
+                    <button type="submit" class="login-btn">
+                        <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        Register Account
+                    </button>
                 </div>
             </form>
+            <button class="btn-outline" style="width: 100%; margin-top: 1rem;" onclick="closeRegisterModal()">Cancel</button>
         </div>
     </div>
-
     <!-- Save Analysis Modal -->
     <div id="saveModal" class="modal">
         <div class="modal-content">
-            <h2 style="margin-bottom: 20px;">Save Analysis</h2>
+            <div class="modal-header">
+                <h3>Save Analysis</h3>
+            </div>
             <div class="form-group">
-                <input type="text" id="analysisName" class="form-input" placeholder="Analysis name" value="Analysis">
+                <label class="form-label">Analysis Name</label>
+                <input type="text" id="analysisName" class="form-input" required>
             </div>
-            <div style="display: flex; gap: 12px; margin-top: 20px;">
-                <button class="btn btn-primary" onclick="saveAnalysisName()">Save</button>
-                <button class="btn btn-secondary" onclick="closeSaveModal()">Cancel</button>
-            </div>
+            <div id="saveErrorMessage" class="error-message"></div>
+            <div id="saveSuccessMessage" class="success-message"></div>
+            <button class="login-btn" onclick="saveAnalysisName()">
+                <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                Save
+            </button>
+            <button class="btn-outline" style="width: 100%; margin-top: 1rem;" onclick="closeSaveModal()">Cancel</button>
         </div>
     </div>
-
     <script>
-        // Configuration
         const BACKEND_URL = 'https://navalsheth.pythonanywhere.com';
-        let currentUser = null;
         let questionFiles = [];
         let answerFiles = [];
-        let currentAnalysis = null;
+        let allFiles = [];
+        let analysisResult = null;
+        let practiceResult = null;
+        let currentUser = null;
+        let isAnalyzing = false;
         let currentAnalysisId = null;
         let analyses = [];
-        let isAnalyzing = false;
 
-        // MathJax helper
         function renderMath(element) {
             if (window.MathJax) {
-                MathJax.typesetPromise([element]).catch(err => console.log('MathJax error:', err));
+                MathJax.typesetPromise([element]).catch(err => console.error('MathJax error:', err));
             }
         }
 
-        // Auth functions
         async function checkAuth() {
             try {
                 const response = await fetch(`${BACKEND_URL}/api/check-auth`, {
-                    credentials: 'include'
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Cache-Control': 'no-cache'
+                    }
                 });
+                if (!response.ok) {
+                    if (response.status === 401) return false;
+                    throw new Error(`Auth check failed with status: ${response.status}`);
+                }
                 const data = await response.json();
-                if (data.authenticated) {
+                if (data.authenticated && data.user) {
                     currentUser = data.user;
                     localStorage.setItem('user', JSON.stringify(data.user));
                     return true;
+                } else {
+                    localStorage.removeItem('user');
+                    currentUser = null;
+                    return false;
                 }
             } catch (error) {
                 console.error('Auth check failed:', error);
+                localStorage.removeItem('user');
+                currentUser = null;
+                return false;
             }
-            localStorage.removeItem('user');
-            currentUser = null;
-            return false;
         }
 
-        async function login(username, password) {
+        async function loginUser(username, password) {
             try {
+                const errorMessage = document.getElementById('loginErrorMessage');
+                const successMessage = document.getElementById('loginSuccessMessage');
+
+                errorMessage.classList.remove('show');
+                successMessage.classList.remove('show');
+
                 const response = await fetch(`${BACKEND_URL}/api/login`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({username, password}),
                     credentials: 'include'
                 });
+
                 const data = await response.json();
+
                 if (data.success) {
+                    successMessage.textContent = data.message;
+                    successMessage.classList.add('show');
+
                     currentUser = data.user;
                     localStorage.setItem('user', JSON.stringify(data.user));
-                    showDashboard();
-                    return true;
+
+                    setTimeout(() => {
+                        showDashboard(data.user);
+                        successMessage.classList.remove('show');
+                    }, 1000);
                 } else {
-                    showError('loginErrorMessage', data.message);
-                    return false;
+                    errorMessage.textContent = data.message;
+                    errorMessage.classList.add('show');
                 }
             } catch (error) {
-                showError('loginErrorMessage', 'Connection error');
-                return false;
+                const errorMessage = document.getElementById('loginErrorMessage');
+                errorMessage.textContent = 'Connection error. Please try again.';
+                errorMessage.classList.add('show');
             }
         }
 
-        async function register(username, phone, password) {
+        async function registerUser(username, phone, password) {
             try {
+                const errorMessage = document.getElementById('registerErrorMessage');
+                const successMessage = document.getElementById('registerSuccessMessage');
+
+                errorMessage.classList.remove('show');
+                successMessage.classList.remove('show');
+
                 const response = await fetch(`${BACKEND_URL}/api/register`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({username, phone, password}),
                     credentials: 'include'
                 });
+
                 const data = await response.json();
+
                 if (data.success) {
-                    alert('Registration successful! Please login.');
-                    closeRegisterModal();
-                    return true;
+                    successMessage.textContent = 'Registration successful! Please login with your credentials.';
+                    successMessage.classList.add('show');
+
+                    document.getElementById('registerForm').reset();
+
+                    setTimeout(() => {
+                        closeRegisterModal();
+                        successMessage.classList.remove('show');
+                    }, 2000);
                 } else {
-                    showError('registerErrorMessage', data.message);
-                    return false;
+                    errorMessage.textContent = data.message;
+                    errorMessage.classList.add('show');
                 }
             } catch (error) {
-                showError('registerErrorMessage', 'Connection error');
-                return false;
+                const errorMessage = document.getElementById('registerErrorMessage');
+                errorMessage.textContent = 'Connection error. Please try again.';
+                errorMessage.classList.add('show');
             }
         }
 
-        async function logout() {
+        async function logoutUser() {
             try {
-                await fetch(`${BACKEND_URL}/api/logout`, {
+                const response = await fetch(`${BACKEND_URL}/api/logout`, {
                     method: 'POST',
                     credentials: 'include'
                 });
+
+                localStorage.removeItem('user');
+                currentUser = null;
+                showLoginPage();
             } catch (error) {
                 console.error('Logout error:', error);
+                showLoginPage();
             }
-            localStorage.removeItem('user');
-            currentUser = null;
-            showLoginPage();
         }
 
-        // UI functions
-        function showLoginPage() {
-            document.getElementById('loginPage').style.display = 'flex';
-            document.getElementById('dashboardPage').style.display = 'none';
-        }
-
-        function showDashboard() {
+        function showDashboard(user) {
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('dashboardPage').style.display = 'flex';
-            document.getElementById('userName').textContent = currentUser.username;
+            document.getElementById('userName').textContent = user.username;
             loadAnalyses();
         }
 
-        function showError(elementId, message) {
-            const element = document.getElementById(elementId);
-            element.textContent = message;
-            element.classList.add('show');
-            setTimeout(() => element.classList.remove('show'), 3000);
+        function showLoginPage() {
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('dashboardPage').style.display = 'none';
+            document.getElementById('loginForm').reset();
+            document.getElementById('loginErrorMessage').classList.remove('show');
+            document.getElementById('loginSuccessMessage').classList.remove('show');
         }
 
         function showRegisterModal() {
             document.getElementById('registerModal').classList.add('open');
+            document.getElementById('registerForm').reset();
+            document.getElementById('registerErrorMessage').classList.remove('show');
+            document.getElementById('registerSuccessMessage').classList.remove('show');
         }
 
         function closeRegisterModal() {
             document.getElementById('registerModal').classList.remove('open');
         }
 
-        function showSaveModal() {
+        function showSaveModal(defaultName = '', id = null) {
+            currentAnalysisId = id;
+            document.getElementById('analysisName').value = defaultName;
             document.getElementById('saveModal').classList.add('open');
+            document.getElementById('saveErrorMessage').classList.remove('show');
+            document.getElementById('saveSuccessMessage').classList.remove('show');
         }
 
         function closeSaveModal() {
             document.getElementById('saveModal').classList.remove('open');
         }
 
-        // File handling
-        document.getElementById('questionInput').addEventListener('change', handleFileUpload);
-        document.getElementById('answerInput').addEventListener('change', handleFileUpload);
-
-        async function handleFileUpload(e) {
-            const files = e.target.files;
-            const isQuestion = e.target.id === 'questionInput';
-            const targetArray = isQuestion ? questionFiles : answerFiles;
-            const listId = isQuestion ? 'questionFileList' : 'answerFileList';
-            
-            for (let file of files) {
-                if (!targetArray.find(f => f.name === file.name)) {
-                    targetArray.push(file);
-                }
+        async function saveAnalysisName() {
+            const name = document.getElementById('analysisName').value.trim();
+            if (!name) {
+                document.getElementById('saveErrorMessage').textContent = 'Name is required';
+                document.getElementById('saveErrorMessage').classList.add('show');
+                return;
             }
-            
-            displayFileList(listId, targetArray);
-            checkStartButton();
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/update-analysis-name/${currentAnalysisId}`, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({analysis_name: name}),
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                if (data.success) {
+                    document.getElementById('saveSuccessMessage').textContent = 'Analysis saved successfully';
+                    document.getElementById('saveSuccessMessage').classList.add('show');
+                    setTimeout(() => {
+                        closeSaveModal();
+                        loadAnalyses();
+                    }, 1000);
+                } else {
+                    document.getElementById('saveErrorMessage').textContent = data.error;
+                    document.getElementById('saveErrorMessage').classList.add('show');
+                }
+            } catch (error) {
+                document.getElementById('saveErrorMessage').textContent = 'Connection error';
+                document.getElementById('saveErrorMessage').classList.add('show');
+            }
         }
 
-        function displayFileList(elementId, files) {
-            const element = document.getElementById(elementId);
-            element.innerHTML = files.map(file => `
+        function openMobileMenu() {
+            document.getElementById('mobileOverlay').classList.add('open');
+        }
+
+        function closeMobileMenu() {
+            document.getElementById('mobileOverlay').classList.remove('open');
+        }
+
+        function handleLogout() {
+            logoutUser();
+        }
+
+        function resetToDashboard() {
+            document.getElementById('uploadSection').classList.remove('hidden');
+            document.getElementById('resultsSection').classList.add('hidden');
+            document.getElementById('saveAnalysisBtn').style.display = 'none';
+            closeMobileMenu();
+            document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.mobile-sidebar .sidebar-item').forEach(el => el.classList.remove('active'));
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            if (!username || !password) {
+                const errorMessage = document.getElementById('loginErrorMessage');
+                errorMessage.textContent = 'Please enter both username and password';
+                errorMessage.classList.add('show');
+                return;
+            }
+
+            await loginUser(username, password);
+        });
+
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const username = document.getElementById('registerUsername').value.trim();
+            const phone = document.getElementById('registerPhone').value.trim();
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+
+            if (!username || !phone || !password || !confirmPassword) {
+                const errorMessage = document.getElementById('registerErrorMessage');
+                errorMessage.textContent = 'All fields are required';
+                errorMessage.classList.add('show');
+                return;
+            }
+
+            if (username.length < 3) {
+                const errorMessage = document.getElementById('registerErrorMessage');
+                errorMessage.textContent = 'Username must be at least 3 characters';
+                errorMessage.classList.add('show');
+                return;
+            }
+
+            if (password.length < 6) {
+                const errorMessage = document.getElementById('registerErrorMessage');
+                errorMessage.textContent = 'Password must be at least 6 characters';
+                errorMessage.classList.add('show');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                const errorMessage = document.getElementById('registerErrorMessage');
+                errorMessage.textContent = 'Passwords do not match';
+                errorMessage.classList.add('show');
+                return;
+            }
+
+            await registerUser(username, phone, password);
+        });
+
+        document.getElementById('questionInput').addEventListener('change', async e => {
+            await handleFileUpload(e.target.files, questionFiles, 'questionFileList');
+            checkStartButton();
+        });
+
+        document.getElementById('answerInput').addEventListener('change', async e => {
+            await handleFileUpload(e.target.files, answerFiles, 'answerFileList');
+            checkStartButton();
+        });
+
+        async function handleFileUpload(files, targetArray, listId) {
+            for (let file of files) {
+                if (!targetArray.find(f => f.name === file.name)) {
+                    let dataURL = '';
+                    if (file.type.startsWith('image/')) {
+                        dataURL = await new Promise(resolve => {
+                            const reader = new FileReader();
+                            reader.onload = ev => resolve(ev.target.result);
+                            reader.readAsDataURL(file);
+                        });
+                    }
+                    targetArray.push({name: file.name, file: file, dataURL: dataURL});
+                }
+            }
+            displayFiles(listId, targetArray);
+        }
+
+        function displayFiles(elementId, files) {
+            const el = document.getElementById(elementId);
+            el.innerHTML = files.map(f => `
                 <div class="file-item">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                        <polyline points="14 2 14 8 20 8"/>
-                    </svg>
-                    ${file.name}
+                    <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                    ${f.name}
                 </div>
             `).join('');
         }
 
         function checkStartButton() {
-            const btn = document.getElementById('startAnalysisBtn');
-            btn.disabled = questionFiles.length === 0 || answerFiles.length === 0;
+            document.getElementById('startAnalysisBtn').disabled = questionFiles.length === 0 || answerFiles.length === 0;
         }
 
-        // Streaming analysis with typing effect
-        async function startStreamingAnalysis() {
+        async function startAnalysis() {
             if (isAnalyzing) return;
-            
-            const isAuth = await checkAuth();
-            if (!isAuth) {
-                alert('Please login first');
+
+            const isAuthenticated = await checkAuth();
+            if (!isAuthenticated) {
+                alert('Please login to start analysis');
                 showLoginPage();
                 return;
             }
-            
+
             if (questionFiles.length === 0 || answerFiles.length === 0) {
-                alert('Please upload both question and answer files');
+                alert('Please upload both question papers and answer sheets');
                 return;
             }
-            
+
             isAnalyzing = true;
             const btn = document.getElementById('startAnalysisBtn');
-            btn.innerHTML = '<div class="loading"></div> Starting...';
+
+            const loadingOverlay = document.createElement('div');
+            loadingOverlay.id = 'loadingOverlay';
+            loadingOverlay.innerHTML = `
+                <div class="loading-content">
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <div class="math-statements">
+                            <p class="math-statement">Processing mathematical equations...</p>
+                            <p class="math-statement">Analyzing solution steps...</p>
+                            <p class="math-statement">Checking for calculation errors...</p>
+                            <p class="math-statement">Generating corrections...</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('uploadSection').appendChild(loadingOverlay);
+
+            btn.innerHTML = '<div class="loading"></div> Analyzing...';
             btn.disabled = true;
-            
-            // Prepare files
-            const allFiles = [...questionFiles, ...answerFiles];
+
             const formData = new FormData();
-            allFiles.forEach(file => {
-                formData.append('files', file, file.name);
+            allFiles = [...questionFiles, ...answerFiles];
+            allFiles.forEach(f => {
+                formData.append('files', f.file, f.name);
             });
-            
-            // Show streaming display
-            document.getElementById('streamingDisplay').style.display = 'block';
-            document.getElementById('streamingDisplay').innerHTML = '';
-            
-            // Start EventSource for streaming
-            const eventSource = new EventSource(`${BACKEND_URL}/api/stream-analyze`);
-            
-            eventSource.onopen = () => {
-                console.log('Stream connected');
-                // Send files via fetch (EventSource is GET only)
-                fetch(`${BACKEND_URL}/api/stream-analyze`, {
+
+            try {
+                const response = await fetch(`${BACKEND_URL}/analyze`, {
                     method: 'POST',
                     body: formData,
                     credentials: 'include'
-                }).catch(err => console.error('Fetch error:', err));
-            };
-            
-            eventSource.onmessage = (event) => {
-                try {
-                    const data = JSON.parse(event.data);
-                    
-                    if (data.status === 'start') {
-                        addTypingLine('🚀 Starting analysis...');
-                    } 
-                    else if (data.status === 'question') {
-                        const q = data.question;
-                        addTypingLine(`📝 Analyzing Question ${q.number}...`);
-                        
-                        // Store question
-                        if (!currentAnalysis) {
-                            currentAnalysis = { questions: [] };
+                });
+
+                if (response.status === 401) {
+                    localStorage.removeItem('user');
+                    currentUser = null;
+                    showLoginPage();
+                    alert('Session expired. Please login again.');
+                    return;
+                }
+
+                const data = await response.json();
+
+                if (data.error) {
+                    throw new Error(data.error);
+                } else {
+                    analysisResult = data;
+                    analysisResult.questions.forEach((q, i) => {
+                        const file = allFiles.find(f => f.name === q.image_file);
+                        if (file && file.dataURL) {
+                            q.dataURL = file.dataURL;
                         }
-                        currentAnalysis.questions.push(q);
-                        
-                        // Update UI incrementally
-                        updateQuestionDisplay(q);
-                    }
-                    else if (data.status === 'complete') {
-                        addTypingLine('✅ Analysis complete!');
-                        currentAnalysisId = data.analysis_id;
-                        
-                        // Update badges
-                        updateBadges(currentAnalysis.questions);
-                        
-                        // Show save button
-                        document.getElementById('saveAnalysisBtn').style.display = 'block';
-                        document.getElementById('practicePaperCard').style.display = 'block';
-                        
-                        // Hide streaming display after delay
-                        setTimeout(() => {
-                            document.getElementById('streamingDisplay').style.display = 'none';
-                        }, 2000);
-                        
-                        // Show results section
+                    });
+
+                    displayAnalysis(data);
+
+                    setTimeout(() => {
+                        removeLoadingOverlay();
                         document.getElementById('uploadSection').classList.add('hidden');
-                        document.getElementById('resultsSection').style.display = 'block';
-                        
-                        eventSource.close();
-                        isAnalyzing = false;
-                    }
-                    else if (data.status === 'error') {
-                        addTypingLine(`❌ Error: ${data.error}`);
-                        eventSource.close();
-                        isAnalyzing = false;
-                        btn.innerHTML = 'Start Analysis';
-                        btn.disabled = false;
-                    }
-                    
-                } catch (error) {
-                    console.error('Stream parsing error:', error);
+                        document.getElementById('resultsSection').classList.remove('hidden');
+                        document.getElementById('saveAnalysisBtn').style.display = 'flex';
+                        document.getElementById('boundingAnalysisBtn').style.display = 'inline-flex';
+                        promptForAnalysisName();
+                    }, 500);
                 }
-            };
-            
-            eventSource.onerror = (error) => {
-                console.error('EventSource error:', error);
-                addTypingLine('❌ Connection error');
-                eventSource.close();
+            } catch (error) {
+                console.error('Analysis error:', error);
+                alert('Error: ' + error.message);
+                removeLoadingOverlay();
+            } finally {
                 isAnalyzing = false;
-                btn.innerHTML = 'Start Analysis';
+                btn.innerHTML = `<svg style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Start Analysis`;
                 btn.disabled = false;
-            };
-        }
-
-        // Typing effect
-        function addTypingLine(text) {
-            const container = document.getElementById('streamingDisplay');
-            const line = document.createElement('div');
-            line.className = 'typing-line';
-            line.innerHTML = text + '<span class="typing-cursor"></span>';
-            container.appendChild(line);
-            container.scrollTop = container.scrollHeight;
-            
-            // Trigger MathJax rendering
-            setTimeout(() => renderMath(line), 100);
-        }
-
-        // Update question display incrementally
-        function updateQuestionDisplay(question) {
-            const accordion = document.getElementById('accordion');
-            
-            // Check if question already exists
-            const existingItem = document.getElementById(`q-${question.number}`);
-            if (existingItem) {
-                existingItem.remove();
-            }
-            
-            const item = document.createElement('div');
-            item.className = 'accordion-item';
-            item.id = `q-${question.number}`;
-            
-            const statusClass = question.status || 'incorrect';
-            
-            item.innerHTML = `
-                <button class="accordion-trigger" onclick="toggleAccordion('${question.number}')">
-                    <div class="question-number ${statusClass}">${question.number}</div>
-                    <div class="question-info">
-                        <h4>Question ${question.number}</h4>
-                        <div class="status">Status: ${question.status}</div>
-                    </div>
-                </button>
-                <div id="content-${question.number}" class="accordion-content">
-                    <div class="analysis-section">
-                        <h5>Student Solution</h5>
-                        <div class="solution-card">
-                            <div class="solution-steps">${question.student_original || 'No solution provided'}</div>
-                        </div>
-                    </div>
-                    <div class="analysis-section">
-                        <h5>Error Analysis</h5>
-                        <div class="solution-card error">
-                            <p>${question.error || 'No errors detected'}</p>
-                        </div>
-                    </div>
-                    <div class="analysis-section">
-                        <h5>Corrected Solution</h5>
-                        <div class="solution-card corrected">
-                            <div class="solution-steps">${question.correct_solution || 'No correction needed'}</div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            accordion.appendChild(item);
-            renderMath(item);
-        }
-
-        function toggleAccordion(questionNumber) {
-            const content = document.getElementById(`content-${questionNumber}`);
-            content.classList.toggle('open');
-        }
-
-        function updateBadges(questions) {
-            const counts = { correct: 0, partial: 0, incorrect: 0 };
-            questions.forEach(q => {
-                const status = q.status?.toLowerCase();
-                if (status in counts) counts[status]++;
-            });
-            
-            const badgeGroup = document.getElementById('badgeGroup');
-            badgeGroup.innerHTML = `
-                <div class="badge"><div class="badge-dot correct"></div>${counts.correct} Correct</div>
-                <div class="badge"><div class="badge-dot partial"></div>${counts.partial} Partial</div>
-                <div class="badge"><div class="badge-dot incorrect"></div>${counts.incorrect} Incorrect</div>
-            `;
-        }
-
-        // Analysis management
-        async function loadAnalyses() {
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/get-analyses`, {
-                    credentials: 'include'
-                });
-                const data = await response.json();
-                if (data.success) {
-                    analyses = data.analyses;
-                    populateHistory(analyses);
-                }
-            } catch (error) {
-                console.error('Failed to load analyses:', error);
             }
         }
 
-        function populateHistory(analysesList) {
-            const historyList = document.getElementById('historyList');
-            historyList.innerHTML = analysesList.map(analysis => `
-                <div class="sidebar-item" onclick="loadSavedAnalysis(${analysis.id})">
-                    <div class="sidebar-item-title">${analysis.title}</div>
-                    <div class="sidebar-item-date">${analysis.formatted_date || analysis.analysis_date}</div>
-                </div>
-            `).join('');
-        }
-
-        async function loadSavedAnalysis(analysisId) {
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/get-analysis/${analysisId}`, {
-                    credentials: 'include'
-                });
-                const data = await response.json();
-                if (data.success) {
-                    const analysis = data.analysis;
-                    currentAnalysisId = analysis.id;
-                    currentAnalysis = analysis.analysis_data;
-                    
-                    // Display analysis
-                    displaySavedAnalysis(analysis);
-                    
-                    // Show results section
-                    document.getElementById('uploadSection').classList.add('hidden');
-                    document.getElementById('resultsSection').style.display = 'block';
-                }
-            } catch (error) {
-                console.error('Failed to load analysis:', error);
+        async function promptForAnalysisName() {
+            await loadAnalyses();
+            const latest = analyses[0];
+            if (latest) {
+                showSaveModal(`Analysis ${new Date().toLocaleString()}`, latest.id);
             }
         }
 
-        function displaySavedAnalysis(analysis) {
-            const questions = analysis.analysis_data?.questions || [];
+        function removeLoadingOverlay() {
+            const overlay = document.getElementById('loadingOverlay');
+            if (overlay) {
+                overlay.remove();
+            }
+        }
+
+        function processSteps(str) {
+            if (!str) return '';
+            // Remove any existing HTML tags except <br>
+            let cleaned = str.replace(/<(?!br\s*\/?)[^>]+>/gi, '');
+            // Split by <br> and filter empty lines
+            const steps = cleaned.split(/<br\s*\/?>/i).filter(step => step.trim() !== '');
+            // Join with simple line breaks, no extra divs
+            return steps.map(step => step.trim()).join('<br>');
+        }
+
+        function displayAnalysis(result, isLoaded = false, analysis = null) {
             const accordion = document.getElementById('accordion');
             accordion.innerHTML = '';
-            
-            questions.forEach(q => {
-                updateQuestionDisplay(q);
-            });
-            
-            updateBadges(questions);
-            document.getElementById('saveAnalysisBtn').style.display = 'block';
-            document.getElementById('practicePaperCard').style.display = 'block';
-        }
-
-        async function saveAnalysis() {
-            if (!currentAnalysisId) {
-                showSaveModal();
+            let questions = result.questions;
+            if (isLoaded && analysis.analysis_structure && analysis.analysis_structure.dropdowns) {
+                accordion.innerHTML = analysis.analysis_structure.dropdowns.map((d, i) => `
+                    <div class="accordion-item">
+                        <button class="accordion-trigger" onclick="toggleAccordion('loaded${i}')">
+                            <div class="question-info">
+                                <p>${d.title}</p>
+                            </div>
+                        </button>
+                        <div id="loaded${i}" class="accordion-content">
+                            ${d.content}
+                        </div>
+                    </div>
+                `).join('');
+                renderMath(accordion);
             } else {
-                await updateAnalysisName('Analysis');
+                let counts = {correct: 0, partial: 0, incorrect: 0};
+                questions.forEach(q => counts[q.status]++);
+                questions.forEach((q, i) => {
+                    const item = document.createElement('div');
+                    item.className = 'accordion-item';
+                    item.innerHTML = `
+                        <button class="accordion-trigger" onclick="toggleAccordion('q${i}')">
+                            <div class="question-number ${q.status}">${q.number}</div>
+                            <div class="question-info">
+                                <p>${q.question}</p>
+                                <p>Status: ${q.status}</p>
+                            </div>
+                        </button>
+                        <div id="q${i}" class="accordion-content">
+                            <div class="analysis-section">
+                                <h3><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg> Student Solution</h3>
+                                <div class="solution-card"><div class="solution-steps">${processSteps(q.student_original)}</div></div>
+                            </div>
+                            <div class="analysis-section">
+                                <h3><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Error Analysis</h3>
+                                <div class="solution-card error"><p>${q.error}</p></div>
+                            </div>
+                            <div class="analysis-section">
+                                <h3><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> LLM-Corrected Solution</h3>
+                                <div class="solution-card corrected"><div class="solution-steps">${processSteps(q.correct_solution)}</div></div>
+                            </div>
+                            ${q.dataURL ? `<button class="btn-outline" onclick="openImageModal(${i}, '${q.status}', '${q.image_file || ''}', ${JSON.stringify(q.error_bbox || {})})">
+                                <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                View Answer Image
+                            </button>` : ''}
+                           
+                        </div>`;
+                    accordion.appendChild(item);
+                    renderMath(item);
+                });
+
+                document.getElementById('badgeGroup').innerHTML = `
+                    <div class="badge"><div class="badge-dot correct"></div>${counts.correct} Correct</div>
+                    <div class="badge"><div class="badge-dot partial"></div>${counts.partial} Partial</div>
+                    <div class="badge"><div class="badge-dot incorrect"></div>${counts.incorrect} Incorrect</div>
+                `;
+            }
+            const viewBtn = document.getElementById('viewPracticeButton');
+            if (analysis && analysis.practice_pdf_path) {
+                viewBtn.style.display = 'block';
+                viewBtn.querySelector('button').onclick = () => window.open(`${BACKEND_URL}${analysis.practice_pdf_path}`, '_blank');
+            } else {
+                viewBtn.style.display = 'none';
             }
         }
 
-        async function saveAnalysisName() {
-            const name = document.getElementById('analysisName').value.trim() || 'Analysis';
-            
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/update-analysis-name/${currentAnalysisId}`, {
-                    method: 'PUT',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ analysis_name: name }),
-                    credentials: 'include'
-                });
-                
-                const data = await response.json();
-                if (data.success) {
-                    closeSaveModal();
-                    loadAnalyses();
-                    alert('Analysis saved!');
-                }
-            } catch (error) {
-                console.error('Failed to save analysis:', error);
+        function displayLoadedAnalysis(analysis) {
+            analysisResult = {questions: analysis.analysis_structure.questions || []};
+            displayAnalysis(analysisResult, true, analysis);
+        }
+
+        function toggleAccordion(id) {
+            document.getElementById(id).classList.toggle('open');
+        }
+
+        
+        function openImageModal(i, status, imageFile, bbox) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalTitle = document.getElementById('modalTitle');
+            const errorHighlight = document.getElementById('errorHighlight');
+            const modalCaption = document.getElementById('modalCaption');
+
+            modalTitle.textContent = `Answer Sheet - Question ${analysisResult.questions[i].number}`;
+            modalImage.src = analysisResult.questions[i].dataURL || '';
+            modalCaption.textContent = `Status: ${status}`;
+
+            if (bbox && bbox.x && bbox.y && bbox.width && bbox.height) {
+                errorHighlight.style.display = 'block';
+                errorHighlight.style.left = `${bbox.x}px`;
+                errorHighlight.style.top = `${bbox.y}px`;
+                errorHighlight.style.width = `${bbox.width}px`;
+                errorHighlight.style.height = `${bbox.height}px`;
+            } else {
+                errorHighlight.style.display = 'none';
             }
+
+            modal.classList.add('open');
+        }
+
+        function closeImageModal() {
+            document.getElementById('imageModal').classList.remove('open');
         }
 
         async function generatePracticePaper() {
-            if (!currentAnalysis?.questions) {
-                alert('No analysis data available');
-                return;
-            }
-            
+            if (!analysisResult) return;
+
             const content = document.getElementById('practicePaperContent');
             content.innerHTML = '<div class="loading"></div> Generating...';
-            
+
             try {
-                const response = await fetch(`${BACKEND_URL}/api/generate-practice`, {
+                const response = await fetch(`${BACKEND_URL}/generate_practice`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ questions: currentAnalysis.questions }),
+                    body: JSON.stringify({analysis: analysisResult}),
                     credentials: 'include'
                 });
-                
+
+                if (response.status === 401) {
+                    showLoginPage();
+                    alert('Session expired. Please login again.');
+                    return;
+                }
+
                 const data = await response.json();
-                if (data.practice_questions?.length > 0) {
-                    content.innerHTML = `
-                        <div class="practice-questions">
-                            ${data.practice_questions.map(pq => `
-                                <div class="practice-question">
-                                    <div class="practice-question-number">Question ${pq.number}</div>
-                                    <div>${pq.question}</div>
-                                </div>
-                            `).join('')}
-                        </div>
-                        <button class="btn btn-primary" onclick="downloadPracticePaper()" style="margin-top: 20px;">
-                            Download PDF
-                        </button>
-                    `;
-                    setTimeout(() => renderMath(content), 100);
+
+                if (data.error) {
+                    content.innerHTML = `<p>Error: ${data.error}</p>`;
+                } else if (data.practice_questions.length === 0) {
+                    content.innerHTML = '<p>No mistakes found, no practice needed!</p>';
                 } else {
-                    content.innerHTML = '<p>All questions are correct! No practice needed.</p>';
+                    practiceResult = data;
+                    content.innerHTML = `
+                        <div class="practice-paper" id="practice-paper">
+                            <div class="practice-header">
+                                <div class="practice-title">📝 Practice Paper</div>
+                                <div class="practice-subtitle">Practice questions based on areas needing improvement</div>
+                            </div>
+                            <div class="practice-questions">
+                                ${data.practice_questions.map(pq => `
+                                    <div class="practice-question">
+                                        <div class="practice-question-number">Question ${pq.number}</div>
+                                        <div class="practice-question-text">${pq.question}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div style="text-align:center; margin-top:40px;">
+                                <button class="btn-outline" onclick="downloadPracticePaper()"> 📥 Download as PDF </button>
+                            </div>
+                        </div>`;
+
+                    setTimeout(() => {
+                        renderMath(document.getElementById('practice-paper'));
+                    }, 500);
                 }
             } catch (error) {
                 content.innerHTML = `<p>Error: ${error.message}</p>`;
             }
         }
 
-        async function startBoundingAnalysis() {
-            if (!currentAnalysisId) {
-                alert('Please complete analysis first');
+        function viewPracticePaper() {
+            generatePracticePaper();
+        }
+
+        async function downloadPracticePaper() {
+            if (!practiceResult) return;
+            const practicePaper = document.getElementById('practice-paper');
+
+            if (!practicePaper) {
+                alert('Practice paper not found!');
                 return;
             }
-            
-            const btn = document.getElementById('boundingBoxBtn');
-            btn.innerHTML = '<div class="loading"></div> Analyzing...';
+
+            const loading = document.createElement('div');
+            loading.innerHTML = '<div class="loading"></div> Generating PDF...';
+            Object.assign(loading.style, {
+                position: 'fixed',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                background: 'rgba(255,255,255,0.9)',
+                padding: '20px',
+                borderRadius: '10px',
+                zIndex: '9999'
+            });
+            document.body.appendChild(loading);
+
+            try {
+                if (window.MathJax) {
+                    await MathJax.typesetPromise([practicePaper]);
+                }
+
+                await new Promise(resolve => setTimeout(resolve, 1500));
+
+                const clone = practicePaper.cloneNode(true);
+                clone.querySelectorAll('script[type*="math"]').forEach(el => el.remove());
+                clone.querySelectorAll('.MathJax_Preview, .MathJax_Processing, .MathJax_Display').forEach(el => el.remove());
+
+                clone.style.position = 'absolute';
+                clone.style.left = '-9999px';
+                clone.style.top = '0';
+                clone.style.width = '1200px';
+                clone.style.background = '#ffffff';
+                document.body.appendChild(clone);
+
+                const canvas = await html2canvas(clone, {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: '#ffffff',
+                    logging: false,
+                    width: 1200,
+                    height: clone.scrollHeight,
+                    ignoreElements: (element) => {
+                        return element.tagName === 'SCRIPT' ||
+                               element.classList.contains('MathJax_Preview') ||
+                               element.classList.contains('MathJax_Processing');
+                    }
+                });
+
+                document.body.removeChild(clone);
+
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgData = canvas.toDataURL('image/png');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
+                const imgWidth = pdfWidth - 20;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+                let heightLeft = imgHeight;
+                let position = 10;
+
+                pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                heightLeft -= (pdfHeight - 20);
+
+                while (heightLeft > 0) {
+                    position = heightLeft - imgHeight + 10;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                    heightLeft -= (pdfHeight - 20);
+                }
+
+                pdf.save(`Math_Practice_Paper_${new Date().toISOString().slice(0,10)}.pdf`);
+
+            } catch (error) {
+                console.error('PDF generation failed:', error);
+                alert('Failed to generate PDF: ' + error.message);
+            } finally {
+                document.body.removeChild(loading);
+            }
+        }
+
+        async function loadAnalyses() {
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/get-analyses`, {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+
+                if (response.status === 401) {
+                    return;
+                }
+
+                const data = await response.json();
+
+                if (data.success) {
+                    analyses = data.analyses;
+                    populateSidebar(analyses);
+                    populateMobileSidebar(analyses);
+                }
+            } catch (error) {
+                console.error('Failed to load analyses:', error);
+            }
+        }
+
+        function populateSidebar(analysesList) {
+            const html = analysesList.map(a => `
+                <div class="sidebar-item ${a.id === currentAnalysisId ? 'active' : ''}" id="sidebar-item-${a.id}">
+                    <div class="sidebar-item-title" id="title-${a.id}" onclick="loadAnalysis(${a.id})">
+                        ${a.analysis_name}
+                    </div>
+                    <div class="sidebar-item-date">${a.formatted_date || new Date(a.created_at).toLocaleDateString()}</div>
+                    <div class="sidebar-item-preview" id="preview-${a.id}">
+                        ${a.preview || 'Click to view analysis'}
+                    </div>
+                    <div class="sidebar-actions">
+                        <button onclick="startEditName(${a.id}, event)">Rename</button>
+                        <button onclick="deleteAnalysis(${a.id}, event)">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('historyList').innerHTML = html;
+
+            setTimeout(() => {
+                analysesList.forEach(a => {
+                    const previewEl = document.getElementById(`preview-${a.id}`);
+                    if (previewEl && window.MathJax) {
+                        MathJax.typesetPromise([previewEl]).catch(err => console.error('MathJax error:', err));
+                    }
+                });
+            }, 100);
+        }
+
+        function populateMobileSidebar(analysesList) {
+            const html = analysesList.map(a => `
+                <div class="sidebar-item ${a.id === currentAnalysisId ? 'active' : ''}" id="mobile-sidebar-item-${a.id}">
+                    <div class="sidebar-item-title" id="mobile-title-${a.id}" onclick="loadAnalysis(${a.id}); closeMobileMenu();">
+                        ${a.analysis_name}
+                    </div>
+                    <div class="sidebar-item-date">${a.formatted_date || new Date(a.created_at).toLocaleDateString()}</div>
+                    <div class="sidebar-item-preview" id="mobile-preview-${a.id}">
+                        ${a.preview || 'Click to view analysis'}
+                    </div>
+                    <div class="sidebar-actions">
+                        <button onclick="startEditName(${a.id}, event)">Rename</button>
+                        <button onclick="deleteAnalysis(${a.id}, event)">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('mobileHistoryList').innerHTML = html;
+
+            setTimeout(() => {
+                analysesList.forEach(a => {
+                    const previewEl = document.getElementById(`mobile-preview-${a.id}`);
+                    if (previewEl && window.MathJax) {
+                        MathJax.typesetPromise([previewEl]).catch(err => console.error('MathJax error:', err));
+                    }
+                });
+            }, 100);
+        }
+
+        function startEditName(id, event) {
+            event.stopPropagation();
+            const titleEl = document.getElementById(`title-${id}`);
+            const mobileTitleEl = document.getElementById(`mobile-title-${id}`);
+            const oldName = titleEl.textContent;
+            titleEl.contentEditable = true;
+            titleEl.focus();
+            const blurHandler = async () => {
+                const newName = titleEl.textContent.trim();
+                if (newName && newName !== oldName) {
+                    await updateAnalysisName(id, newName);
+                }
+                titleEl.contentEditable = false;
+                titleEl.removeEventListener('blur', blurHandler);
+                titleEl.removeEventListener('keydown', keyHandler);
+            };
+            const keyHandler = (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    titleEl.blur();
+                }
+            };
+            titleEl.addEventListener('blur', blurHandler);
+            titleEl.addEventListener('keydown', keyHandler);
+            if (mobileTitleEl) {
+                mobileTitleEl.textContent = titleEl.textContent;
+            }
+        }
+
+        async function updateAnalysisName(id, name) {
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/update-analysis-name/${id}`, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({analysis_name: name}),
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                if (data.success) {
+                    loadAnalyses();
+                } else {
+                    alert(data.error);
+                }
+            } catch (error) {
+                alert('Error updating name');
+            }
+        }
+
+        async function deleteAnalysis(id, event) {
+            event.stopPropagation();
+            if (confirm('Are you sure you want to delete this analysis?')) {
+                try {
+                    const response = await fetch(`${BACKEND_URL}/api/delete-analysis/${id}`, {
+                        method: 'DELETE',
+                        credentials: 'include'
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                        loadAnalyses();
+                        if (id === currentAnalysisId) {
+                            resetToDashboard();
+                        }
+                    } else {
+                        alert(data.error);
+                    }
+                } catch (error) {
+                    alert('Error deleting analysis');
+                }
+            }
+        }
+
+        async function loadAnalysis(id) {
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/get-analysis/${id}`, {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                if (data.success) {
+                    currentAnalysisId = id;
+                    displayLoadedAnalysis(data.analysis);
+                    document.getElementById('uploadSection').classList.add('hidden');
+                    document.getElementById('resultsSection').classList.remove('hidden');
+                    document.getElementById('saveAnalysisBtn').style.display = 'flex';
+                    document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+                    const sidebarItem = document.getElementById(`sidebar-item-${id}`);
+                    if (sidebarItem) sidebarItem.classList.add('active');
+                    const mobileItem = document.getElementById(`mobile-sidebar-item-${id}`);
+                    if (mobileItem) mobileItem.classList.add('active');
+                } else {
+                    alert(data.error);
+                }
+            } catch (error) {
+                alert('Error loading analysis');
+            }
+        }
+
+        // Bounding Box Analysis
+        async function startBoundingAnalysis() {
+            if (!analysisResult || allFiles.length === 0) {
+                alert('Please complete regular analysis first');
+                return;
+            }
+
+            const btn = document.getElementById('boundingAnalysisBtn');
+            btn.innerHTML = '<div class="loading"></div> Detecting Errors...';
             btn.disabled = true;
-            
+
+            const formData = new FormData();
+            allFiles.forEach(f => {
+                formData.append('files', f.file, f.name);
+            });
+            formData.append('analysis_id', currentAnalysisId || '');
+
             try {
                 const response = await fetch(`${BACKEND_URL}/api/bounding-analyze`, {
                     method: 'POST',
-                    body: new FormData(),
+                    body: formData,
                     credentials: 'include'
                 });
-                
+
+                if (response.status === 401) {
+                    showLoginPage();
+                    alert('Session expired. Please login again.');
+                    return;
+                }
+
                 const data = await response.json();
+
                 if (data.success) {
-                    alert(`Found ${data.errors_found} errors with bounding boxes`);
+                    // Store corrected images data
+                    window.correctedImagesData = data.corrected_images;
+                    window.currentAnalysisId = data.analysis_id || currentAnalysisId;
+
+                    // Show view button
+                    document.getElementById('viewCorrectedBtn').style.display = 'inline-flex';
+                    document.getElementById('boundingAnalysisBtn').style.display = 'none';
+
+                    alert(`✅ Found ${data.errors_found} errors! Click "View Corrected Paper" to see them.`);
+                } else {
+                    alert('Error: ' + (data.error || 'Failed to analyze'));
                 }
             } catch (error) {
                 alert('Error: ' + error.message);
             } finally {
-                btn.innerHTML = 'Bounding Box Analysis';
+                btn.innerHTML = '🔍 Find Errors with Bounding Boxes';
                 btn.disabled = false;
             }
         }
 
-        function downloadPracticePaper() {
-            alert('PDF generation would happen here');
-            // Implement PDF download using jsPDF
+        // View Corrected Paper
+        function viewCorrectedPaper() {
+            const modal = document.getElementById('correctedPaperModal');
+            const content = document.getElementById('correctedPaperContent');
+
+            if (!window.correctedImagesData || window.correctedImagesData.length === 0) {
+                content.innerHTML = '<p>No corrected images found. Please run bounding box analysis first.</p>';
+            } else {
+                let html = '<div class="corrected-gallery">';
+
+                window.correctedImagesData.forEach((img, index) => {
+                    html += `
+                        <div class="corrected-card">
+                            <h3>📄 Corrected Sheet ${index + 1}</h3>
+                            <div class="error-count-badge">
+                                🔴 ${img.error_count} Error${img.error_count !== 1 ? 's' : ''} Detected
+                            </div>
+                            <img src="${img.image_base64}"
+                                 alt="Error-marked sheet ${index + 1}"
+                                 onclick="window.open('${img.image_base64}', '_blank')"
+                                 title="Click to view full size">
+                            <button class="download-btn" onclick="downloadCorrectedImage('${img.corrected_filename}')">
+                                ⬇️ Download Marked Sheet
+                            </button>
+                        </div>
+                    `;
+                });
+
+                html += '</div>';
+                content.innerHTML = html;
+            }
+
+            modal.classList.add('open');
         }
 
-        // Event listeners
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const username = document.getElementById('loginUsername').value.trim();
-            const password = document.getElementById('loginPassword').value;
-            if (username && password) {
-                await login(username, password);
-            }
-        });
-
-        document.getElementById('registerForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const username = document.getElementById('registerUsername').value.trim();
-            const phone = document.getElementById('registerPhone').value.trim();
-            const password = document.getElementById('registerPassword').value;
-            const confirmPassword = document.getElementById('registerConfirmPassword').value;
-            
-            if (!username || !phone || !password || !confirmPassword) {
-                showError('registerErrorMessage', 'All fields required');
-                return;
-            }
-            
-            if (password.length < 6) {
-                showError('registerErrorMessage', 'Password must be 6+ characters');
-                return;
-            }
-            
-            if (password !== confirmPassword) {
-                showError('registerErrorMessage', 'Passwords do not match');
-                return;
-            }
-            
-            await register(username, phone, password);
-        });
-
-        function handleLogout() {
-            logout();
+        // Download Corrected Image
+        async function downloadCorrectedImage(filename) {
+            const analysisId = window.currentAnalysisId || currentAnalysisId;
+            window.open(`${BACKEND_URL}/api/download-corrected/${filename}?analysis_id=${analysisId}`, '_blank');
         }
 
-        // Initialize
+        // Close Modal
+        function closeCorrectedModal() {
+            document.getElementById('correctedPaperModal').classList.remove('open');
+        }
+
         window.addEventListener('DOMContentLoaded', async () => {
-            const isAuth = await checkAuth();
-            if (isAuth) {
-                showDashboard();
+            const isAuthenticated = await checkAuth();
+
+            if (isAuthenticated && currentUser) {
+                showDashboard(currentUser);
             } else {
                 showLoginPage();
             }
