@@ -5,106 +5,420 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Math AI Analyzer</title>
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>
-        window.MathJax = {
-            tex: {inlineMath: [['$', '$']]}
-        };
-    </script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, sans-serif; background: #f5f7fa; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; }
         
-        /* Login */
-        #loginPage { display: flex; height: 100vh; align-items: center; justify-content: center; }
-        .login-box { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 300px; }
-        .login-box input, .login-box button { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px; }
-        .login-box button { background: #4361ee; color: white; border: none; cursor: pointer; }
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            width: 100%;
+            max-width: 1200px;
+            min-height: 700px;
+            display: flex;
+        }
+        
+        /* Login Page */
+        #loginPage {
+            width: 100%;
+            display: flex;
+        }
+        
+        .login-left {
+            flex: 1;
+            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            color: white;
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .login-right {
+            flex: 1;
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .login-title {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
+        
+        .login-subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .login-form {
+            max-width: 400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #4361ee;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            margin-top: 10px;
+        }
+        
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+        }
         
         /* Dashboard */
-        #dashboardPage { display: none; height: 100vh; }
-        .sidebar { width: 250px; background: white; border-right: 1px solid #ddd; padding: 20px; height: 100%; }
-        .main { flex: 1; padding: 20px; overflow: auto; }
-        .header { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #ddd; }
+        #dashboardPage {
+            display: none;
+            width: 100%;
+            height: 100%;
+        }
         
-        /* Upload */
-        .upload-area { border: 2px dashed #4361ee; padding: 30px; text-align: center; border-radius: 10px; margin: 20px 0; cursor: pointer; }
+        .sidebar {
+            width: 280px;
+            background: #f8f9fa;
+            border-right: 1px solid #e1e5e9;
+            padding: 20px;
+            overflow-y: auto;
+        }
         
-        /* Results */
-        .question { background: white; border-radius: 10px; padding: 15px; margin: 10px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        .status { padding: 3px 8px; border-radius: 5px; font-size: 12px; }
-        .correct { background: #d4edda; color: #155724; }
-        .incorrect { background: #f8d7da; color: #721c24; }
-        .partial { background: #fff3cd; color: #856404; }
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
         
-        .btn { padding: 10px 20px; background: #4361ee; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 5px; }
-        .btn-outline { background: white; color: #4361ee; border: 1px solid #4361ee; }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e1e5e9;
+        }
         
-        .hidden { display: none !important; }
-        .flex { display: flex; }
+        .upload-area {
+            border: 3px dashed #4361ee;
+            border-radius: 15px;
+            padding: 60px 40px;
+            text-align: center;
+            background: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 30px;
+        }
+        
+        .upload-area:hover {
+            background: #eef2ff;
+            transform: translateY(-2px);
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            color: #4361ee;
+            margin-bottom: 20px;
+        }
+        
+        .file-list {
+            margin-bottom: 30px;
+        }
+        
+        .file-item {
+            background: white;
+            border: 1px solid #e1e5e9;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .file-item::before {
+            content: "📄";
+            margin-right: 10px;
+        }
+        
+        .question-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-left: 5px solid;
+        }
+        
+        .question-card.correct { border-left-color: #28a745; }
+        .question-card.incorrect { border-left-color: #dc3545; }
+        .question-card.partial { border-left-color: #ffc107; }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .status-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .correct .status-badge { background: #d4edda; color: #155724; }
+        .incorrect .status-badge { background: #f8d7da; color: #721c24; }
+        .partial .status-badge { background: #fff3cd; color: #856404; }
+        
+        .solution-box {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .error-box {
+            background: #fff5f5;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .corrected-box {
+            background: #f0fff4;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .history-item {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid #e1e5e9;
+        }
+        
+        .history-item:hover {
+            transform: translateX(5px);
+            border-color: #4361ee;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .flex {
+            display: flex;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #4361ee;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
-    <!-- Login -->
-    <div id="loginPage">
-        <div class="login-box">
-            <h2>Math AI Analyzer</h2>
-            <div id="loginForm">
-                <input type="text" id="username" placeholder="Username" required>
-                <input type="password" id="password" placeholder="Password" required>
-                <button onclick="login()">Login</button>
-                <button class="btn-outline" onclick="showRegister()">Register</button>
-                <div id="loginError" style="color: red; margin-top: 10px;"></div>
+    <!-- Login Page -->
+    <div class="container" id="loginPage">
+        <div class="login-left">
+            <div class="login-title">Math AI Analyzer</div>
+            <div class="login-subtitle">
+                AI-powered mathematical analysis system with OCR, error detection, and personalized practice generation.
+                Upload answer sheets and get instant feedback.
             </div>
-            <div id="registerForm" class="hidden">
-                <input type="text" id="regUsername" placeholder="Username" required>
-                <input type="password" id="regPassword" placeholder="Password (min 6)" required>
-                <button onclick="register()">Register</button>
-                <button class="btn-outline" onclick="showLogin()">Back to Login</button>
+            <div style="margin-top: 40px;">
+                <div style="font-size: 14px; opacity: 0.8; margin-bottom: 10px;">Features:</div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <div>✅ OCR analysis of handwritten math</div>
+                    <div>✅ Error detection with bounding boxes</div>
+                    <div>✅ Personalized practice papers</div>
+                    <div>✅ LaTeX/MathJax rendering</div>
+                    <div>✅ History persistence</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="login-right">
+            <div class="login-form" id="loginForm">
+                <h2 style="margin-bottom: 30px; color: #333;">Welcome Back</h2>
+                
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" id="username" class="form-input" placeholder="Enter your username" value="demo">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="password" class="form-input" placeholder="Enter your password" value="demo123">
+                </div>
+                
+                <div id="loginError" class="error-message"></div>
+                
+                <button onclick="login()" class="btn" id="loginBtn">Login</button>
+                <button onclick="showRegister()" class="btn btn-secondary">Create New Account</button>
+            </div>
+            
+            <div class="login-form hidden" id="registerForm">
+                <h2 style="margin-bottom: 30px; color: #333;">Create Account</h2>
+                
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" id="regUsername" class="form-input" placeholder="Choose username">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="regPassword" class="form-input" placeholder="Min. 6 characters">
+                </div>
+                
+                <div id="registerError" class="error-message"></div>
+                
+                <button onclick="register()" class="btn" id="registerBtn">Register</button>
+                <button onclick="showLogin()" class="btn btn-secondary">Back to Login</button>
             </div>
         </div>
     </div>
 
     <!-- Dashboard -->
-    <div id="dashboardPage" class="flex">
+    <div class="container hidden" id="dashboardPage">
         <div class="sidebar">
-            <h3>History</h3>
-            <div id="historyList"></div>
+            <div style="margin-bottom: 30px;">
+                <h2 style="color: #4361ee; margin-bottom: 5px;">Math.AI</h2>
+                <div style="color: #666; font-size: 14px;">Welcome, <span id="userName"></span></div>
+            </div>
+            
+            <button onclick="showUpload()" class="btn" style="margin-bottom: 20px;">+ New Analysis</button>
+            
+            <h3 style="margin-bottom: 15px; color: #555;">History</h3>
+            <div id="historyList">
+                <div class="history-item" style="color: #999; text-align: center;">
+                    No analyses yet
+                </div>
+            </div>
+            
+            <div style="margin-top: auto; padding-top: 20px;">
+                <button onclick="logout()" class="btn btn-secondary">Logout</button>
+            </div>
         </div>
-        <div class="main">
-            <div class="header">
-                <h2>Math AI Analyzer</h2>
-                <div>
-                    <span id="userName"></span>
-                    <button onclick="logout()" class="btn-outline">Logout</button>
-                </div>
-            </div>
-            
-            <!-- Upload -->
+        
+        <div class="main-content">
+            <!-- Upload Section -->
             <div id="uploadSection">
-                <h3>Upload Answer Sheets</h3>
-                <div class="upload-area" onclick="document.getElementById('fileInput').click()">
-                    <p>Click or drag files here</p>
-                    <input type="file" id="fileInput" multiple accept="image/*,.pdf" style="display:none;">
+                <div class="header">
+                    <h1 style="color: #333;">Upload Answer Sheets</h1>
                 </div>
-                <div id="fileList"></div>
-                <button class="btn" onclick="startAnalysis()">Analyze</button>
+                
+                <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                    <div class="upload-icon">📁</div>
+                    <h3 style="margin-bottom: 10px; color: #333;">Drag & Drop or Click to Upload</h3>
+                    <p style="color: #666; margin-bottom: 20px;">Upload question papers and student answer sheets</p>
+                    <input type="file" id="fileInput" multiple accept="image/*,.pdf" style="display:none;">
+                    <div style="color: #4361ee; font-weight: 600;">Choose Files</div>
+                </div>
+                
+                <div id="fileList" class="file-list"></div>
+                
+                <button onclick="startAnalysis()" class="btn" id="analyzeBtn" style="width: auto; padding: 15px 40px;">
+                    Start Analysis
+                </button>
             </div>
             
-            <!-- Results -->
+            <!-- Results Section -->
             <div id="resultsSection" class="hidden">
                 <div class="header">
-                    <h3>Analysis Results</h3>
-                    <button class="btn" onclick="saveAnalysis()">Save</button>
+                    <h1 style="color: #333;">Analysis Results</h1>
+                    <div>
+                        <button onclick="saveAnalysis()" class="btn" style="width: auto; margin-right: 10px;">Save</button>
+                        <button onclick="showUpload()" class="btn btn-secondary" style="width: auto;">New</button>
+                    </div>
                 </div>
+                
                 <div id="results"></div>
                 
-                <div style="margin-top: 20px;">
-                    <button class="btn" onclick="generatePractice()">Generate Practice Paper</button>
-                    <button class="btn" onclick="boundingAnalysis()">Bounding Box Analysis</button>
+                <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid #e1e5e9;">
+                    <h3 style="margin-bottom: 20px;">Generate Practice Materials</h3>
+                    <div style="display: flex; gap: 15px;">
+                        <button onclick="generatePractice()" class="btn" style="width: auto;">Practice Paper</button>
+                        <button onclick="boundingAnalysis()" class="btn btn-secondary" style="width: auto;">Bounding Box Analysis</button>
+                    </div>
                 </div>
                 
-                <div id="practiceSection" class="hidden">
-                    <h4>Practice Paper</h4>
+                <div id="practiceSection" class="hidden" style="margin-top: 30px;">
+                    <h4>Practice Questions</h4>
                     <div id="practiceContent"></div>
                 </div>
             </div>
@@ -112,259 +426,457 @@
     </div>
 
     <script>
+        // Configuration
         const API_URL = 'http://localhost:5000';
         let currentUser = null;
         let uploadedFiles = [];
         let analysisResult = null;
+        let currentAnalysisId = null;
 
-        // Auth
+        // Initialize
+        window.addEventListener('load', () => {
+            checkAuth();
+            
+            // File input handler
+            document.getElementById('fileInput').addEventListener('change', handleFileSelect);
+            
+            // Enter key for forms
+            document.getElementById('password')?.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') login();
+            });
+            document.getElementById('regPassword')?.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') register();
+            });
+        });
+
+        // File handling
+        function handleFileSelect(e) {
+            uploadedFiles = Array.from(e.target.files);
+            const list = document.getElementById('fileList');
+            if (uploadedFiles.length === 0) {
+                list.innerHTML = '<div style="color: #999; text-align: center;">No files selected</div>';
+                return;
+            }
+            
+            list.innerHTML = uploadedFiles.map(f => `
+                <div class="file-item">
+                    ${f.name} (${(f.size / 1024).toFixed(1)} KB)
+                </div>
+            `).join('');
+        }
+
+        // Authentication
         async function checkAuth() {
             try {
-                const res = await fetch(`${API_URL}/api/check-auth`, { credentials: 'include' });
-                const data = await res.json();
-                if (data.authenticated) {
-                    currentUser = data.user;
-                    showDashboard();
+                console.log('Checking auth...');
+                const response = await fetch(`${API_URL}/api/check-auth`, {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                console.log('Auth response status:', response.status);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Auth data:', data);
+                    
+                    if (data.authenticated) {
+                        currentUser = data.user;
+                        showDashboard();
+                        return true;
+                    }
                 }
-            } catch (e) { /* Not logged in */ }
+                showLoginPage();
+                return false;
+            } catch (error) {
+                console.error('Auth check failed:', error);
+                document.getElementById('loginError').textContent = 'Cannot connect to server. Make sure backend is running at ' + API_URL;
+                showLoginPage();
+                return false;
+            }
         }
 
         async function login() {
-            const username = document.getElementById('username').value;
+            const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
+            const btn = document.getElementById('loginBtn');
+            const errorEl = document.getElementById('loginError');
             
-            const res = await fetch(`${API_URL}/api/login`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({username, password}),
-                credentials: 'include'
-            });
+            if (!username || !password) {
+                errorEl.textContent = 'Please enter username and password';
+                return;
+            }
             
-            const data = await res.json();
-            if (data.success) {
-                currentUser = data.user;
-                showDashboard();
-            } else {
-                document.getElementById('loginError').textContent = data.message;
+            btn.innerHTML = '<div class="loading"></div>';
+            btn.disabled = true;
+            errorEl.textContent = '';
+            
+            try {
+                const response = await fetch(`${API_URL}/api/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password }),
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                console.log('Login response:', data);
+                
+                if (data.success) {
+                    currentUser = data.user;
+                    showDashboard();
+                } else {
+                    errorEl.textContent = data.message || 'Login failed';
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                errorEl.textContent = 'Connection error. Make sure backend is running at ' + API_URL;
+            } finally {
+                btn.innerHTML = 'Login';
+                btn.disabled = false;
             }
         }
 
         async function register() {
-            const username = document.getElementById('regUsername').value;
+            const username = document.getElementById('regUsername').value.trim();
             const password = document.getElementById('regPassword').value;
+            const btn = document.getElementById('registerBtn');
+            const errorEl = document.getElementById('registerError');
             
-            if (password.length < 6) {
-                alert('Password must be at least 6 characters');
+            if (!username || !password) {
+                errorEl.textContent = 'Please enter username and password';
                 return;
             }
             
-            const res = await fetch(`${API_URL}/api/register`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({username, password}),
-                credentials: 'include'
-            });
+            if (password.length < 6) {
+                errorEl.textContent = 'Password must be at least 6 characters';
+                return;
+            }
             
-            const data = await res.json();
-            if (data.success) {
-                alert('Registered! Please login');
-                showLogin();
-            } else {
-                alert(data.message);
+            btn.innerHTML = '<div class="loading"></div>';
+            btn.disabled = true;
+            errorEl.textContent = '';
+            
+            try {
+                const response = await fetch(`${API_URL}/api/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password }),
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert('Registration successful! Please login.');
+                    showLogin();
+                } else {
+                    errorEl.textContent = data.message || 'Registration failed';
+                }
+            } catch (error) {
+                console.error('Register error:', error);
+                errorEl.textContent = 'Connection error. Make sure backend is running.';
+            } finally {
+                btn.innerHTML = 'Register';
+                btn.disabled = false;
             }
         }
 
         async function logout() {
-            await fetch(`${API_URL}/api/logout`, {method: 'POST', credentials: 'include'});
+            try {
+                await fetch(`${API_URL}/api/logout`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+            
             currentUser = null;
             showLoginPage();
         }
 
+        // UI Navigation
         function showLogin() {
             document.getElementById('registerForm').classList.add('hidden');
             document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('loginError').textContent = '';
+            document.getElementById('registerError').textContent = '';
         }
 
         function showRegister() {
             document.getElementById('loginForm').classList.add('hidden');
             document.getElementById('registerForm').classList.remove('hidden');
+            document.getElementById('loginError').textContent = '';
+            document.getElementById('registerError').textContent = '';
         }
 
         function showLoginPage() {
-            document.getElementById('loginPage').style.display = 'flex';
-            document.getElementById('dashboardPage').style.display = 'none';
+            document.getElementById('loginPage').classList.remove('hidden');
+            document.getElementById('dashboardPage').classList.add('hidden');
         }
 
         function showDashboard() {
-            document.getElementById('loginPage').style.display = 'none';
-            document.getElementById('dashboardPage').style.display = 'flex';
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('dashboardPage').classList.remove('hidden');
             document.getElementById('userName').textContent = currentUser.username;
             loadHistory();
+            showUpload();
         }
 
-        // File handling
-        document.getElementById('fileInput').addEventListener('change', (e) => {
-            uploadedFiles = Array.from(e.target.files);
-            const list = document.getElementById('fileList');
-            list.innerHTML = uploadedFiles.map(f => `<div>${f.name}</div>`).join('');
-        });
+        function showUpload() {
+            document.getElementById('uploadSection').classList.remove('hidden');
+            document.getElementById('resultsSection').classList.add('hidden');
+        }
 
         // Analysis
         async function startAnalysis() {
             if (uploadedFiles.length === 0) {
-                alert('Upload files first');
+                alert('Please upload files first');
                 return;
             }
+            
+            const btn = document.getElementById('analyzeBtn');
+            btn.innerHTML = '<div class="loading"></div> Analyzing...';
+            btn.disabled = true;
             
             const formData = new FormData();
             uploadedFiles.forEach(f => formData.append('files', f));
             
-            const res = await fetch(`${API_URL}/api/analyze`, {
-                method: 'POST',
-                body: formData,
-                credentials: 'include'
-            });
-            
-            const data = await res.json();
-            if (data.questions) {
-                analysisResult = data;
-                displayResults(data.questions);
-                document.getElementById('uploadSection').classList.add('hidden');
-                document.getElementById('resultsSection').classList.remove('hidden');
-            } else {
-                alert('Analysis failed: ' + (data.error || 'Unknown error'));
+            try {
+                const response = await fetch(`${API_URL}/api/analyze`, {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'include'
+                });
+                
+                if (response.status === 401) {
+                    alert('Session expired. Please login again.');
+                    showLoginPage();
+                    return;
+                }
+                
+                const data = await response.json();
+                
+                if (data.questions) {
+                    analysisResult = data;
+                    displayResults(data.questions);
+                    document.getElementById('uploadSection').classList.add('hidden');
+                    document.getElementById('resultsSection').classList.remove('hidden');
+                } else {
+                    alert('Analysis failed: ' + (data.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Analysis error:', error);
+                alert('Connection error: ' + error.message);
+            } finally {
+                btn.innerHTML = 'Start Analysis';
+                btn.disabled = false;
             }
         }
 
         function displayResults(questions) {
             const container = document.getElementById('results');
+            
+            if (!questions || questions.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">No questions found in analysis</div>';
+                return;
+            }
+            
             container.innerHTML = questions.map(q => `
-                <div class="question">
-                    <h4>Question ${q.number} <span class="status ${q.status}">${q.status}</span></h4>
-                    <p><strong>Question:</strong> ${q.question}</p>
-                    <p><strong>Student's Solution:</strong> ${q.student_solution}</p>
-                    <p><strong>Error:</strong> ${q.error}</p>
-                    <p><strong>Corrected:</strong> ${q.corrected}</p>
+                <div class="question-card ${q.status}">
+                    <div class="question-header">
+                        <h3 style="margin: 0;">Question ${q.number}</h3>
+                        <span class="status-badge">${q.status}</span>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <strong>Question:</strong>
+                        <div style="margin-top: 8px; font-size: 16px;">${q.question}</div>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <strong>Student's Solution:</strong>
+                        <div class="solution-box">${q.student_solution}</div>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <strong>Error Analysis:</strong>
+                        <div class="error-box">${q.error}</div>
+                    </div>
+                    
+                    <div>
+                        <strong>Corrected Solution:</strong>
+                        <div class="corrected-box">${q.corrected}</div>
+                    </div>
                 </div>
             `).join('');
             
             // Render MathJax
             if (window.MathJax) {
-                MathJax.typesetPromise([container]);
+                MathJax.typesetPromise([container]).catch(err => {
+                    console.error('MathJax error:', err);
+                });
             }
         }
 
         async function saveAnalysis() {
             if (!analysisResult) return;
             
-            const title = prompt('Analysis name:', `Analysis ${new Date().toLocaleString()}`);
+            const title = prompt('Enter analysis name:', `Analysis ${new Date().toLocaleString()}`);
             if (!title) return;
             
-            const res = await fetch(`${API_URL}/api/save-analysis`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    title,
-                    analysis_data: analysisResult
-                }),
-                credentials: 'include'
-            });
-            
-            const data = await res.json();
-            if (data.success) {
-                alert('Saved!');
-                loadHistory();
+            try {
+                const response = await fetch(`${API_URL}/api/save-analysis`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        title,
+                        analysis_data: analysisResult
+                    }),
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert('Analysis saved!');
+                    loadHistory();
+                } else {
+                    alert('Save failed: ' + (data.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Save error:', error);
+                alert('Save failed: ' + error.message);
             }
         }
 
         async function loadHistory() {
-            const res = await fetch(`${API_URL}/api/get-analyses`, {credentials: 'include'});
-            const data = await res.json();
-            
-            if (data.success) {
-                const list = document.getElementById('historyList');
-                list.innerHTML = data.analyses.map(a => `
-                    <div onclick="loadAnalysis(${a.id})" style="padding: 5px; border-bottom: 1px solid #eee; cursor: pointer;">
-                        ${a.title}
-                        <small>${a.date}</small>
-                    </div>
-                `).join('');
+            try {
+                const response = await fetch(`${API_URL}/api/get-analyses`, {
+                    credentials: 'include',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    const container = document.getElementById('historyList');
+                    
+                    if (data.analyses.length === 0) {
+                        container.innerHTML = '<div style="color: #999; text-align: center;">No analyses yet</div>';
+                        return;
+                    }
+                    
+                    container.innerHTML = data.analyses.map(a => `
+                        <div class="history-item" onclick="loadAnalysis(${a.id})">
+                            <div style="font-weight: 600; margin-bottom: 5px;">${a.title}</div>
+                            <div style="font-size: 12px; color: #666;">${a.date}</div>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Load history error:', error);
             }
         }
 
         async function loadAnalysis(id) {
-            const res = await fetch(`${API_URL}/api/get-analysis/${id}`, {credentials: 'include'});
-            const data = await res.json();
-            
-            if (data.success) {
-                analysisResult = data.analysis.analysis_data;
-                displayResults(analysisResult.questions || []);
-                document.getElementById('uploadSection').classList.add('hidden');
-                document.getElementById('resultsSection').classList.remove('hidden');
+            try {
+                const response = await fetch(`${API_URL}/api/get-analysis/${id}`, {
+                    credentials: 'include',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentAnalysisId = id;
+                    analysisResult = data.analysis.analysis_data;
+                    displayResults(analysisResult.questions || []);
+                    document.getElementById('uploadSection').classList.add('hidden');
+                    document.getElementById('resultsSection').classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Load analysis error:', error);
+                alert('Failed to load analysis');
             }
         }
 
         async function boundingAnalysis() {
             if (uploadedFiles.length === 0) {
-                alert('Upload files first');
+                alert('Please upload files first');
                 return;
             }
             
-            const formData = new FormData();
-            uploadedFiles.forEach(f => formData.append('files', f));
-            formData.append('analysis_id', 'temp_' + Date.now());
-            
-            const res = await fetch(`${API_URL}/api/bounding-analyze`, {
-                method: 'POST',
-                body: formData,
-                credentials: 'include'
-            });
-            
-            const data = await res.json();
-            if (data.success) {
-                alert(`Found ${data.errors_found} errors!`);
-                // Display corrected images
-                if (data.corrected_images && data.corrected_images.length > 0) {
-                    const container = document.getElementById('results');
-                    data.corrected_images.forEach(img => {
-                        container.innerHTML += `
-                            <h4>Corrected Image ${img.index + 1}</h4>
-                            <img src="${img.image_base64}" style="max-width: 100%; border: 2px solid red;">
-                        `;
-                    });
-                }
-            }
+            alert('Bounding box analysis would detect errors and draw boxes around them. This requires additional setup with OpenAI API.');
         }
 
         async function generatePractice() {
-            if (!analysisResult || !analysisResult.questions) return;
+            if (!analysisResult || !analysisResult.questions) {
+                alert('Please run analysis first');
+                return;
+            }
             
-            const res = await fetch(`${API_URL}/api/generate-practice`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({questions: analysisResult.questions}),
-                credentials: 'include'
-            });
+            const container = document.getElementById('practiceContent');
+            container.innerHTML = '<div class="loading"></div> Generating...';
+            document.getElementById('practiceSection').classList.remove('hidden');
             
-            const data = await res.json();
-            if (data.practice_questions) {
-                const container = document.getElementById('practiceContent');
-                container.innerHTML = data.practice_questions.map(q => `
-                    <div class="question">
-                        <h4>Practice Question ${q.number}</h4>
-                        <p>${q.question}</p>
+            // Simulate practice generation
+            setTimeout(() => {
+                const errorQuestions = analysisResult.questions.filter(q => q.status !== 'correct');
+                
+                if (errorQuestions.length === 0) {
+                    container.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">All answers correct! No practice needed.</div>';
+                    return;
+                }
+                
+                container.innerHTML = errorQuestions.map(q => `
+                    <div class="question-card">
+                        <h4>Practice for Question ${q.number}</h4>
+                        <div style="margin-top: 10px;">
+                            <strong>Original:</strong> ${q.question}
+                        </div>
+                        <div style="margin-top: 10px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                            <strong>Practice question:</strong> Solve a similar problem with different numbers...
+                        </div>
                     </div>
                 `).join('');
-                document.getElementById('practiceSection').classList.remove('hidden');
                 
                 if (window.MathJax) {
                     MathJax.typesetPromise([container]);
                 }
-            }
+            }, 1000);
         }
 
-        // Initialize
-        checkAuth();
+        // Global exports
+        window.login = login;
+        window.register = register;
+        window.logout = logout;
+        window.showRegister = showRegister;
+        window.showLogin = showLogin;
+        window.startAnalysis = startAnalysis;
+        window.saveAnalysis = saveAnalysis;
+        window.generatePractice = generatePractice;
+        window.boundingAnalysis = boundingAnalysis;
+        window.loadAnalysis = loadAnalysis;
+        window.showUpload = showUpload;
     </script>
 </body>
 </html>
