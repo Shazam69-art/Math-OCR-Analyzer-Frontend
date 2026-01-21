@@ -2690,38 +2690,44 @@
 
         // View Corrected Paper
         function viewCorrectedPaper() {
-            const modal = document.getElementById('correctedPaperModal');
-            const content = document.getElementById('correctedPaperContent');
+    const modal = document.getElementById('correctedPaperModal');
+    const content = document.getElementById('correctedPaperContent');
 
-            if (!window.correctedImagesData || window.correctedImagesData.length === 0) {
-                content.innerHTML = '<p>No corrected images found. Please run bounding box analysis first.</p>';
-            } else {
-                let html = '<div class="corrected-gallery">';
+    if (!window.correctedImagesData || window.correctedImagesData.length === 0) {
+        content.innerHTML = '<p>No corrected images found. Please run bounding box analysis first.</p>';
+    } else {
+        let html = '<div class="corrected-gallery">';
 
-                window.correctedImagesData.forEach((img, index) => {
-                    html += `
-                        <div class="corrected-card">
-                            <h3>📄 Corrected Sheet ${index + 1}</h3>
-                            <div class="error-count-badge">
-                                🔴 ${img.error_count} Error${img.error_count !== 1 ? 's' : ''} Detected
-                            </div>
-                            <img src="${img.image_base64}"
-                                 alt="Error-marked sheet ${index + 1}"
-                                 onclick="window.open('${img.image_base64}', '_blank')"
-                                 title="Click to view full size">
-                            <button class="download-btn" onclick="downloadCorrectedImage('${img.corrected_filename}')">
-                                ⬇️ Download Marked Sheet
-                            </button>
-                        </div>
-                    `;
-                });
+        window.correctedImagesData.forEach((img, index) => {
+            html += `
+                <div class="corrected-card">
+                    <h3>📄 Corrected Sheet ${index + 1}</h3>
+                    <div class="error-count-badge">
+                        🔴 ${img.error_count} Error${img.error_count !== 1 ? 's' : ''} Detected
+                    </div>
+                    <img src="${img.image_base64}"
+                         alt="Error-marked sheet ${index + 1}"
+                         onclick="window.open('${img.image_base64}', '_blank')"
+                         title="Click to view full size">
+                    <button class="download-btn" onclick="downloadCorrectedImage('${img.corrected_filename}')">
+                        ⬇️ Download Marked Sheet
+                    </button>
+                </div>
+            `;
+        });
 
-                html += '</div>';
-                content.innerHTML = html;
-            }
+        html += '</div>';
+        content.innerHTML = html;
+    }
 
-            modal.classList.add('open');
-        }
+    modal.classList.add('open');
+
+    // Add this line to render MathJax after the modal is populated
+    if (window.MathJax) {
+        MathJax.typesetPromise([content]).catch(err => console.error('MathJax error:', err));
+    }
+}
+
 
         // Download Corrected Image
         async function downloadCorrectedImage(filename) {
