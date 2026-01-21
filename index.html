@@ -963,7 +963,7 @@
         }
         
         #correctedPaperModal .modal-content {
-        max-width: 1400px;
+        max-width: 1750px;
         }
 
         .modal-header {
@@ -2722,11 +2722,14 @@
 
     modal.classList.add('open');
 
-    // Add this line to render MathJax after the modal is populated
+    // Re-render MathJax after the modal is populated
     if (window.MathJax) {
-        MathJax.typesetPromise([content]).catch(err => console.error('MathJax error:', err));
+        setTimeout(() => {
+            MathJax.typesetPromise([content]).catch(err => console.error('MathJax error:', err));
+        }, 500);
     }
 }
+
 
 
         // Download Corrected Image
