@@ -2699,6 +2699,31 @@
         let html = '<div class="corrected-gallery">';
 
         window.correctedImagesData.forEach((img, index) => {
+            // Build error explanations section
+            let errorExplanationsHTML = '';
+            if (img.error_data && Array.isArray(img.error_data)) {
+                errorExplanationsHTML = '<div style="margin-top: 20px; background: #f8f9fa; padding: 15px; border-radius: 8px;">';
+                errorExplanationsHTML += '<h4 style="color: #dc3545; margin-bottom: 10px;">Mathematical Errors Detected:</h4>';
+                
+                img.error_data.forEach((error, i) => {
+                    let explanation = error.explanation || 'Error found';
+                    // Clean the explanation - remove duplicate $ signs
+                    explanation = explanation.replace(/\$\$/g, '$').trim();
+                    // Ensure proper $ wrapping for MathJax
+                    if (!explanation.startsWith('$') && !explanation.endsWith('$')) {
+                        explanation = `$${explanation}$`;
+                    }
+                    
+                    errorExplanationsHTML += `
+                        <div style="margin: 8px 0; padding: 10px; background: white; border-radius: 5px; border-left: 3px solid #dc3545;">
+                            <strong>Q${error.question_number}:</strong> 
+                            <span class="math-explanation">${explanation}</span>
+                        </div>
+                    `;
+                });
+                errorExplanationsHTML += '</div>';
+            }
+
             html += `
                 <div class="corrected-card">
                     <h3>📄 Corrected Sheet ${index + 1}</h3>
@@ -2709,6 +2734,9 @@
                          alt="Error-marked sheet ${index + 1}"
                          onclick="window.open('${img.image_base64}', '_blank')"
                          title="Click to view full size">
+                    
+                    ${errorExplanationsHTML}
+                    
                     <button class="download-btn" onclick="downloadCorrectedImage('${img.corrected_filename}')">
                         ⬇️ Download Marked Sheet
                     </button>
@@ -2722,11 +2750,21 @@
 
     modal.classList.add('open');
 
-    // Re-render MathJax after the modal is populated
+    // Critical: Process MathJax after modal opens
     if (window.MathJax) {
+        // Wait for DOM to be fully rendered
         setTimeout(() => {
-            MathJax.typesetPromise([content]).catch(err => console.error('MathJax error:', err));
-        }, 500);
+            // Process all math explanations
+            MathJax.typesetPromise().then(() => {
+                console.log('MathJax processed all math expressions');
+            }).catch(err => {
+                console.error('MathJax error:', err);
+                // Fallback: Try to retry processing
+                setTimeout(() => {
+                    MathJax.typesetPromise();
+                }, 300);
+            });
+        }, 300);
     }
 }
 
