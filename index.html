@@ -2690,125 +2690,38 @@
 
         // View Corrected Paper
         function viewCorrectedPaper() {
-    const modal = document.getElementById('correctedPaperModal');
-    const content = document.getElementById('correctedPaperContent');
+            const modal = document.getElementById('correctedPaperModal');
+            const content = document.getElementById('correctedPaperContent');
 
-    if (!window.correctedImagesData || window.correctedImagesData.length === 0) {
-        content.innerHTML = '<p>No corrected images found. Please run bounding box analysis first.</p>';
-    } else {
-        let html = '<div class="corrected-gallery">';
+            if (!window.correctedImagesData || window.correctedImagesData.length === 0) {
+                content.innerHTML = '<p>No corrected images found. Please run bounding box analysis first.</p>';
+            } else {
+                let html = '<div class="corrected-gallery">';
 
-        window.correctedImagesData.forEach((img, index) => {
-            // Create error details list with MathJax support
-            let errorsHtml = '';
-            if (img.errors && img.errors.length > 0) {
-                errorsHtml = '<div class="error-details" style="margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px; text-align: left;">';
-                errorsHtml += '<h4 style="margin-bottom: 10px; color: #dc3545;">📋 Detected Errors:</h4>';
-                
-                img.errors.forEach((error, errIndex) => {
-                    // Format explanation for MathJax
-                    // Remove any existing LaTeX delimiters and add proper ones
-                    let explanation = error.explanation || 'Error found';
-                    
-                    // Ensure it has MathJax delimiters if it contains math
-                    if (explanation.includes('$') || explanation.includes('\\(') || 
-                        explanation.match(/[a-zA-Z]_{[^}]+}/) || 
-                        explanation.match(/[a-zA-Z]\^[^{]/)) {
-                        // Already has LaTeX, leave as is
-                    } else if (explanation.match(/[a-zA-Z]_[0-9]/) || explanation.includes('^')) {
-                        // Has subscript/superscript without delimiters
-                        explanation = `$${explanation}$`;
-                    }
-                    
-                    errorsHtml += `
-                        <div class="error-item" style="margin-bottom: 10px; padding: 10px; border-left: 3px solid #dc3545; background: white;">
-                            <strong>Question ${error.question_number}:</strong>
-                            <div class="math-explanation" style="margin-top: 5px;">
-                                ${explanation}
+                window.correctedImagesData.forEach((img, index) => {
+                    html += `
+                        <div class="corrected-card">
+                            <h3>📄 Corrected Sheet ${index + 1}</h3>
+                            <div class="error-count-badge">
+                                🔴 ${img.error_count} Error${img.error_count !== 1 ? 's' : ''} Detected
                             </div>
-                            <div style="font-size: 12px; color: #666; margin-top: 5px;">
-                                Position: [${error.bounding_box.x}, ${error.bounding_box.y}]
-                            </div>
+                            <img src="${img.image_base64}"
+                                 alt="Error-marked sheet ${index + 1}"
+                                 onclick="window.open('${img.image_base64}', '_blank')"
+                                 title="Click to view full size">
+                            <button class="download-btn" onclick="downloadCorrectedImage('${img.corrected_filename}')">
+                                ⬇️ Download Marked Sheet
+                            </button>
                         </div>
                     `;
                 });
-                
-                errorsHtml += '</div>';
+
+                html += '</div>';
+                content.innerHTML = html;
             }
 
-            html += `
-                <div class="corrected-card">
-                    <h3>📄 Corrected Sheet ${index + 1}</h3>
-                    <div class="error-count-badge">
-                        🔴 ${img.error_count} Error${img.error_count !== 1 ? 's' : ''} Detected
-                    </div>
-                    <img src="${img.image_base64}"
-                         alt="Error-marked sheet ${index + 1}"
-                         onclick="window.open('${img.image_base64}', '_blank')"
-                         style="cursor: pointer; border: 2px solid #ddd; border-radius: 8px;"
-                         title="Click to view full size">
-                    ${errorsHtml}
-                    <button class="download-btn" onclick="downloadCorrectedImage('${img.corrected_filename}')" style="margin-top: 15px;">
-                        ⬇️ Download Marked Sheet
-                    </button>
-                </div>
-            `;
-        });
-
-        html += '</div>';
-        content.innerHTML = html;
-        
-        // IMPORTANT: Trigger MathJax rendering AFTER content is added
-        setTimeout(() => {
-            if (window.MathJax) {
-                // Find all math elements in the new content
-                const mathElements = content.querySelectorAll('.math-explanation, .error-item');
-                MathJax.typesetPromise(mathElements).then(() => {
-                    console.log('MathJax rendered in corrected paper modal');
-                }).catch(err => {
-                    console.warn('MathJax rendering warning:', err);
-                    // Fallback: manually add delimiters
-                    mathElements.forEach(el => {
-                        const text = el.textContent;
-                        if (text && (text.includes('_') || text.includes('^') || text.includes('='))) {
-                            el.innerHTML = `$${text}$`;
-                        }
-                    });
-                    if (window.MathJax) {
-                        MathJax.typesetPromise([content]);
-                    }
-                });
-            }
-        }, 100);
-    }
-
-    modal.classList.add('open');
-}
-
-// Add CSS for error details
-const style = document.createElement('style');
-style.textContent = `
-    .error-details {
-        max-height: 300px;
-        overflow-y: auto;
-    }
-    .error-item {
-        transition: all 0.3s ease;
-    }
-    .error-item:hover {
-        transform: translateX(5px);
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    mjx-container {
-        display: inline-block !important;
-        margin: 0 !important;
-    }
-    .math-explanation mjx-container {
-        font-size: 14px !important;
-    }
-`;
-document.head.appendChild(style);
-
+            modal.classList.add('open');
+        }
 
         // Download Corrected Image
         async function downloadCorrectedImage(filename) {
@@ -2829,7 +2742,6 @@ document.head.appendChild(style);
             } else {
                 showLoginPage();
             }
-          
         });
     </script>
 </body>
