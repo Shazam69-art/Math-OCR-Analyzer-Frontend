@@ -2161,17 +2161,28 @@ function resetToDashboard() {
 
         function displayFiles(elementId, files, fileType) {
     const el = document.getElementById(elementId);
-    el.innerHTML = files.map((f, index) => `
-        <div class="file-item">
+    el.innerHTML = '';
+    
+    files.forEach((f, index) => {
+        const fileItem = document.createElement('div');
+        fileItem.className = 'file-item';
+        fileItem.innerHTML = `
             <div style="display: flex; align-items: center; gap: 6px;">
                 <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
                 ${f.name}
             </div>
-            <button class="remove-file-btn" onclick="removeFile('${fileType}', ${index}, event)">×</button>
-        </div>
-    `).join('');
+            <button class="remove-file-btn">×</button>
+        `;
+        
+        // Add event listener to the remove button
+        const removeBtn = fileItem.querySelector('.remove-file-btn');
+        removeBtn.addEventListener('click', (event) => {
+            removeFile(fileType, index, event);
+        });
+        
+        el.appendChild(fileItem);
+    });
 }
-
         function removeFile(fileType, index, event) {
     // Stop the event from bubbling up to parent elements
     if (event) {
@@ -2180,11 +2191,15 @@ function resetToDashboard() {
     }
     
     if (fileType === 'question') {
-        questionFiles.splice(index, 1);
-        displayFiles('questionFileList', questionFiles, 'question');
+        if (index >= 0 && index < questionFiles.length) {
+            questionFiles.splice(index, 1);
+            displayFiles('questionFileList', questionFiles, 'question');
+        }
     } else {
-        answerFiles.splice(index, 1);
-        displayFiles('answerFileList', answerFiles, 'answer');
+        if (index >= 0 && index < answerFiles.length) {
+            answerFiles.splice(index, 1);
+            displayFiles('answerFileList', answerFiles, 'answer');
+        }
     }
     checkStartButton();
 }
