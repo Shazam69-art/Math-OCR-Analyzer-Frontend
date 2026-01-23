@@ -2217,11 +2217,15 @@ function resetToDashboard() {
         if (index >= 0 && index < questionFiles.length) {
             questionFiles.splice(index, 1);
             displayFiles('questionFileList', questionFiles, 'question');
+            // RESET THE FILE INPUT SO SAME FILES CAN BE UPLOADED AGAIN
+            document.getElementById('questionInput').value = '';
         }
     } else {
         if (index >= 0 && index < answerFiles.length) {
             answerFiles.splice(index, 1);
             displayFiles('answerFileList', answerFiles, 'answer');
+            // RESET THE FILE INPUT SO SAME FILES CAN BE UPLOADED AGAIN
+            document.getElementById('answerInput').value = '';
         }
     }
     checkStartButton();
