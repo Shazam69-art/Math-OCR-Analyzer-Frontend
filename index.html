@@ -642,6 +642,19 @@
             height: 12px;
         }
 
+        .file-item-remove {
+            cursor: pointer;
+            color: var(--destructive);
+            transition: all 0.2s;
+            padding: 4px;
+            border-radius: 4px;
+        }
+  
+        .file-item-remove:hover {
+            background-color: rgba(230, 57, 70, 0.1);
+            transform: scale(1.1);
+        }
+
         .btn-start {
             background: linear-gradient(135deg, var(--primary) 0%, #3a56d4 100%);
             color: var(--primary-foreground);
@@ -666,6 +679,44 @@
             transform: translateY(-1px);
             box-shadow: var(--shadow-md);
         }
+      .new-analysis-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    padding: 14px 24px;
+    border-radius: 50px;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+    z-index: 100;
+}
+
+.new-analysis-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+.new-analysis-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+@media (max-width: 768px) {
+    .new-analysis-btn {
+        bottom: 16px;
+        right: 16px;
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+}
 
         .results-section {
             max-width: 1200px;
@@ -1983,10 +2034,41 @@
             document.getElementById('uploadSection').classList.remove('hidden');
             document.getElementById('resultsSection').classList.add('hidden');
             document.getElementById('saveAnalysisBtn').style.display = 'none';
+            document.getElementById('newAnalysisBtn').style.display = 'none';
             closeMobileMenu();
             document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.mobile-sidebar .sidebar-item').forEach(el => el.classList.remove('active'));
+            currentAnalysisId = null;
         }
+      function startNewAnalysis() {
+    // Clear all files
+    clearAllFiles();
+    
+    // Reset analysis data
+    analysisResult = null;
+    practiceResult = null;
+    currentAnalysisId = null;
+    
+    // Clear corrected images data
+    window.correctedImagesData = null;
+    
+    // Hide results, show upload section
+    document.getElementById('uploadSection').classList.remove('hidden');
+    document.getElementById('resultsSection').classList.add('hidden');
+    document.getElementById('saveAnalysisBtn').style.display = 'none';
+    document.getElementById('boundingAnalysisBtn').style.display = 'inline-flex';
+    document.getElementById('viewCorrectedBtn').style.display = 'none';
+    document.getElementById('newAnalysisBtn').style.display = 'none';
+    
+    // Clear sidebar selection
+    document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.mobile-sidebar .sidebar-item').forEach(el => el.classList.remove('active'));
+    
+    // Scroll to top
+    document.querySelector('.content-area').scrollTop = 0;
+    
+    closeMobileMenu();
+}
 
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -2069,14 +2151,41 @@
         }
 
         function displayFiles(elementId, files) {
-            const el = document.getElementById(elementId);
-            el.innerHTML = files.map(f => `
-                <div class="file-item">
-                    <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                    ${f.name}
-                </div>
-            `).join('');
+    const el = document.getElementById(elementId);
+    const isQuestion = elementId === 'questionFileList';
+    
+    el.innerHTML = files.map((f, index) => `
+        <div class="file-item">
+            <div style="display: flex; align-items: center; gap: 8px; flex: 1;">
+                <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                <span>${f.name}</span>
+            </div>
+            <svg class="file-item-remove" onclick="removeFile('${isQuestion ? 'question' : 'answer'}', ${index})" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+            </svg>
+        </div>
+    `).join('');
+}
+          function removeFile(type, index) {
+        if (type === 'question') {
+            questionFiles.splice(index, 1);
+            displayFiles('questionFileList', questionFiles);
+        } else {
+            answerFiles.splice(index, 1);
+            displayFiles('answerFileList', answerFiles);
         }
+        checkStartButton();
+    }
+          function clearAllFiles() {
+        questionFiles = [];
+        answerFiles = [];
+        allFiles = [];
+        displayFiles('questionFileList', questionFiles);
+        displayFiles('answerFileList', answerFiles);
+        document.getElementById('questionInput').value = '';
+        document.getElementById('answerInput').value = '';
+        checkStartButton();
+    }
 
         function checkStartButton() {
             document.getElementById('startAnalysisBtn').disabled = questionFiles.length === 0 || answerFiles.length === 0;
@@ -2164,6 +2273,7 @@
                         document.getElementById('resultsSection').classList.remove('hidden');
                         document.getElementById('saveAnalysisBtn').style.display = 'flex';
                         document.getElementById('boundingAnalysisBtn').style.display = 'inline-flex';
+                        document.getElementById('newAnalysisBtn').style.display = 'flex'; 
                         promptForAnalysisName();
                     }, 500);
                 }
@@ -2610,30 +2720,31 @@
         }
 
         async function loadAnalysis(id) {
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/get-analysis/${id}`, {
-                    method: 'GET',
-                    credentials: 'include'
-                });
-                const data = await response.json();
-                if (data.success) {
-                    currentAnalysisId = id;
-                    displayLoadedAnalysis(data.analysis);
-                    document.getElementById('uploadSection').classList.add('hidden');
-                    document.getElementById('resultsSection').classList.remove('hidden');
-                    document.getElementById('saveAnalysisBtn').style.display = 'flex';
-                    document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
-                    const sidebarItem = document.getElementById(`sidebar-item-${id}`);
-                    if (sidebarItem) sidebarItem.classList.add('active');
-                    const mobileItem = document.getElementById(`mobile-sidebar-item-${id}`);
-                    if (mobileItem) mobileItem.classList.add('active');
-                } else {
-                    alert(data.error);
-                }
-            } catch (error) {
-                alert('Error loading analysis');
-            }
+    try {
+        const response = await fetch(`${BACKEND_URL}/api/get-analysis/${id}`, {
+            method: 'GET',
+            credentials: 'include'
+        });
+        const data = await response.json();
+        if (data.success) {
+            currentAnalysisId = id;
+            displayLoadedAnalysis(data.analysis);
+            document.getElementById('uploadSection').classList.add('hidden');
+            document.getElementById('resultsSection').classList.remove('hidden');
+            document.getElementById('saveAnalysisBtn').style.display = 'flex';
+            document.getElementById('newAnalysisBtn').style.display = 'flex'; // ADD THIS LINE
+            document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+            const sidebarItem = document.getElementById(`sidebar-item-${id}`);
+            if (sidebarItem) sidebarItem.classList.add('active');
+            const mobileItem = document.getElementById(`mobile-sidebar-item-${id}`);
+            if (mobileItem) mobileItem.classList.add('active');
+        } else {
+            alert(data.error);
         }
+    } catch (error) {
+        alert('Error loading analysis');
+    }
+}
 
         // Bounding Box Analysis
         async function startBoundingAnalysis() {
