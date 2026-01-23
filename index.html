@@ -2167,21 +2167,27 @@ function resetToDashboard() {
                 <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
                 ${f.name}
             </div>
-            <button class="remove-file-btn" onclick="removeFile('${fileType}', ${index})">×</button>
+            <button class="remove-file-btn" onclick="removeFile('${fileType}', ${index}, event)">×</button>
         </div>
     `).join('');
 }
 
-        function removeFile(fileType, index) {
-            if (fileType === 'question') {
-                questionFiles.splice(index, 1);
-                displayFiles('questionFileList', questionFiles, 'question');
-            } else {
-                answerFiles.splice(index, 1);
-                displayFiles('answerFileList', answerFiles, 'answer');
-            }
-            checkStartButton();
-        }
+        function removeFile(fileType, index, event) {
+    // Stop the event from bubbling up to parent elements
+    if (event) {
+        event.stopPropagation();
+        event.preventDefault();
+    }
+    
+    if (fileType === 'question') {
+        questionFiles.splice(index, 1);
+        displayFiles('questionFileList', questionFiles, 'question');
+    } else {
+        answerFiles.splice(index, 1);
+        displayFiles('answerFileList', answerFiles, 'answer');
+    }
+    checkStartButton();
+}
 
         function checkStartButton() {
             document.getElementById('startAnalysisBtn').disabled = questionFiles.length === 0 || answerFiles.length === 0;
