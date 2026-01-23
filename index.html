@@ -628,6 +628,7 @@
         .file-item {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 8px;
             font-size: 12px;
             color: var(--muted-foreground);
@@ -636,6 +637,21 @@
             background: var(--muted);
             border-radius: 4px;
         }
+
+        .remove-file-btn {
+            background: none;
+            border: none;
+            color: var(--destructive);
+            cursor: pointer;
+            font-size: 14px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+       }
+       
+        .remove-file-btn:hover {
+            background-color: rgba(230, 57, 70, 0.1);
+       }
 
         .file-item svg {
             width: 12px;
@@ -1560,14 +1576,23 @@
                         </div>
                     </div>
                     <div class="header-right">
-                        <p class="user-info">Welcome, <span class="user-name" id="userName"></span></p>
-                        <button class="btn-logout" onclick="handleLogout()">
-                            <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                            </svg>
-                            Logout
-                        </button>
-                    </div>
+                    <p class="user-info">Welcome, <span class="user-name" id="userName"></span></p>
+                    
+                    <!-- Add this button -->
+                    <button class="new-analysis-btn" onclick="startNewAnalysis()" id="newAnalysisBtn" style="display: none;">
+                        <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                        </svg>
+                        New Analysis
+                    </button>
+                    
+                    <button class="btn-logout" onclick="handleLogout()">
+                        <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                        </svg>
+                        Logout
+                    </button>
+                </div>
                 </header>
 
                 <main class="content-area">
@@ -1624,7 +1649,15 @@
                     </div>
 
                     <!-- Results Section -->
+                    <!-- Results Section -->
                     <div id="resultsSection" class="results-section hidden">
+                        <button class="back-button" onclick="resetToDashboard()">
+                            <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                            </svg>
+                            Back to Dashboard
+                        </button>
+                        
                         <div class="results-header">
                             <div>
                                 <h1>Analysis Results</h1>
@@ -1632,7 +1665,7 @@
                             </div>
                             <div class="badge-group" id="badgeGroup"></div>
                         </div>
-                        <div class="accordion" id="accordion"></div>
+                                            <div class="accordion" id="accordion"></div>
 
                         <!-- Practice Paper -->
                         <div class="practice-paper-card" id="practicePaperCard">
@@ -1979,14 +2012,72 @@
             logoutUser();
         }
 
-        function resetToDashboard() {
-            document.getElementById('uploadSection').classList.remove('hidden');
-            document.getElementById('resultsSection').classList.add('hidden');
-            document.getElementById('saveAnalysisBtn').style.display = 'none';
-            closeMobileMenu();
-            document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.mobile-sidebar .sidebar-item').forEach(el => el.classList.remove('active'));
-        }
+        function startNewAnalysis() {
+    // Clear all uploaded files
+    questionFiles = [];
+    answerFiles = [];
+    allFiles = [];
+    analysisResult = null;
+    practiceResult = null;
+    currentAnalysisId = null;
+    
+    // Clear file lists
+    document.getElementById('questionFileList').innerHTML = '';
+    document.getElementById('answerFileList').innerHTML = '';
+    
+    // Reset UI
+    document.getElementById('uploadSection').classList.remove('hidden');
+    document.getElementById('resultsSection').classList.add('hidden');
+    document.getElementById('saveAnalysisBtn').style.display = 'none';
+    document.getElementById('boundingAnalysisBtn').style.display = 'inline-flex';
+    document.getElementById('viewCorrectedBtn').style.display = 'none';
+    document.getElementById('newAnalysisBtn').style.display = 'none';
+    
+    // Reset start button
+    document.getElementById('startAnalysisBtn').disabled = true;
+    document.getElementById('startAnalysisBtn').innerHTML = `
+        <svg style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+        </svg>
+        Start Analysis
+    `;
+    
+    // Scroll to top
+    document.querySelector('.content-area').scrollTop = 0;
+    
+    // Remove any active states from sidebar
+    document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.mobile-sidebar .sidebar-item').forEach(el => el.classList.remove('active'));
+}
+
+function resetToDashboard() {
+    // Clear all uploaded files
+    questionFiles = [];
+    answerFiles = [];
+    allFiles = [];
+    analysisResult = null;
+    practiceResult = null;
+    currentAnalysisId = null;
+    
+    // Clear file lists
+    document.getElementById('questionFileList').innerHTML = '';
+    document.getElementById('answerFileList').innerHTML = '';
+    
+    // Reset UI
+    document.getElementById('uploadSection').classList.remove('hidden');
+    document.getElementById('resultsSection').classList.add('hidden');
+    document.getElementById('saveAnalysisBtn').style.display = 'none';
+    document.getElementById('newAnalysisBtn').style.display = 'none';
+    document.getElementById('boundingAnalysisBtn').style.display = 'none';
+    document.getElementById('viewCorrectedBtn').style.display = 'none';
+    
+    // Reset start button
+    document.getElementById('startAnalysisBtn').disabled = true;
+    
+    closeMobileMenu();
+    document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.mobile-sidebar .sidebar-item').forEach(el => el.classList.remove('active'));
+}
 
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -2042,40 +2133,54 @@
         });
 
         document.getElementById('questionInput').addEventListener('change', async e => {
-            await handleFileUpload(e.target.files, questionFiles, 'questionFileList');
+            await handleFileUpload(e.target.files, questionFiles, 'questionFileList', 'question');
             checkStartButton();
         });
 
         document.getElementById('answerInput').addEventListener('change', async e => {
-            await handleFileUpload(e.target.files, answerFiles, 'answerFileList');
+            await handleFileUpload(e.target.files, answerFiles, 'answerFileList', 'answer');
             checkStartButton();
         });
 
-        async function handleFileUpload(files, targetArray, listId) {
-            for (let file of files) {
-                if (!targetArray.find(f => f.name === file.name)) {
-                    let dataURL = '';
-                    if (file.type.startsWith('image/')) {
-                        dataURL = await new Promise(resolve => {
-                            const reader = new FileReader();
-                            reader.onload = ev => resolve(ev.target.result);
-                            reader.readAsDataURL(file);
-                        });
-                    }
-                    targetArray.push({name: file.name, file: file, dataURL: dataURL});
-                }
+        async function handleFileUpload(files, targetArray, listId, fileType) {
+    for (let file of files) {
+        if (!targetArray.find(f => f.name === file.name)) {
+            let dataURL = '';
+            if (file.type.startsWith('image/')) {
+                dataURL = await new Promise(resolve => {
+                    const reader = new FileReader();
+                    reader.onload = ev => resolve(ev.target.result);
+                    reader.readAsDataURL(file);
+                });
             }
-            displayFiles(listId, targetArray);
+            targetArray.push({name: file.name, file: file, dataURL: dataURL});
         }
+    }
+    displayFiles(listId, targetArray, fileType);
+}
 
-        function displayFiles(elementId, files) {
-            const el = document.getElementById(elementId);
-            el.innerHTML = files.map(f => `
-                <div class="file-item">
-                    <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                    ${f.name}
-                </div>
-            `).join('');
+        function displayFiles(elementId, files, fileType) {
+    const el = document.getElementById(elementId);
+    el.innerHTML = files.map((f, index) => `
+        <div class="file-item">
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                ${f.name}
+            </div>
+            <button class="remove-file-btn" onclick="removeFile('${fileType}', ${index})">×</button>
+        </div>
+    `).join('');
+}
+
+        function removeFile(fileType, index) {
+            if (fileType === 'question') {
+                questionFiles.splice(index, 1);
+                displayFiles('questionFileList', questionFiles, 'question');
+            } else {
+                answerFiles.splice(index, 1);
+                displayFiles('answerFileList', answerFiles, 'answer');
+            }
+            checkStartButton();
         }
 
         function checkStartButton() {
@@ -2164,6 +2269,7 @@
                         document.getElementById('resultsSection').classList.remove('hidden');
                         document.getElementById('saveAnalysisBtn').style.display = 'flex';
                         document.getElementById('boundingAnalysisBtn').style.display = 'inline-flex';
+                        document.getElementById('newAnalysisBtn').style.display = 'inline-flex'; // Add this line
                         promptForAnalysisName();
                     }, 500);
                 }
@@ -2610,30 +2716,31 @@
         }
 
         async function loadAnalysis(id) {
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/get-analysis/${id}`, {
-                    method: 'GET',
-                    credentials: 'include'
-                });
-                const data = await response.json();
-                if (data.success) {
-                    currentAnalysisId = id;
-                    displayLoadedAnalysis(data.analysis);
-                    document.getElementById('uploadSection').classList.add('hidden');
-                    document.getElementById('resultsSection').classList.remove('hidden');
-                    document.getElementById('saveAnalysisBtn').style.display = 'flex';
-                    document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
-                    const sidebarItem = document.getElementById(`sidebar-item-${id}`);
-                    if (sidebarItem) sidebarItem.classList.add('active');
-                    const mobileItem = document.getElementById(`mobile-sidebar-item-${id}`);
-                    if (mobileItem) mobileItem.classList.add('active');
-                } else {
-                    alert(data.error);
-                }
-            } catch (error) {
-                alert('Error loading analysis');
-            }
+    try {
+        const response = await fetch(`${BACKEND_URL}/api/get-analysis/${id}`, {
+            method: 'GET',
+            credentials: 'include'
+        });
+        const data = await response.json();
+        if (data.success) {
+            currentAnalysisId = id;
+            displayLoadedAnalysis(data.analysis);
+            document.getElementById('uploadSection').classList.add('hidden');
+            document.getElementById('resultsSection').classList.remove('hidden');
+            document.getElementById('saveAnalysisBtn').style.display = 'flex';
+            document.getElementById('newAnalysisBtn').style.display = 'inline-flex'; // Add this line
+            document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+            const sidebarItem = document.getElementById(`sidebar-item-${id}`);
+            if (sidebarItem) sidebarItem.classList.add('active');
+            const mobileItem = document.getElementById(`mobile-sidebar-item-${id}`);
+            if (mobileItem) mobileItem.classList.add('active');
+        } else {
+            alert(data.error);
         }
+    } catch (error) {
+        alert('Error loading analysis');
+    }
+}
 
         // Bounding Box Analysis
         async function startBoundingAnalysis() {
