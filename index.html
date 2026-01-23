@@ -2144,16 +2144,29 @@ function resetToDashboard() {
 
         async function handleFileUpload(files, targetArray, listId, fileType) {
     for (let file of files) {
-        if (!targetArray.find(f => f.name === file.name)) {
+        // Check if file already exists
+        const existingIndex = targetArray.findIndex(f => f.name === file.name);
+        
+        if (existingIndex === -1) {
             let dataURL = '';
-            if (file.type.startsWith('image/')) {
+            // Handle both images and PDFs
+            if (file.type.startsWith('image/') || file.type === 'application/pdf') {
                 dataURL = await new Promise(resolve => {
                     const reader = new FileReader();
                     reader.onload = ev => resolve(ev.target.result);
+                    reader.onerror = () => resolve('');
                     reader.readAsDataURL(file);
                 });
             }
-            targetArray.push({name: file.name, file: file, dataURL: dataURL});
+            
+            targetArray.push({
+                name: file.name, 
+                file: file, 
+                dataURL: dataURL,
+                type: file.type,
+                size: file.size,
+                lastModified: file.lastModified
+            });
         }
     }
     displayFiles(listId, targetArray, fileType);
@@ -2166,12 +2179,23 @@ function resetToDashboard() {
     files.forEach((f, index) => {
         const fileItem = document.createElement('div');
         fileItem.className = 'file-item';
+        
+        // Determine icon based on file type
+        let icon = '📄'; // default
+        if (f.type.startsWith('image/')) icon = '🖼️';
+        if (f.type === 'application/pdf') icon = '📕';
+        
         fileItem.innerHTML = `
             <div style="display: flex; align-items: center; gap: 6px;">
-                <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                ${f.name}
+                <span style="font-size: 14px;">${icon}</span>
+                <span style="font-size: 12px; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                    ${f.name}
+                </span>
+                <span style="font-size: 10px; color: #666;">
+                    (${(f.size / 1024).toFixed(1)}KB)
+                </span>
             </div>
-            <button class="remove-file-btn">×</button>
+            <button class="remove-file-btn" title="Remove file">×</button>
         `;
         
         // Add event listener to the remove button
@@ -2182,8 +2206,7 @@ function resetToDashboard() {
         
         el.appendChild(fileItem);
     });
-}
-        function removeFile(fileType, index, event) {
+}        function removeFile(fileType, index, event) {
     // Stop the event from bubbling up to parent elements
     if (event) {
         event.stopPropagation();
